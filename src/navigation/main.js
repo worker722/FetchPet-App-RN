@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import { BaseColor, BaseStyle } from '../config'
 /* Main Screen */
+import Welcome from "../screen/Welcome";
 import Home from "../screen/Home";
 import Login from "../screen/Login";
 import SignUp from "../screen/SignUp";
@@ -67,6 +68,9 @@ const StackNavigator = createStackNavigator(
 		// BottomTabNavigator: {
 		// 	screen: BottomTabNavigator
 		// },
+		Welcome: {
+			screen: Welcome
+		},
 		Home: {
 			screen: Home
 		},
@@ -79,7 +83,7 @@ const StackNavigator = createStackNavigator(
 	},
 	{
 		headerMode: "none",
-		initialRouteName: "Login"
+		initialRouteName: "Welcome"
 	}
 );
 

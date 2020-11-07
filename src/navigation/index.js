@@ -8,7 +8,7 @@ const AppNavigator = createSwitchNavigator(
 		Main: Main
 	},
 	{
-		initialRouteName: "Loading"
+		initialRouteName: "Splash"
 	}
 );
 

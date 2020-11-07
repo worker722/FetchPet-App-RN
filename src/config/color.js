@@ -1,15 +1,16 @@
 
 const BaseColor = {
-    ...{
-      primaryColor: "#db254d",
-      accentColor: "#4A90A4",
-      grayColor: "#636363",
-      whiteColor: "#ffffff",
-      categoryColor: "#2b51c3",
-    }
-  };
-  
-  export {
-    BaseColor,
-  };
-  
+  ...{
+    primaryColor: "#303881",
+    accentColor: "#4A90A4",
+    grayColor: "#636363",
+    whiteColor: "#ffffff",
+    categoryColor: "#2b51c3",
+    googleColor: "#e3411f",
+    faceBookColor: "#3c5b9a"
+  }
+};
+
+export {
+  BaseColor,
+};

@@ -13,14 +13,14 @@ export default class Splash extends Component {
 
   componentDidMount = async () => {
     setTimeout(() => {
-      this.props.navigation.navigate("Login");
+      this.props.navigation.navigate("Welcome");
     }, 2000);
   }
 
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: "#fff", alignItems: "center", justifyContent: "center" }}>
-        <Image source={Images.logo}></Image>
+        <Image placeholderStyle={{ backgroundColor: "transparent" }} source={Images.logo} style={{ width: 168, height: 60 }} resizeMode={"stretch"}></Image>
       </View>
     );
   }
