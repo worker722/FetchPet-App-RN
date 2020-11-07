@@ -10,7 +10,6 @@ import RBSheet from "react-native-raw-bottom-sheet";
 
 import { Utils } from '../../utils';
 import { BaseColor } from '../../config';
-import { AirPlayDevices } from '../../components/AirPlayDevices';
 
 let mainCategory = [
     {
@@ -98,7 +97,6 @@ export default class Home extends Component {
                     <View style={{ flex: 1 }}>
                         <Text style={{ fontSize: 20, marginVertical: 20, textAlign: "center" }}>Select a Device to Connect</Text>
                         <Text style={{ fontSize: 15, textAlign: "center", paddingHorizontal: 15 }}>Make sure your phone and Smart TV are connected to the same wifi network.</Text>
-                        <AirPlayDevices />
                     </View>
                 </RBSheet>
             </View>
