@@ -25,6 +25,10 @@ export default class Login extends Component {
         this.setState({ rememberMe: value })
     }
 
+    login = () => {
+        this.props.navigation.navigate("Home");
+    }
+
     render = () => {
         return (
             <View style={{ flex: 1 }}>
@@ -60,7 +64,7 @@ export default class Login extends Component {
                             />
                             <Text style={{ marginLeft: 10, textAlign: "left", flex: 1 }}>Remember Me</Text>
                         </View>
-                        <TouchableOpacity activeOpacity={0.8} style={{ width: "70%", height: 40, marginTop: 20 }}>
+                        <TouchableOpacity activeOpacity={0.8} style={{ width: "70%", height: 40, marginTop: 20 }} onPress={() => this.login()}>
                             <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
                                 <Text style={{ color: "#fff", fontSize: 15 }}>LOGIN</Text>
                             </View>
