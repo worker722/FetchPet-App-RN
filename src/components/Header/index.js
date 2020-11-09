@@ -12,7 +12,7 @@ import { Images, BaseColor } from '../../config';
 export default class Header extends Component {
     render = () => {
         return (
-            <View style={{ width: "100%", height: 100, paddingHorizontal: 10, flexDirection: "row" }}>
+            <View style={{ width: "100%", height: 50, paddingHorizontal: 10, flexDirection: "row" }}>
                 <Image placeholderStyle={{ backgroundColor: "transparent" }} source={Images.logo} style={{ width: 100, height: 35 }} resizeMode={"stretch"}></Image>
                 <Icon solid name="bell" size={20} color={BaseColor.primaryColor} style={{ position: "absolute", right: 10 }}></Icon>
             </View>
