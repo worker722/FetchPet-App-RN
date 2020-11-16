@@ -21,7 +21,7 @@ export default class Welcome extends Component {
                 <View style={{ position: "absolute", top: 0, width: "100%", height: 200 }}>
                     <Image
                         source={{ uri: "https://ichef.bbci.co.uk/news/800/cpsprodpb/BAF5/production/_111516874_gettyimages-451627799-1.jpg" }}
-                        style={{ width: 400, height: 230 }}></Image>
+                        style={{ width: "100%", height: 230 }} placeholderStyle={{ backgroundColor: "transparent" }}></Image>
                 </View>
                 <View style={{ position: "absolute", width: "100%", height: 200, top: 0, backgroundColor: "#000", opacity: 0.3 }}></View>
                 <View style={{ position: "absolute", top: 0, width: "100%", height: 170, justifyContent: "center", alignItems: "center" }}>
@@ -31,13 +31,13 @@ export default class Welcome extends Component {
                     <View style={{ width: "100%", height: 80, alignItems: "center", justifyContent: "center", marginTop: 20 }}>
                         <Image placeholderStyle={{ backgroundColor: "transparent" }} source={Images.logo} style={{ width: 168, height: 60 }} resizeMode={"stretch"}></Image>
                     </View>
-                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", marginBottom:80 }}>
+                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", marginBottom: 80 }}>
                         <TouchableOpacity onPress={() => this.props.navigation.navigate("Login")} activeOpacity={0.8} style={{ width: "80%", height: 50, shadowColor: "#000", shadowOpacity: 0.7, shadowOffset: { width: 0, height: 0 } }}>
                             <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
                                 <Text style={{ color: "#fff", fontSize: 15, fontWeight: "bold" }}>LOGIN</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity activeOpacity={0.8} style={{ width: "80%", height: 50, marginTop: 10, shadowColor: "#000", shadowOpacity: 0.7, shadowOffset: { width: 0, height: 0 } }}>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate("SignUp")}  activeOpacity={0.8} style={{ width: "80%", height: 50, marginTop: 10, shadowColor: "#000", shadowOpacity: 0.7, shadowOffset: { width: 0, height: 0 } }}>
                             <View style={{ flex: 1, borderRadius: 10, backgroundColor: "#fff", justifyContent: "center", alignItems: "center" }}>
                                 <Text style={{ color: BaseColor.primaryColor, fontSize: 15, fontWeight: "bold" }}>SIGN UP</Text>
                             </View>
