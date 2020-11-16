@@ -3,7 +3,7 @@ const BaseColor = {
   ...{
     primaryColor: "#303881",
     accentColor: "#4A90A4",
-    grayColor: "#636363",
+    grayColor: "#808080",
     whiteColor: "#ffffff",
     categoryColor: "#2b51c3",
     googleColor: "#e3411f",

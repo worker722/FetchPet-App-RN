@@ -48,28 +48,28 @@ export default class SignUp extends Component {
                     </View>
                     <ScrollView style={{ flex: 1, marginTop: 30 }}>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                            <TouchableOpacity activeOpacity={0.8} style={{ width: "80%", height: 50 }}>
+                            <View style={{ width: "80%", height: 50 }}>
                                 <TextInput placeholder={"Username*"} placeholderTextColor={"#fff"} style={{ fontSize: 15, paddingHorizontal: 20, color: "#fff", flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
                                 </TextInput>
-                            </TouchableOpacity>
-                            <TouchableOpacity activeOpacity={0.8} style={{ width: "80%", height: 50, marginTop: 20, justifyContent: "center", }}>
+                            </View>
+                            <View style={{ width: "80%", height: 50, marginTop: 20, justifyContent: "center", }}>
                                 <TextInput placeholder={"Email  "} textContentType={"password"} secureTextEntry={this.state.passwordSecure} placeholderTextColor={"#fff"} style={{ fontSize: 15, paddingHorizontal: 20, color: "#fff", flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
                                 </TextInput>
-                            </TouchableOpacity>
-                            <TouchableOpacity activeOpacity={0.8} style={{ width: "80%", height: 50, marginTop: 20, justifyContent: "center", }}>
+                            </View>
+                            <View style={{ width: "80%", height: 50, marginTop: 20, justifyContent: "center", }}>
                                 <TextInput placeholder={"Password"} textContentType={"password"} secureTextEntry={this.state.passwordSecure} placeholderTextColor={"#fff"} style={{ fontSize: 15, paddingHorizontal: 20, color: "#fff", flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
                                 </TextInput>
                                 <TouchableOpacity style={{ position: "absolute", right: 10 }} onPress={() => this.state.passwordSecure ? this.setState({ passwordSecure: false }) : this.setState({ passwordSecure: true })}>
                                     <Icon name={this.state.passwordSecure ? "eye-slash" : "eye"} size={15} color={"#fff"} style={{ flex: 1 }}></Icon>
                                 </TouchableOpacity>
-                            </TouchableOpacity>
-                            <TouchableOpacity activeOpacity={0.8} style={{ width: "80%", height: 50, marginTop: 20, justifyContent: "center", }}>
+                            </View>
+                            <View style={{ width: "80%", height: 50, marginTop: 20, justifyContent: "center", }}>
                                 <TextInput placeholder={"Retype Password"} textContentType={"password"} secureTextEntry={this.state.passwordSecure} placeholderTextColor={"#fff"} style={{ fontSize: 15, paddingHorizontal: 20, color: "#fff", flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
                                 </TextInput>
                                 <TouchableOpacity style={{ position: "absolute", right: 10 }} onPress={() => this.state.passwordSecure ? this.setState({ passwordSecure: false }) : this.setState({ passwordSecure: true })}>
                                     <Icon name={this.state.passwordSecure ? "eye-slash" : "eye"} size={15} color={"#fff"} style={{ flex: 1 }}></Icon>
                                 </TouchableOpacity>
-                            </TouchableOpacity>
+                            </View>
                             <View style={{ width: "80%", height: 30, marginTop: 10, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                                 <Switch
                                     value={this.state.rememberMe}
@@ -77,26 +77,32 @@ export default class SignUp extends Component {
                                 />
                                 <Text style={{ marginLeft: 10, textAlign: "left", flex: 1 }}>Remember Me</Text>
                             </View>
-                            <TouchableOpacity activeOpacity={0.8} style={{ width: "70%", height: 40, marginTop: 20 }} onPress={() => this.login()}>
-                                <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.whiteColor, justifyContent: "center", alignItems: "center" }}>
+                            <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 20 }} onPress={() => this.login()}>
+                                <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.whiteColor, borderColor: "#808080", borderWidth: 1, justifyContent: "center", alignItems: "center" }}>
                                     <Text style={{ color: "#fff", fontSize: 15, color: BaseColor.primaryColor }}>SIGN UP</Text>
                                 </View>
                             </TouchableOpacity>
                             <View style={{ width: "70%", height: 15, flexDirection: "row", marginTop: 5, justifyContent: "center", alignItems: "center" }}>
                                 <View style={{ flex: 1, height: 1, backgroundColor: "#000" }}></View>
-                                <Text style={{ marginHorizontal: 5 }}>OR</Text>
+                                <Text style={{ marginHorizontal: 5, fontSize: 12 }}>OR</Text>
                                 <View style={{ flex: 1, height: 1, backgroundColor: "#000" }}></View>
                             </View>
-                            <TouchableOpacity activeOpacity={0.8} style={{ width: "70%", height: 40, marginTop: 5 }}>
+                            <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 5 }}>
                                 <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.googleColor, justifyContent: "center", alignItems: "center" }}>
                                     <Text style={{ color: BaseColor.whiteColor, fontSize: 13 }}>Sign Up with</Text>
                                     <Icon name={"google-plus-g"} size={15} color={"#fff"} style={{ position: "absolute", right: 10 }}></Icon>
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity activeOpacity={0.8} style={{ width: "70%", height: 40, marginTop: 10, }}>
+                            <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 10, }}>
                                 <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.faceBookColor, justifyContent: "center", alignItems: "center" }}>
                                     <Text style={{ color: BaseColor.whiteColor, fontSize: 13 }}>Sign Up with</Text>
                                     <Icon name={"facebook-f"} size={15} color={"#fff"} style={{ position: "absolute", right: 10 }}></Icon>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 10, }}>
+                                <View style={{ flex: 1, borderRadius: 10, backgroundColor: "#fff", borderWidth: 1, borderColor: "#808080", justifyContent: "center", alignItems: "center" }}>
+                                    <Text style={{ color: "#000", fontSize: 13 }}>Sign Up with</Text>
+                                    <Icon name={"apple"} size={15} color={"#000"} style={{ position: "absolute", right: 10 }}></Icon>
                                 </View>
                             </TouchableOpacity>
                         </View>
