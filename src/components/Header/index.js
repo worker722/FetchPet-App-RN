@@ -10,11 +10,19 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Images, BaseColor } from '../../config';
 
 export default class Header extends Component {
+    constructor(props) {
+        super(props);
+        const { navigation } = props;
+        this.navigation = navigation;
+    }
+
     render = () => {
         return (
             <View style={{ width: "100%", height: 50, paddingHorizontal: 10, flexDirection: "row" }}>
                 <Image placeholderStyle={{ backgroundColor: "transparent" }} source={Images.logo} style={{ width: 100, height: 35 }} resizeMode={"stretch"}></Image>
-                <Icon solid name="bell" size={20} color={BaseColor.primaryColor} style={{ position: "absolute", right: 10 }}></Icon>
+                <TouchableOpacity style={{ position: "absolute", right: 10 }} onPress={() => this.navigation.navigate("Notification")}>
+                    <Icon solid name="bell" size={20} color={BaseColor.primaryColor}></Icon>
+                </TouchableOpacity>
             </View>
         )
     }

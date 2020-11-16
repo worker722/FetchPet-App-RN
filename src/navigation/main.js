@@ -4,17 +4,23 @@ import { createBottomTabNavigator } from "react-navigation-tabs";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import { BaseColor, BaseStyle } from '../config'
-/* Main Screen */
+/* start up Screen */
 import Welcome from "../screen/Welcome";
 import Login from "../screen/Login";
 import SignUp from "../screen/SignUp";
 
 // bottom navigation
 import Home from "../screen/Home";
-import Chat from "../screen/Chat";
+import ChatList from "../screen/ChatList";
 import Sell from "../screen/Sell";
 import MyAds from "../screen/MyAds";
 import Profile from "../screen/Profile";
+
+// other page
+import Notification from "../screen/Notification";
+import AdDetail from "../screen/AdDetail";
+import Chat from "../screen/Chat";
+
 
 // Config for bottom navigator
 const bottomTabNavigatorConfig = {
@@ -42,8 +48,8 @@ const routeConfigs = {
 			}
 		})
 	},
-	Chat: {
-		screen: Chat,
+	ChatList: {
+		screen: ChatList,
 		navigationOptions: ({ navigation }) => ({
 			title: "Chat",
 			tabBarIcon: ({ focused, tintColor }) => {
@@ -104,6 +110,15 @@ const StackNavigator = createStackNavigator(
 		SignUp: {
 			screen: SignUp
 		},
+		Notification: {
+			screen: Notification
+		},
+		AdDetail: {
+			screen: AdDetail
+		},
+		Chat: {
+			screen: Chat
+		}
 	},
 	{
 		headerMode: "none",
