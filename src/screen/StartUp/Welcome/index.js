@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import { Image } from 'react-native-elements';
 
-import { Images, BaseColor } from '../../config';
+import { Images, BaseColor } from '../../../config';
 
 export default class Welcome extends Component {
     constructor(props) {

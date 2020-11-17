@@ -4,27 +4,32 @@ import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-import { BaseColor, BaseStyle } from '../config'
+import { BaseColor, BaseStyle, Images } from '../config';
+
 /* start up Screen */
 import Welcome from "../screen/Welcome";
-import Login from "../screen/Login";
+import Login from "../screen/StartUp/Login";
 import SignUp from "../screen/SignUp";
 
 // bottom navigation
 import Home from "../screen/Home";
-import ChatList from "../screen/ChatList";
-import Sell from "../screen/Sell";
-import MyAds from "../screen/MyAds";
-import Profile from "../screen/Profile";
+import AdDetail from "../screen/Home/AdDetail";
 
 // other page
 import Notification from "../screen/Notification";
-import AdDetail from "../screen/AdDetail";
-import Chat from "../screen/Chat";
-import ProfileEdit from "../screen/ProfileEdit";
-import Other from "../screen/Other";
-import Setting from "../screen/Setting";
-import Help from "../screen/Help";
+import Sell from "../screen/Sell";
+import MyAds from "../screen/MyAds";
+
+//chat
+import Inbox from "../screen/Inbox";
+import Chat from "../screen/Inbox/Chat";
+
+//profile
+import Profile from "../screen/Profile";
+import ProfileEdit from "../screen/Profile/ProfileEdit";
+import Other from "../screen/Profile/Other";
+import Setting from "../screen/Profile/Setting";
+import Help from "../screen/Profile/Help";
 
 
 // Config for bottom navigator
@@ -53,10 +58,10 @@ const routeConfigs = {
 			}
 		})
 	},
-	ChatList: {
-		screen: ChatList,
+	Inbox: {
+		screen: Inbox,
 		navigationOptions: ({ navigation }) => ({
-			title: "Chat",
+			title: "Inbox",
 			tabBarIcon: ({ focused, tintColor }) => {
 				return <Icon color={tintColor} name="comment-dots" size={20} solid={focused ? true : false} />;
 			}
@@ -69,7 +74,7 @@ const routeConfigs = {
 			tabBarIcon: ({ focused, tintColor }) => {
 				return (
 					<Image
-						source={focused ? require('../assets/images/sell-fill.png') : require('../assets/images/sell.png')}
+						source={focused ? Images.ic_sell_fill : Images.ic_sell}
 						style={{
 							width: 40,
 							height: 40,
