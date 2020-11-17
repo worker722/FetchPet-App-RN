@@ -410,16 +410,16 @@ let filterPet = [
         title: 'Reptiles',
         is_selected: false,
     },
-    {
-        index: 4,
-        title: 'Rabbits',
-        is_selected: false,
-    },
-    {
-        index: 5,
-        title: 'Fish',
-        is_selected: false,
-    }
+    // {
+    //     index: 4,
+    //     title: 'Rabbits',
+    //     is_selected: false,
+    // },
+    // {
+    //     index: 5,
+    //     title: 'Fish',
+    //     is_selected: false,
+    // }
 ];
 
 let filterBreed = [
@@ -443,16 +443,16 @@ let filterBreed = [
         title: 'Poodle',
         is_selected: false,
     },
-    {
-        index: 4,
-        title: 'English Mistaff',
-        is_selected: false,
-    },
-    {
-        index: 5,
-        title: 'German Shepherd',
-        is_selected: false,
-    }
+    // {
+    //     index: 4,
+    //     title: 'English Mistaff',
+    //     is_selected: false,
+    // },
+    // {
+    //     index: 5,
+    //     title: 'German Shepherd',
+    //     is_selected: false,
+    // }
 ];
 
 let filterGender = [
@@ -570,7 +570,9 @@ export default class Home extends Component {
                 <View style={{ flexDirection: "row", width: "100%", height: 40, paddingHorizontal: 10, alignItems: "center", justifyContent: "center" }}>
                     <View style={{ borderRadius: 5, height: 40, flex: 1, backgroundColor: BaseColor.primaryColor }}>
                         <TextInput style={{ flex: 1, paddingLeft: 45, paddingRight: 20, color: "white" }} placeholder={"Search"} placeholderTextColor={"#fff"}></TextInput>
-                        <Icon name={"search"} size={20} color={BaseColor.whiteColor} style={{ position: "absolute", left: 10, top: 10 }}></Icon>
+                        <TouchableOpacity style={{ position: "absolute", left: 10, top: 10 }}>
+                            <Icon name={"search"} size={20} color={BaseColor.whiteColor}></Icon>
+                        </TouchableOpacity>
                     </View>
                     <TouchableOpacity onPress={() => this.RBSheetRef.open()} style={{ backgroundColor: BaseColor.primaryColor, width: 40, height: 40, marginLeft: 10, alignItems: "center", borderRadius: 5, justifyContent: "center", padding: 5 }}>
                         <Icon name={"sliders-h"} size={20} color={BaseColor.whiteColor}></Icon>
@@ -578,7 +580,9 @@ export default class Home extends Component {
                 </View>
                 <View style={{ flexDirection: "row", marginHorizontal: 10, marginTop: 10, justifyContent: "center", alignItems: "center" }}>
                     <Text style={{ color: BaseColor.primaryColor, fontSize: 20, flex: 1, fontWeight: "600" }}>Category of Pets</Text>
-                    <Text style={{ color: BaseColor.primaryColor, fontSize: 13, marginLeft: 10, marginTop: 10 }}>Show All</Text>
+                    <TouchableOpacity style={{ marginLeft: 10, marginTop: 10 }}>
+                        <Text style={{ color: BaseColor.primaryColor, fontSize: 13 }}>Show All</Text>
+                    </TouchableOpacity>
                 </View>
                 <View style={{ width: "100%", height: 50, paddingHorizontal: 10, flexDirection: "row", marginTop: 10 }}>
                     {this.state.filterCategory.map((item, index) => (

@@ -12,18 +12,22 @@ import { Images, BaseColor } from '../../config';
 export default class Header extends Component {
     constructor(props) {
         super(props);
-        const { navigation, mainHeader, title, leftIcon, rightIcon, leftText, rightText, leftAction, rightAction } = props;
+        const { navigation, mainHeader, title, icon_left, icon_right, text_left, text_right, callback_left, callback_right } = props;
         this.state = {
             navigation,
             mainHeader,
             title,
-            leftIcon,
-            rightIcon,
-            leftText,
-            rightText,
-            leftAction,
-            rightAction
+            icon_left,
+            icon_right,
+            text_left,
+            text_right,
+            callback_left,
+            callback_right
         }
+    }
+
+    componentDidUpdate()
+    {
     }
 
     render = () => {
@@ -38,26 +42,28 @@ export default class Header extends Component {
                         </TouchableOpacity>
                     </>
                 }
-                {this.state.leftIcon &&
-                    <TouchableOpacity>
-                        <Icon name={this.state.leftIcon} color={BaseColor.primaryColor} size={20}></Icon>
-                    </TouchableOpacity>
-                }
-                {this.state.rightText &&
-                    <Text style={{ color: BaseColor.primaryColor }}>{this.state.rightText}</Text>
-                }
-                <View style={{ flex: 1 }}>
+                <TouchableOpacity onPress={() => this.state.callback_left()} style={{ position: "absolute", left: 10 }}>
+                    <>
+                        {this.state.icon_left &&
+                            <Icon name={this.state.icon_left} color={BaseColor.primaryColor} size={20}></Icon>
+                        }
+                        {this.state.text_left &&
+                            <Text style={{ color: BaseColor.primaryColor, fontSize:17  }}>{this.state.text_left}</Text>
+                        }
+                    </>
+                </TouchableOpacity>
+                <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                     {this.state.title &&
-                        <Text style={{ fontSize: 20, color: BaseColor.primaryColor, fontWeight: "bold" }}>{this.state.title}</Text>
+                        <Text style={{ fontSize: 22, color: BaseColor.primaryColor, fontWeight: "bold" }}>{this.state.title}</Text>
                     }
                 </View>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => this.state.callback_right()} style={{ position: "absolute", right: 10 }}>
                     <>
-                        {this.state.rightIcon &&
-                            <Icon name={this.state.rightIcon} color={BaseColor.primaryColor} size={20}></Icon>
+                        {this.state.icon_right &&
+                            <Icon name={this.state.icon_right} color={BaseColor.primaryColor} size={20}></Icon>
                         }
-                        {this.state.leftText &&
-                            <Text style={{ color: BaseColor.primaryColor }}>{this.state.leftText}</Text>
+                        {this.state.text_right &&
+                            <Text style={{ color: BaseColor.primaryColor, fontSize:17 }}>{this.state.text_right}</Text>
                         }
                     </>
                 </TouchableOpacity>
