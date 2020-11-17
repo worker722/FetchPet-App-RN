@@ -586,7 +586,7 @@ export default class Home extends Component {
                 </View>
                 <View style={{ width: "100%", height: 50, paddingHorizontal: 10, flexDirection: "row", marginTop: 10 }}>
                     {this.state.filterCategory.map((item, index) => (
-                        <TouchableOpacity activeOpacity={1} onPress={() => this.categorySeleted(item.index)} style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: item.is_selected ? BaseColor.primaryColor : "white", height: 40, borderRadius: 5 }}>
+                        <TouchableOpacity key={index} activeOpacity={1} onPress={() => this.categorySeleted(item.index)} style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: item.is_selected ? BaseColor.primaryColor : "white", height: 40, borderRadius: 5 }}>
                             <Text style={{ color: !item.is_selected ? BaseColor.primaryColor : "white" }}>{item.title}</Text>
                         </TouchableOpacity>
                     ))}

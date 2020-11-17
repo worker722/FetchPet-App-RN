@@ -22,6 +22,9 @@ import Notification from "../screen/Notification";
 import AdDetail from "../screen/AdDetail";
 import Chat from "../screen/Chat";
 import ProfileEdit from "../screen/ProfileEdit";
+import Other from "../screen/Other";
+import Setting from "../screen/Setting";
+import Help from "../screen/Help";
 
 
 // Config for bottom navigator
@@ -72,7 +75,7 @@ const routeConfigs = {
 							height: 40,
 							alignContent: 'center',
 							backgroundColor: "#fff",
-							marginBottom:15,
+							marginBottom: 15,
 							borderRadius: 100,
 							zIndex: 1000
 						}}
@@ -136,6 +139,15 @@ const StackNavigator = createStackNavigator(
 		},
 		ProfileEdit: {
 			screen: ProfileEdit
+		},
+		Other: {
+			screen: Other
+		},
+		Help: {
+			screen: Help
+		},
+		Setting: {
+			screen: Setting
 		}
 	},
 	{
