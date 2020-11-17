@@ -14,11 +14,12 @@ export default class Profile extends Component {
     }
 
     render = () => {
+        const navigation = this.props.navigation;
         return (
             <View style={{ flex: 1, paddingHorizontal: 10 }}>
-                <Header navigation={this.props.navigation} mainHeader={true} />
+                <Header navigation={navigation} mainHeader={true} />
                 <Text style={{ color: BaseColor.primaryColor, fontSize: 20, fontWeight: "bold", paddingLeft: 10 }}>Profile</Text>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate("ProfileEdit")} style={{ flexDirection: "row", width: "100%", justifyContent: "center", marginTop: 10 }}>
+                <TouchableOpacity onPress={() => navigation.navigate("ProfileEdit")} style={{ flexDirection: "row", width: "100%", justifyContent: "center", marginTop: 10 }}>
                     <Avatar
                         size='large'
                         rounded
@@ -33,7 +34,7 @@ export default class Profile extends Component {
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{ width: "100%", marginTop: 50, flexDirection: "row", paddingHorizontal: 10 }}>
+                <TouchableOpacity style={{ width: "100%", marginTop: 50, flexDirection: "row", paddingHorizontal: 10 }} onPress={() => navigation.navigate("Setting")}>
                     <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", width: 40, marginRight: 10 }}>
                         <Icon name={"cog"} size={25} color={BaseColor.grayColor}></Icon>
                     </View>
@@ -46,7 +47,7 @@ export default class Profile extends Component {
                     </View>
                 </TouchableOpacity>
                 <View style={{ backgroundColor: "#ddd", width: "98%", height: 1, marginTop: 10, marginHorizontal: "1%" }}></View>
-                <TouchableOpacity style={{ width: "100%", marginTop: 30, flexDirection: "row", paddingHorizontal: 10 }}>
+                <TouchableOpacity style={{ width: "100%", marginTop: 30, flexDirection: "row", paddingHorizontal: 10 }} onPress={() => navigation.navigate("Other")}>
                     <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", width: 40, marginRight: 10 }}>
                         <Icon name={"money-bill"} size={25} color={BaseColor.grayColor}></Icon>
                     </View>
@@ -59,7 +60,7 @@ export default class Profile extends Component {
                     </View>
                 </TouchableOpacity>
                 <View style={{ backgroundColor: "#ddd", width: "98%", height: 1, marginTop: 10, marginHorizontal: "1%" }}></View>
-                <TouchableOpacity style={{ width: "100%", marginTop: 30, flexDirection: "row", paddingHorizontal: 10 }}>
+                <TouchableOpacity style={{ width: "100%", marginTop: 30, flexDirection: "row", paddingHorizontal: 10 }} onPress={() => navigation.navigate("Help")}>
                     <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", width: 40, marginRight: 10 }}>
                         <Icon name={"cog"} size={25} color={BaseColor.grayColor}></Icon>
                     </View>

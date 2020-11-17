@@ -2,19 +2,20 @@ import React, { Component } from 'react';
 import {
     View,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+    TextInput,
+    StyleSheet
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { Avatar } from 'react-native-elements';
+import { Avatar, PricingCard } from 'react-native-elements';
 import { BaseColor } from '../../config';
-import Header from '../../components/Header';
 
 export default class ProfileEdit extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            is_edit: false
+            is_edit: true
         }
         this.closeCallback = () => {
             this.props.navigation.goBack(null);
@@ -30,12 +31,29 @@ export default class ProfileEdit extends Component {
         return (
             <View style={{ flex: 1 }}>
                 {is_edit ?
-                    <Header icon_left={"times"} callback_left={this.closeCallback} title={"Edit Profile"} text_right={'save'} callback_right={this.save} />
+                    <View style={{ width: "100%", height: 80, paddingHorizontal: 10, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                        <TouchableOpacity style={{ position: "absolute", left: 20 }}>
+                            <Icon name={"times"} color={BaseColor.primaryColor} size={20}></Icon>
+                        </TouchableOpacity>
+                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                            <Text style={{ fontSize: 22, color: BaseColor.primaryColor, fontWeight: "bold" }}>Edit Profile</Text>
+                        </View>
+                        <TouchableOpacity style={{ position: "absolute", right: 20 }} onPress={() => this.setState({ is_edit: false })}>
+                            <Text style={{ color: BaseColor.primaryColor, fontSize: 15 }}>SAVE</Text>
+                        </TouchableOpacity>
+                    </View>
                     :
-                    <Header icon_left={"arrow-left"} callback_left={this.closeCallback} title={"Edit Profile"} />
+                    <View style={{ width: "100%", height: 80, paddingHorizontal: 10, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                        <TouchableOpacity style={{ position: "absolute", left: 20 }}>
+                            <Icon name={"arrow-left"} color={BaseColor.primaryColor} size={20}></Icon>
+                        </TouchableOpacity>
+                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                            <Text style={{ fontSize: 22, color: BaseColor.primaryColor, fontWeight: "bold" }}>Edit Profile</Text>
+                        </View>
+                    </View>
                 }
-                <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingHorizontal: 20 }}>Profile</Text>
-                <View style={{ marginTop: 15, marginLeft: 15, width: "100%", flexDirection: "row", paddingRight: 50 }}>
+                <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingHorizontal: 20 }}>{is_edit ? 'Basic Infomation' : 'Profile'}</Text>
+                <View style={{ marginTop: 15, marginLeft: 15, flexDirection: "row", paddingRight: 20 }}>
                     <View>
                         <Avatar
                             size='xlarge'
@@ -51,32 +69,59 @@ export default class ProfileEdit extends Component {
                             </TouchableOpacity>
                         }
                     </View>
-                    <View style={{ flex: 1 }}>
-                        <View style={{ flex: 1, flexDirection: "row" }}>
-                            <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
-                                <Text style={{ fontSize: 18 }}>21</Text>
-                                <Text style={{ color: BaseColor.grayColor, fontSize: 13 }}>Following</Text>
-                            </View>
-                            <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
-                                <Text style={{ fontSize: 18 }}>66</Text>
-                                <Text style={{ color: BaseColor.grayColor, fontSize: 13 }}>Followers</Text>
-                            </View>
-                            <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
-                                <Text style={{ fontSize: 18 }}>54</Text>
-                                <Text style={{ color: BaseColor.grayColor, fontSize: 13 }}>Total ads</Text>
-                            </View>
+                    {is_edit ?
+                        <View style={{ flex: 1, justifyContent: "center", paddingLeft: 20 }}>
+                            <TextInput style={[styles.textinput, { fontSize: 16 }]}
+                                underlineColorAndroid="transparent"
+                                placeholder="Enter Your Name"
+                                placeholderTextColor={BaseColor.grayColor} />
                         </View>
-                        <View style={{ width: "100%", height: 1, backgroundColor: '#ddd', position: "absolute", bottom: 10 }}></View>
+                        :
+                        <View style={{ flex: 1 }}>
+                            <View style={{ flex: 1, flexDirection: "row" }}>
+                                <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
+                                    <Text style={{ fontSize: 18 }}>21</Text>
+                                    <Text style={{ color: BaseColor.grayColor, fontSize: 13 }}>Following</Text>
+                                </View>
+                                <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
+                                    <Text style={{ fontSize: 18 }}>66</Text>
+                                    <Text style={{ color: BaseColor.grayColor, fontSize: 13 }}>Followers</Text>
+                                </View>
+                                <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
+                                    <Text style={{ fontSize: 18 }}>54</Text>
+                                    <Text style={{ color: BaseColor.grayColor, fontSize: 13 }}>Total ads</Text>
+                                </View>
+                            </View>
+                            <View style={{ width: "100%", height: 1, backgroundColor: '#ddd', position: "absolute", bottom: 10 }}></View>
+                        </View>
+                    }
+                </View>
+                {!is_edit ?
+                    <View style={{ marginLeft: 15, marginTop: 10 }}>
+                        <Text style={{ fontSize: 20 }}>Hassan llyas</Text>
+                        <TouchableOpacity onPress={() => { this.setState({ is_edit: true }); this.forceUpdate() }}
+                            style={{ justifyContent: "center", alignItems: "center", marginTop: 10, borderWidth: 1, borderColor: BaseColor.primaryColor, paddingHorizontal: 10, paddingVertical: 5, width: "30%", borderRadius: 5 }}>
+                            <Text style={{ color: BaseColor.primaryColor }}>Edit Profile</Text>
+                        </TouchableOpacity>
                     </View>
-                </View>
-                <View style={{ marginLeft: 15, marginTop: 10 }}>
-                    <Text style={{ fontSize: 20 }}>Hassan llyas</Text>
-                    <TouchableOpacity onPress={() => { this.setState({ is_edit: true }); this.forceUpdate() }}
-                        style={{ justifyContent: "center", alignItems: "center", marginTop: 10, borderWidth: 1, borderColor: BaseColor.primaryColor, paddingHorizontal: 10, paddingVertical: 5, width: "30%", borderRadius: 5 }}>
-                        <Text style={{ color: BaseColor.primaryColor }}>Edit Profile</Text>
-                    </TouchableOpacity>
-                </View>
+                    :
+                    <View style={{ marginTop: 20, paddingHorizontal: 20 }}>
+                        <TextInput style={styles.textinput}
+                            underlineColorAndroid="transparent"
+                            placeholder="Something about you"
+                            placeholderTextColor={BaseColor.grayColor} />
+                    </View>
+                }
+                <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingHorizontal: 20, marginTop: 20 }}>{is_edit && 'Contact Infomation'}</Text>
             </View>
         )
     }
 }
+
+const styles = StyleSheet.create({
+
+    textinput: {
+        borderBottomColor: BaseColor.grayColor,
+        borderBottomWidth: 1
+    }
+}); 
