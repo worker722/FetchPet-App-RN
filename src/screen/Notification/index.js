@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { BaseColor } from '../../config';
+import Header from '../../components/Header';
 
 const notifications = [
     {
@@ -58,10 +59,15 @@ const notifications = [
         content: '',
         time: ''
     }
+
 ]
 export default class Notification extends Component {
     constructor(props) {
         super(props);
+
+        this.closeCallback = () => {
+            this.props.navigation.goBack(null);
+        }
     }
 
     renderItem = ({ item }) => {
@@ -79,13 +85,8 @@ export default class Notification extends Component {
     render = () => {
         return (
             <View style={{ flex: 1 }}>
-                <View style={{ flexDirection: "row", width: "100%", paddingHorizontal: 10, paddingVertical: 20 }}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack(null)} style={{ position: "absolute", zIndex: 999, left: 0, top: 0, width: 50, height: 50, padding: 10 }}>
-                        <Icon name={"times-circle"} size={25} color={BaseColor.primaryColor}></Icon>
-                    </TouchableOpacity>
-                    <Text style={{ fontSize: 25, color: BaseColor.primaryColor, flex: 1, textAlign: "center", zIndex: -1 }}>Notification</Text>
-                </View>
-                <Text style={{ fontSize: 23, color: BaseColor.primaryColor, paddingHorizontal: 20 }}>Notification</Text>
+                <Header title={"Notification"} icon_left={"times-circle"} callback_left={this.closeCallback} />
+                <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingHorizontal: 20 }}>Notification</Text>
                 <FlatList
                     style={{ paddingHorizontal: 10, marginTop: 10 }}
                     keyExtractor={(item, index) => index.toString()}
