@@ -7,23 +7,29 @@ import {
     StyleSheet
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { Avatar, PricingCard } from 'react-native-elements';
-import { BaseColor } from '../../config';
+import { Header } from '../../../components';
+import { Avatar } from 'react-native-elements';
+import { BaseColor } from '../../../config';
 
 export default class ProfileEdit extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            is_edit: true
-        }
-        this.closeCallback = () => {
-            this.props.navigation.goBack(null);
+            is_edit: false
         }
     }
 
-    save = () => {
+    goBack = () => {
+        this.props.navigation.goBack(null);
+    }
 
+    cancelEdit = () => {
+        this.setState({ is_edit: false })
+    }
+
+    save = () => {
+        this.setState({ is_edit: false })
     }
 
     render = () => {
@@ -31,26 +37,9 @@ export default class ProfileEdit extends Component {
         return (
             <View style={{ flex: 1 }}>
                 {is_edit ?
-                    <View style={{ width: "100%", height: 80, paddingHorizontal: 10, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                        <TouchableOpacity style={{ position: "absolute", left: 20 }}>
-                            <Icon name={"times"} color={BaseColor.primaryColor} size={20}></Icon>
-                        </TouchableOpacity>
-                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                            <Text style={{ fontSize: 22, color: BaseColor.primaryColor, fontWeight: "bold" }}>Edit Profile</Text>
-                        </View>
-                        <TouchableOpacity style={{ position: "absolute", right: 20 }} onPress={() => this.setState({ is_edit: false })}>
-                            <Text style={{ color: BaseColor.primaryColor, fontSize: 15 }}>SAVE</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <Header icon_left={"times"} callback_left={this.cancelEdit} title={"Edit Profile"} text_right={"save"} callback_right={this.save} />
                     :
-                    <View style={{ width: "100%", height: 80, paddingHorizontal: 10, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                        <TouchableOpacity style={{ position: "absolute", left: 20 }}>
-                            <Icon name={"arrow-left"} color={BaseColor.primaryColor} size={20}></Icon>
-                        </TouchableOpacity>
-                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                            <Text style={{ fontSize: 22, color: BaseColor.primaryColor, fontWeight: "bold" }}>Edit Profile</Text>
-                        </View>
-                    </View>
+                    <Header icon_left={"arrow-left"} callback_left={this.goBack} title={"Edit Profile"} />
                 }
                 <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingHorizontal: 20 }}>{is_edit ? 'Basic Infomation' : 'Profile'}</Text>
                 <View style={{ marginTop: 15, marginLeft: 15, flexDirection: "row", paddingRight: 20 }}>

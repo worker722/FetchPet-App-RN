@@ -53,7 +53,7 @@ const chatItems = [
         latest_time: '18:38',
     }
 ]
-export default class ChatList extends Component {
+export default class Inbox extends Component {
     constructor(props) {
         super(props);
     }

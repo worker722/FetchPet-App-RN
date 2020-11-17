@@ -7,7 +7,7 @@ import {
     ScrollView,
     Dimensions
 } from 'react-native';
-import { BaseColor } from '../../config';
+import { BaseColor } from '../../../config';
 import Swiper from 'react-native-swiper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Avatar } from 'react-native-elements';
@@ -54,7 +54,7 @@ export default class AdDetail extends Component {
                             <Icon name={"share-alt"} size={25} color={"white"}></Icon>
                         </TouchableOpacity>
                     </View>
-                    <TouchableOpacity style={{ position: "absolute", top: 210, right: 10 }}>
+                    <TouchableOpacity style={{ position: "absolute", top: (slider_height - 40), right: 10 }}>
                         <Text style={{ fontSize: 18, color: "#fff", fontWeight: "bold" }}>$ {this.state.currentAds.price}</Text>
                     </TouchableOpacity>
 

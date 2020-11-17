@@ -64,10 +64,10 @@ const notifications = [
 export default class Notification extends Component {
     constructor(props) {
         super(props);
+    }
 
-        this.closeCallback = () => {
-            this.props.navigation.goBack(null);
-        }
+    goBack = () => {
+        this.props.navigation.goBack(null);
     }
 
     renderItem = ({ item }) => {
@@ -85,7 +85,7 @@ export default class Notification extends Component {
     render = () => {
         return (
             <View style={{ flex: 1 }}>
-                <Header title={"Notification"} icon_left={"times-circle"} callback_left={this.closeCallback} />
+                <Header title={"Notification"} icon_left={"times-circle"} callback_left={this.goBack} />
                 <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingHorizontal: 20 }}>Notification</Text>
                 <FlatList
                     style={{ paddingHorizontal: 10, marginTop: 10 }}
