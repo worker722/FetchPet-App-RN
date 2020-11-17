@@ -5,12 +5,22 @@ import {
     TouchableOpacity
 } from 'react-native';
 import { BaseColor } from '@config';
-import { Header } from '@components';
+import { Header, LinkItem } from '@components';
 import { Avatar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 export default class Profile extends Component {
     constructor(props) {
         super(props);
+    }
+
+    goSetting = () => {
+        this.props.navigation.navigate("Setting");
+    }
+    goOthers = () => {
+        this.props.navigation.navigate("Other");
+    }
+    goHelp = () => {
+        this.props.navigation.navigate("Help");
     }
 
     render = () => {
@@ -34,45 +44,9 @@ export default class Profile extends Component {
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{ width: "100%", marginTop: 50, flexDirection: "row", paddingHorizontal: 10 }} onPress={() => navigation.navigate("Setting")}>
-                    <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", width: 40, marginRight: 10 }}>
-                        <Icon name={"cog"} size={25} color={BaseColor.greyColor}></Icon>
-                    </View>
-                    <View style={{ justifyContent: "center", flex: 1 }}>
-                        <Text style={{ fontSize: 18 }}>Setting</Text>
-                        <Text style={{ color: BaseColor.greyColor }}>Privacy & Logout</Text>
-                    </View>
-                    <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginRight: 20 }}>
-                        <Icon name={"angle-right"} size={25} color={BaseColor.greyColor}></Icon>
-                    </View>
-                </TouchableOpacity>
-                <View style={{ backgroundColor: BaseColor.dddColor, width: "98%", height: 1, marginTop: 10, marginHorizontal: "1%" }}></View>
-                <TouchableOpacity style={{ width: "100%", marginTop: 30, flexDirection: "row", paddingHorizontal: 10 }} onPress={() => navigation.navigate("Other")}>
-                    <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", width: 40, marginRight: 10 }}>
-                        <Icon name={"money-bill"} size={25} color={BaseColor.greyColor}></Icon>
-                    </View>
-                    <View style={{ justifyContent: "center", flex: 1 }}>
-                        <Text style={{ fontSize: 18 }}>Others</Text>
-                        <Text style={{ color: BaseColor.greyColor }}>Billing & Invoices</Text>
-                    </View>
-                    <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginRight: 20 }}>
-                        <Icon name={"angle-right"} size={25} color={BaseColor.greyColor}></Icon>
-                    </View>
-                </TouchableOpacity>
-                <View style={{ backgroundColor: BaseColor.dddColor, width: "98%", height: 1, marginTop: 10, marginHorizontal: "1%" }}></View>
-                <TouchableOpacity style={{ width: "100%", marginTop: 30, flexDirection: "row", paddingHorizontal: 10 }} onPress={() => navigation.navigate("Help")}>
-                    <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", width: 40, marginRight: 10 }}>
-                        <Icon name={"cog"} size={25} color={BaseColor.greyColor}></Icon>
-                    </View>
-                    <View style={{ justifyContent: "center", flex: 1 }}>
-                        <Text style={{ fontSize: 18 }}>Help & Support</Text>
-                        <Text style={{ color: BaseColor.greyColor }}>Help center and legal terms</Text>
-                    </View>
-                    <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginRight: 20 }}>
-                        <Icon name={"angle-right"} size={25} color={BaseColor.greyColor}></Icon>
-                    </View>
-                </TouchableOpacity>
-                <View style={{ backgroundColor: BaseColor.dddColor, width: "98%", height: 1, marginTop: 10, marginHorizontal: "1%" }}></View>
+                <LinkItem title={"Setting"} subtitle={"Privacy & Logout"} icon_left={"cog"} icon_right={"angle-right"} action={this.goSetting} is_showLine={true} />
+                <LinkItem title={"Others"} subtitle={"Billing & Invoices"} icon_left={"money-bill"} icon_right={"angle-right"} action={this.goOthers} is_showLine={true} />
+                <LinkItem title={"Help & Support"} subtitle={"Help center and legal terms"} icon_left={"cog"} icon_right={"angle-right"} action={this.goHelp} is_showLine={true} />
             </View>
         )
     }
