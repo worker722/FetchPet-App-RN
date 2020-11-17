@@ -1,5 +1,7 @@
-import Header from './Header'
+import Header from './Header';
+import LinkItem from './LinkItem';
 
 export {
-    Header
+    Header,
+    LinkItem
 }

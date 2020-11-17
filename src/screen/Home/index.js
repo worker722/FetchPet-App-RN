@@ -10,12 +10,13 @@ import {
     Button,
     Image,
     ActivityIndicator,
-    Dimensions
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import RBSheet from "react-native-raw-bottom-sheet";
+import RangeSlider from 'rn-range-slider';
 
 import { BaseColor, BaseStyle } from '@config';
+import { Utils } from '@utils';
 import { Header } from '@components';
 
 const tempItems_all = [
@@ -410,16 +411,16 @@ let filterPet = [
         title: 'Reptiles',
         is_selected: false,
     },
-    // {
-    //     index: 4,
-    //     title: 'Rabbits',
-    //     is_selected: false,
-    // },
-    // {
-    //     index: 5,
-    //     title: 'Fish',
-    //     is_selected: false,
-    // }
+    {
+        index: 4,
+        title: 'Rabbits',
+        is_selected: false,
+    },
+    {
+        index: 5,
+        title: 'Fish',
+        is_selected: false,
+    }
 ];
 
 let filterBreed = [
@@ -443,16 +444,16 @@ let filterBreed = [
         title: 'Poodle',
         is_selected: false,
     },
-    // {
-    //     index: 4,
-    //     title: 'English Mistaff',
-    //     is_selected: false,
-    // },
-    // {
-    //     index: 5,
-    //     title: 'German Shepherd',
-    //     is_selected: false,
-    // }
+    {
+        index: 4,
+        title: 'English Mistaff',
+        is_selected: false,
+    },
+    {
+        index: 5,
+        title: 'German Shepherd',
+        is_selected: false,
+    }
 ];
 
 let filterGender = [
@@ -476,7 +477,8 @@ export default class Home extends Component {
             category: tempItems_all,
             filterCategory: filterCategory,
             filterBreed: filterBreed,
-            filterPet: filterPet
+            filterPet: filterPet,
+            filterGender: filterGender
         }
         this.allPets = [tempItems_all, tempItems_dog, tempItems_cat, tempItems_parrot];
     }
@@ -521,10 +523,47 @@ export default class Home extends Component {
         })
     }
 
+    genderSelected = (index) => {
+        let filterGender = this.state.filterGender;
+        filterGender.forEach(item => {
+            if (item.index == index)
+                item.is_selected = true;
+            else
+                item.is_selected = false;
+        });
+        this.setState({
+            filterGender: filterGender,
+        })
+    }
+
     setCategoryFav = (item, value) => {
         let category = this.state.category;
         category[item.index].is_fav = value;
         this.setState({ category: category });
+    }
+
+    renderPetItem = ({ item }) => {
+        return (
+            <TouchableOpacity key={item.index} activeOpacity={1} onPress={() => this.petSelected(item.index)} style={{ width: Utils.screen.width / 4 - 10, justifyContent: "center", alignItems: "center", backgroundColor: item.is_selected ? BaseColor.primaryColor : "white", height: 40, borderRadius: 5 }}>
+                <Text style={{ color: !item.is_selected ? BaseColor.primaryColor : "white" }}>{item.title}</Text>
+            </TouchableOpacity>
+        )
+    }
+
+    renderBreedItem = ({ item }) => {
+        return (
+            <TouchableOpacity key={item.index} activeOpacity={1} onPress={() => this.breedSeleted(item.index)} style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: item.is_selected ? BaseColor.primaryColor : "white", height: 40, borderRadius: 5 }}>
+                <Text style={{ color: !item.is_selected ? BaseColor.primaryColor : "white" }}>{item.title}</Text>
+            </TouchableOpacity>
+        )
+    }
+
+    renderGenderItem = ({ item }) => {
+        return (
+            <TouchableOpacity key={item.index} activeOpacity={1} onPress={() => this.genderSelected(item.index)} style={{ width: Utils.screen.width / 4 - 10, justifyContent: "center", alignItems: "center", backgroundColor: item.is_selected ? BaseColor.primaryColor : "white", height: 40, borderRadius: 5 }}>
+                <Text style={{ color: !item.is_selected ? BaseColor.primaryColor : "white" }}>{item.title}</Text>
+            </TouchableOpacity>
+        )
     }
 
     renderItem = ({ item }) => {
@@ -564,6 +603,26 @@ export default class Home extends Component {
     }
 
     render = () => {
+
+
+        const renderThumb = () => {
+            return (
+                <View style={{ width: 20, height: 20, backgroundColor: BaseColor.primaryColor, borderRadius: 100 }}></View>
+            )
+        };
+        const renderRail = () => {
+            return (<View style={{ height: 10, flex: 1, backgroundColor: "#9b9b9b", borderRadius: 100 }}></View>)
+        }
+        const renderRailSelected = () => {
+            return (<View style={{ height: 10, backgroundColor: BaseColor.primaryColor }}></View>)
+        }
+
+        const renderLabel = () => {
+            return (<View></View>)
+        }
+        const renderNotch = () => {
+            return (<View></View>)
+        }
         return (
             <View style={{ flex: 1, zIndex: -1 }}>
                 <Header navigation={this.props.navigation} mainHeader={true} />
@@ -604,7 +663,7 @@ export default class Home extends Component {
                     ref={ref => {
                         this.RBSheetRef = ref;
                     }}
-                    height={Dimensions.get("screen").height / 5 * 3}
+                    height={Utils.screen.height / 5 * 3}
                     openDuration={250}
                     customStyles={{
                         container: {
@@ -616,23 +675,58 @@ export default class Home extends Component {
 
                     <View style={{ flex: 1, padding: 20 }}>
                         <View style={{ justifyContent: "center", alignItems: "center" }}>
-                            <View style={{ width: 120, height: 8, backgroundColor: "grey", borderRadius: 100 }}></View>
+                            <View style={{ width: 120, height: 8, backgroundColor: "#9b9b9b", borderRadius: 100 }}></View>
                         </View>
                         <Text style={{ fontSize: 20, color: BaseColor.primaryColor, paddingVertical: 10, fontWeight: "bold" }}>Pet</Text>
                         <View style={{ flexDirection: "row", width: "100%" }}>
-                            {this.state.filterPet.map((item, index) => (
-                                <TouchableOpacity activeOpacity={1} onPress={() => this.petSelected(item.index)} style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: item.is_selected ? BaseColor.primaryColor : "white", height: 40, borderRadius: 5 }}>
-                                    <Text style={{ color: !item.is_selected ? BaseColor.primaryColor : "white" }}>{item.title}</Text>
-                                </TouchableOpacity>
-                            ))}
+                            <FlatList
+                                keyExtractor={(item, index) => index.toString()}
+                                data={this.state.filterPet}
+                                renderItem={this.renderPetItem}
+                                numColumns={4}
+                            >
+                            </FlatList>
                         </View>
                         <Text style={{ fontSize: 20, color: BaseColor.primaryColor, paddingVertical: 10, fontWeight: "bold" }}>Breed</Text>
                         <View style={{ flexDirection: "row", width: "100%", marginTop: 10 }}>
-                            {this.state.filterBreed.map((item, index) => (
-                                <TouchableOpacity activeOpacity={1} onPress={() => this.breedSeleted(item.index)} style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: item.is_selected ? BaseColor.primaryColor : "white", height: 40, borderRadius: 5 }}>
-                                    <Text style={{ color: !item.is_selected ? BaseColor.primaryColor : "white" }}>{item.title}</Text>
-                                </TouchableOpacity>
-                            ))}
+                            <FlatList
+                                keyExtractor={(item, index) => index.toString()}
+                                data={this.state.filterBreed}
+                                renderItem={this.renderBreedItem}
+                                numColumns={3}
+                            >
+                            </FlatList>
+                        </View>
+                        <Text style={{ fontSize: 20, color: BaseColor.primaryColor, paddingVertical: 10, fontWeight: "bold" }}>Gender</Text>
+                        <View style={{ flexDirection: "row", width: "100%", marginTop: 10 }}>
+                            <FlatList
+                                keyExtractor={(item, index) => index.toString()}
+                                data={this.state.filterGender}
+                                renderItem={this.renderGenderItem}
+                                numColumns={2}
+                            >
+                            </FlatList>
+                        </View>
+                        <Text style={{ fontSize: 20, color: BaseColor.primaryColor, paddingVertical: 10, fontWeight: "bold" }}>Price</Text>
+                        <View style={{ width: "100%", height: 20 }}>
+                            <RangeSlider
+                                style={{ width: Utils.screen.width - 20, height: 20 }}
+                                gravity={'center'}
+                                min={0}
+                                max={800}
+                                textFormat='$'
+                                step={200}
+                                selectionColor="#3df"
+                                blankColor="#f618"
+                                renderThumb={renderThumb}
+                                renderRail={renderRail}
+                                renderRailSelected={renderRailSelected}
+                                renderLabel={renderLabel}
+                                renderNotch={renderNotch}
+                            // onValueChanged={(low, high, fromUser) => {
+                            //     this.setState({ rangeLow: low, rangeHigh: high })
+                            // }}
+                            />
                         </View>
                     </View>
                 </RBSheet>
