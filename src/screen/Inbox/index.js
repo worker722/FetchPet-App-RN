@@ -81,11 +81,11 @@ export default class Inbox extends Component {
                 </View>
                 <View style={{ marginLeft: 10, justifyContent: "center", flex: 1 }}>
                     <Text>{item.name}</Text>
-                    <Text style={{ color: BaseColor.grayColor, fontSize: 12 }} numberOfLines={1}>{item.latest_chat}</Text>
+                    <Text style={{ color: BaseColor.greyColor, fontSize: 12 }} numberOfLines={1}>{item.latest_chat}</Text>
                 </View>
                 <View style={{ justifyContent: "center", alignItems: "center" }}>
-                    <Text style={{ color: BaseColor.grayColor, fontSize: 12 }}>{item.latest_time}</Text>
-                    <Icon name={"ellipsis-v"} color={BaseColor.grayColor} size={20}></Icon>
+                    <Text style={{ color: BaseColor.greyColor, fontSize: 12 }}>{item.latest_time}</Text>
+                    <Icon name={"ellipsis-v"} color={BaseColor.greyColor} size={20}></Icon>
                 </View>
             </TouchableOpacity>
         )
