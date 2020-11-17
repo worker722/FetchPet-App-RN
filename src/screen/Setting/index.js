@@ -25,18 +25,44 @@ export default class Setting extends Component {
                 <Header icon_left={"arrow-left"} title={"Setting"} callback_left={this.closeCallback} />
                 <TouchableOpacity style={{ width: "100%", marginTop: 50, flexDirection: "row", paddingHorizontal: 20 }}>
                     <View style={{ justifyContent: "center", flex: 1 }}>
-                        <Text style={{ fontSize: 18 }}>Invoices</Text>
-                        <Text style={{ color: BaseColor.grayColor }}>See and download you invoices</Text>
+                        <Text style={{ fontSize: 18 }}>Privacy</Text>
+                        <Text style={{ color: BaseColor.grayColor }}>Passwork, Phone number visiblity</Text>
                     </View>
                     <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginRight: 10 }}>
                         <Icon name={"angle-right"} size={25} color={BaseColor.grayColor}></Icon>
                     </View>
                 </TouchableOpacity>
                 <View style={{ backgroundColor: "#ddd", width: "98%", height: 1, marginTop: 10, marginHorizontal: "1%" }}></View>
+                <View style={{ width: "100%", marginTop: 20, flexDirection: "row", paddingHorizontal: 20 }}>
+                    <View style={{ justifyContent: "center", flex: 1 }}>
+                        <Text style={{ fontSize: 18 }}>Notification</Text>
+                        <Text style={{ color: BaseColor.grayColor }}>Edit your billing name and address, etc</Text>
+                    </View>
+                    <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginRight: 10 }}>
+                        <Icon name={"angle-right"} size={25} color={BaseColor.grayColor}></Icon>
+                    </View>
+                </View>
+                <View style={{ backgroundColor: "#ddd", width: "98%", height: 1, marginTop: 10, marginHorizontal: "1%" }}></View>
                 <TouchableOpacity style={{ width: "100%", marginTop: 20, flexDirection: "row", paddingHorizontal: 20 }}>
                     <View style={{ justifyContent: "center", flex: 1 }}>
-                        <Text style={{ fontSize: 18 }}>Billing infomation</Text>
-                        <Text style={{ color: BaseColor.grayColor }}>Edit your billing name and address, etc</Text>
+                        <Text style={{ fontSize: 18 }}>Logout</Text>
+                    </View>
+                    <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginRight: 10 }}>
+                        <Icon name={"angle-right"} size={25} color={BaseColor.grayColor}></Icon>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity style={{ width: "100%", marginTop: 20, flexDirection: "row", paddingHorizontal: 20 }}>
+                    <View style={{ justifyContent: "center", flex: 1 }}>
+                        <Text style={{ fontSize: 18 }}>Logout from all devices</Text>
+                    </View>
+                    <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginRight: 10 }}>
+                        <Icon name={"angle-right"} size={25} color={BaseColor.grayColor}></Icon>
+                    </View>
+                </TouchableOpacity>
+                <View style={{ backgroundColor: "#ddd", width: "98%", height: 1, marginTop: 15, marginHorizontal: "1%" }}></View>
+                <TouchableOpacity style={{ width: "100%", marginTop: 20, flexDirection: "row", paddingHorizontal: 20 }}>
+                    <View style={{ justifyContent: "center", flex: 1 }}>
+                        <Text style={{ fontSize: 18 }}>Deactivate account and delete my data</Text>
                     </View>
                     <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginRight: 10 }}>
                         <Icon name={"angle-right"} size={25} color={BaseColor.grayColor}></Icon>
