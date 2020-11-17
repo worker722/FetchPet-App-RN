@@ -39,7 +39,7 @@ const bottomTabNavigatorConfig = {
 		showIcon: true,
 		showLabel: true,
 		activeTintColor: BaseColor.primaryColor,
-		inactiveTintColor: BaseColor.grayColor,
+		inactiveTintColor: BaseColor.greyColor,
 		style: BaseStyle.tabBar,
 		labelStyle: {
 			fontSize: 12

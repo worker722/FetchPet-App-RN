@@ -4,17 +4,17 @@ import {
     Text,
     Image,
     TouchableOpacity,
-    ScrollView,
-    Dimensions
+    ScrollView
 } from 'react-native';
 import { BaseColor } from '@config';
+import { Utils } from '@utils';
 import Swiper from 'react-native-swiper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Avatar } from 'react-native-elements';
 import { Rating } from 'react-native-ratings';
 import MapView from 'react-native-maps';
 
-const slider_height = Math.floor(Dimensions.get("window").height / 11 * 3);
+const slider_height = Math.floor(Utils.screen.height / 11 * 3);
 export default class AdDetail extends Component {
     constructor(props) {
         super(props);
@@ -67,21 +67,21 @@ export default class AdDetail extends Component {
                         </View>
                         <View style={{ flexDirection: "row", marginTop: 10 }}>
                             <View style={{ flex: 1 }}>
-                                <Text style={{ color: BaseColor.grayColor, fontSize: 13 }}>Pet</Text>
+                                <Text style={{ color: BaseColor.greyColor, fontSize: 13 }}>Pet</Text>
                                 <Text style={{ color: BaseColor.primaryColor, fontSize: 17, fontWeight: "bold" }}>{this.state.currentAds.category}</Text>
-                                <Text style={{ color: BaseColor.grayColor, marginTop: 15, fontSize: 13 }}>Age</Text>
+                                <Text style={{ color: BaseColor.greyColor, marginTop: 15, fontSize: 13 }}>Age</Text>
                                 <Text style={{ fontSize: 15, fontWeight: "bold" }}>{this.state.currentAds.age} Years</Text>
-                                <Text style={{ color: BaseColor.grayColor, marginTop: 15, fontSize: 13 }}>Gender</Text>
+                                <Text style={{ color: BaseColor.greyColor, marginTop: 15, fontSize: 13 }}>Gender</Text>
                                 <Text style={{ fontSize: 15, fontWeight: "bold" }}>Male</Text>
                             </View>
                             <View style={{ flex: 0.7 }}>
-                                <Text style={{ color: BaseColor.grayColor, fontSize: 13 }}>Breed</Text>
+                                <Text style={{ color: BaseColor.greyColor, fontSize: 13 }}>Breed</Text>
                                 <Text style={{ fontSize: 15, fontWeight: "bold" }}>{this.state.currentAds.breed}</Text>
-                                <Text style={{ color: BaseColor.grayColor, marginTop: 15, fontSize: 13 }}>Location</Text>
+                                <Text style={{ color: BaseColor.greyColor, marginTop: 15, fontSize: 13 }}>Location</Text>
                                 <Text style={{ fontSize: 15, fontWeight: "bold" }}>{this.state.currentAds.location}</Text>
                             </View>
                         </View>
-                        <Text style={{ color: BaseColor.grayColor, marginTop: 15, fontSize: 13 }}>Description</Text>
+                        <Text style={{ color: BaseColor.greyColor, marginTop: 15, fontSize: 13 }}>Description</Text>
                         <Text style={{ fontSize: 14 }}>Checkout this beautiful dog you ever see. I am from USA you can contact me through by my location or by call.</Text>
                         <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }} onPress={() => this.props.navigation.navigate("Profile")}>
                             <Avatar
@@ -123,7 +123,7 @@ export default class AdDetail extends Component {
                     </View>
                 </ScrollView>
                 <View style={{ padding: 10, flexDirection: "row", height: 65 }}>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate("ChatList")} style={{ borderWidth: 1, borderColor: BaseColor.grayColor, marginRight: "10%", borderRadius: 10, height: 45, width: "45%", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate("ChatList")} style={{ borderWidth: 1, borderColor: BaseColor.greyColor, marginRight: "10%", borderRadius: 10, height: 45, width: "45%", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
                         <Icon name={"comment"} color={BaseColor.primaryColor} size={20}></Icon>
                         <Text style={{ color: BaseColor.primaryColor, fontSize: 18, marginLeft: 10 }}>Chat</Text>
                     </TouchableOpacity>

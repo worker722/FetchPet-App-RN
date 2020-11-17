@@ -63,22 +63,22 @@ export default class ProfileEdit extends Component {
                             <TextInput style={[styles.textinput, { fontSize: 16 }]}
                                 underlineColorAndroid="transparent"
                                 placeholder="Enter Your Name"
-                                placeholderTextColor={BaseColor.grayColor} />
+                                placeholderTextColor={BaseColor.greyColor} />
                         </View>
                         :
                         <View style={{ flex: 1 }}>
                             <View style={{ flex: 1, flexDirection: "row" }}>
                                 <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
                                     <Text style={{ fontSize: 18 }}>21</Text>
-                                    <Text style={{ color: BaseColor.grayColor, fontSize: 13 }}>Following</Text>
+                                    <Text style={{ color: BaseColor.greyColor, fontSize: 13 }}>Following</Text>
                                 </View>
                                 <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
                                     <Text style={{ fontSize: 18 }}>66</Text>
-                                    <Text style={{ color: BaseColor.grayColor, fontSize: 13 }}>Followers</Text>
+                                    <Text style={{ color: BaseColor.greyColor, fontSize: 13 }}>Followers</Text>
                                 </View>
                                 <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
                                     <Text style={{ fontSize: 18 }}>54</Text>
-                                    <Text style={{ color: BaseColor.grayColor, fontSize: 13 }}>Total ads</Text>
+                                    <Text style={{ color: BaseColor.greyColor, fontSize: 13 }}>Total ads</Text>
                                 </View>
                             </View>
                             <View style={{ width: "100%", height: 1, backgroundColor: BaseColor.dddColor, position: "absolute", bottom: 10 }}></View>
@@ -98,7 +98,7 @@ export default class ProfileEdit extends Component {
                         <TextInput style={styles.textinput}
                             underlineColorAndroid="transparent"
                             placeholder="Something about you"
-                            placeholderTextColor={BaseColor.grayColor} />
+                            placeholderTextColor={BaseColor.greyColor} />
                     </View>
                 }
                 <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingHorizontal: 20, marginTop: 20 }}>{is_edit && 'Contact Infomation'}</Text>
@@ -110,7 +110,7 @@ export default class ProfileEdit extends Component {
 const styles = StyleSheet.create({
 
     textinput: {
-        borderBottomColor: BaseColor.grayColor,
+        borderBottomColor: BaseColor.greyColor,
         borderBottomWidth: 1
     }
 }); 

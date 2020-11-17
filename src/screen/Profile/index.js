@@ -36,40 +36,40 @@ export default class Profile extends Component {
 
                 <TouchableOpacity style={{ width: "100%", marginTop: 50, flexDirection: "row", paddingHorizontal: 10 }} onPress={() => navigation.navigate("Setting")}>
                     <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", width: 40, marginRight: 10 }}>
-                        <Icon name={"cog"} size={25} color={BaseColor.grayColor}></Icon>
+                        <Icon name={"cog"} size={25} color={BaseColor.greyColor}></Icon>
                     </View>
                     <View style={{ justifyContent: "center", flex: 1 }}>
                         <Text style={{ fontSize: 18 }}>Setting</Text>
-                        <Text style={{ color: BaseColor.grayColor }}>Privacy & Logout</Text>
+                        <Text style={{ color: BaseColor.greyColor }}>Privacy & Logout</Text>
                     </View>
                     <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginRight: 20 }}>
-                        <Icon name={"angle-right"} size={25} color={BaseColor.grayColor}></Icon>
+                        <Icon name={"angle-right"} size={25} color={BaseColor.greyColor}></Icon>
                     </View>
                 </TouchableOpacity>
                 <View style={{ backgroundColor: BaseColor.dddColor, width: "98%", height: 1, marginTop: 10, marginHorizontal: "1%" }}></View>
                 <TouchableOpacity style={{ width: "100%", marginTop: 30, flexDirection: "row", paddingHorizontal: 10 }} onPress={() => navigation.navigate("Other")}>
                     <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", width: 40, marginRight: 10 }}>
-                        <Icon name={"money-bill"} size={25} color={BaseColor.grayColor}></Icon>
+                        <Icon name={"money-bill"} size={25} color={BaseColor.greyColor}></Icon>
                     </View>
                     <View style={{ justifyContent: "center", flex: 1 }}>
                         <Text style={{ fontSize: 18 }}>Others</Text>
-                        <Text style={{ color: BaseColor.grayColor }}>Billing & Invoices</Text>
+                        <Text style={{ color: BaseColor.greyColor }}>Billing & Invoices</Text>
                     </View>
                     <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginRight: 20 }}>
-                        <Icon name={"angle-right"} size={25} color={BaseColor.grayColor}></Icon>
+                        <Icon name={"angle-right"} size={25} color={BaseColor.greyColor}></Icon>
                     </View>
                 </TouchableOpacity>
                 <View style={{ backgroundColor: BaseColor.dddColor, width: "98%", height: 1, marginTop: 10, marginHorizontal: "1%" }}></View>
                 <TouchableOpacity style={{ width: "100%", marginTop: 30, flexDirection: "row", paddingHorizontal: 10 }} onPress={() => navigation.navigate("Help")}>
                     <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", width: 40, marginRight: 10 }}>
-                        <Icon name={"cog"} size={25} color={BaseColor.grayColor}></Icon>
+                        <Icon name={"cog"} size={25} color={BaseColor.greyColor}></Icon>
                     </View>
                     <View style={{ justifyContent: "center", flex: 1 }}>
                         <Text style={{ fontSize: 18 }}>Help & Support</Text>
-                        <Text style={{ color: BaseColor.grayColor }}>Help center and legal terms</Text>
+                        <Text style={{ color: BaseColor.greyColor }}>Help center and legal terms</Text>
                     </View>
                     <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginRight: 20 }}>
-                        <Icon name={"angle-right"} size={25} color={BaseColor.grayColor}></Icon>
+                        <Icon name={"angle-right"} size={25} color={BaseColor.greyColor}></Icon>
                     </View>
                 </TouchableOpacity>
                 <View style={{ backgroundColor: BaseColor.dddColor, width: "98%", height: 1, marginTop: 10, marginHorizontal: "1%" }}></View>

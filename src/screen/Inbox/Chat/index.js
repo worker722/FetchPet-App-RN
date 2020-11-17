@@ -73,7 +73,7 @@ export default class Chat extends Component {
                     </View>
                     :
                     <View style={{ justifyContent: "flex-end", alignItems: "flex-end", marginTop: 20, flex: 1 }}>
-                        <View style={{ backgroundColor: BaseColor.grayColor, borderTopLeftRadius: 10, borderTopRightRadius: 10, borderBottomLeftRadius: 10, padding: 10, justifyContent: "flex-end", alignItems: "flex-end", maxWidth: "70%" }}>
+                        <View style={{ backgroundColor: BaseColor.greyColor, borderTopLeftRadius: 10, borderTopRightRadius: 10, borderBottomLeftRadius: 10, padding: 10, justifyContent: "flex-end", alignItems: "flex-end", maxWidth: "70%" }}>
                             <Text style={{ color: "white", textAlign: "left" }}>{item.message}</Text>
                             <Text style={{ color: "white", fontSize: 12, marginTop: 10 }}>{item.time}</Text>
                         </View>
