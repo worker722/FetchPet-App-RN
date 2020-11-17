@@ -46,7 +46,7 @@ export default class Profile extends Component {
                         <Icon name={"angle-right"} size={25} color={BaseColor.grayColor}></Icon>
                     </View>
                 </TouchableOpacity>
-                <View style={{ backgroundColor: "#ddd", width: "98%", height: 1, marginTop: 10, marginHorizontal: "1%" }}></View>
+                <View style={{ backgroundColor: BaseColor.dddColor, width: "98%", height: 1, marginTop: 10, marginHorizontal: "1%" }}></View>
                 <TouchableOpacity style={{ width: "100%", marginTop: 30, flexDirection: "row", paddingHorizontal: 10 }} onPress={() => navigation.navigate("Other")}>
                     <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", width: 40, marginRight: 10 }}>
                         <Icon name={"money-bill"} size={25} color={BaseColor.grayColor}></Icon>
@@ -59,7 +59,7 @@ export default class Profile extends Component {
                         <Icon name={"angle-right"} size={25} color={BaseColor.grayColor}></Icon>
                     </View>
                 </TouchableOpacity>
-                <View style={{ backgroundColor: "#ddd", width: "98%", height: 1, marginTop: 10, marginHorizontal: "1%" }}></View>
+                <View style={{ backgroundColor: BaseColor.dddColor, width: "98%", height: 1, marginTop: 10, marginHorizontal: "1%" }}></View>
                 <TouchableOpacity style={{ width: "100%", marginTop: 30, flexDirection: "row", paddingHorizontal: 10 }} onPress={() => navigation.navigate("Help")}>
                     <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", width: 40, marginRight: 10 }}>
                         <Icon name={"cog"} size={25} color={BaseColor.grayColor}></Icon>
@@ -72,7 +72,7 @@ export default class Profile extends Component {
                         <Icon name={"angle-right"} size={25} color={BaseColor.grayColor}></Icon>
                     </View>
                 </TouchableOpacity>
-                <View style={{ backgroundColor: "#ddd", width: "98%", height: 1, marginTop: 10, marginHorizontal: "1%" }}></View>
+                <View style={{ backgroundColor: BaseColor.dddColor, width: "98%", height: 1, marginTop: 10, marginHorizontal: "1%" }}></View>
             </View>
         )
     }

@@ -71,9 +71,9 @@ export default class Login extends Component {
                                 </View>
                             </TouchableOpacity>
                             <View style={{ width: "70%", height: 15, flexDirection: "row", marginTop: 5, justifyContent: "center", alignItems: "center" }}>
-                                <View style={{ flex: 1, height: 1, backgroundColor: "#000" }}></View>
+                                <View style={{ flex: 1, height: 1, backgroundColor: BaseColor.dddColor }}></View>
                                 <Text style={{ marginHorizontal: 5, fontSize: 12 }}>OR</Text>
-                                <View style={{ flex: 1, height: 1, backgroundColor: "#000" }}></View>
+                                <View style={{ flex: 1, height: 1, backgroundColor: BaseColor.dddColor }}></View>
                             </View>
                             <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 5 }}>
                                 <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.googleColor, justifyContent: "center", alignItems: "center" }}>
@@ -88,7 +88,7 @@ export default class Login extends Component {
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 10, }}>
-                                <View style={{ flex: 1, borderRadius: 10, backgroundColor: "#fff", borderWidth: 1, borderColor: "#808080", justifyContent: "center", alignItems: "center" }}>
+                                <View style={{ flex: 1, borderRadius: 10, backgroundColor: "#fff", borderWidth: 1, borderColor: BaseColor.dddColor, justifyContent: "center", alignItems: "center" }}>
                                     <Text style={{ color: "#000", fontSize: 13 }}>Login With Apple</Text>
                                     <Icon name={"apple"} size={15} color={"#000"} style={{ position: "absolute", right: 10 }}></Icon>
                                 </View>

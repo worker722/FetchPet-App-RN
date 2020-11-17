@@ -1,6 +1,6 @@
 import { createSwitchNavigator, createAppContainer } from "react-navigation";
 import Main from "./main";
-import Splash from "../screen/Splash";
+import Splash from "@screen/StartUp/Splash";
 
 const AppNavigator = createSwitchNavigator(
 	{

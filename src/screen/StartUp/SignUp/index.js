@@ -78,14 +78,14 @@ export default class SignUp extends Component {
                                 <Text style={{ marginLeft: 10, textAlign: "left", flex: 1 }}>Remember Me</Text>
                             </View>
                             <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 20 }} onPress={() => this.login()}>
-                                <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.whiteColor, borderColor: "#808080", borderWidth: 1, justifyContent: "center", alignItems: "center" }}>
+                                <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.whiteColor, borderColor: BaseColor.dddColor, borderWidth: 1, justifyContent: "center", alignItems: "center" }}>
                                     <Text style={{ color: "#fff", fontSize: 15, color: BaseColor.primaryColor }}>SIGN UP</Text>
                                 </View>
                             </TouchableOpacity>
                             <View style={{ width: "70%", height: 15, flexDirection: "row", marginTop: 5, justifyContent: "center", alignItems: "center" }}>
-                                <View style={{ flex: 1, height: 1, backgroundColor: "#000" }}></View>
+                                <View style={{ flex: 1, height: 1, backgroundColor: BaseColor.dddColor }}></View>
                                 <Text style={{ marginHorizontal: 5, fontSize: 12 }}>OR</Text>
-                                <View style={{ flex: 1, height: 1, backgroundColor: "#000" }}></View>
+                                <View style={{ flex: 1, height: 1, backgroundColor: BaseColor.dddColor }}></View>
                             </View>
                             <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 5 }}>
                                 <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.googleColor, justifyContent: "center", alignItems: "center" }}>
@@ -100,7 +100,7 @@ export default class SignUp extends Component {
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 10, }}>
-                                <View style={{ flex: 1, borderRadius: 10, backgroundColor: "#fff", borderWidth: 1, borderColor: "#808080", justifyContent: "center", alignItems: "center" }}>
+                                <View style={{ flex: 1, borderRadius: 10, backgroundColor: "#fff", borderWidth: 1, borderColor: BaseColor.dddColor, justifyContent: "center", alignItems: "center" }}>
                                     <Text style={{ color: "#000", fontSize: 13 }}>Sign Up with</Text>
                                     <Icon name={"apple"} size={15} color={"#000"} style={{ position: "absolute", right: 10 }}></Icon>
                                 </View>
