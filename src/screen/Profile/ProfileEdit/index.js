@@ -81,7 +81,7 @@ export default class ProfileEdit extends Component {
                                     <Text style={{ color: BaseColor.grayColor, fontSize: 13 }}>Total ads</Text>
                                 </View>
                             </View>
-                            <View style={{ width: "100%", height: 1, backgroundColor: '#ddd', position: "absolute", bottom: 10 }}></View>
+                            <View style={{ width: "100%", height: 1, backgroundColor: BaseColor.dddColor, position: "absolute", bottom: 10 }}></View>
                         </View>
                     }
                 </View>

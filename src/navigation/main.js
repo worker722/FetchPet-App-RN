@@ -9,7 +9,7 @@ import { BaseColor, BaseStyle, Images } from '@config';
 /* start up Screen */
 import Welcome from "@screen/StartUp/Welcome";
 import Login from "@screen/StartUp/Login";
-import SignUp from "@screen/SignUp";
+import SignUp from "@screen/StartUp/SignUp";
 
 // bottom navigation
 import Home from "@screen/Home";

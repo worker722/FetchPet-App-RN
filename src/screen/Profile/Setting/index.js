@@ -32,7 +32,7 @@ export default class Setting extends Component {
                         <Icon name={"angle-right"} size={25} color={BaseColor.grayColor}></Icon>
                     </View>
                 </TouchableOpacity>
-                <View style={{ backgroundColor: "#ddd", width: "98%", height: 1, marginTop: 10, marginHorizontal: "1%" }}></View>
+                <View style={{ backgroundColor: BaseColor.dddColor, width: "98%", height: 1, marginTop: 10, marginHorizontal: "1%" }}></View>
                 <View style={{ width: "100%", marginTop: 20, flexDirection: "row", paddingHorizontal: 20 }}>
                     <View style={{ justifyContent: "center", flex: 1 }}>
                         <Text style={{ fontSize: 18 }}>Notification</Text>
@@ -42,7 +42,7 @@ export default class Setting extends Component {
                         <Icon name={"angle-right"} size={25} color={BaseColor.grayColor}></Icon>
                     </View>
                 </View>
-                <View style={{ backgroundColor: "#ddd", width: "98%", height: 1, marginTop: 10, marginHorizontal: "1%" }}></View>
+                <View style={{ backgroundColor: BaseColor.dddColor, width: "98%", height: 1, marginTop: 10, marginHorizontal: "1%" }}></View>
                 <TouchableOpacity style={{ width: "100%", marginTop: 20, flexDirection: "row", paddingHorizontal: 20 }}>
                     <View style={{ justifyContent: "center", flex: 1 }}>
                         <Text style={{ fontSize: 18 }}>Logout</Text>
@@ -59,7 +59,7 @@ export default class Setting extends Component {
                         <Icon name={"angle-right"} size={25} color={BaseColor.grayColor}></Icon>
                     </View>
                 </TouchableOpacity>
-                <View style={{ backgroundColor: "#ddd", width: "98%", height: 1, marginTop: 15, marginHorizontal: "1%" }}></View>
+                <View style={{ backgroundColor: BaseColor.dddColor, width: "98%", height: 1, marginTop: 15, marginHorizontal: "1%" }}></View>
                 <TouchableOpacity style={{ width: "100%", marginTop: 20, flexDirection: "row", paddingHorizontal: 20 }}>
                     <View style={{ justifyContent: "center", flex: 1 }}>
                         <Text style={{ fontSize: 18 }}>Deactivate account and delete my data</Text>
@@ -68,7 +68,7 @@ export default class Setting extends Component {
                         <Icon name={"angle-right"} size={25} color={BaseColor.grayColor}></Icon>
                     </View>
                 </TouchableOpacity>
-                <View style={{ backgroundColor: "#ddd", width: "98%", height: 1, marginTop: 10, marginHorizontal: "1%" }}></View>
+                <View style={{ backgroundColor: BaseColor.dddColor, width: "98%", height: 1, marginTop: 10, marginHorizontal: "1%" }}></View>
             </View>
         )
     }
