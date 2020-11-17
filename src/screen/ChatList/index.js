@@ -93,10 +93,10 @@ export default class ChatList extends Component {
 
     render = () => {
         return (
-            <View style={{ flex: 1, paddingTop: 30 }}>
-                <Header navigation={this.props.navigation} />
-                <View style={{ padding: 10 }}>
-                    <Text style={{ color: BaseColor.primaryColor, fontSize: 20, fontWeight: "bold" }}>Chat</Text>
+            <View style={{ flex: 1 }}>
+                <Header navigation={this.props.navigation} mainHeader={true} />
+                <Text style={{ color: BaseColor.primaryColor, fontSize: 20, fontWeight: "bold", paddingLeft:10 }}>Chat</Text>
+                <View style={{ padding: 10, paddingTop: 0 }}>
                     <Text style={{ fontSize: 18, marginTop: 10 }}>Active Chat</Text>
                     <ScrollView>
                         <FlatList

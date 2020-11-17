@@ -42,6 +42,7 @@ export default class Chat extends Component {
         super(props);
         this.state = {
             tempItems: chatItems,
+            message: ''
         }
         this.is_send = false;
     }
@@ -89,7 +90,7 @@ export default class Chat extends Component {
                     <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", padding: 10 }} onPress={() => this.props.navigation.goBack(null)} >
                         <Icon name={"arrow-left"} size={20} color={"#fff"}></Icon>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", marginLeft: 10 }}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate("Profile")} style={{ justifyContent: "center", alignItems: "center", marginLeft: 10 }}>
                         <Avatar
                             size='large'
                             rounded

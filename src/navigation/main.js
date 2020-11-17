@@ -1,4 +1,5 @@
 import React from "react";
+import { View, Image } from 'react-native';
 import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -20,6 +21,7 @@ import Profile from "../screen/Profile";
 import Notification from "../screen/Notification";
 import AdDetail from "../screen/AdDetail";
 import Chat from "../screen/Chat";
+import ProfileEdit from "../screen/ProfileEdit";
 
 
 // Config for bottom navigator
@@ -62,7 +64,20 @@ const routeConfigs = {
 		navigationOptions: ({ navigation }) => ({
 			title: "Sell",
 			tabBarIcon: ({ focused, tintColor }) => {
-				return <Icon color={tintColor} name="plus-circle" size={20} solid={focused ? true : false} />
+				return (
+					<Image
+						source={focused ? require('../assets/images/sell-fill.png') : require('../assets/images/sell.png')}
+						style={{
+							width: 40,
+							height: 40,
+							alignContent: 'center',
+							backgroundColor: "#fff",
+							marginBottom:15,
+							borderRadius: 100,
+							zIndex: 1000
+						}}
+					/>
+				)
 			}
 		})
 	},
@@ -118,6 +133,9 @@ const StackNavigator = createStackNavigator(
 		},
 		Chat: {
 			screen: Chat
+		},
+		ProfileEdit: {
+			screen: ProfileEdit
 		}
 	},
 	{
