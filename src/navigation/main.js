@@ -4,32 +4,32 @@ import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-import { BaseColor, BaseStyle, Images } from '../config';
+import { BaseColor, BaseStyle, Images } from '@config';
 
 /* start up Screen */
-import Welcome from "../screen/Welcome";
-import Login from "../screen/StartUp/Login";
-import SignUp from "../screen/SignUp";
+import Welcome from "@screen/StartUp/Welcome";
+import Login from "@screen/StartUp/Login";
+import SignUp from "@screen/SignUp";
 
 // bottom navigation
-import Home from "../screen/Home";
-import AdDetail from "../screen/Home/AdDetail";
+import Home from "@screen/Home";
+import AdDetail from "@screen/Home/AdDetail";
 
 // other page
-import Notification from "../screen/Notification";
-import Sell from "../screen/Sell";
-import MyAds from "../screen/MyAds";
+import Notification from "@screen/Notification";
+import Sell from "@screen/Sell";
+import MyAds from "@screen/MyAds";
 
 //chat
-import Inbox from "../screen/Inbox";
-import Chat from "../screen/Inbox/Chat";
+import Inbox from "@screen/Inbox";
+import Chat from "@screen/Inbox/Chat";
 
 //profile
-import Profile from "../screen/Profile";
-import ProfileEdit from "../screen/Profile/ProfileEdit";
-import Other from "../screen/Profile/Other";
-import Setting from "../screen/Profile/Setting";
-import Help from "../screen/Profile/Help";
+import Profile from "@screen/Profile";
+import ProfileEdit from "@screen/Profile/ProfileEdit";
+import Other from "@screen/Profile/Other";
+import Setting from "@screen/Profile/Setting";
+import Help from "@screen/Profile/Help";
 
 
 // Config for bottom navigator

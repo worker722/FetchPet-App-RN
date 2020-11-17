@@ -7,7 +7,7 @@ import {
 import { Image } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-import { Images, BaseColor } from '../../config';
+import { Images, BaseColor } from '@config';
 
 export default class Header extends Component {
     constructor(props) {

@@ -15,8 +15,8 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import RBSheet from "react-native-raw-bottom-sheet";
 
-import { BaseColor, BaseStyle } from '../../config';
-import { Header } from '../../components';
+import { BaseColor, BaseStyle } from '@config';
+import { Header } from '@components';
 
 const tempItems_all = [
     {

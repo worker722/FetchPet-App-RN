@@ -7,9 +7,9 @@ import {
     StyleSheet
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { Header } from '../../../components';
+import { Header } from '@components';
 import { Avatar } from 'react-native-elements';
-import { BaseColor } from '../../../config';
+import { BaseColor } from '@config';
 
 export default class ProfileEdit extends Component {
     constructor(props) {

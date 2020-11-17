@@ -4,8 +4,8 @@ import {
     Text,
     TouchableOpacity
 } from 'react-native';
-import { BaseColor } from '../../config';
-import { Header } from '../../components';
+import { BaseColor } from '@config';
+import { Header } from '@components';
 import { Avatar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 export default class Profile extends Component {

@@ -5,9 +5,9 @@ import {
     ScrollView,
     TouchableOpacity
 } from 'react-native';
-import { BaseColor } from '../../config';
+import { BaseColor } from '@config';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { Header } from '../../components';
+import { Header } from '@components';
 export default class Sell extends Component {
     constructor(props) {
         super(props);

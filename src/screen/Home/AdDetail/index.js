@@ -7,7 +7,7 @@ import {
     ScrollView,
     Dimensions
 } from 'react-native';
-import { BaseColor } from '../../../config';
+import { BaseColor } from '@config';
 import Swiper from 'react-native-swiper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Avatar } from 'react-native-elements';
