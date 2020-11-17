@@ -3,7 +3,7 @@ import {
     View,
     Text
 } from 'react-native';
-import { BaseColor } from '../../config';
+import { BaseColor } from '@config';
 
 export default class MyAds extends Component {
     constructor(props) {

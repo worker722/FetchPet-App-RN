@@ -4,7 +4,7 @@ import {
 } from "react-native";
 
 import { Image } from 'react-native-elements';
-import { Images } from '../../../config';
+import { Images } from '@config';
 
 export default class Splash extends Component {
   constructor(props) {

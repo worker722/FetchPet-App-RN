@@ -7,8 +7,8 @@ import {
     TouchableOpacity
 } from 'react-native';
 import { Avatar } from 'react-native-elements';
-import { BaseColor } from '../../config';
-import { Header } from '../../components';
+import { BaseColor } from '@config';
+import { Header } from '@components';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const chatItems = [

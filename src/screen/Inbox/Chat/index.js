@@ -7,7 +7,7 @@ import {
     FlatList,
     TextInput
 } from 'react-native';
-import { BaseColor } from '../../../config';
+import { BaseColor } from '@config';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Avatar } from 'react-native-elements';
 

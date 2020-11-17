@@ -6,8 +6,8 @@ import {
     FlatList
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { BaseColor } from '../../config';
-import Header from '../../components/Header';
+import { BaseColor } from '@config';
+import { Header } from '@components';
 
 const notifications = [
     {
