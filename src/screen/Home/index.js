@@ -565,9 +565,9 @@ export default class Home extends Component {
 
     render = () => {
         return (
-            <View style={{ flex: 1, marginTop: 30 }}>
-                <Header navigation={this.props.navigation} />
-                <View style={{ flexDirection: "row", width: "100%", height: 50, paddingHorizontal: 10, alignItems: "center", justifyContent: "center" }}>
+            <View style={{ flex: 1, zIndex: -1 }}>
+                <Header navigation={this.props.navigation} mainHeader={true} />
+                <View style={{ flexDirection: "row", width: "100%", height: 40, paddingHorizontal: 10, alignItems: "center", justifyContent: "center" }}>
                     <View style={{ borderRadius: 5, height: 40, flex: 1, backgroundColor: BaseColor.primaryColor }}>
                         <TextInput style={{ flex: 1, paddingLeft: 45, paddingRight: 20, color: "white" }} placeholder={"Search"} placeholderTextColor={"#fff"}></TextInput>
                         <Icon name={"search"} size={20} color={BaseColor.whiteColor} style={{ position: "absolute", left: 10, top: 10 }}></Icon>

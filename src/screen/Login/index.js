@@ -47,7 +47,7 @@ export default class Login extends Component {
                         <Image placeholderStyle={{ backgroundColor: "transparent" }} source={Images.logo} style={{ width: 168, height: 60 }} resizeMode={"stretch"}></Image>
                     </View>
                     <ScrollView style={{ flex: 1, marginTop: 30 }}>
-                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", marginBottom: 20 }}>
                             <View onPress={() => this.props.navigation.navigate("Login")} style={{ width: "80%", height: 50 }}>
                                 <TextInput placeholder={"Email"} placeholderTextColor={"#fff"} style={{ fontSize: 15, paddingHorizontal: 20, color: "#fff", flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
                                 </TextInput>
