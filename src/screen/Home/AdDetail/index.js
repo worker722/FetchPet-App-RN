@@ -7,6 +7,7 @@ import {
     ScrollView
 } from 'react-native';
 import { BaseColor } from '@config';
+import { Header } from '@components';
 import { Utils } from '@utils';
 import Swiper from 'react-native-swiper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -29,6 +30,14 @@ export default class AdDetail extends Component {
         this.setState({ currentAds: item });
     }
 
+    goBack = () => {
+        this.props.navigation.goBack(null);
+    }
+
+    shareAds = () => {
+
+    }
+
     render = () => {
         return (
             <View style={{ flex: 1 }}>
@@ -46,17 +55,12 @@ export default class AdDetail extends Component {
                             </View>
                         </Swiper>
                     </View>
-                    <View style={{ position: "absolute", padding: 10, flexDirection: "row" }}>
-                        <TouchableOpacity onPress={() => this.props.navigation.goBack(null)}>
-                            <Icon name={"arrow-left"} size={25} color={"white"}></Icon>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{ flex: 1, justifyContent: "flex-end", alignItems: "flex-end" }}>
-                            <Icon name={"share-alt"} size={25} color={"white"}></Icon>
-                        </TouchableOpacity>
+                    <View style={{ position: "absolute", flexDirection: "row" }}>
+                        <Header icon_left={"arrow-left"} icon_right={"share-alt"} color_icon_left={"white"} color_icon_right={"white"} callback_left={this.goBack} callback_right={this.shareAds} />
                     </View>
-                    <TouchableOpacity style={{ position: "absolute", top: (slider_height - 40), right: 10 }}>
+                    <View style={{ position: "absolute", top: (slider_height - 40), right: 10 }}>
                         <Text style={{ fontSize: 18, color: "#fff", fontWeight: "bold" }}>$ {this.state.currentAds.price}</Text>
-                    </TouchableOpacity>
+                    </View>
 
                     <View style={{ flex: 1, padding: 20 }}>
                         <View style={{ flexDirection: "row" }}>
