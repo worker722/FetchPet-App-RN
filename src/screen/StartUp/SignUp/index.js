@@ -3,27 +3,29 @@ import {
     View,
     TouchableOpacity,
     Text,
-    Switch,
     TextInput,
     ScrollView
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-
+import { CheckBox } from 'react-native-elements';
 import { Image } from 'react-native-elements';
 
 import { Images, BaseColor } from '@config';
+import { Utils } from '@utils';
+
+const image_height = Utils.screen.height / 4;
 
 export default class SignUp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            rememberMe: false,
+            termAgree: false,
             passwordSecure: true,
         }
     }
 
-    toggleRememberMe = (value) => {
-        this.setState({ rememberMe: value })
+    setTermAgree = () => {
+        this.setState({ termAgree: !this.state.termAgree })
     }
 
     login = () => {
@@ -33,13 +35,13 @@ export default class SignUp extends Component {
     render = () => {
         return (
             <View style={{ flex: 1 }}>
-                <View style={{ position: "absolute", top: 0, width: "100%", height: 200 }}>
+                <View style={{ position: "absolute", top: 0, width: "100%", height: image_height }}>
                     <Image
                         source={{ uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQA1CPdgmCrD4Q68677We1wsLOaCsDbgwk6hQ&usqp=CAU" }}
-                        style={{ width: "100%", height: 230 }} placeholderStyle={{ backgroundColor: "transparent" }}></Image>
+                        style={{ width: "100%", height: image_height + 30 }} placeholderStyle={{ backgroundColor: "transparent" }}></Image>
                 </View>
-                <View style={{ position: "absolute", width: "100%", height: 200, top: 0, backgroundColor: "#000", opacity: 0.3 }}></View>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate("Welcome")} style={{ position: "absolute", top: 20, left: 20, width: "100%", height: 170 }}>
+                <View style={{ position: "absolute", width: "100%", height: image_height, top: 0, backgroundColor: "#000", opacity: 0.3 }}></View>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate("Welcome")} style={{ position: "absolute", top: 20, left: 20, width: "100%", height: image_height - 30 }}>
                     <Icon name={"arrow-left"} size={20} color={"#fff"}></Icon>
                 </TouchableOpacity>
                 <View style={{ flex: 1, borderTopLeftRadius: 20, borderTopRightRadius: 20, marginTop: 180, backgroundColor: "#fff" }}>
@@ -71,11 +73,12 @@ export default class SignUp extends Component {
                                 </TouchableOpacity>
                             </View>
                             <View style={{ width: "80%", height: 30, marginTop: 10, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                                <Switch
-                                    value={this.state.rememberMe}
-                                    onValueChange={(value) => this.toggleRememberMe(value)}
+                                <CheckBox
+                                    onPress={() => this.setTermAgree()}
+                                    checked={this.state.termAgree}
+                                    checkedColor={BaseColor.primaryColor}
                                 />
-                                <Text style={{ marginLeft: 10, textAlign: "left", flex: 1 }}>Remember Me</Text>
+                                <Text style={{ marginLeft: 10, textAlign: "left", flex: 1 }}>I agree with the terms & conditions</Text>
                             </View>
                             <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 20 }} onPress={() => this.login()}>
                                 <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.whiteColor, borderColor: BaseColor.dddColor, borderWidth: 1, justifyContent: "center", alignItems: "center" }}>

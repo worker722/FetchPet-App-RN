@@ -20,7 +20,7 @@ export default class Splash extends Component {
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: "#fff", alignItems: "center", justifyContent: "center" }}>
-        <Image placeholderStyle={{ backgroundColor: "transparent" }} source={Images.logo} style={{ width: 168, height: 60 }} resizeMode={"stretch"}></Image>
+        <Image placeholderStyle={{ backgroundColor: "transparent" }} source={Images.logo} style={{ width: 225, height: 80 }} resizeMode={"stretch"}></Image>
       </View>
     );
   }

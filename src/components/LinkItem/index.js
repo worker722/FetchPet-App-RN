@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import {
     View,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+    Switch
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import { BaseColor } from '@config';
+import { act } from 'react-test-renderer';
 
 export default class LinkItem extends Component {
     constructor(props) {
@@ -14,11 +16,14 @@ export default class LinkItem extends Component {
     }
 
     render = () => {
-        const { title, subtitle, icon_left, icon_right, action, is_showLine } = this.props;
+        const { title, subtitle, icon_left, icon_right, action, is_showLine, is_switch, switch_val } = this.props;
 
         return (
             <>
-                <TouchableOpacity style={{ width: "100%", marginTop: 20, height: 40, flexDirection: "row", paddingHorizontal: 20, alignItems: "center", justifyContent: "center" }} onPress={() => action()}>
+                <TouchableOpacity
+                    style={{ width: "100%", marginTop: 20, height: 40, flexDirection: "row", paddingHorizontal: 20, alignItems: "center", justifyContent: "center" }}
+                    onPress={() => action()}
+                >
                     {icon_left &&
                         <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", width: 40, marginRight: 10 }}>
                             <Icon name={icon_left} size={25} color={BaseColor.greyColor}></Icon>
@@ -31,7 +36,17 @@ export default class LinkItem extends Component {
                         }
                     </View>
                     <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                        <Icon name={icon_right} size={25} color={BaseColor.greyColor}></Icon>
+                        {is_switch ?
+                            <Switch
+                                value={switch_val}
+                                onValueChange={(value) => action()}
+                                style={{ scaleX: 0.8, scaleY: 0.8 }}
+                                thumbColor={BaseColor.primaryColor}
+                                trackColor={{ true: BaseColor.primaryColor, false: BaseColor.dddColor }}
+                            />
+                            :
+                            <Icon name={icon_right} size={25} color={BaseColor.greyColor}></Icon>
+                        }
                     </View>
                 </TouchableOpacity>
                 {is_showLine &&

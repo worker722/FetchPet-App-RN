@@ -9,7 +9,10 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native-elements';
 
 import { Images, BaseColor } from '@config';
+import { Utils } from '@utils';
 
+
+const image_height = Utils.screen.height / 4;
 export default class Welcome extends Component {
     constructor(props) {
         super(props);
@@ -18,13 +21,13 @@ export default class Welcome extends Component {
     render = () => {
         return (
             <View style={{ flex: 1 }}>
-                <View style={{ position: "absolute", top: 0, width: "100%", height: 200 }}>
+                <View style={{ position: "absolute", top: 0, width: "100%", height: image_height }}>
                     <Image
                         source={{ uri: "https://ichef.bbci.co.uk/news/800/cpsprodpb/BAF5/production/_111516874_gettyimages-451627799-1.jpg" }}
-                        style={{ width: "100%", height: 230 }} placeholderStyle={{ backgroundColor: "transparent" }}></Image>
+                        style={{ width: "100%", height: image_height + 30 }} placeholderStyle={{ backgroundColor: "transparent" }}></Image>
                 </View>
-                <View style={{ position: "absolute", width: "100%", height: 200, top: 0, backgroundColor: "#000", opacity: 0.3 }}></View>
-                <View style={{ position: "absolute", top: 0, width: "100%", height: 170, justifyContent: "center", alignItems: "center" }}>
+                <View style={{ position: "absolute", width: "100%", height: image_height, top: 0, backgroundColor: "#000", opacity: 0.3 }}></View>
+                <View style={{ position: "absolute", top: 0, width: "100%", height: image_height - 30, justifyContent: "center", alignItems: "center" }}>
                     <Text style={{ fontSize: 30, color: "white", fontWeight: "bold" }}>Welcome!</Text>
                 </View>
                 <View style={{ flex: 1, borderTopLeftRadius: 20, borderTopRightRadius: 20, marginTop: 180, backgroundColor: "#fff" }}>
