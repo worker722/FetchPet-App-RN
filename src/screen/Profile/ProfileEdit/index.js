@@ -47,6 +47,7 @@ export default class ProfileEdit extends Component {
                 includeExif: true
             }).then(images => {
                 console.log(images);
+                this.setState({ visiblePickerModal: false });
             });
         }
         else if (index == 1) {
@@ -57,10 +58,11 @@ export default class ProfileEdit extends Component {
                 includeExif: true
             }).then(images => {
                 console.log(images);
+                this.setState({ visiblePickerModal: false });
             });
         }
         else {
-            this.setState({ visiblePickerModal: false })
+            this.setState({ visiblePickerModal: false });
         }
     }
 
