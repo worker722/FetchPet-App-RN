@@ -17,7 +17,7 @@
     "react-native-cli": "^2.0.1",
     "react-native-elements": "^3.0.0-alpha.1",
     "react-native-gesture-handler": "^1.8.0",
-    "react-native-image-crop-picker": "^0.35.1",
+    "react-native-image-crop-picker": "^0.25.2",
     "react-native-list-view-select": "^1.0.4",
     "react-native-maps": "^0.27.1",
     "react-native-modal-picker": "0.0.16",

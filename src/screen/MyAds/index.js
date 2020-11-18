@@ -90,9 +90,9 @@ export default class MyAds extends Component {
                         <View style={{ flex: 1, height: 5, backgroundColor: index == 1 ? BaseColor.primaryColor : "white" }}></View>
                     </View>
                     {this.state.index == 0 ?
-                        <Active />
+                        <Active navigation={this.props.navigation} />
                         :
-                        <Closed />
+                        <Closed navigation={this.props.navigation} />
                     }
                 </View>
             </View>

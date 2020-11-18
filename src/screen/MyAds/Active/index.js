@@ -142,7 +142,7 @@ export default class Active extends Component {
                     </View>
                     <View style={{ flexDirection: "row", marginTop: 15 }}>
                         <View style={{ flex: 1 }}>
-                            <Text style={{ fontSize: 10, color: BaseColor.greyColor }}>10 requests, 16hours ago</Text>
+                            <Text style={{ fontSize: 10, color: BaseColor.greyColor }} numberOfLines={1}>10 requests, 16hours ago</Text>
                         </View>
                         <View style={{ paddingLeft: 10, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                             <Icon name={"eye"} size={13} color={BaseColor.greyColor}></Icon>
