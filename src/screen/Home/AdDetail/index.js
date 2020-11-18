@@ -123,7 +123,7 @@ export default class AdDetail extends Component {
                     </View>
                 </ScrollView>
                 <View style={{ padding: 10, flexDirection: "row", height: 65 }}>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate("ChatList")} style={{ borderWidth: 1, borderColor: BaseColor.greyColor, marginRight: "10%", borderRadius: 10, height: 45, width: "45%", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate("Inbox")} style={{ borderWidth: 1, borderColor: BaseColor.greyColor, marginRight: "10%", borderRadius: 10, height: 45, width: "45%", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
                         <Icon name={"comment"} color={BaseColor.primaryColor} size={20}></Icon>
                         <Text style={{ color: BaseColor.primaryColor, fontSize: 18, marginLeft: 10 }}>Chat</Text>
                     </TouchableOpacity>
