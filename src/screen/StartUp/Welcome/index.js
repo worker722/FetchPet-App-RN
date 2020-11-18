@@ -30,7 +30,7 @@ export default class Welcome extends Component {
                 <View style={{ position: "absolute", top: 0, width: "100%", height: image_height - 30, justifyContent: "center", alignItems: "center" }}>
                     <Text style={{ fontSize: 30, color: "white", fontWeight: "bold" }}>Welcome!</Text>
                 </View>
-                <View style={{ flex: 1, borderTopLeftRadius: 20, borderTopRightRadius: 20, marginTop: 180, backgroundColor: "#fff" }}>
+                <View style={{ flex: 1, borderTopLeftRadius: 20, borderTopRightRadius: 20, marginTop: image_height - 20, backgroundColor: "#fff" }}>
                     <View style={{ width: "100%", height: 80, alignItems: "center", justifyContent: "center", marginTop: 20 }}>
                         <Image placeholderStyle={{ backgroundColor: "transparent" }} source={Images.logo} style={{ width: 168, height: 60 }} resizeMode={"stretch"}></Image>
                     </View>
