@@ -19,7 +19,7 @@ export default class ProfileEdit extends Component {
         super(props);
 
         this.state = {
-            is_edit: true,
+            is_edit: false,
             phonenumber: "+1",
             valid_phone: true,
             visiblePickerModal: false
@@ -186,7 +186,7 @@ export default class ProfileEdit extends Component {
                                 onPress={() => this.openPhotoPicker(2)}
                                 style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 20 }}>
                                 <View style={{ width: 50, height: 50, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
-                                    <Icon name={"image"} size={20} color={"#fff"}></Icon>
+                                    <Icon name={"trash-alt"} size={20} color={"#fff"}></Icon>
                                 </View>
                                 <Text style={{ flex: 1, fontSize: 17, marginLeft: 20 }}>Remove</Text>
                             </TouchableOpacity>

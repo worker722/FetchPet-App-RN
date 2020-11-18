@@ -43,7 +43,7 @@ export default class Header extends Component {
                         <Text style={{ fontSize: 22, color: BaseColor.primaryColor, fontWeight: "bold" }}>{title}</Text>
                     }
                 </View>
-                <TouchableOpacity onPress={() => callback_right()} style={{ position: "absolute", right: 10 }}>
+                <TouchableOpacity onPress={() => callback_right()} style={{ position: "absolute", right: 20 }}>
                     <>
                         {icon_right &&
                             <Icon name={icon_right} color={BaseColor.primaryColor} size={20}></Icon>
