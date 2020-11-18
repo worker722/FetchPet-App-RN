@@ -23,7 +23,7 @@ const tempItems_all = [
     {
         index: 0,
         category: "Dog",
-        breed: "BullGod",
+        breed: "BullDog",
         age: 10,
         price: 999,
         location: "Boulder, USA",
@@ -47,7 +47,7 @@ const tempItems_all = [
     {
         index: 2,
         category: "Dog",
-        breed: "BullGod",
+        breed: "BullDog",
         age: 10,
         price: 999,
         location: "Boulder, USA",
@@ -83,7 +83,7 @@ const tempItems_all = [
     {
         index: 5,
         category: "Dog",
-        breed: "BullGod",
+        breed: "BullDog",
         age: 10,
         price: 999,
         location: "Boulder, USA",
@@ -110,7 +110,7 @@ const tempItems_dog = [
     {
         index: 0,
         category: "Dog",
-        breed: "BullGod",
+        breed: "BullDog",
         age: 10,
         price: 999,
         location: "Boulder, USA",
@@ -122,7 +122,7 @@ const tempItems_dog = [
     {
         index: 1,
         category: "Dog",
-        breed: "BullGod",
+        breed: "BullDog",
         age: 10,
         price: 999,
         location: "Boulder, USA",
@@ -134,7 +134,7 @@ const tempItems_dog = [
     {
         index: 2,
         category: "Dog",
-        breed: "BullGod",
+        breed: "BullDog",
         age: 10,
         price: 999,
         location: "Boulder, USA",
@@ -142,11 +142,11 @@ const tempItems_dog = [
         image: "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/golden-retriever-royalty-free-image-506756303-1560962726.jpg?crop=1.00xw:0.756xh;0,0.0756xh&resize=980:*",
         latestTime: "17hours ago",
         is_fav: false
-    }
-    , {
+    },
+    {
         index: 3,
         category: "Dog",
-        breed: "BullGod",
+        breed: "BullDog",
         age: 10,
         price: 999,
         location: "Boulder, USA",
@@ -158,7 +158,7 @@ const tempItems_dog = [
     {
         index: 4,
         category: "Dog",
-        breed: "BullGod",
+        breed: "BullDog",
         age: 10,
         price: 999,
         location: "Boulder, USA",
@@ -170,7 +170,7 @@ const tempItems_dog = [
     {
         index: 5,
         category: "Dog",
-        breed: "BullGod",
+        breed: "BullDog",
         age: 10,
         price: 999,
         location: "Boulder, USA",
@@ -182,7 +182,7 @@ const tempItems_dog = [
     {
         index: 6,
         category: "Dog",
-        breed: "BullGod",
+        breed: "BullDog",
         age: 10,
         price: 999,
         location: "Boulder, USA",
@@ -568,7 +568,7 @@ export default class Home extends Component {
 
     renderItem = ({ item }) => {
         return (
-            <TouchableOpacity style={{ flex: 1, flexDirection: "row", marginBottom: 20 }} activeOpacity={0.8} onPress={() => this.props.navigation.navigate("AdDetail", { item: item })}>
+            <TouchableOpacity style={{ flex: 1, flexDirection: "row", marginBottom: 20 }} onPress={() => this.props.navigation.navigate("AdDetail", { item: item })}>
                 <View>
                     <Image
                         source={{ uri: item.image }}
@@ -607,14 +607,14 @@ export default class Home extends Component {
 
         const renderThumb = () => {
             return (
-                <View style={{ width: 20, height: 20, backgroundColor: BaseColor.primaryColor, borderRadius: 100 }}></View>
+                <View style={{ width: 15, height: 15, backgroundColor: BaseColor.primaryColor, borderRadius: 100 }}></View>
             )
         };
         const renderRail = () => {
-            return (<View style={{ height: 10, flex: 1, backgroundColor: "#9b9b9b", borderRadius: 100 }}></View>)
+            return (<View style={{ height: 8, flex: 1, backgroundColor: "#9b9b9b", borderRadius: 100 }}></View>)
         }
         const renderRailSelected = () => {
-            return (<View style={{ height: 10, backgroundColor: BaseColor.primaryColor }}></View>)
+            return (<View style={{ height: 8, backgroundColor: BaseColor.primaryColor }}></View>)
         }
 
         const renderLabel = () => {
@@ -677,7 +677,7 @@ export default class Home extends Component {
                         <View style={{ justifyContent: "center", alignItems: "center" }}>
                             <View style={{ width: 120, height: 8, backgroundColor: "#9b9b9b", borderRadius: 100 }}></View>
                         </View>
-                        <Text style={{ fontSize: 20, color: BaseColor.primaryColor, paddingVertical: 10, fontWeight: "bold" }}>Pet</Text>
+                        <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingVertical: 10, fontWeight: "bold" }}>Pet</Text>
                         <View style={{ flexDirection: "row", width: "100%" }}>
                             <FlatList
                                 keyExtractor={(item, index) => index.toString()}
@@ -687,7 +687,7 @@ export default class Home extends Component {
                             >
                             </FlatList>
                         </View>
-                        <Text style={{ fontSize: 20, color: BaseColor.primaryColor, paddingVertical: 10, fontWeight: "bold" }}>Breed</Text>
+                        <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingVertical: 10, fontWeight: "bold" }}>Breed</Text>
                         <View style={{ flexDirection: "row", width: "100%", marginTop: 10 }}>
                             <FlatList
                                 keyExtractor={(item, index) => index.toString()}
@@ -697,7 +697,7 @@ export default class Home extends Component {
                             >
                             </FlatList>
                         </View>
-                        <Text style={{ fontSize: 20, color: BaseColor.primaryColor, paddingVertical: 10, fontWeight: "bold" }}>Gender</Text>
+                        <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingVertical: 10, fontWeight: "bold" }}>Gender</Text>
                         <View style={{ flexDirection: "row", width: "100%", marginTop: 10 }}>
                             <FlatList
                                 keyExtractor={(item, index) => index.toString()}
@@ -707,7 +707,7 @@ export default class Home extends Component {
                             >
                             </FlatList>
                         </View>
-                        <Text style={{ fontSize: 20, color: BaseColor.primaryColor, paddingVertical: 10, fontWeight: "bold" }}>Price</Text>
+                        <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingVertical: 10, fontWeight: "bold" }}>Price</Text>
                         <View style={{ width: "100%", height: 20 }}>
                             <RangeSlider
                                 style={{ width: Utils.screen.width - 20, height: 20 }}
