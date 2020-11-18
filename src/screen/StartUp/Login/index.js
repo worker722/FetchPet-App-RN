@@ -11,6 +11,9 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native-elements';
 
 import { Images, BaseColor } from '@config';
+import { Utils } from '@utils';
+
+const image_height = Utils.screen.height / 4;
 
 export default class Login extends Component {
     constructor(props) {
@@ -32,13 +35,13 @@ export default class Login extends Component {
     render = () => {
         return (
             <View style={{ flex: 1 }}>
-                <View style={{ position: "absolute", top: 0, width: "100%", height: 200 }}>
+                <View style={{ position: "absolute", top: 0, width: "100%", height: image_height }}>
                     <Image
                         source={{ uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQA1CPdgmCrD4Q68677We1wsLOaCsDbgwk6hQ&usqp=CAU" }}
-                        style={{ width: "100%", height: 230 }} placeholderStyle={{ backgroundColor: "transparent" }}></Image>
+                        style={{ width: "100%", height: image_height + 30 }} placeholderStyle={{ backgroundColor: "transparent" }}></Image>
                 </View>
-                <View style={{ position: "absolute", width: "100%", height: 200, top: 0, backgroundColor: "#000", opacity: 0.3 }}></View>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate("Welcome")} style={{ position: "absolute", top: 20, left: 20, width: "100%", height: 170 }}>
+                <View style={{ position: "absolute", width: "100%", height: image_height, top: 0, backgroundColor: "#000", opacity: 0.3 }}></View>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate("Welcome")} style={{ position: "absolute", top: 20, left: 20, width: "100%", height: image_height - 30 }}>
                     <Icon name={"arrow-left"} size={20} color={"#fff"}></Icon>
                 </TouchableOpacity>
                 <View style={{ flex: 1, borderTopLeftRadius: 20, borderTopRightRadius: 20, marginTop: 180, backgroundColor: "#fff" }}>
@@ -62,6 +65,8 @@ export default class Login extends Component {
                                 <Switch
                                     value={this.state.rememberMe}
                                     onValueChange={(value) => this.toggleRememberMe(value)}
+                                    thumbColor={BaseColor.primaryColor}
+                                    trackColor={{ true: BaseColor.primaryColor, false: BaseColor.dddColor }}
                                 />
                                 <Text style={{ marginLeft: 10, textAlign: "left", flex: 1 }}>Remember Me</Text>
                             </View>

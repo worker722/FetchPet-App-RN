@@ -4,19 +4,25 @@ import {
     Text,
     TouchableOpacity,
     TextInput,
-    StyleSheet
+    StyleSheet,
+    Modal
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Header } from '@components';
 import { Avatar } from 'react-native-elements';
 import { BaseColor } from '@config';
+import PhoneInput from 'react-native-phone-input';
+import ImagePicker from 'react-native-image-crop-picker';
 
 export default class ProfileEdit extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            is_edit: false
+            is_edit: true,
+            phonenumber: "+1",
+            valid_phone: true,
+            visiblePickerModal: false
         }
     }
 
@@ -32,8 +38,34 @@ export default class ProfileEdit extends Component {
         this.setState({ is_edit: false })
     }
 
+    openPhotoPicker = (index) => {
+        if (index == 0) {
+            ImagePicker.openCamera({
+                mediaType: 'photo',
+                width: 500,
+                height: 500,
+                includeExif: true
+            }).then(images => {
+                console.log(images);
+            });
+        }
+        else if (index == 1) {
+            ImagePicker.openPicker({
+                mediaType: 'photo',
+                width: 500,
+                height: 500,
+                includeExif: true
+            }).then(images => {
+                console.log(images);
+            });
+        }
+        else {
+            this.setState({ visiblePickerModal: false })
+        }
+    }
+
     render = () => {
-        const { is_edit } = this.state;
+        const { is_edit, phonenumber, valid_phone } = this.state;
         return (
             <View style={{ flex: 1 }}>
                 {is_edit ?
@@ -53,7 +85,9 @@ export default class ProfileEdit extends Component {
                             containerStyle={{ marginHorizontal: 10, borderWidth: 1, borderColor: "#808080", width: 90, height: 90, borderRadius: 100 }}>
                         </Avatar>
                         {is_edit &&
-                            <TouchableOpacity style={{ width: 40, height: 40, backgroundColor: BaseColor.primaryColor, position: "absolute", justifyContent: "center", alignItems: "center", bottom: 0, right: 0, borderRadius: 100, borderWidth: 3, borderColor: "#fff" }}>
+                            <TouchableOpacity
+                                onPress={() => this.setState({ visiblePickerModal: true })}
+                                style={{ width: 40, height: 40, backgroundColor: BaseColor.primaryColor, position: "absolute", justifyContent: "center", alignItems: "center", bottom: 0, right: 0, borderRadius: 100, borderWidth: 3, borderColor: "#fff" }}>
                                 <Icon name={"camera"} size={18} color={"#fff"}></Icon>
                             </TouchableOpacity>
                         }
@@ -94,14 +128,72 @@ export default class ProfileEdit extends Component {
                         </TouchableOpacity>
                     </View>
                     :
-                    <View style={{ marginTop: 20, paddingHorizontal: 20 }}>
-                        <TextInput style={styles.textinput}
-                            underlineColorAndroid="transparent"
-                            placeholder="Something about you"
-                            placeholderTextColor={BaseColor.greyColor} />
-                    </View>
+                    <>
+                        <View style={{ marginTop: 20, paddingHorizontal: 20 }}>
+                            <TextInput style={styles.textinput}
+                                underlineColorAndroid="transparent"
+                                placeholder="Something about you"
+                                placeholderTextColor={BaseColor.greyColor} />
+                        </View>
+                        <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingHorizontal: 20, marginTop: 20 }}>Contact Infomation</Text>
+                        <View style={{ paddingHorizontal: 20, paddingTop: 30 }}>
+                            <PhoneInput
+                                ref={(ref) => { this.phone = ref; }}
+                                style={{ width: "100%" }}
+                                initialCountry={"en"}
+                                flagStyle={{ width: 35, height: 20 }}
+                                textProps={{ placeholder: "Please input your phone number" }}
+                                textStyle={{ fontSize: 17, color: valid_phone ? BaseColor.primaryColor : BaseColor.greyColor }}
+                                value={phonenumber}
+                                onChangePhoneNumber={(value) => this.setState({ valid_phone: this.phone.isValidNumber() })}
+                                placeholderTextColor={BaseColor.greyColor}
+                            />
+                            <TextInput style={[styles.textinput, { marginTop: 20 }]}
+                                underlineColorAndroid="transparent"
+                                placeholder="Email"
+                                placeholderTextColor={BaseColor.greyColor} />
+                        </View>
+                    </>
                 }
-                <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingHorizontal: 20, marginTop: 20 }}>{is_edit && 'Contact Infomation'}</Text>
+
+                <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={this.state.visiblePickerModal}>
+                    <View style={styles.modalContainer}>
+                        <View style={styles.modalContentContainer}>
+                            <Text style={{ fontSize: 20, }}>Profile Photo</Text>
+                            <TouchableOpacity style={{ position: "absolute", top: 0, right: 0, padding: 10 }} onPress={() => this.setState({ visiblePickerModal: false })}>
+                                <Icon name={"times"} size={22} color={BaseColor.primaryColor}></Icon>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => this.openPhotoPicker(0)}
+                                style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
+                                <View style={{ width: 50, height: 50, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
+                                    <Icon name={"camera"} size={20} color={"#fff"}></Icon>
+                                </View>
+                                <Text style={{ flex: 1, fontSize: 17, marginLeft: 20 }}>Camera</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => this.openPhotoPicker(1)}
+                                style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 20 }}>
+                                <View style={{ width: 50, height: 50, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
+                                    <Icon name={"image"} size={20} color={"#fff"}></Icon>
+                                </View>
+                                <Text style={{ flex: 1, fontSize: 17, marginLeft: 20 }}>Gallery</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => this.openPhotoPicker(2)}
+                                style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 20 }}>
+                                <View style={{ width: 50, height: 50, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
+                                    <Icon name={"image"} size={20} color={"#fff"}></Icon>
+                                </View>
+                                <Text style={{ flex: 1, fontSize: 17, marginLeft: 20 }}>Remove</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
+
             </View>
         )
     }
@@ -112,5 +204,18 @@ const styles = StyleSheet.create({
     textinput: {
         borderBottomColor: BaseColor.greyColor,
         borderBottomWidth: 1
-    }
-}); 
+    },
+    modalContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalContentContainer: {
+        width: '100%',
+        backgroundColor: 'white',
+        borderRadius: 10,
+        padding: 25,
+        justifyContent: 'center'
+    },
+});

@@ -28,8 +28,10 @@ import Chat from "@screen/Inbox/Chat";
 import Profile from "@screen/Profile";
 import ProfileEdit from "@screen/Profile/ProfileEdit";
 import Other from "@screen/Profile/Other";
-import Setting from "@screen/Profile/Setting";
 import Help from "@screen/Profile/Help";
+	//setting
+import Setting from "@screen/Profile/Setting";
+import Privacy from "@screen/Profile/Setting/Privacy";
 
 
 // Config for bottom navigator
@@ -153,6 +155,9 @@ const StackNavigator = createStackNavigator(
 		},
 		Setting: {
 			screen: Setting
+		},
+		Privacy: {
+			screen: Privacy
 		}
 	},
 	{

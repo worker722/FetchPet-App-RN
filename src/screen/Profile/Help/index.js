@@ -12,10 +12,10 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 export default class Help extends Component {
     constructor(props) {
         super(props);
+    }
 
-        this.closeCallback = () => {
-            this.props.navigation.goBack(null)
-        }
+    goBack = () => {
+        this.props.navigation.goBack(null)
     }
 
     test = () => {
@@ -26,7 +26,7 @@ export default class Help extends Component {
         const navigation = this.props.navigation;
         return (
             <View style={{ flex: 1, paddingHorizontal: 10 }}>
-                <Header icon_left={"arrow-left"} title={"Help & Support"} callback_left={this.closeCallback} />
+                <Header icon_left={"arrow-left"} title={"Help & Support"} callback_left={this.goBack} />
 
                 <LinkItem title={"Help Center"} subtitle={"See FAQ and contact support"} icon_right={"angle-right"} action={this.test} is_showLine={true} />
                 <LinkItem title={"Rate us"} subtitle={"If you love our app, please rake a moment to rate it"} icon_right={"angle-right"} action={this.test} is_showLine={true} />
