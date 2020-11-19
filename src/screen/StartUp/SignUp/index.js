@@ -4,16 +4,18 @@ import {
     TouchableOpacity,
     Text,
     TextInput,
-    ScrollView
+    ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { CheckBox } from 'react-native-elements';
 import { Image } from 'react-native-elements';
+import { GoogleSignin, statusCodes } from 'react-native-google-signin';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { store, SetPrefrence, GetPrefrence } from "@store";
 import * as Api from '@api';
+import { Loader } from '@components';
 
 import Toast from 'react-native-simple-toast';
 
@@ -33,8 +35,14 @@ class SignUp extends Component {
             email: '',
             password: '',
             con_password: '',
-            is_busy: false
+            showLoading: false
         }
+    }
+
+    componentWillMount = async () => {
+        GoogleSignin.configure({
+            iosClientId: 'YOUR IOS CLIENT ID',
+        })
     }
 
     signUp = async () => {
@@ -44,7 +52,7 @@ class SignUp extends Component {
         else if (password == '') return Toast.show("Please input password");
         else if (password != con_password) return Toast.show("Password don't match.");
 
-        this.setState({ is_busy: true });
+        this.setState({ showLoading: true });
 
         const param = {
             name: username,
@@ -54,7 +62,7 @@ class SignUp extends Component {
         }
 
         const response = await this.props.api.post("signup", param);
-        this.setState({ is_busy: false });
+        this.setState({ showLoading: false });
 
         if (response.success) {
             SetPrefrence('rememberMe', 0);
@@ -62,11 +70,46 @@ class SignUp extends Component {
         }
     }
 
+    googleSignup = async () => {
+        try {
+            this.setState({ showLoading: true });
+
+            await GoogleSignin.hasPlayServices();
+            let userInfo = await GoogleSignin.signIn();
+            if (userInfo.user.name == null)
+                userInfo.user.name = "lucky-fetch";
+            const params = { name: userInfo.user.name, email: userInfo.user.email, password: "@fetch@", is_social: 1 };
+            const response = await this.props.api.post("signup", params);
+
+            this.setState({ showLoading: false });
+
+            if (response?.success) {
+                SetPrefrence('rememberMe', 0);
+                this.props.navigation.navigate("Home");
+            }
+
+        } catch (error) {
+            if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+                Toast.show(error + '');
+            } else if (error.code === statusCodes.IN_PROGRESS) {
+                Toast.show(error + '');
+            } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+                Toast.show(error + '');
+            } else {
+                Toast.show(error + '');
+                console.log(error)
+            }
+        }
+    }
+
     render = () => {
-        const { passwordSec, termAgree, con_passwordSec, is_busy } = this.state;
+        const { passwordSec, termAgree, con_passwordSec, showLoading } = this.state;
+
+        if (showLoading)
+            return <Loader />;
 
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, paddingBottom: 20 }}>
                 <View style={{ position: "absolute", top: 0, width: "100%", height: image_height }}>
                     <Image
                         source={{ uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQA1CPdgmCrD4Q68677We1wsLOaCsDbgwk6hQ&usqp=CAU" }}
@@ -118,13 +161,7 @@ class SignUp extends Component {
                             </View>
                             <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 20 }} onPress={() => this.signUp()}>
                                 <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.whiteColor, borderColor: BaseColor.dddColor, borderWidth: 1, justifyContent: "center", alignItems: "center" }}>
-                                    {!is_busy ?
-                                        <Text style={{ color: "#fff", fontSize: 15, color: BaseColor.primaryColor }}>SIGN UP</Text>
-                                        :
-                                        <ActivityIndicator
-                                            color={"white"}
-                                            size={20} />
-                                    }
+                                    <Text style={{ color: "#fff", fontSize: 15, color: BaseColor.primaryColor }}>SIGN UP</Text>
                                 </View>
                             </TouchableOpacity>
                             <View style={{ width: "70%", height: 15, flexDirection: "row", marginTop: 5, justifyContent: "center", alignItems: "center" }}>
@@ -132,7 +169,7 @@ class SignUp extends Component {
                                 <Text style={{ marginHorizontal: 5, fontSize: 12 }}>OR</Text>
                                 <View style={{ flex: 1, height: 1, backgroundColor: BaseColor.dddColor }}></View>
                             </View>
-                            <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 5 }}>
+                            <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 5 }} onPress={() => this.googleSignup()}>
                                 <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.googleColor, justifyContent: "center", alignItems: "center" }}>
                                     <Text style={{ color: BaseColor.whiteColor, fontSize: 13 }}>Sign Up with</Text>
                                     <Icon name={"google-plus-g"} size={15} color={"#fff"} style={{ position: "absolute", right: 10 }}></Icon>
