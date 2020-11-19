@@ -5,34 +5,56 @@ import {
     Text,
     Switch,
     TextInput,
-    ScrollView
+    ScrollView,
+    ActivityIndicator
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native-elements';
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
+import { store, SetPrefrence, GetPrefrence } from "@store";
 import { Images, BaseColor } from '@config';
 import { Utils } from '@utils';
+import * as Api from '@api';
 
 const image_height = Utils.screen.height / 4;
 
-export default class Login extends Component {
+class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
             rememberMe: false,
             passwordSecure: true,
+            email: '',
+            password: '',
+            is_busy: false
         }
     }
 
-    toggleRememberMe = (value) => {
-        this.setState({ rememberMe: value })
+    toggleRememberMe = async (value) => {
+        this.setState({ rememberMe: value });
     }
 
-    login = () => {
-        this.props.navigation.navigate("Home");
+    login = async () => {
+        this.setState({ is_busy: true });
+
+        const params = { email: "admin@material.com", password: "secret" };
+        const response = await this.props.api.post("login", params);
+        this.setState({ is_busy: false });
+        if (response.success) {
+            if (this.state.rememberMe)
+                SetPrefrence('rememberMe', 1);
+            else
+                SetPrefrence('rememberMe', 0);
+
+            this.props.navigation.navigate("Home");
+        }
     }
 
     render = () => {
+
+        const { is_busy, rememberMe, passwordSecure } = this.state;
         return (
             <View style={{ flex: 1 }}>
                 <View style={{ position: "absolute", top: 0, width: "100%", height: image_height }}>
@@ -41,7 +63,7 @@ export default class Login extends Component {
                         style={{ width: "100%", height: image_height + 30 }} placeholderStyle={{ backgroundColor: "transparent" }}></Image>
                 </View>
                 <View style={{ position: "absolute", width: "100%", height: image_height, top: 0, backgroundColor: "#000", opacity: 0.3 }}></View>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate("Welcome")} style={{ position: "absolute", top: 20, left: 20, width: "100%", height: image_height - 30 }}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate("Welcome")} style={{ position: "absolute", top: 20, left: 20 }}>
                     <Icon name={"arrow-left"} size={20} color={"#fff"}></Icon>
                 </TouchableOpacity>
                 <View style={{ flex: 1, borderTopLeftRadius: 20, borderTopRightRadius: 20, marginTop: image_height - 20, backgroundColor: "#fff" }}>
@@ -51,19 +73,19 @@ export default class Login extends Component {
                     <ScrollView style={{ flex: 1, marginTop: 30 }}>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center", marginBottom: 20 }}>
                             <View onPress={() => this.props.navigation.navigate("Login")} style={{ width: "80%", height: 50 }}>
-                                <TextInput placeholder={"Email"} placeholderTextColor={"#fff"} style={{ fontSize: 15, paddingHorizontal: 20, color: "#fff", flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
+                                <TextInput onChangeText={(text) => this.setState({ email: text })} placeholder={"Email"} placeholderTextColor={"#fff"} style={{ fontSize: 15, paddingHorizontal: 20, color: "#fff", flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
                                 </TextInput>
                             </View>
                             <View style={{ width: "80%", height: 50, marginTop: 20, justifyContent: "center", }}>
-                                <TextInput placeholder={"Password"} textContentType={"password"} secureTextEntry={this.state.passwordSecure} placeholderTextColor={"#fff"} style={{ fontSize: 15, paddingHorizontal: 20, color: "#fff", flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
+                                <TextInput onChangeText={(text) => this.setState({ password: text })} placeholder={"Password"} textContentType={"password"} secureTextEntry={passwordSecure} placeholderTextColor={"#fff"} style={{ fontSize: 15, paddingHorizontal: 20, color: "#fff", flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
                                 </TextInput>
-                                <TouchableOpacity style={{ position: "absolute", right: 10 }} onPress={() => this.state.passwordSecure ? this.setState({ passwordSecure: false }) : this.setState({ passwordSecure: true })}>
-                                    <Icon name={this.state.passwordSecure ? "eye-slash" : "eye"} size={15} color={"#fff"} style={{ flex: 1 }}></Icon>
+                                <TouchableOpacity style={{ position: "absolute", right: 10 }} onPress={() => passwordSecure ? this.setState({ passwordSecure: false }) : this.setState({ passwordSecure: true })}>
+                                    <Icon name={passwordSecure ? "eye-slash" : "eye"} size={15} color={"#fff"} style={{ flex: 1 }}></Icon>
                                 </TouchableOpacity>
                             </View>
                             <View style={{ width: "80%", height: 30, marginTop: 10, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                                 <Switch
-                                    value={this.state.rememberMe}
+                                    value={rememberMe}
                                     onValueChange={(value) => this.toggleRememberMe(value)}
                                     thumbColor={BaseColor.primaryColor}
                                     trackColor={{ true: BaseColor.primaryColor, false: BaseColor.dddColor }}
@@ -72,7 +94,13 @@ export default class Login extends Component {
                             </View>
                             <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 20 }} onPress={() => this.login()}>
                                 <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
-                                    <Text style={{ color: "#fff", fontSize: 15 }}>LOGIN</Text>
+                                    {!is_busy ?
+                                        <Text style={{ color: "#fff", fontSize: 15 }}>LOGIN</Text>
+                                        :
+                                        <ActivityIndicator
+                                            color={"white"}
+                                            size={20} />
+                                    }
                                 </View>
                             </TouchableOpacity>
                             <View style={{ width: "70%", height: 15, flexDirection: "row", marginTop: 5, justifyContent: "center", alignItems: "center" }}>
@@ -100,9 +128,15 @@ export default class Login extends Component {
                             </TouchableOpacity>
                         </View>
                     </ScrollView>
-
                 </View>
             </View>
         )
     }
 }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        api: bindActionCreators(Api, dispatch)
+    };
+};
+export default connect(null, mapDispatchToProps)(Login);

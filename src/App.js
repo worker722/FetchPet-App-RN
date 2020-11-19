@@ -1,8 +1,10 @@
 
-import React, { Component } from 'react';
-import { LogBox } from 'react-native';
+import React, { Component } from "react";
+import { LogBox } from "react-native";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 import App from "@navigation";
-
+import { store, persistor } from "@store";
 
 LogBox.ignoreAllLogs(true);
 
@@ -13,7 +15,11 @@ export default class index extends Component {
 
     render() {
         return (
-            <App />
+            <Provider store={store}>
+                <PersistGate loading={null} persistor={persistor}>
+                    <App />
+                </PersistGate>
+            </Provider>
         );
     }
 }
