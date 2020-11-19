@@ -6,6 +6,7 @@ import {
     Switch,
     TextInput,
     ScrollView,
+    Platform
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native-elements';
@@ -148,22 +149,25 @@ class Login extends Component {
                                 <Text style={{ marginHorizontal: 5, fontSize: 12 }}>OR</Text>
                                 <View style={{ flex: 1, height: 1, backgroundColor: BaseColor.dddColor }}></View>
                             </View>
-                            <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 5 }} onPress={() => this.googleLogin()}>
-                                <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.googleColor, justifyContent: "center", alignItems: "center" }}>
-                                    <Text style={{ color: BaseColor.whiteColor, fontSize: 13 }}>Login With Google</Text>
-                                    <Icon name={"google-plus-g"} size={15} color={"#fff"} style={{ position: "absolute", right: 10 }}></Icon>
-                                </View>
-                            </TouchableOpacity>
+                            {Platform.OS == "android" ?
+                                <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 5 }} onPress={() => this.googleLogin()}>
+                                    <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.googleColor, justifyContent: "center", alignItems: "center" }}>
+                                        <Text style={{ color: BaseColor.whiteColor, fontSize: 13 }}>Login With Google</Text>
+                                        <Icon name={"google-plus-g"} size={15} color={"#fff"} style={{ position: "absolute", right: 10 }}></Icon>
+                                    </View>
+                                </TouchableOpacity>
+                                :
+                                <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 10, }}>
+                                    <View style={{ flex: 1, borderRadius: 10, backgroundColor: "#fff", borderWidth: 1, borderColor: BaseColor.dddColor, justifyContent: "center", alignItems: "center" }}>
+                                        <Text style={{ color: "#000", fontSize: 13 }}>Login With Apple</Text>
+                                        <Icon name={"apple"} size={15} color={"#000"} style={{ position: "absolute", right: 10 }}></Icon>
+                                    </View>
+                                </TouchableOpacity>
+                            }
                             <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 10, }}>
                                 <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.faceBookColor, justifyContent: "center", alignItems: "center" }}>
                                     <Text style={{ color: BaseColor.whiteColor, fontSize: 13 }}>Login With Facebook</Text>
                                     <Icon name={"facebook-f"} size={15} color={"#fff"} style={{ position: "absolute", right: 10 }}></Icon>
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 10, }}>
-                                <View style={{ flex: 1, borderRadius: 10, backgroundColor: "#fff", borderWidth: 1, borderColor: BaseColor.dddColor, justifyContent: "center", alignItems: "center" }}>
-                                    <Text style={{ color: "#000", fontSize: 13 }}>Login With Apple</Text>
-                                    <Icon name={"apple"} size={15} color={"#000"} style={{ position: "absolute", right: 10 }}></Icon>
                                 </View>
                             </TouchableOpacity>
                         </View>
