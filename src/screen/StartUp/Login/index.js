@@ -10,13 +10,15 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native-elements';
+import Toast from 'react-native-simple-toast';
+
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-
 import { store, SetPrefrence, GetPrefrence } from "@store";
-import { Images, BaseColor } from '@config';
-import { Utils } from '@utils';
 import * as Api from '@api';
+
+import { Images, BaseColor } from '@config';
+import * as Utils from '@utils';
 
 const image_height = Utils.screen.height / 4;
 
@@ -37,23 +39,24 @@ class Login extends Component {
     }
 
     login = async () => {
+        const { email, password, rememberMe } = this.state;
+        if (!Utils.isValidEmail(email) || password == '') {
+            Toast.show("Invalid email/password.");
+            return;
+        }
         this.setState({ is_busy: true });
 
-        const params = { email: "admin@material.com", password: "secret" };
+        const params = { email: email, password: password };
         const response = await this.props.api.post("login", params);
         this.setState({ is_busy: false });
         if (response.success) {
-            if (this.state.rememberMe)
-                SetPrefrence('rememberMe', 1);
-            else
-                SetPrefrence('rememberMe', 0);
-
+            SetPrefrence('rememberMe', rememberMe ? 1 : 0);
             this.props.navigation.navigate("Home");
         }
     }
 
     render = () => {
-
+        const navigation = this.props.navigation;
         const { is_busy, rememberMe, passwordSecure } = this.state;
         return (
             <View style={{ flex: 1 }}>
@@ -63,7 +66,7 @@ class Login extends Component {
                         style={{ width: "100%", height: image_height + 30 }} placeholderStyle={{ backgroundColor: "transparent" }}></Image>
                 </View>
                 <View style={{ position: "absolute", width: "100%", height: image_height, top: 0, backgroundColor: "#000", opacity: 0.3 }}></View>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate("Welcome")} style={{ position: "absolute", top: 20, left: 20 }}>
+                <TouchableOpacity onPress={() => navigation.navigate("Welcome")} style={{ position: "absolute", top: 20, left: 20 }}>
                     <Icon name={"arrow-left"} size={20} color={"#fff"}></Icon>
                 </TouchableOpacity>
                 <View style={{ flex: 1, borderTopLeftRadius: 20, borderTopRightRadius: 20, marginTop: image_height - 20, backgroundColor: "#fff" }}>
@@ -72,7 +75,7 @@ class Login extends Component {
                     </View>
                     <ScrollView style={{ flex: 1, marginTop: 30 }}>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center", marginBottom: 20 }}>
-                            <View onPress={() => this.props.navigation.navigate("Login")} style={{ width: "80%", height: 50 }}>
+                            <View style={{ width: "80%", height: 50 }}>
                                 <TextInput onChangeText={(text) => this.setState({ email: text })} placeholder={"Email"} placeholderTextColor={"#fff"} style={{ fontSize: 15, paddingHorizontal: 20, color: "#fff", flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
                                 </TextInput>
                             </View>

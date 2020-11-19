@@ -16,7 +16,7 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import RangeSlider from 'rn-range-slider';
 
 import { BaseColor, BaseStyle } from '@config';
-import { Utils } from '@utils';
+import * as Utils from '@utils';
 import { Header } from '@components';
 
 const tempItems_all = [

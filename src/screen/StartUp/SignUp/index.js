@@ -10,29 +10,61 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { CheckBox } from 'react-native-elements';
 import { Image } from 'react-native-elements';
 
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { store, SetPrefrence, GetPrefrence } from "@store";
+import * as Api from '@api';
+
+import Toast from 'react-native-simple-toast';
+
 import { Images, BaseColor } from '@config';
-import { Utils } from '@utils';
+import * as Utils from '@utils';
 
 const image_height = Utils.screen.height / 4;
 
-export default class SignUp extends Component {
+class SignUp extends Component {
     constructor(props) {
         super(props);
         this.state = {
             termAgree: false,
-            passwordSecure: true,
+            passwordSec: true,
+            con_passwordSec: true,
+            username: '',
+            email: '',
+            password: '',
+            con_password: '',
+            is_busy: false
         }
     }
 
-    setTermAgree = () => {
-        this.setState({ termAgree: !this.state.termAgree })
-    }
+    signUp = async () => {
+        const { username, email, password, con_password, termAgree } = this.state;
+        if (username == '') return Toast.show("Please input User name");
+        else if (!Utils.isValidEmail(email)) return Toast.show("Please input valid email");
+        else if (password == '') return Toast.show("Please input password");
+        else if (password != con_password) return Toast.show("Password don't match.");
 
-    login = () => {
-        this.props.navigation.navigate("Home");
+        this.setState({ is_busy: true });
+
+        const param = {
+            name: username,
+            email: email,
+            password: password,
+            terms: termAgree
+        }
+
+        const response = await this.props.api.post("signup", param);
+        this.setState({ is_busy: false });
+
+        if (response.success) {
+            SetPrefrence('rememberMe', 0);
+            this.props.navigation.navigate("Home");
+        }
     }
 
     render = () => {
+        const { passwordSec, termAgree, con_passwordSec, is_busy } = this.state;
+
         return (
             <View style={{ flex: 1 }}>
                 <View style={{ position: "absolute", top: 0, width: "100%", height: image_height }}>
@@ -51,38 +83,48 @@ export default class SignUp extends Component {
                     <ScrollView style={{ flex: 1, marginTop: 30 }}>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center", marginBottom: 20 }}>
                             <View style={{ width: "80%", height: 50 }}>
-                                <TextInput placeholder={"Username*"} placeholderTextColor={"#fff"} style={{ fontSize: 15, paddingHorizontal: 20, color: "#fff", flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
-                                </TextInput>
+                                <TextInput
+                                    onChangeText={(text) => this.setState({ username: text })}
+                                    placeholder={"Username*"} placeholderTextColor={"#fff"} style={{ fontSize: 15, paddingHorizontal: 20, color: "#fff", flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }} />
                             </View>
                             <View style={{ width: "80%", height: 50, marginTop: 20, justifyContent: "center", }}>
-                                <TextInput placeholder={"Email  "} textContentType={"password"} secureTextEntry={this.state.passwordSecure} placeholderTextColor={"#fff"} style={{ fontSize: 15, paddingHorizontal: 20, color: "#fff", flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
-                                </TextInput>
+                                <TextInput
+                                    onChangeText={(text) => this.setState({ email: text })}
+                                    placeholder={"Email  "} textContentType={"password"} placeholderTextColor={"#fff"} style={{ fontSize: 15, paddingHorizontal: 20, color: "#fff", flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }} />
                             </View>
                             <View style={{ width: "80%", height: 50, marginTop: 20, justifyContent: "center", }}>
-                                <TextInput placeholder={"Password"} textContentType={"password"} secureTextEntry={this.state.passwordSecure} placeholderTextColor={"#fff"} style={{ fontSize: 15, paddingHorizontal: 20, color: "#fff", flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
-                                </TextInput>
-                                <TouchableOpacity style={{ position: "absolute", right: 10 }} onPress={() => this.state.passwordSecure ? this.setState({ passwordSecure: false }) : this.setState({ passwordSecure: true })}>
-                                    <Icon name={this.state.passwordSecure ? "eye-slash" : "eye"} size={15} color={"#fff"} style={{ flex: 1 }}></Icon>
+                                <TextInput
+                                    onChangeText={(text) => this.setState({ password: text })}
+                                    placeholder={"Password"} textContentType={"password"} secureTextEntry={passwordSec} placeholderTextColor={"#fff"} style={{ fontSize: 15, paddingLeft: 20, paddingRight: 45, color: "#fff", flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }} />
+                                <TouchableOpacity style={{ position: "absolute", right: 0, padding: 10 }} onPress={() => this.setState({ passwordSec: !passwordSec })}>
+                                    <Icon name={passwordSec ? "eye-slash" : "eye"} size={15} color={"#fff"} style={{ flex: 1 }}></Icon>
                                 </TouchableOpacity>
                             </View>
                             <View style={{ width: "80%", height: 50, marginTop: 20, justifyContent: "center", }}>
-                                <TextInput placeholder={"Retype Password"} textContentType={"password"} secureTextEntry={this.state.passwordSecure} placeholderTextColor={"#fff"} style={{ fontSize: 15, paddingHorizontal: 20, color: "#fff", flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
-                                </TextInput>
-                                <TouchableOpacity style={{ position: "absolute", right: 10 }} onPress={() => this.state.passwordSecure ? this.setState({ passwordSecure: false }) : this.setState({ passwordSecure: true })}>
-                                    <Icon name={this.state.passwordSecure ? "eye-slash" : "eye"} size={15} color={"#fff"} style={{ flex: 1 }}></Icon>
+                                <TextInput
+                                    onChangeText={(text) => this.setState({ con_password: text })}
+                                    placeholder={"Retype Password"} textContentType={"password"} secureTextEntry={con_passwordSec} placeholderTextColor={"#fff"} style={{ fontSize: 15, paddingLeft: 20, paddingRight: 45, color: "#fff", flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }} />
+                                <TouchableOpacity style={{ position: "absolute", right: 0, padding: 10 }} onPress={() => this.setState({ con_passwordSec: !con_passwordSec })}>
+                                    <Icon name={con_passwordSec ? "eye-slash" : "eye"} size={15} color={"#fff"} style={{ flex: 1 }}></Icon>
                                 </TouchableOpacity>
                             </View>
                             <View style={{ width: "80%", height: 30, marginTop: 10, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                                 <CheckBox
-                                    onPress={() => this.setTermAgree()}
-                                    checked={this.state.termAgree}
+                                    onPress={() => this.setState({ termAgree: !termAgree })}
+                                    checked={termAgree}
                                     checkedColor={BaseColor.primaryColor}
                                 />
                                 <Text style={{ marginLeft: 10, textAlign: "left", flex: 1 }}>I agree with the terms & conditions</Text>
                             </View>
-                            <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 20 }} onPress={() => this.login()}>
+                            <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 20 }} onPress={() => this.signUp()}>
                                 <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.whiteColor, borderColor: BaseColor.dddColor, borderWidth: 1, justifyContent: "center", alignItems: "center" }}>
-                                    <Text style={{ color: "#fff", fontSize: 15, color: BaseColor.primaryColor }}>SIGN UP</Text>
+                                    {!is_busy ?
+                                        <Text style={{ color: "#fff", fontSize: 15, color: BaseColor.primaryColor }}>SIGN UP</Text>
+                                        :
+                                        <ActivityIndicator
+                                            color={"white"}
+                                            size={20} />
+                                    }
                                 </View>
                             </TouchableOpacity>
                             <View style={{ width: "70%", height: 15, flexDirection: "row", marginTop: 5, justifyContent: "center", alignItems: "center" }}>
@@ -115,3 +157,10 @@ export default class SignUp extends Component {
         )
     }
 }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        api: bindActionCreators(Api, dispatch)
+    };
+};
+export default connect(null, mapDispatchToProps)(SignUp);
