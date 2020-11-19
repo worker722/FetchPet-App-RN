@@ -14,7 +14,6 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import RBSheet from "react-native-raw-bottom-sheet";
 import RangeSlider from 'rn-range-slider';
-import { observer } from 'mobx-react';
 
 import { BaseColor, BaseStyle } from '@config';
 import { Utils } from '@utils';
