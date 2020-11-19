@@ -27,7 +27,8 @@ export const get = (route) => async dispatch => {
         .then(res => res.json())
         .then(res => {
             Toast.show(res.message);
-            dispatch(onLogin(res.data))
+            if (res.success)
+                dispatch(onLogin(res.data))
             return res;
         })
         .catch(err => showNetworkError());
@@ -44,7 +45,8 @@ export const post = (route, params) => async dispatch => {
         .then(res => res.json())
         .then(res => {
             Toast.show(res.message);
-            dispatch(onLogin(res.data))
+            if (res.success)
+                dispatch(onLogin(res.data))
             return res;
         })
         .catch(err => showNetworkError());

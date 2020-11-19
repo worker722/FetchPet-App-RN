@@ -9,7 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native-elements';
 
 import { Images, BaseColor } from '@config';
-import { Utils } from '@utils';
+import * as Utils from '@utils';
 
 
 const image_height = Utils.screen.height / 4;

@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import { BaseColor } from '@config';
 import { Header } from '@components';
-import { Utils } from '@utils';
+import * as Utils from '@utils';
 import { TabView, TabBar } from 'react-native-tab-view';
 import Active from './Active';
 import Closed from './Closed';

@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { BaseColor } from '@config';
 import { Header } from '@components';
-import { Utils } from '@utils';
+import * as Utils from '@utils';
 import Swiper from 'react-native-swiper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Avatar } from 'react-native-elements';
