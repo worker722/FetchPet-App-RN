@@ -4,20 +4,22 @@ import {
     Text,
     FlatList,
     TouchableOpacity,
-    ScrollView,
-    SafeAreaView,
     TextInput,
-    Button,
-    Image,
     ActivityIndicator,
 } from 'react-native';
+import { Image } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import RBSheet from "react-native-raw-bottom-sheet";
 import RangeSlider from 'rn-range-slider';
 
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { store, SetPrefrence, GetPrefrence } from "@store";
+import * as Api from '@api';
+import { Loader, Header } from '@components';
+
 import { BaseColor, BaseStyle } from '@config';
 import * as Utils from '@utils';
-import { Header } from '@components';
 
 const tempItems_all = [
     {
@@ -468,8 +470,7 @@ let filterGender = [
         is_selected: false
     }
 ]
-
-export default class Home extends Component {
+class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -478,9 +479,19 @@ export default class Home extends Component {
             filterCategory: filterCategory,
             filterBreed: filterBreed,
             filterPet: filterPet,
-            filterGender: filterGender
+            filterGender: filterGender,
+            pets: [],
         }
         this.allPets = [tempItems_all, tempItems_dog, tempItems_cat, tempItems_parrot];
+    }
+
+    componentWillMount = async () => {
+        await this.getLatestData();
+    }
+
+    getLatestData = async () => {
+        const response = await this.props.api.get('ads/latest');
+        console.log(response);
     }
 
     categorySeleted = (index) => {
@@ -573,7 +584,7 @@ export default class Home extends Component {
                     <Image
                         source={{ uri: item.image }}
                         style={{ width: 120, height: "100%", borderRadius: 5 }}
-                        placeholder={<ActivityIndicator size={20} color={BaseColor.primaryColor}></ActivityIndicator>}></Image>
+                        PlaceholderContent={<ActivityIndicator size={20} color={BaseColor.primaryColor}></ActivityIndicator>}></Image>
                 </View>
                 <View style={{ flexDirection: "column", flex: 1, paddingLeft: 10, justifyContent: "center", alignItems: "flex-start" }}>
                     <Text style={{ color: "grey", fontSize: 10 }}>Category</Text>
@@ -604,6 +615,7 @@ export default class Home extends Component {
 
     render = () => {
 
+        const { category } = this.state;
 
         const renderThumb = () => {
             return (
@@ -734,3 +746,10 @@ export default class Home extends Component {
         )
     }
 }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        api: bindActionCreators(Api, dispatch)
+    };
+};
+export default connect(null, mapDispatchToProps)(Home);

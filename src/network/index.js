@@ -2,6 +2,7 @@ import { Alert } from 'react-native';
 import RNRestart from 'react-native-restart';
 import Toast from 'react-native-simple-toast';
 import * as actionTypes from "./actionTypes";
+import { store } from '@store';
 
 const SERVER_HOST = 'http://10.0.2.2:8000';
 
@@ -13,8 +14,12 @@ const onLogin = data => {
 };
 
 export const _TOKEN = () => {
-    const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYjQ5ODRhMGIzYzY3ZjYyMjMxOWYxMjFlODJkOWI0MzIwNWVkNDI3MDM1YjczNTIzZjJjMTU1YTI3N2I0ZGQ2YTg4YzBlZjcwNjJlMThjMjgiLCJpYXQiOjE2MDU3NDM5ODksIm5iZiI6MTYwNTc0Mzk4OSwiZXhwIjoxNjM3Mjc5OTg5LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.VLl-2Fy3UpxtDplxHHQTsxQVrLUS24FoUHHAuMFZA0lVEtU_hxsOIA7pCtjk7PnJRutqU1zqz_LcaeYjefQgV_U-F15t-oxQw8J6FqradoUtb_hyUeHgjK71yuZp_3DMNy925ujeHr324Mpw1mW2UvR04DNGFLGtKUUWx5QmQB7uqXXfWXTgFbRxedVPaXpBoaHWOvTbamjkGawfPtQaCRZT3Y_5D_Bq3mkt1xY3OXCEFvIziwmecODPgOMUIjkaoss9zwvvLN5UH-g0mJJXmuOt8iHZbACYLPlBDnqcMPapcLvkdCz1OHSiyUgXe3vm-ESuHGUPTq_YTSwHo9ABrWaYUBeCmeAcRgE5oYKH1yPfbw3KpaAdMOChDqOZZkQ-LnBCc82MDTHHiWPw46cXL-i8hhW8ymwM96MM7fibluSljqXLOCA0xQ8l9luy9Qc2ggyX4Jpan0RDr8lZHHJWHPiihGGAiBKZCuhHKI-5NDYPGt8J30ebj0sn4hPjTSgLhqi8S3DMPnrbHMEFY6_q6wL6dhjDwHuh7T_nyLIu3cPc1SFeCRKe8TYCSaXHl68M6khSdgR61Tub-4sVZLxieyzlBf3Qzo7tpGYDf3gAVhgv9Y2h13zU2FhbPBNHkmusWOsu97ky_-kmpBP5YXaqNTDzPZt6cXNuDS98yuxZEMs";
-    return token;
+    try {
+        const token = store.getState().auth.login.user.token;
+        return token;
+    } catch (error) {
+        return null;
+    }
 }
 
 export const get = (route) => async dispatch => {
@@ -22,13 +27,12 @@ export const get = (route) => async dispatch => {
         method: 'GET',
         headers: {
             'content-type': 'application/json',
+            'Authorization': `Bearer ${_TOKEN()}`
         },
     })
         .then(res => res.json())
         .then(res => {
             Toast.show(res.message);
-            if (res.success)
-                dispatch(onLogin(res.data))
             return res;
         })
         .catch(err => showNetworkError());
@@ -39,6 +43,7 @@ export const post = (route, params) => async dispatch => {
         method: 'POST',
         headers: {
             'content-type': 'application/json',
+            'Authorization': `Bearer ${_TOKEN()}`
         },
         body: JSON.stringify(params)
     })
