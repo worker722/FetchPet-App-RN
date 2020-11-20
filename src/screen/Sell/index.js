@@ -14,11 +14,15 @@ import { Header } from '@components';
 import MapView from 'react-native-maps';
 // import ModalPicker from 'react-native-modal-picker';
 
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { store, SetPrefrence, GetPrefrence } from "@store";
+import * as Api from '@api';
 
 const tempCategoryData = ['Dog', 'Cat', 'Parrot'];
 const tempBreedData = ['BullDog', 'Persion', 'Shepeter'];
 const tempGenderData = ['Male', 'Female'];
-export default class Sell extends Component {
+class Sell extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -26,6 +30,11 @@ export default class Sell extends Component {
             selectedBreed: 'Dog',
             selectedGender: 'Male'
         }
+    }
+
+    componentWillMount = async () => {
+        const response = this.props.api.get('ads/sell');
+        console.log(response);
     }
 
     render = () => {
@@ -145,3 +154,11 @@ export default class Sell extends Component {
         )
     }
 }
+
+
+const mapDispatchToProps = dispatch => {
+    return {
+        api: bindActionCreators(Api, dispatch)
+    };
+};
+export default connect(null, mapDispatchToProps)(Sell);

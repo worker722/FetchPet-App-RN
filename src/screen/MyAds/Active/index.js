@@ -110,7 +110,7 @@ export default class Active extends Component {
 
         return (
             <TouchableOpacity style={{ flex: 1, flexDirection: "row", marginBottom: 10, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor, padding: 10 }}
-                onPress={() => navigation.navigate("AdDetail", { item: item })}>
+                onPress={() => navigation.navigate("AdDetail", { ad_id: 1 })}>
                 <View style={{ justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
                     <Avatar
                         size='xlarge'
