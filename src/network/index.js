@@ -4,7 +4,7 @@ import Toast from 'react-native-simple-toast';
 import * as actionTypes from "./actionTypes";
 import { store } from '@store';
 
-const SERVER_HOST = 'http://10.0.2.2:8000';
+export const SERVER_HOST = 'http://10.0.2.2:8000';
 
 const onLogin = data => {
     return {
@@ -35,10 +35,10 @@ export const get = (route) => async dispatch => {
             Toast.show(res.message);
             return res;
         })
-        .catch(err => showNetworkError());
+        .catch(err => console.log(err));
 }
 
-export const post = (route, params) => async dispatch => {
+export const post = (route, params, is_store) => async dispatch => {
     return fetch(`${SERVER_HOST}/api/${route}`, {
         method: 'POST',
         headers: {
@@ -50,11 +50,11 @@ export const post = (route, params) => async dispatch => {
         .then(res => res.json())
         .then(res => {
             Toast.show(res.message);
-            if (res.success)
+            if (res.success && is_store)
                 dispatch(onLogin(res.data))
             return res;
         })
-        .catch(err => showNetworkError());
+        .catch(err => console.log(err));
 }
 
 export const showNetworkError = () => {
