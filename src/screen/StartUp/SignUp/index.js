@@ -62,7 +62,7 @@ class SignUp extends Component {
             terms: termAgree
         }
 
-        const response = await this.props.api.post("signup", param);
+        const response = await this.props.api.post("signup", param, true);
         this.setState({ showLoading: false });
 
         if (response.success) {
@@ -80,11 +80,11 @@ class SignUp extends Component {
             if (userInfo.user.name == null)
                 userInfo.user.name = "lucky-fetch";
             const params = { name: userInfo.user.name, email: userInfo.user.email, password: "@fetch@", is_social: 1 };
-            const response = await this.props.api.post("signup", params);
+            const response = await this.props.api.post("signup", params, true);
 
             this.setState({ showLoading: false });
 
-            if (response?.success) {
+            if (response.success) {
                 SetPrefrence('rememberMe', 0);
                 this.props.navigation.navigate("Home");
             }

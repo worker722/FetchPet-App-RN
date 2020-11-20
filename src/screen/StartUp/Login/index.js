@@ -56,7 +56,7 @@ class Login extends Component {
         this.setState({ showLoading: true });
 
         const params = { email: email, password: password };
-        const response = await this.props.api.post("login", params);
+        const response = await this.props.api.post("login", params, true);
 
         this.setState({ showLoading: false });
 
@@ -68,17 +68,19 @@ class Login extends Component {
 
     googleLogin = async () => {
         try {
+            const { rememberMe } = this.state;
+
             this.setState({ showLoading: true });
 
             await GoogleSignin.hasPlayServices();
             const userInfo = await GoogleSignin.signIn();
             console.log(userInfo);
             const params = { email: userInfo.user.email, password: "@fetch@", is_social: 1 };
-            const response = await this.props.api.post("login", params);
+            const response = await this.props.api.post("login", params, true);
 
             this.setState({ showLoading: false });
 
-            if (response?.success) {
+            if (response.success) {
                 SetPrefrence('rememberMe', rememberMe ? 1 : 0);
                 this.props.navigation.navigate("Home");
             }
