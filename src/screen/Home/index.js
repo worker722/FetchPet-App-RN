@@ -59,8 +59,10 @@ class Home extends Component {
                 min: 0,
                 max: 10000,
             },
+            searchText: '',
 
             showLoader: false,
+            showContentLoader: false
         }
     }
 
@@ -76,54 +78,51 @@ class Home extends Component {
         if (response.success) {
 
             let ads = response.data.ads;
+            // let filterCategory = response.data.category;
             let topCategory = response.data.category;
-            let filterCategory = response.data.category;
             let filterBreed = response.data.breed;
 
-            topCategory.forEach((item, key) => {
+            topCategory.filter((item, index) => {
                 item.type = FILTER_TYPE.TOP_CATEGORY;
                 item.is_selected = false;
             });
+            topCategory.unshift({ id: -1, name: "All", is_selected: true, type: FILTER_TYPE.TOP_CATEGORY });
 
-            const item_all = {
-                id: -1,
-                type: FILTER_TYPE.TOP_CATEGORY,
-                name: "All",
-                is_selected: true,
-            }
-            topCategory.unshift(item_all);
+            // filterCategory.filter((item, index) => {
+            //     if (index == 0) item.is_selected = true;
+            //     else item.is_selected = false;
+            // });
 
-            filterCategory.forEach((item, key) => {
-                item.type = FILTER_TYPE.CATEGORY;
-                if (key == 0) item.is_selected = true;
+            filterBreed.filter((item, index) => {
+                if (index == 0) item.is_selected = true;
                 else item.is_selected = false;
-            });
-
-            filterBreed.forEach((item, key) => {
-                item.type = FILTER_TYPE.BREED;
-                if (key == 0)
-                    item.is_selected = true;
-                else
-                    item.is_selected = false;
-            });
+            })
 
             this.setState({
                 pets: ads,
                 topCategory: topCategory,
-                filterCategory: filterCategory,
+                // filterCategory: filterCategory,
                 filterBreed: filterBreed
             })
         }
     }
 
-    filterSelected = (type, id) => {
+    filterSelected = async (type, id) => {
         if (type == FILTER_TYPE.TOP_CATEGORY) {
+            this.setState({ showContentLoader: true });
             let topCategory = this.state.topCategory;
             topCategory.forEach((item, key) => {
                 if (item.id == id) item.is_selected = true;
                 else item.is_selected = false;
             });
             this.setState({ topCategory: topCategory });
+            const param = { id_category: id };
+            const response = await this.props.api.post('home/filter_category', param);
+            this.setState({ showContentLoader: false });
+
+            if (response.success) {
+                this.setState({ pets: response.data.ads });
+            }
         }
         else if (type == FILTER_TYPE.CATEGORY) {
             let filterCategory = this.state.filterCategory;
@@ -156,13 +155,14 @@ class Home extends Component {
         let categoryItem = filterCategory.filter((item, index) => {
             return item.is_selected;
         });
-        console.log(categoryItem);
     }
 
-    setCategoryFav = (item, value) => {
-        let category = this.state.category;
-        category[item.index].is_fav = value;
-        this.setState({ category: category });
+    favouriteAds = async (index, item, value) => {
+        let pets = this.state.pets;
+        pets[index].is_fav = value;
+        this.setState({ pets: pets });
+        const param = { ad_id: item.id, is_fav: value };
+        const response = await this.props.api.post('ads/ad_favourite', param);
     }
 
     renderFilterItem = ({ item, index }) => {
@@ -173,11 +173,26 @@ class Home extends Component {
         )
     }
 
+    searchAds = async () => {
+        const { searchText } = this.state;
+        if (searchText == '')
+            return;
+
+        this.setState({ showContentLoader: true });
+        const param = { searchText: searchText };
+        const response = await this.props.api.post('home/search', param);
+        this.setState({ showContentLoader: false });
+        console.log(response);
+        if (response.success) {
+            this.setState({ pets: response.data.ads });
+        }
+    }
+
     goAdsDetail = (id) => {
         this.props.navigation.navigate("AdDetail", { ad_id: id });
     }
 
-    renderPetItem = ({ item }) => {
+    renderPetItem = ({ item, index }) => {
         return (
             <TouchableOpacity style={{ flex: 1, flexDirection: "row", marginBottom: 20 }} onPress={() => this.goAdsDetail(item.id)}>
                 <View>
@@ -201,11 +216,11 @@ class Home extends Component {
                     <Text style={{ color: "grey", fontSize: 10 }}>10 requestes, 16 hours ago</Text>
                     <Text style={{ fontSize: 20, textAlign: "right" }}>$ {item.price}</Text>
                     {item.is_fav ?
-                        <TouchableOpacity onPress={() => this.setCategoryFav(item, false)} style={{ position: "absolute", bottom: 0, right: 0 }}>
+                        <TouchableOpacity onPress={() => this.favouriteAds(index, item, false)} style={{ position: "absolute", bottom: 0, right: 0 }}>
                             <Icon name={"heart"} size={20} color={BaseColor.primaryColor} solid></Icon>
                         </TouchableOpacity>
                         :
-                        <TouchableOpacity onPress={() => this.setCategoryFav(item, true)} style={{ position: "absolute", bottom: 0, right: 0 }}>
+                        <TouchableOpacity onPress={() => this.favouriteAds(index, item, true)} style={{ position: "absolute", bottom: 0, right: 0 }}>
                             <Icon name={"heart"} size={20} color={BaseColor.primaryColor} ></Icon>
                         </TouchableOpacity>
                     }
@@ -216,7 +231,7 @@ class Home extends Component {
 
     render = () => {
 
-        const { pets, showLoader, topCategory, filterCategory, filterBreed, filterGender } = this.state;
+        const { pets, showLoader, showContentLoader, topCategory, filterCategory, filterBreed, filterGender } = this.state;
 
         if (showLoader)
             return (<Loader />);
@@ -243,8 +258,11 @@ class Home extends Component {
                 <Header navigation={this.props.navigation} mainHeader={true} />
                 <View style={{ flexDirection: "row", width: "100%", height: 40, paddingHorizontal: 10, alignItems: "center", justifyContent: "center" }}>
                     <View style={{ borderRadius: 5, height: 40, flex: 1, backgroundColor: BaseColor.primaryColor }}>
-                        <TextInput style={{ flex: 1, paddingLeft: 45, paddingRight: 20, color: "white" }} placeholder={"Search"} placeholderTextColor={"#fff"}></TextInput>
-                        <TouchableOpacity style={{ position: "absolute", left: 10, top: 10 }}>
+                        <TextInput
+                            onChangeText={(text) => this.setState({ searchText: text })}
+                            style={{ flex: 1, paddingLeft: 45, paddingRight: 20, color: "white" }}
+                            placeholder={"Search"} placeholderTextColor={"#fff"}></TextInput>
+                        <TouchableOpacity style={{ position: "absolute", padding: 10 }} onPress={() => this.searchAds()}>
                             <Icon name={"search"} size={20} color={BaseColor.whiteColor}></Icon>
                         </TouchableOpacity>
                     </View>
@@ -267,12 +285,16 @@ class Home extends Component {
                     />
                 </View>
                 <Text style={{ color: BaseColor.primaryColor, fontSize: 20, fontWeight: "600", marginLeft: 10 }}>Latest</Text>
-                <FlatList
-                    style={{ paddingHorizontal: 10, marginTop: 10 }}
-                    keyExtractor={(item, index) => index.toString()}
-                    data={pets}
-                    renderItem={this.renderPetItem}
-                />
+                {showContentLoader ?
+                    <Loader />
+                    :
+                    <FlatList
+                        style={{ paddingHorizontal: 10, marginTop: 10 }}
+                        keyExtractor={(item, index) => index.toString()}
+                        data={pets}
+                        renderItem={this.renderPetItem}
+                    />
+                }
 
                 <RBSheet
                     ref={ref => {
@@ -288,7 +310,7 @@ class Home extends Component {
                         }
                     }}>
 
-                    <View style={{ flex: 1, padding: 20 }}>
+                    <View style={{ flex: 1, padding: 10 }}>
                         <View style={{ justifyContent: "center", alignItems: "center" }}>
                             <View style={{ width: 120, height: 8, backgroundColor: "#9b9b9b", borderRadius: 100 }}></View>
                         </View>
