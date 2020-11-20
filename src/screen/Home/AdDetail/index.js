@@ -13,7 +13,9 @@ import Swiper from 'react-native-swiper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Avatar, Image } from 'react-native-elements';
 import { Rating } from 'react-native-ratings';
+
 import MapView from 'react-native-maps';
+import Geocoder from 'react-native-geocoder';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -33,10 +35,20 @@ class AdDetail extends Component {
 
     componentWillMount = async () => {
         this.setState({ showLoader: true });
-        console.log(this.props.navigation.state.params.ad_id);
         const param = { ad_id: this.props.navigation.state.params.ad_id };
         const response = await this.props.api.post('ads/ad_detail', param);
         this.setState({ showLoader: false, ads: response.data.ads });
+
+        var NY = {
+            lat: 40.7809261,
+            lng: -73.9637594
+        };
+        try {
+            const res = await Geocoder.geocodePosition(NY);
+            console.log(res)
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     favouriteAds = async () => {
@@ -68,10 +80,10 @@ class AdDetail extends Component {
                     <View style={{ height: slider_height }}>
                         <Swiper style={{ height: slider_height }} autoplay={true} dotColor={"white"} paginationStyle={{ position: "absolute", bottom: 10 }} activeDotColor={BaseColor.primaryColor} dotStyle={{ width: 8, height: 8, borderRadius: 100 }} activeDotStyle={{ width: 11, height: 11, borderRadius: 100 }}>
                             {ads.meta.map((item, key) => (
-                                <View style={{ flex: 1 }}>
+                                <View key={key} style={{ flex: 1 }}>
                                     <Image source={{ uri: Api.SERVER_HOST + item.meta_value }}
                                         style={{ width: "100%", height: slider_height }}
-                                        PlaceholderContent={<ActivityIndicator size={30} color={BaseColor.price}
+                                        PlaceholderContent={<ActivityIndicator size={30} color={BaseColor.primaryColor}
                                             placeholderStyle={{ backgroundColor: "white" }} />}
                                     />
                                 </View>
@@ -110,11 +122,11 @@ class AdDetail extends Component {
                         </View>
                         <Text style={{ color: BaseColor.greyColor, marginTop: 15, fontSize: 13 }}>Description</Text>
                         <Text style={{ fontSize: 14 }}>{ads.description}</Text>
-                        <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }} onPress={() => navigation.navigate("Profile")}>
+                        <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }} onPress={() => navigation.navigate("Profile", { user_id: ads.user.id })}>
                             <Avatar
                                 size='medium'
                                 rounded
-                                source={{ uri: ads.user.avatar }}
+                                source={{ uri: Api.SERVER_HOST + ads.user.avatar }}
                                 activeOpacity={0.7}
                                 placeholderStyle={{ backgroundColor: "transparent" }}
                                 PlaceholderContent={<ActivityIndicator size={15} color-={BaseColor.primaryColor} />}
@@ -139,10 +151,10 @@ class AdDetail extends Component {
                         <View style={{ width: "100%", height: 200, paddingTop: 10 }}>
                             <MapView
                                 region={{
-                                    latitude: ads.lat,
-                                    longitude: ads.long,
-                                    // latitudeDelta: 0.0922,
-                                    // longitudeDelta: 0.0421,
+                                    latitude: 40.014984,
+                                    longitude: -105.270546,
+                                    latitudeDelta: 0.1,
+                                    longitudeDelta: 0.1,
                                 }}
                                 style={{ flex: 1 }}
                             >
@@ -150,18 +162,20 @@ class AdDetail extends Component {
                         </View>
                     </View>
                 </ScrollView>
-                <View style={{ padding: 10, flexDirection: "row", height: 65 }}>
-                    <TouchableOpacity onPress={() => navigation.navigate("Inbox")} style={{ borderWidth: 1, borderColor: BaseColor.greyColor, marginRight: "10%", borderRadius: 10, height: 45, width: "45%", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
+                <View style={{ padding: 10, flexDirection: "row", height: 60 }}>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate("Inbox")}
+                        style={{ borderWidth: 1, borderColor: BaseColor.greyColor, marginRight: "10%", borderRadius: 10, height: 40, width: "45%", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
                         <Icon name={"comment"} color={BaseColor.primaryColor} size={20}></Icon>
                         <Text style={{ color: BaseColor.primaryColor, fontSize: 18, marginLeft: 10 }}>Chat</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{ backgroundColor: BaseColor.primaryColor, borderRadius: 10, height: 45, width: "45%", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
+                    <TouchableOpacity
+                        style={{ backgroundColor: BaseColor.primaryColor, borderRadius: 10, height: 40, width: "45%", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
                         <Icon name={"phone"} color={"#fff"} size={20}></Icon>
-                        <Text style={{ color: "#fff", fontSize: 18, marginLeft: 10 }}>Chat</Text>
+                        <Text style={{ color: "#fff", fontSize: 18, marginLeft: 10 }}>Call</Text>
                     </TouchableOpacity>
                 </View>
             </View>
-
         )
     }
 }

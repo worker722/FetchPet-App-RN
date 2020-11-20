@@ -16,7 +16,6 @@ export default class Splash extends Component {
       const navigation = this.props.navigation;
 
       const rememberMe = await GetPrefrence("rememberMe");
-      console.log(store.getState().auth.login?.user?.token ,rememberMe)
       if (rememberMe == '1' && store.getState().auth.login?.user?.token)
         navigation.navigate("Home");
       else

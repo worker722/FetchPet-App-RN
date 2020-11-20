@@ -12,7 +12,6 @@ export default class Loader extends Component {
         return (
             <View style={styles.container}>
                 <SkypeIndicator
-                    //  size="large"
                     color={BaseColor.primaryColor}
                 />
             </View>
@@ -22,11 +21,9 @@ export default class Loader extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        height: '100%',
-        width: '100%',
+        flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        // backgroundColor: "#fff",
     },
 });
 

@@ -74,7 +74,6 @@ class Login extends Component {
 
             await GoogleSignin.hasPlayServices();
             const userInfo = await GoogleSignin.signIn();
-            console.log(userInfo);
             const params = { email: userInfo.user.email, password: "@fetch@", is_social: 1 };
             const response = await this.props.api.post("login", params, true);
 
