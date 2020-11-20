@@ -110,7 +110,7 @@ export default class Closed extends Component {
 
         return (
             <TouchableOpacity style={{ flex: 1, flexDirection: "row", marginBottom: 10, backgroundColor: "grey", borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor, paddingLeft: 7 }}
-                onPress={() => navigation.navigate("AdDetail", { item: item })}>
+                onPress={() => navigation.navigate("AdDetail", { ad_id: 1 })}>
                 <View style={{ justifyContent: "center", alignItems: "center", flexDirection: "row", backgroundColor: "white", paddingRight: 10 }}>
                     <Avatar
                         size='large'
