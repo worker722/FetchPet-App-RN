@@ -120,11 +120,11 @@ class SignUp extends Component {
                         source={{ uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQA1CPdgmCrD4Q68677We1wsLOaCsDbgwk6hQ&usqp=CAU" }}
                         style={{ width: "100%", height: image_height + 30 }} placeholderStyle={{ backgroundColor: "transparent" }}></Image>
                 </View>
-                <View style={{ position: "absolute", width: "100%", height: image_height, top: 0, backgroundColor: "#000", opacity: 0.3 }}></View>
+                <View style={{ position: "absolute", width: "100%", height: image_height, top: 0, backgroundColor: BaseColor.blackColor, opacity: 0.3 }}></View>
                 <TouchableOpacity onPress={() => this.props.navigation.navigate("Welcome")} style={{ position: "absolute", top: 20, left: 20 }}>
-                    <Icon name={"arrow-left"} size={20} color={"#fff"}></Icon>
+                    <Icon name={"arrow-left"} size={20} color={BaseColor.whiteColor}></Icon>
                 </TouchableOpacity>
-                <View style={{ flex: 1, borderTopLeftRadius: 20, borderTopRightRadius: 20, marginTop: image_height - 20, backgroundColor: "#fff" }}>
+                <View style={{ flex: 1, borderTopLeftRadius: 20, borderTopRightRadius: 20, marginTop: image_height - 20, backgroundColor: BaseColor.whiteColor }}>
                     <View style={{ width: "100%", height: 80, alignItems: "center", justifyContent: "center", marginTop: 20 }}>
                         <Image placeholderStyle={{ backgroundColor: "transparent" }} source={Images.logo} style={{ width: 168, height: 60 }} resizeMode={"stretch"}></Image>
                     </View>
@@ -133,27 +133,27 @@ class SignUp extends Component {
                             <View style={{ width: "80%", height: 50 }}>
                                 <TextInput
                                     onChangeText={(text) => this.setState({ username: text })}
-                                    placeholder={"Username*"} placeholderTextColor={"#fff"} style={{ fontSize: 15, paddingHorizontal: 20, color: "#fff", flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }} />
+                                    placeholder={"Username*"} placeholderTextColor={BaseColor.whiteColor} style={{ fontSize: 15, paddingHorizontal: 20, color: BaseColor.whiteColor, flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }} />
                             </View>
                             <View style={{ width: "80%", height: 50, marginTop: 20, justifyContent: "center", }}>
                                 <TextInput
                                     onChangeText={(text) => this.setState({ email: text })}
-                                    placeholder={"Email  "} textContentType={"password"} placeholderTextColor={"#fff"} style={{ fontSize: 15, paddingHorizontal: 20, color: "#fff", flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }} />
+                                    placeholder={"Email  "} textContentType={"password"} placeholderTextColor={BaseColor.whiteColor} style={{ fontSize: 15, paddingHorizontal: 20, color: BaseColor.whiteColor, flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }} />
                             </View>
                             <View style={{ width: "80%", height: 50, marginTop: 20, justifyContent: "center", }}>
                                 <TextInput
                                     onChangeText={(text) => this.setState({ password: text })}
-                                    placeholder={"Password"} textContentType={"password"} secureTextEntry={passwordSec} placeholderTextColor={"#fff"} style={{ fontSize: 15, paddingLeft: 20, paddingRight: 45, color: "#fff", flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }} />
+                                    placeholder={"Password"} textContentType={"password"} secureTextEntry={passwordSec} placeholderTextColor={BaseColor.whiteColor} style={{ fontSize: 15, paddingLeft: 20, paddingRight: 45, color: BaseColor.whiteColor, flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }} />
                                 <TouchableOpacity style={{ position: "absolute", right: 0, padding: 10 }} onPress={() => this.setState({ passwordSec: !passwordSec })}>
-                                    <Icon name={passwordSec ? "eye-slash" : "eye"} size={15} color={"#fff"} style={{ flex: 1 }}></Icon>
+                                    <Icon name={passwordSec ? "eye-slash" : "eye"} size={15} color={BaseColor.whiteColor} style={{ flex: 1 }}></Icon>
                                 </TouchableOpacity>
                             </View>
                             <View style={{ width: "80%", height: 50, marginTop: 20, justifyContent: "center", }}>
                                 <TextInput
                                     onChangeText={(text) => this.setState({ con_password: text })}
-                                    placeholder={"Retype Password"} textContentType={"password"} secureTextEntry={con_passwordSec} placeholderTextColor={"#fff"} style={{ fontSize: 15, paddingLeft: 20, paddingRight: 45, color: "#fff", flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }} />
+                                    placeholder={"Retype Password"} textContentType={"password"} secureTextEntry={con_passwordSec} placeholderTextColor={BaseColor.whiteColor} style={{ fontSize: 15, paddingLeft: 20, paddingRight: 45, color: BaseColor.whiteColor, flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }} />
                                 <TouchableOpacity style={{ position: "absolute", right: 0, padding: 10 }} onPress={() => this.setState({ con_passwordSec: !con_passwordSec })}>
-                                    <Icon name={con_passwordSec ? "eye-slash" : "eye"} size={15} color={"#fff"} style={{ flex: 1 }}></Icon>
+                                    <Icon name={con_passwordSec ? "eye-slash" : "eye"} size={15} color={BaseColor.whiteColor} style={{ flex: 1 }}></Icon>
                                 </TouchableOpacity>
                             </View>
                             <View style={{ width: "80%", height: 30, marginTop: 10, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
@@ -166,7 +166,7 @@ class SignUp extends Component {
                             </View>
                             <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 20 }} onPress={() => this.signUp()}>
                                 <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.whiteColor, borderColor: BaseColor.dddColor, borderWidth: 1, justifyContent: "center", alignItems: "center" }}>
-                                    <Text style={{ color: "#fff", fontSize: 15, color: BaseColor.primaryColor }}>SIGN UP</Text>
+                                    <Text style={{ color: BaseColor.whiteColor, fontSize: 15, color: BaseColor.primaryColor }}>SIGN UP</Text>
                                 </View>
                             </TouchableOpacity>
                             <View style={{ width: "70%", height: 15, flexDirection: "row", marginTop: 5, justifyContent: "center", alignItems: "center" }}>
@@ -178,21 +178,21 @@ class SignUp extends Component {
                                 <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 5 }} onPress={() => this.googleSignup()}>
                                     <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.googleColor, justifyContent: "center", alignItems: "center" }}>
                                         <Text style={{ color: BaseColor.whiteColor, fontSize: 13 }}>Sign Up with</Text>
-                                        <Icon name={"google-plus-g"} size={15} color={"#fff"} style={{ position: "absolute", right: 10 }}></Icon>
+                                        <Icon name={"google-plus-g"} size={15} color={BaseColor.whiteColor} style={{ position: "absolute", right: 10 }}></Icon>
                                     </View>
                                 </TouchableOpacity>
                                 :
                                 <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 10, }} onPress={() => this.appleSignup()}>
-                                    <View style={{ flex: 1, borderRadius: 10, backgroundColor: "#fff", borderWidth: 1, borderColor: BaseColor.dddColor, justifyContent: "center", alignItems: "center" }}>
-                                        <Text style={{ color: "#000", fontSize: 13 }}>Sign Up with</Text>
-                                        <Icon name={"apple"} size={15} color={"#000"} style={{ position: "absolute", right: 10 }}></Icon>
+                                    <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.whiteColor, borderWidth: 1, borderColor: BaseColor.dddColor, justifyContent: "center", alignItems: "center" }}>
+                                        <Text style={{ color: BaseColor.blackColor, fontSize: 13 }}>Sign Up with</Text>
+                                        <Icon name={"apple"} size={15} color={BaseColor.blackColor} style={{ position: "absolute", right: 10 }}></Icon>
                                     </View>
                                 </TouchableOpacity>
                             }
                             <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 10, }}>
                                 <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.faceBookColor, justifyContent: "center", alignItems: "center" }}>
                                     <Text style={{ color: BaseColor.whiteColor, fontSize: 13 }}>Sign Up with</Text>
-                                    <Icon name={"facebook-f"} size={15} color={"#fff"} style={{ position: "absolute", right: 10 }}></Icon>
+                                    <Icon name={"facebook-f"} size={15} color={BaseColor.whiteColor} style={{ position: "absolute", right: 10 }}></Icon>
                                 </View>
                             </TouchableOpacity>
                         </View>

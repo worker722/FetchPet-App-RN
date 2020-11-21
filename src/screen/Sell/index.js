@@ -147,7 +147,7 @@ class Sell extends Component {
                         </MapView>
                     </View>
                     <TouchableOpacity style={{ marginTop: 15, marginBottom: 20, backgroundColor: BaseColor.primaryColor, borderRadius: 5, justifyContent: "center", alignItems: "center", paddingVertical: 10, marginHorizontal: 15 }}>
-                        <Text style={{ color: "#fff", fontSize: 18 }}>Create AD</Text>
+                        <Text style={{ color: BaseColor.whiteColor, fontSize: 18 }}>Create AD</Text>
                     </TouchableOpacity>
                 </ScrollView>
             </View>

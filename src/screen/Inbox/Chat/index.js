@@ -88,7 +88,7 @@ export default class Chat extends Component {
             <View style={{ flex: 1 }}>
                 <View style={{ width: "100%", height: 80, backgroundColor: BaseColor.primaryColor, flexDirection: "row", padding: 10 }}>
                     <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", padding: 10 }} onPress={() => this.props.navigation.goBack(null)} >
-                        <Icon name={"arrow-left"} size={20} color={"#fff"}></Icon>
+                        <Icon name={"arrow-left"} size={20} color={BaseColor.whiteColor}></Icon>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate("Profile")} style={{ justifyContent: "center", alignItems: "center", marginLeft: 10 }}>
                         <Avatar
@@ -105,7 +105,7 @@ export default class Chat extends Component {
                             source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRqpVnlXSLL_JcgkyUeI5vHfUp1bGhuJ62fhw&usqp=CAU' }}
                             activeOpacity={0.7}
                             placeholderStyle={{ backgroundColor: "transparent" }}
-                            containerStyle={{ position: "absolute", bottom: 0, right: 0, borderWidth: 1, borderColor: "#fff", width: 30, height: 30 }}>
+                            containerStyle={{ position: "absolute", bottom: 0, right: 0, borderWidth: 1, borderColor: BaseColor.whiteColor, width: 30, height: 30 }}>
                         </Avatar>
                     </TouchableOpacity>
                     <View style={{ justifyContent: "center", paddingLeft: 10, flex: 1 }}>
