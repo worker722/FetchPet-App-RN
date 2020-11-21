@@ -94,7 +94,7 @@ class AdDetail extends Component {
                         <Header icon_left={"arrow-left"} icon_right={"share-alt"} color_icon_left={"white"} color_icon_right={"white"} callback_left={this.goBack} callback_right={this.shareAds} />
                     </View>
                     <View style={{ position: "absolute", top: (slider_height - 40), right: 10 }}>
-                        <Text style={{ fontSize: 18, color: "#fff", fontWeight: "bold" }}>$ {ads.price}</Text>
+                        <Text style={{ fontSize: 18, color: BaseColor.whiteColor, fontWeight: "bold" }}>$ {ads.price}</Text>
                     </View>
 
                     <View style={{ flex: 1, padding: 20 }}>
@@ -171,8 +171,8 @@ class AdDetail extends Component {
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={{ backgroundColor: BaseColor.primaryColor, borderRadius: 10, height: 40, width: "45%", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
-                        <Icon name={"phone"} color={"#fff"} size={20}></Icon>
-                        <Text style={{ color: "#fff", fontSize: 18, marginLeft: 10 }}>Call</Text>
+                        <Icon name={"phone"} color={BaseColor.whiteColor} size={20}></Icon>
+                        <Text style={{ color: BaseColor.whiteColor, fontSize: 18, marginLeft: 10 }}>Call</Text>
                     </TouchableOpacity>
                 </View>
             </View>

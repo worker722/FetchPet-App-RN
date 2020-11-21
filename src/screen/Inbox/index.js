@@ -76,7 +76,7 @@ export default class Inbox extends Component {
                         source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRqpVnlXSLL_JcgkyUeI5vHfUp1bGhuJ62fhw&usqp=CAU' }}
                         activeOpacity={0.7}
                         placeholderStyle={{ backgroundColor: "transparent" }}
-                        containerStyle={{ position: "absolute", bottom: 0, right: 0, borderWidth: 1, borderColor: "#fff" }}>
+                        containerStyle={{ position: "absolute", bottom: 0, right: 0, borderWidth: 1, borderColor: BaseColor.whiteColor }}>
                     </Avatar>
                 </View>
                 <View style={{ marginLeft: 10, justifyContent: "center", flex: 1 }}>

@@ -81,7 +81,7 @@ const routeConfigs = {
 							width: 40,
 							height: 40,
 							alignContent: 'center',
-							backgroundColor: "#fff",
+							backgroundColor: BaseColor.whiteColor,
 							marginBottom: 15,
 							borderRadius: 100,
 							zIndex: 1000

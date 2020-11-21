@@ -89,8 +89,8 @@ export default class ProfileEdit extends Component {
                         {is_edit &&
                             <TouchableOpacity
                                 onPress={() => this.setState({ visiblePickerModal: true })}
-                                style={{ width: 40, height: 40, backgroundColor: BaseColor.primaryColor, position: "absolute", justifyContent: "center", alignItems: "center", bottom: 0, right: 0, borderRadius: 100, borderWidth: 3, borderColor: "#fff" }}>
-                                <Icon name={"camera"} size={18} color={"#fff"}></Icon>
+                                style={{ width: 40, height: 40, backgroundColor: BaseColor.primaryColor, position: "absolute", justifyContent: "center", alignItems: "center", bottom: 0, right: 0, borderRadius: 100, borderWidth: 3, borderColor: BaseColor.whiteColor }}>
+                                <Icon name={"camera"} size={18} color={BaseColor.whiteColor}></Icon>
                             </TouchableOpacity>
                         }
                     </View>
@@ -172,7 +172,7 @@ export default class ProfileEdit extends Component {
                                 onPress={() => this.openPhotoPicker(0)}
                                 style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
                                 <View style={{ width: 50, height: 50, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
-                                    <Icon name={"camera"} size={20} color={"#fff"}></Icon>
+                                    <Icon name={"camera"} size={20} color={BaseColor.whiteColor}></Icon>
                                 </View>
                                 <Text style={{ flex: 1, fontSize: 17, marginLeft: 20 }}>Camera</Text>
                             </TouchableOpacity>
@@ -180,7 +180,7 @@ export default class ProfileEdit extends Component {
                                 onPress={() => this.openPhotoPicker(1)}
                                 style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 20 }}>
                                 <View style={{ width: 50, height: 50, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
-                                    <Icon name={"image"} size={20} color={"#fff"}></Icon>
+                                    <Icon name={"image"} size={20} color={BaseColor.whiteColor}></Icon>
                                 </View>
                                 <Text style={{ flex: 1, fontSize: 17, marginLeft: 20 }}>Gallery</Text>
                             </TouchableOpacity>
@@ -188,7 +188,7 @@ export default class ProfileEdit extends Component {
                                 onPress={() => this.openPhotoPicker(2)}
                                 style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 20 }}>
                                 <View style={{ width: 50, height: 50, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
-                                    <Icon name={"trash-alt"} size={20} color={"#fff"}></Icon>
+                                    <Icon name={"trash-alt"} size={20} color={BaseColor.whiteColor}></Icon>
                                 </View>
                                 <Text style={{ flex: 1, fontSize: 17, marginLeft: 20 }}>Remove</Text>
                             </TouchableOpacity>
