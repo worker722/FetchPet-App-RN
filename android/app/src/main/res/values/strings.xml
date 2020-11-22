@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Fetch</string>
+    <string name="default_notification_channel_id">Fetch-ID</string>
 </resources>

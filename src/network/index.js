@@ -33,6 +33,7 @@ export const get = (route) => async dispatch => {
         .then(res => res.json())
         .then(res => {
             Toast.show(res.message);
+            console.log(res);
             return res;
         })
         .catch(err => console.log(err));

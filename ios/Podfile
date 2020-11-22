@@ -10,6 +10,8 @@ target 'Fetch' do
 
   pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
 
+  pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
+
   target 'FetchTests' do
     inherit! :complete
     # Pods for testing

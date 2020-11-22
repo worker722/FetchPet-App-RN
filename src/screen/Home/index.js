@@ -6,6 +6,9 @@ import {
     TouchableOpacity,
     TextInput,
     ActivityIndicator,
+    AppState,
+    Platform,
+    Alert
 } from 'react-native';
 import { Image } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -16,6 +19,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { store, SetPrefrence, GetPrefrence } from "@store";
 import * as Api from '@api';
+
+import messaging from '@react-native-firebase/messaging';
 
 import { Loader, Header } from '@components';
 
@@ -66,13 +71,84 @@ class Home extends Component {
         }
     }
 
+    createNotificationListeners = async () => {
+        /*
+        * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
+        * */
+        messaging().onNotificationOpenedApp((notificationOpen) => {
+            console.log('notificationOpen', notificationOpen)
+        });
+
+        /*
+        * If your app is closed, you can check if it was opened by a notification being clicked / tapped / opened as follows:
+        * */
+        const notificationOpen = await messaging().getInitialNotification();
+        if (notificationOpen) {
+            const { title, body } = notificationOpen.notification;
+        }
+
+        messaging().onMessage(async message => {
+            console.log('message', message)
+        });
+    }
+
     componentWillMount = async () => {
         await this.start();
+    }
+
+    componentWillUnmount = async () => {
+        AppState.removeEventListener('change', this.handleAppStateChange);
+    }
+
+    componentDidMount = async () => {
+        await this.checkPermission();
+        await this.createNotificationListeners();
+        AppState.addEventListener('change', this.handleAppStateChange);
+    }
+
+    checkPermission = async () => {
+        console.log('check permission')
+        const enabled = await messaging().hasPermission();
+        if (enabled) {
+            this.getToken();
+        } else {
+            this.requestPermission();
+        }
+    }
+
+    getToken = async () => {
+        const fcmToken = await messaging().getToken();
+        if (fcmToken) {
+            console.log('fcmToken', fcmToken);
+        }
+    }
+
+    requestPermission = async () => {
+        try {
+            await messaging().requestPermission();
+            this.getToken();
+        } catch (error) {
+            console.log('permission rejected');
+        }
+    }
+
+    displayNotification(title, body) {
+        Alert.alert(
+            title, body,
+            [
+                { text: 'Ok', onPress: () => console.log('ok pressed') },
+            ],
+            { cancelable: false },
+        );
+    }
+
+    handleAppStateChange = (nextAppState) => {
     }
 
     start = async () => {
         this.setState({ showLoader: true })
         const response = await this.props.api.get('home');
+        console.log(response);
         this.setState({ showLoader: false });
 
         if (response.success) {
@@ -158,11 +234,11 @@ class Home extends Component {
     }
 
     favouriteAds = async (index, item, value) => {
-        let pets = this.state.pets;
-        pets[index].is_fav = value;
-        this.setState({ pets: pets });
-        const param = { ad_id: item.id, is_fav: value };
-        const response = await this.props.api.post('ads/ad_favourite', param);
+        // let pets = this.state.pets;
+        // pets[index].is_fav = value;
+        // this.setState({ pets: pets });
+        // const param = { ad_id: item.id, is_fav: value };
+        // const response = await this.props.api.post('ads/ad_favourite', param);
     }
 
     renderFilterItem = ({ item, index }) => {
@@ -261,7 +337,7 @@ class Home extends Component {
                         <TextInput
                             onChangeText={(text) => this.setState({ searchText: text })}
                             style={{ flex: 1, paddingLeft: 45, paddingRight: 20, color: "white" }}
-                            placeholder={"Search"} placeholderTextColor={"#fff"}></TextInput>
+                            placeholder={"Search"} placeholderTextColor={BaseColor.whiteColor}></TextInput>
                         <TouchableOpacity style={{ position: "absolute", padding: 10 }} onPress={() => this.searchAds()}>
                             <Icon name={"search"} size={20} color={BaseColor.whiteColor}></Icon>
                         </TouchableOpacity>
