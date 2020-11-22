@@ -19,8 +19,9 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { store, SetPrefrence, GetPrefrence } from "@store";
 import * as Api from '@api';
+import * as global from "@api/global";
 
-import messaging from '@react-native-firebase/messaging';
+import firebase from 'react-native-firebase';
 
 import { Loader, Header } from '@components';
 
@@ -71,84 +72,150 @@ class Home extends Component {
         }
     }
 
-    createNotificationListeners = async () => {
+    async createNotificationListeners() {
+        firebase.notifications().onNotificationDisplayed((notification) => {
+            // Process your notification as required
+            // ANDROID: Remote notifications do not contain the channel ID. You will have to specify this manually if you'd like to re-display the notification.
+        });
+
+        /*
+        * Triggered when a particular notification has been received in foreground
+        * */
+        firebase.notifications().onNotification((notification) => {
+            const { title, body } = notification;
+        });
+
         /*
         * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
         * */
-        messaging().onNotificationOpenedApp((notificationOpen) => {
-            console.log('notificationOpen', notificationOpen)
+        firebase.notifications().onNotificationOpened((notificationOpen) => {
+            const { title, body } = notificationOpen.notification;
         });
 
         /*
         * If your app is closed, you can check if it was opened by a notification being clicked / tapped / opened as follows:
         * */
-        const notificationOpen = await messaging().getInitialNotification();
+        const notificationOpen = await firebase.notifications().getInitialNotification();
         if (notificationOpen) {
             const { title, body } = notificationOpen.notification;
         }
 
-        messaging().onMessage(async message => {
-            console.log('message', message)
+        firebase.messaging().onMessage(async message => {
+            console.log('message', message);
+            // this.displayNotification(message.data.title, message.data.body);
         });
+    }
+
+    displayNotification(title, body) {
+        if (Platform.OS === "android") {
+            const localNotification = new firebase.notifications.Notification({
+                sound: 'default',
+                show_in_foreground: true,
+            })
+                .setNotificationId(new Date().toLocaleString())
+                .setTitle(title)
+                .setBody(body)
+                .android.setChannelId(global.NOTIFICATION_CHANNEL_ID)
+                .android.setColor('#ffffff')
+                .android.setPriority(firebase.notifications.Android.Priority.High);
+
+            firebase.notifications()
+                .displayNotification(localNotification)
+                .catch(err => console.error(err));
+        }
+        else {
+            const localNotification = new firebase.notifications.Notification()
+                .setNotificationId(new Date().toLocaleString())
+                .setTitle(title)
+                .setBody(body)
+
+            firebase.notifications()
+                .displayNotification(localNotification)
+                .catch(err => console.error(err));
+        }
+    }
+
+    handleAppStateChange = (nextAppState) => { }
+
+    componentWillUnmount = async () => {
+        AppState.removeEventListener('change', this.handleAppStateChange);
+        if (Platform.OS === 'ios')
+            this.notificationListenerIOS && this.notificationListenerIOS();
+        else
+            this.notificationListenerANDROID && this.notificationListenerANDROID();
+    }
+
+    componentDidMount = async () => {
+        await this.createNotificationListeners();
+        AppState.addEventListener('change', this.handleAppStateChange);
+
+        if (Platform.OS == "android") {
+            const channel = new firebase.notifications.Android.Channel(
+                global.NOTIFICATION_CHANNEL_ID,
+                global.NOTIFICATION_CHANNEL_NAME,
+                firebase.notifications.Android.Importance.High
+            ).setDescription(global.NOTIFICATION_CHANNEL_DESCRIPTION);
+            firebase.notifications().android.createChannel(channel);
+        }
+
+        firebase.messaging().hasPermission()
+            .then(enabled => {
+                if (enabled) {
+                    firebase.messaging().getToken().then(token => {
+                        console.log('fcmToken', token)
+                    })
+
+                    if (Platform.OS === 'ios') {
+                        this.notificationListenerIOS = firebase.messaging().onMessage(notification => {
+                            console.log(notification);
+                            const localNotification = new firebase.notifications.Notification()
+                                .setNotificationId(new Date().toLocaleString())
+                                .setTitle(notification.title)
+                                .setBody(notification.body)
+
+                            firebase.notifications()
+                                .displayNotification(localNotification)
+                                .catch(err => console.error(err));
+                        })
+                    } else {
+                        this.notificationListenerANDROID = firebase.notifications().onNotification(notification => {
+                            console.log(notification);
+                            const localNotification = new firebase.notifications.Notification({
+                                sound: 'default',
+                                show_in_foreground: true,
+                            })
+                                .setNotificationId(notification._notificationId)
+                                .setTitle(notification.title)
+                                .setBody(notification.body)
+                                .android.setChannelId(global.NOTIFICATION_CHANNEL_ID)
+                                .android.setColor('#ffffff')
+                                .android.setPriority(firebase.notifications.Android.Priority.High);
+
+                            firebase.notifications()
+                                .displayNotification(localNotification)
+                                .catch(err => console.error(err));
+                        })
+                    }
+                } else {
+                    firebase.messaging().requestPermission()
+                        .then(() => {
+                            firebase.messaging().registerForNotifications()
+                            alert("User Now Has Permission")
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                }
+            });
     }
 
     componentWillMount = async () => {
         await this.start();
     }
 
-    componentWillUnmount = async () => {
-        AppState.removeEventListener('change', this.handleAppStateChange);
-    }
-
-    componentDidMount = async () => {
-        await this.checkPermission();
-        await this.createNotificationListeners();
-        AppState.addEventListener('change', this.handleAppStateChange);
-    }
-
-    checkPermission = async () => {
-        console.log('check permission')
-        const enabled = await messaging().hasPermission();
-        if (enabled) {
-            this.getToken();
-        } else {
-            this.requestPermission();
-        }
-    }
-
-    getToken = async () => {
-        const fcmToken = await messaging().getToken();
-        if (fcmToken) {
-            console.log('fcmToken', fcmToken);
-        }
-    }
-
-    requestPermission = async () => {
-        try {
-            await messaging().requestPermission();
-            this.getToken();
-        } catch (error) {
-            console.log('permission rejected');
-        }
-    }
-
-    displayNotification(title, body) {
-        Alert.alert(
-            title, body,
-            [
-                { text: 'Ok', onPress: () => console.log('ok pressed') },
-            ],
-            { cancelable: false },
-        );
-    }
-
-    handleAppStateChange = (nextAppState) => {
-    }
-
     start = async () => {
         this.setState({ showLoader: true })
         const response = await this.props.api.get('home');
-        console.log(response);
         this.setState({ showLoader: false });
 
         if (response.success) {
@@ -258,7 +325,6 @@ class Home extends Component {
         const param = { searchText: searchText };
         const response = await this.props.api.post('home/search', param);
         this.setState({ showContentLoader: false });
-        console.log(response);
         if (response.success) {
             this.setState({ pets: response.data.ads });
         }

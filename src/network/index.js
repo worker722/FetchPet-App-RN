@@ -1,14 +1,14 @@
 import { Alert } from 'react-native';
 import RNRestart from 'react-native-restart';
 import Toast from 'react-native-simple-toast';
-import * as actionTypes from "./actionTypes";
+import * as global from "./global";
 import { store } from '@store';
 
 export const SERVER_HOST = 'http://10.0.2.2:8000';
 
 const onLogin = data => {
     return {
-        type: actionTypes.LOGIN,
+        type: global.LOGIN,
         data
     };
 };
@@ -33,7 +33,6 @@ export const get = (route) => async dispatch => {
         .then(res => res.json())
         .then(res => {
             Toast.show(res.message);
-            console.log(res);
             return res;
         })
         .catch(err => console.log(err));

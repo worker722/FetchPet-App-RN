@@ -1,4 +1,4 @@
-import * as actionTypes from "@api/actionTypes";
+import * as global from "@api/global";
 const initialState = {
   login: {
     success: false
@@ -7,7 +7,7 @@ const initialState = {
 
 export default (state = initialState, action = {}) => {
   switch (action.type) {
-    case actionTypes.LOGIN:
+    case global.LOGIN:
       return {
         login: action.data
       };
