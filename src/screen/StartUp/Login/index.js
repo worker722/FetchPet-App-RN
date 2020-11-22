@@ -6,12 +6,16 @@ import {
     Switch,
     TextInput,
     ScrollView,
-    Platform
+    Platform,
+    Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native-elements';
 import Toast from 'react-native-simple-toast';
 import { GoogleSignin, statusCodes } from 'react-native-google-signin';
+
+import firebase from 'react-native-firebase';
+import RNRestart from 'react-native-restart';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -32,14 +36,27 @@ class Login extends Component {
             passwordSecure: true,
             email: '',
             password: '',
-            showLoading: false
+            showLoading: false,
+            device_token: ''
         }
     }
 
     componentWillMount = async () => {
         GoogleSignin.configure({
             iosClientId: 'YOUR IOS CLIENT ID',
-        })
+        });
+    }
+
+    componentDidMount = async () => {
+        firebase.messaging().hasPermission()
+            .then(enabled => {
+                if (enabled) {
+                    firebase.messaging().getToken().then(token => {
+                        console.log('fcmToken', token)
+                        this.setState({ device_token: token });
+                    })
+                }
+            })
     }
 
     toggleRememberMe = async (value) => {
@@ -47,15 +64,32 @@ class Login extends Component {
     }
 
     login = async () => {
-        const { email, password, rememberMe } = this.state;
+        const { email, password, rememberMe, device_token } = this.state;
         if (!Utils.isValidEmail(email) || password == '') {
             Toast.show("Invalid email/password.");
+            return;
+        }
+        if (device_token == '') {
+            Alert.alert(
+                'Network Error!',
+                'Click Ok To Restart App.',
+                [
+                    { text: 'OK', onPress: () => RNRestart.Restart() },
+                ],
+                { cancelable: false },
+            );
             return;
         }
 
         this.setState({ showLoading: true });
 
-        const params = { email: email, password: password };
+        let params = { email: email, password: password };
+
+        if (Platform.OS == "android")
+            params = Object.assign(param, { device_token: device_token });
+        else
+            params = Object.assign(param, { iphone_device_token: device_token });
+
         const response = await this.props.api.post("login", params, true);
 
         this.setState({ showLoading: false });
@@ -74,7 +108,26 @@ class Login extends Component {
 
             await GoogleSignin.hasPlayServices();
             const userInfo = await GoogleSignin.signIn();
-            const params = { email: userInfo.user.email, password: "@fetch@", is_social: 1 };
+
+            if (this.state.device_token == '') {
+                Alert.alert(
+                    'Network Error!',
+                    'Click Ok To Restart App.',
+                    [
+                        { text: 'OK', onPress: () => RNRestart.Restart() },
+                    ],
+                    { cancelable: false },
+                );
+                return;
+            }
+
+            let params = { email: userInfo.user.email, password: "@fetch@", is_social: 1 };
+
+            if (Platform.OS == "android")
+                params = Object.assign(param, { device_token: device_token });
+            else
+                params = Object.assign(param, { iphone_device_token: device_token });
+
             const response = await this.props.api.post("login", params, true);
 
             this.setState({ showLoading: false });
