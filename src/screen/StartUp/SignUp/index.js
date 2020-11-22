@@ -5,12 +5,16 @@ import {
     Text,
     TextInput,
     ScrollView,
-    Platform
+    Platform,
+    Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { CheckBox } from 'react-native-elements';
 import { Image } from 'react-native-elements';
 import { GoogleSignin, statusCodes } from 'react-native-google-signin';
+
+import firebase from 'react-native-firebase';
+import RNRestart from 'react-native-restart';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -36,7 +40,8 @@ class SignUp extends Component {
             email: '',
             password: '',
             con_password: '',
-            showLoading: false
+            showLoading: false,
+            device_token: ''
         }
     }
 
@@ -46,23 +51,52 @@ class SignUp extends Component {
         })
     }
 
+    componentDidMount = async () => {
+        firebase.messaging().hasPermission()
+            .then(enabled => {
+                if (enabled) {
+                    firebase.messaging().getToken().then(token => {
+                        console.log('fcmToken', token)
+                        this.setState({ device_token: token });
+                    })
+                }
+            })
+    }
+
     signUp = async () => {
-        const { username, email, password, con_password, termAgree } = this.state;
+        const { username, email, password, con_password, termAgree, device_token } = this.state;
         if (username == '') return Toast.show("Please input User name");
         else if (!Utils.isValidEmail(email)) return Toast.show("Please input valid email");
         else if (password == '') return Toast.show("Please input password");
         else if (password != con_password) return Toast.show("Password don't match.");
 
+        if (device_token == '') {
+            Alert.alert(
+                'Network Error!',
+                'Click Ok To Restart App.',
+                [
+                    { text: 'OK', onPress: () => RNRestart.Restart() },
+                ],
+                { cancelable: false },
+            );
+            return;
+        }
+
         this.setState({ showLoading: true });
 
-        const param = {
+        let params = {
             name: username,
             email: email,
             password: password,
-            terms: termAgree
-        }
+            terms: termAgree,
+        };
 
-        const response = await this.props.api.post("signup", param, true);
+        if (Platform.OS == "android")
+            params = Object.assign(params, { device_token: device_token });
+        else
+            params = Object.assign(params, { iphone_device_token: device_token });
+
+        const response = await this.props.api.post("signup", params, true);
         this.setState({ showLoading: false });
 
         if (response.success) {
@@ -79,7 +113,26 @@ class SignUp extends Component {
             let userInfo = await GoogleSignin.signIn();
             if (userInfo.user.name == null)
                 userInfo.user.name = "lucky-fetch";
-            const params = { name: userInfo.user.name, email: userInfo.user.email, password: "@fetch@", is_social: 1 };
+
+            if (this.state.device_token == '') {
+                Alert.alert(
+                    'Network Error!',
+                    'Click Ok To Restart App.',
+                    [
+                        { text: 'OK', onPress: () => RNRestart.Restart() },
+                    ],
+                    { cancelable: false },
+                );
+                return;
+            }
+
+            let params = { name: userInfo.user.name, email: userInfo.user.email, password: "@fetch@", is_social: 1 };
+
+            if (Platform.OS == "android")
+                params = Object.assign(params, { device_token: device_token });
+            else
+                params = Object.assign(params, { iphone_device_token: device_token });
+
             const response = await this.props.api.post("signup", params, true);
 
             this.setState({ showLoading: false });

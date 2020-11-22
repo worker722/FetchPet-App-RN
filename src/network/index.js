@@ -35,7 +35,12 @@ export const get = (route) => async dispatch => {
             Toast.show(res.message);
             return res;
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            if (_TOKEN() != null) {
+                console.log('method-get-error', err);
+                // showNetworkError();
+            }
+        });
 }
 
 export const post = (route, params, is_store) => async dispatch => {
@@ -54,7 +59,12 @@ export const post = (route, params, is_store) => async dispatch => {
                 dispatch(onLogin(res.data))
             return res;
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            if (_TOKEN() != null) {
+                console.log('method-post-error', err);
+                // showNetworkError();
+            }
+        });
 }
 
 export const showNetworkError = () => {
