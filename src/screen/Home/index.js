@@ -234,11 +234,11 @@ class Home extends Component {
     }
 
     favouriteAds = async (index, item, value) => {
-        // let pets = this.state.pets;
-        // pets[index].is_fav = value;
-        // this.setState({ pets: pets });
-        // const param = { ad_id: item.id, is_fav: value };
-        // const response = await this.props.api.post('ads/ad_favourite', param);
+        let pets = this.state.pets;
+        pets[index].is_fav = value;
+        this.setState({ pets: pets });
+        const param = { ad_id: item.id, is_fav: value };
+        const response = await this.props.api.post('ads/ad_favourite', param);
     }
 
     renderFilterItem = ({ item, index }) => {
