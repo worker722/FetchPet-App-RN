@@ -36,7 +36,7 @@ class AdDetail extends Component {
     componentWillMount = async () => {
         this.setState({ showLoader: true });
         const param = { ad_id: this.props.navigation.state.params.ad_id };
-        const response = await this.props.api.post('ads/ad_detail', param);
+        const response = await this.props.api.post('ads', param);
         this.setState({ showLoader: false, ads: response.data.ads });
 
         var NY = {

@@ -18,64 +18,31 @@ import { store, SetPrefrence, GetPrefrence } from "@store";
 import * as Api from '@api';
 import * as global from "@api/global";
 
-const chatItems = [
-    {
-        index: 0,
-        avatar: '',
-        pet: '',
-        name: 'Ben K',
-        latest_chat: 'Hi, I am Ben K',
-        latest_time: '18:38',
-    },
-    {
-        index: 1,
-        avatar: '',
-        pet: '',
-        name: 'Ben K',
-        latest_chat: 'Hi, I am Ben K',
-        latest_time: '18:38',
-    },
-    {
-        index: 2,
-        avatar: '',
-        pet: '',
-        name: 'Ben K',
-        latest_chat: 'Hi, I am Ben K',
-        latest_time: '18:38',
-    },
-    {
-        index: 3,
-        avatar: '',
-        pet: '',
-        name: 'Ben K',
-        latest_chat: 'Hi, I am Ben K',
-        latest_time: '18:38',
-    },
-    {
-        index: 4,
-        avatar: '',
-        pet: '',
-        name: 'Ben K',
-        latest_chat: 'Hi, I am Ben K',
-        latest_time: '18:38',
-    }
-]
 class Inbox extends Component {
     constructor(props) {
         super(props);
         this.state = {
             chatInbox: [],
+            showLoader: false,
         }
+
+        // props.navigation.addListener("willFocus", (event) => {
+        //     this.componentWillMount();
+        // });
     }
 
     componentWillMount = async () => {
+        this.setState({ showLoader: true });
         const response = await this.props.api.get('inbox');
+        this.setState({ showLoader: false });
         if (response?.success) {
             let inbox = response.data.inbox;
             inbox.sort((a, b) => {
-                if (b.created_at >= a.created_at)
+                let a_end = a.message[a.message.length - 1];
+                let b_end = b.message[b.message.length - 1];
+                if (b_end.created_at >= a_end.created_at)
                     return 1;
-                else if (b.created_at < a.created_at)
+                else if (b_end.created_at < a_end.created_at)
                     return -1;
             });
             this.setState({ chatInbox: inbox });
@@ -83,7 +50,10 @@ class Inbox extends Component {
     }
 
     render = () => {
-        const { chatInbox } = this.state;
+        const { chatInbox, showLoader } = this.state;
+
+        if (showLoader)
+            return (<Loader />)
 
         return (
             <View style={{ flex: 1 }}>
@@ -99,8 +69,7 @@ class Inbox extends Component {
                             renderItem={(item, index) => (
                                 <InboxItem data={item} navigation={this.props.navigation} />
                             )}
-                        >
-                        </FlatList>
+                        />
                     </ScrollView>
                 </View>
             </View>

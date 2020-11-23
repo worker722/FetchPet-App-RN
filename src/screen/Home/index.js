@@ -72,7 +72,7 @@ class Home extends Component {
         }
 
         props.navigation.addListener("willFocus", (event) => {
-            // this.componentWillMount();
+            this.componentWillMount();
         });
     }
 
