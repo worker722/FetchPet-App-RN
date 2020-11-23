@@ -99,7 +99,7 @@ class SignUp extends Component {
         const response = await this.props.api.post("signup", params, true);
         this.setState({ showLoading: false });
 
-        if (response.success) {
+        if (response?.success) {
             SetPrefrence('rememberMe', 0);
             this.props.navigation.navigate("Home");
         }
@@ -137,7 +137,7 @@ class SignUp extends Component {
 
             this.setState({ showLoading: false });
 
-            if (response.success) {
+            if (response?.success) {
                 SetPrefrence('rememberMe', 0);
                 this.props.navigation.navigate("Home");
             }

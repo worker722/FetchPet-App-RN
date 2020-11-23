@@ -72,7 +72,7 @@ class Home extends Component {
         }
 
         props.navigation.addListener("willFocus", (event) => {
-            this.componentWillMount();
+            // this.componentWillMount();
         });
     }
 
@@ -222,7 +222,7 @@ class Home extends Component {
         const response = await this.props.api.get('home');
         this.setState({ showLoader: false });
 
-        if (response.success) {
+        if (response?.success) {
 
             let ads = response.data.ads;
             // let filterCategory = response.data.category;
@@ -267,7 +267,7 @@ class Home extends Component {
             const response = await this.props.api.post('home/filter_category', param);
             this.setState({ showContentLoader: false });
 
-            if (response.success) {
+            if (response?.success) {
                 this.setState({ pets: response.data.ads });
             }
         }
@@ -329,7 +329,7 @@ class Home extends Component {
         const param = { searchText: searchText };
         const response = await this.props.api.post('home/search', param);
         this.setState({ showContentLoader: false });
-        if (response.success) {
+        if (response?.success) {
             this.setState({ pets: response.data.ads });
         }
     }

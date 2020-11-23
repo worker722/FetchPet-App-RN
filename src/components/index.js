@@ -1,9 +1,11 @@
 import Header from './Header';
 import LinkItem from './LinkItem';
 import Loader from './Loader';
+import InboxItem from './InboxItem';
 
 export {
     Header,
     LinkItem,
-    Loader
+    Loader,
+    InboxItem
 }

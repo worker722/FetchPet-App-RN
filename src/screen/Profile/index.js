@@ -26,10 +26,10 @@ class Profile extends Component {
 
     componentWillMount = async () => {
         this.setState({ showLoader: true });
-        const param = { user_id: this.props.navigation.state.params.user_id };
+        const param = { user_id: store.getState().auth.login.user.id };
         const response = await this.props.api.post('profile', param);
         this.setState({ showLoader: false });
-        if (response.success) {
+        if (response?.success) {
             this.setState({ user: response.data.user });
         }
     }

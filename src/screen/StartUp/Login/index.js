@@ -86,15 +86,15 @@ class Login extends Component {
         let params = { email: email, password: password };
 
         if (Platform.OS == "android")
-            params = Object.assign(param, { device_token: device_token });
+            params = Object.assign(params, { device_token: device_token });
         else
-            params = Object.assign(param, { iphone_device_token: device_token });
+            params = Object.assign(params, { iphone_device_token: device_token });
 
         const response = await this.props.api.post("login", params, true);
 
         this.setState({ showLoading: false });
 
-        if (response.success) {
+        if (response?.success) {
             SetPrefrence('rememberMe', rememberMe ? 1 : 0);
             this.props.navigation.navigate("Home");
         }
@@ -132,7 +132,7 @@ class Login extends Component {
 
             this.setState({ showLoading: false });
 
-            if (response.success) {
+            if (response?.success) {
                 SetPrefrence('rememberMe', rememberMe ? 1 : 0);
                 this.props.navigation.navigate("Home");
             }

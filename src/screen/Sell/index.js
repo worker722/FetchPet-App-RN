@@ -56,7 +56,7 @@ class Sell extends Component {
         this.setState({ showLoader: true });
         const response = await this.props.api.get('ads/sell');
         this.setState({ showLoader: false });
-        if (response.success) {
+        if (response?.success) {
             const { category, breed } = response.data;
             if (category.length > 0) {
                 this.setState({ category: category, selectedCategory: category[0].name });
@@ -96,21 +96,6 @@ class Sell extends Component {
         }
     }
 
-    uploadAdsImage = async (images) => {
-        this.setState({ showImagePanLoader: true });
-        const response = await this.props.api.uploadAdsImage('ads/upload_temp', 'ads_image', images);
-        this.setState({ showImagePanLoader: false });
-        if (response.success) {
-            let uploadedImages = this.state.uploadedImages;
-            response.data.uploadedImages.forEach(item => {
-                uploadedImages.push(item);
-            });
-            this.setState({
-                uploadedImages: uploadedImages
-            })
-        }
-    }
-
     showPickerModal = () => {
         this.setState({ visiblePickerModal: true })
     }
@@ -141,8 +126,9 @@ class Sell extends Component {
         const params = { category: selectedCategory, breed: selectedBreed, age: age, price: price, gender: selectedGender == 'Male' ? 1 : 0, image_key: 'ad_image', lat: 0.0, long: 0.0, description: description };
         const response = await this.props.api.createAds('ads/create', uploadedImages, params);
         this.setState({ showLoader: false });
-        if (response.success) {
+        if (response?.success) {
             this.props.navigation.navigate("Home");
+            this.setState({ uploadedImages: [], age: 0, price: 0, description: '' });
         }
     }
 
