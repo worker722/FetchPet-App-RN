@@ -70,6 +70,10 @@ class Home extends Component {
             showLoader: false,
             showContentLoader: false
         }
+
+        props.navigation.addListener("willFocus", (event) => {
+            this.componentWillMount();
+        });
     }
 
     async createNotificationListeners() {

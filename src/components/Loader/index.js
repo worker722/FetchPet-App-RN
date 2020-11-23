@@ -9,9 +9,11 @@ import { BaseColor } from '@config';
 export default class Loader extends Component {
 
     render() {
+        const { size } = this.props;
         return (
             <View style={styles.container}>
                 <SkypeIndicator
+                    size={size && size}
                     color={BaseColor.primaryColor}
                 />
             </View>
