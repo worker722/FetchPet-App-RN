@@ -17,7 +17,12 @@ import AdDetail from "@screen/Home/AdDetail";
 
 // other page
 import Notification from "@screen/Notification";
+
+// sell
 import Sell from "@screen/Sell";
+import CustomMap from "@screen/Sell/CustomMap";
+
+// my ads
 import MyAds from "@screen/MyAds";
 
 //chat
@@ -29,7 +34,7 @@ import Profile from "@screen/Profile";
 import ProfileEdit from "@screen/Profile/ProfileEdit";
 import Other from "@screen/Profile/Other";
 import Help from "@screen/Profile/Help";
-	//setting
+//setting
 import Setting from "@screen/Profile/Setting";
 import Privacy from "@screen/Profile/Setting/Privacy";
 
@@ -81,7 +86,6 @@ const routeConfigs = {
 							width: 40,
 							height: 40,
 							alignContent: 'center',
-							backgroundColor: BaseColor.whiteColor,
 							marginBottom: 15,
 							borderRadius: 100,
 							zIndex: 1000
@@ -158,6 +162,9 @@ const StackNavigator = createStackNavigator(
 		},
 		Privacy: {
 			screen: Privacy
+		},
+		CustomMap: {
+			screen: CustomMap
 		}
 	},
 	{

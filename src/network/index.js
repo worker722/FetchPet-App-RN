@@ -32,7 +32,8 @@ export const get = (route) => async dispatch => {
     })
         .then(res => res.json())
         .then(res => {
-            Toast.show(res.message);
+            if (res.message != '')
+                Toast.show(res.message);
             return res;
         })
         .catch(err => {
@@ -54,7 +55,8 @@ export const post = (route, params, is_store) => async dispatch => {
     })
         .then(res => res.json())
         .then(res => {
-            Toast.show(res.message);
+            if (res.message != '')
+                Toast.show(res.message);
             if (res.success && is_store)
                 dispatch(onLogin(res.data))
             return res;
@@ -62,6 +64,46 @@ export const post = (route, params, is_store) => async dispatch => {
         .catch(err => {
             if (_TOKEN() != null) {
                 console.log('method-post-error', err);
+                // showNetworkError();
+            }
+        });
+}
+
+export const createAds = (route, images, params) => async dispatch => {
+    const formData = new FormData();
+
+    const keys = Object.keys(params);
+    keys.forEach(item => {
+        formData.append(item, params[item]);
+    });
+
+    for (var i = 0; i < images.length; i++) {
+        const extension = images[i].mime.substring(images[i].mime.indexOf("/") + 1, images[i].mime.length);
+        const photo = {
+            uri: images[i].path,
+            type: images[i].mime,
+            name: "ad_image." + extension,
+        };
+        formData.append('ad_image[]', photo);
+    }
+
+    return fetch(`${SERVER_HOST}/api/${route}`, {
+        method: 'POST',
+        headers: {
+            'content-type': 'multipart/form-data',
+            'Authorization': `Bearer ${_TOKEN()}`
+        },
+        body: formData
+    })
+        .then(res => res.json())
+        .then(res => {
+            if (res.message != '')
+                Toast.show(res.message);
+            return res;
+        })
+        .catch(err => {
+            if (_TOKEN() != null) {
+                console.log('ads-upload-error', err);
                 // showNetworkError();
             }
         });
