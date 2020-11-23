@@ -129,9 +129,9 @@ class SignUp extends Component {
             let params = { name: userInfo.user.name, email: userInfo.user.email, password: "@fetch@", is_social: 1 };
 
             if (Platform.OS == "android")
-                params = Object.assign(params, { device_token: device_token });
+                params = Object.assign(params, { device_token: this.state.device_token });
             else
-                params = Object.assign(params, { iphone_device_token: device_token });
+                params = Object.assign(params, { iphone_device_token: this.state.device_token });
 
             const response = await this.props.api.post("signup", params, true);
 
