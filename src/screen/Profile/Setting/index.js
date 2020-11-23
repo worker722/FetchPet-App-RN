@@ -8,13 +8,21 @@ import { BaseColor } from '@config';
 import { Header, LinkItem } from '@components';
 import { Avatar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { GoogleSignin, statusCodes } from 'react-native-google-signin';
 
+import { store, SetPrefrence } from '@store';
 export default class Setting extends Component {
     constructor(props) {
         super(props);
         this.state = {
             is_showNotification: true
         }
+    }
+
+    componentWillMount = async () => {
+        GoogleSignin.configure({
+            iosClientId: 'YOUR IOS CLIENT ID',
+        });
     }
 
     goBack = () => {
@@ -31,8 +39,13 @@ export default class Setting extends Component {
         })
     }
 
-    logOut = () => {
-
+    logOut = async () => {
+        await SetPrefrence("rememberMe", 0);
+        await SetPrefrence('user', null);
+        if (store.getState().auth.login.user.is_social == 1) {
+            await GoogleSignin.signOut();
+        }
+        this.props.navigation.navigate('Welcome');
     }
 
     logOutAll = () => {
