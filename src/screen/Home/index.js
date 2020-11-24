@@ -85,9 +85,21 @@ class Home extends Component {
         /*
         * Triggered when a particular notification has been received in foreground
         * */
-        firebase.notifications().onNotification((notification) => {
-            const { title, body } = notification;
-        });
+        if (Platform.OS == "android") {
+            this.notificationListenerANDROID = firebase.notifications().onNotification((notification) => {
+                const { title, body, data } = notification;
+                console.log('home notification', data);
+                if (data.type != global.NOTIFICATION_CHAT_MESSAGE)
+                    this.showNotification(title, body);
+            });
+        }
+        else {
+            this.notificationListenerIOS = firebase.messaging().onMessage((notification) => {
+                const { title, body, data } = notification;
+                if (data.type != global.NOTIFICATION_CHAT_MESSAGE)
+                    this.showNotification(title, body);
+            })
+        }
 
         /*
         * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
@@ -105,12 +117,10 @@ class Home extends Component {
         }
 
         firebase.messaging().onMessage(async message => {
-            console.log('message', message);
-            // this.displayNotification(message.data.title, message.data.body);
         });
     }
 
-    displayNotification(title, body) {
+    showNotification(title, body) {
         if (Platform.OS === "android") {
             const localNotification = new firebase.notifications.Notification({
                 sound: 'default',
@@ -162,44 +172,12 @@ class Home extends Component {
             firebase.notifications().android.createChannel(channel);
         }
 
-        firebase.messaging().hasPermission()
+        await firebase.messaging().hasPermission()
             .then(enabled => {
                 if (enabled) {
                     firebase.messaging().getToken().then(token => {
                         console.log('fcmToken', token)
                     })
-
-                    if (Platform.OS === 'ios') {
-                        this.notificationListenerIOS = firebase.messaging().onMessage(notification => {
-                            console.log(notification);
-                            const localNotification = new firebase.notifications.Notification()
-                                .setNotificationId(new Date().toLocaleString())
-                                .setTitle(notification.title)
-                                .setBody(notification.body)
-
-                            firebase.notifications()
-                                .displayNotification(localNotification)
-                                .catch(err => console.error(err));
-                        })
-                    } else {
-                        this.notificationListenerANDROID = firebase.notifications().onNotification(notification => {
-                            console.log(notification);
-                            const localNotification = new firebase.notifications.Notification({
-                                sound: 'default',
-                                show_in_foreground: true,
-                            })
-                                .setNotificationId(notification._notificationId)
-                                .setTitle(notification.title)
-                                .setBody(notification.body)
-                                .android.setChannelId(global.NOTIFICATION_CHANNEL_ID)
-                                .android.setColor('#ffffff')
-                                .android.setPriority(firebase.notifications.Android.Priority.High);
-
-                            firebase.notifications()
-                                .displayNotification(localNotification)
-                                .catch(err => console.error(err));
-                        })
-                    }
                 } else {
                     firebase.messaging().requestPermission()
                         .then(() => {
