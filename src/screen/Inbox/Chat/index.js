@@ -5,11 +5,16 @@ import {
     TouchableOpacity,
     ScrollView,
     FlatList,
-    TextInput
+    TextInput,
+    RefreshControl,
+    ActivityIndicator,
+    AppState,
+    Platform
 } from 'react-native';
 import { BaseColor } from '@config';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Avatar } from 'react-native-elements';
+import firebase from 'react-native-firebase';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -17,6 +22,7 @@ import { store, SetPrefrence, GetPrefrence } from "@store";
 import * as Api from '@api';
 import * as Utils from '@utils';
 import { ChatMessage, Loader } from '@components';
+import * as global from "@api/global";
 
 class Chat extends Component {
     constructor(props) {
@@ -24,10 +30,42 @@ class Chat extends Component {
         this.state = {
             chat: [],
             ads: null,
+            other_user: null,
             message: '',
 
             showLoader: false,
+            showRefresh: false,
+            is_sending: false,
         }
+    }
+
+    createNotificationListeners = async () => {
+        if (Platform.OS == "android") {
+            this.notificationListenerANDROID = firebase.notifications().onNotification((notification) => {
+                const { title, body, data } = notification;
+                console.log('chat notification', data);
+            });
+        }
+        else {
+            this.notificationListenerIOS = firebase.messaging().onMessage((notification) => {
+                const { title, body, data } = notification;
+                if (data.type != global.NOTIFICATION_CHAT_MESSAGE)
+                    this.showNotification(title, body);
+            })
+        }
+    }
+
+    handleAppStateChange = (nextAppState) => { }
+
+    componentDidMount = async () => {
+        await this.createNotificationListeners();
+        AppState.addEventListener('change', this.handleAppStateChange);
+    }
+
+    componentWillUnmount = () => {
+        this.notificationListenerANDROID && this.notificationListenerANDROID();
+        this.notificationListenerIOS && this.notificationListenerIOS();
+        AppState.removeEventListener('change', this.handleAppStateChange);
     }
 
     componentWillMount = async () => {
@@ -36,24 +74,70 @@ class Chat extends Component {
         const response = await this.props.api.post("chat", param);
         this.setState({ showLoader: false });
         if (response.success) {
+
+            const user_id = store.getState().auth.login.user.id;
+            const last_message = response.data.chat[response.data.chat.length - 1];
+            const other_user = user_id == last_message?.sender.id ? last_message?.receiver : last_message?.sender;
+
             this.setState({
                 chat: response.data.chat,
-                ads: response.data.ads
+                ads: response.data.ads,
+                other_user: other_user
             })
+            this.scrollView.scrollToEnd({ animated: true })
         }
     }
 
-    sendMessage = () => {
-        if (this.state.message == '')
+    _onRefresh = async () => {
+        this.setState({ showRefresh: true });
+        const param = { ad_id: this.props.navigation.state.params.ad_id };
+        const response = await this.props.api.post("chat", param);
+        this.setState({ showRefresh: false });
+        if (response.success) {
+
+            const user_id = store.getState().auth.login.user.id;
+            const last_message = response.data.chat[response.data.chat.length - 1];
+            const other_user = user_id == last_message?.sender.id ? last_message?.receiver : last_message?.sender;
+            this.setState({
+                chat: response.data.chat,
+                ads: response.data.ads,
+                other_user: other_user,
+            });
+            this.scrollView.scrollToEnd({ animated: true })
+        }
+    }
+
+    sendMessage = async () => {
+        const { message, other_user, ads } = this.state;
+
+        if (message == '')
             return;
+
+        let now = new Date();
+
+        const param = {
+            id_ads: ads.id,
+            id_user_snd: store.getState().auth.login.user.id,
+            id_user_rcv: other_user.id,
+            message: message,
+            attach_file: '',
+            message_type: 0,
+            read_status: 0,
+            last_seen_time: now
+        }
+        this.setState({ is_sending: true });
+        const response = await this.props.api.post('chat/post', param);
+        this.setState({ is_sending: false });
+        if (response.success) {
+            let chat = this.state.chat;
+            chat.push(response.data.newMessage);
+            this.setState({ chat: chat });
+        }
     }
 
     render = () => {
-        const { chat, ads, showLoader } = this.state;
-        const user_id = store.getState().auth.login.user.id;
-
+        const { chat, ads, showLoader, showRefresh, other_user, is_sending } = this.state;
         const last_message = chat[chat.length - 1];
-        const other_user = user_id == last_message?.sender.id ? last_message?.receiver : last_message?.sender;
 
         if (showLoader)
             return (<Loader />);
@@ -90,30 +174,48 @@ class Chat extends Component {
                         <Icon name={"ellipsis-v"} size={18} color={"white"}></Icon>
                     </TouchableOpacity>
                 </View>
-                <ScrollView>
-                    <FlatList
-                        style={{ marginTop: 30, paddingHorizontal: 10 }}
-                        keyExtractor={(item, index) => index.toString()}
-                        data={chat}
-                        renderItem={(item, index) => (
-                            <ChatMessage data={item} />
-                        )}
-                    />
+                <ScrollView
+                    ref={ref => this.scrollView = ref}
+                    onContentSizeChange={(contentWidth, contentHeight) => {
+                        this.scrollView.scrollToEnd({ animated: true });
+                    }}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={showRefresh}
+                            onRefresh={this._onRefresh}
+                        />
+                    }
+                >
+                    <View style={{ flex: 1, padding: 10 }}>
+                        <FlatList
+                            keyExtractor={(item, index) => index.toString()}
+                            data={chat}
+                            renderItem={(item, index) => (
+                                <ChatMessage data={item} />
+                            )}
+                        />
+                    </View>
                 </ScrollView>
-                <View style={{ position: "absolute", bottom: 0, padding: 10, height: 70, width: "100%", justifyContent: "center", alignItems: "center", borderTopWidth: 3, borderTopColor: BaseColor.dddColor }}>
+                <View style={{ height: 70, paddingVertical: 10, width: "100%", justifyContent: "center", alignItems: "center", borderTopWidth: 3, borderTopColor: BaseColor.dddColor }}>
                     <TextInput
                         style={{ flex: 1, backgroundColor: BaseColor.dddColor, width: "100%", borderRadius: 30, paddingLeft: 20, paddingRight: 100 }}
                         value={this.state.message}
                         onChangeText={(text) => this.setState({ message: text })}
                     >
                     </TextInput>
-                    <View style={{ position: "absolute", right: 0, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                    <View style={{ position: "absolute", right: 0, top: 0, bottom: 0, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                         <TouchableOpacity style={{ paddingHorizontal: 15 }}>
                             <Icon name={"paperclip"} size={20} color={"grey"}></Icon>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => this.sendMessage()} style={{ padding: 8, marginRight: 25, borderRadius: 100, backgroundColor: "white", justifyContent: "center", alignItems: "center" }}>
-                            <Icon name={"location-arrow"} size={20} color={"grey"}></Icon>
-                        </TouchableOpacity>
+                        {is_sending ?
+                            <View style={{ padding: 8, marginRight: 25, borderRadius: 100, backgroundColor: "white", justifyContent: "center", alignItems: "center" }}>
+                                <ActivityIndicator size={20} color={BaseColor.primaryColor} />
+                            </View>
+                            :
+                            <TouchableOpacity onPress={() => this.sendMessage()} style={{ padding: 8, marginRight: 25, borderRadius: 100, backgroundColor: "white", justifyContent: "center", alignItems: "center" }}>
+                                <Icon name={"location-arrow"} size={20} color={"grey"}></Icon>
+                            </TouchableOpacity>
+                        }
                     </View>
                 </View>
             </View>

@@ -13,25 +13,24 @@ export default class CustomMap extends Component {
     render = () => {
         return (
             <View style={{ flex: 1 }}>
-                <View style={{ position: "absolute", top: 10, justifyContent: "center", alignItems: "center", width: "100%", height: 50 }}>
                     <GooglePlacesAutocomplete
                         placeholder='Search'
-                        // currentLocation={true}
+                        currentLocation={true}
                         fetchDetails={true}
+                        styles={{flex:1}}
                         nearbyPlacesAPId={"GooglePlacesSearch"}
                         onPress={(data, details = null) => {
                             console.log(data, details);
                         }}
                         query={{
-                            key: 'AIzaSyAmnk3Obj7VDY1GfuZ_A6ep8voAGqJfayE',
+                            key: 'AIzaSyD7D5BGKn-3fNwAlg27vzGvxYM0QS9WUVg',
                             language: 'en',
                         }}
                     />
-                </View>
-                <MapView
+                {/* <MapView
                     style={{ flex: 1 }}
                 >
-                </MapView>
+                </MapView> */}
             </View>
         )
     }

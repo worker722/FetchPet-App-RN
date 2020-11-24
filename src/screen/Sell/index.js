@@ -67,6 +67,7 @@ class Sell extends Component {
     }
 
     openPhotoPicker = (index) => {
+        this.setState({ visiblePickerModal: false, showImagePanLoader: true });
         if (index == 0) {
             ImagePicker.openCamera({
                 mediaType: 'photo',
@@ -75,8 +76,7 @@ class Sell extends Component {
                 includeExif: true,
                 multiple: true,
             }).then(images => {
-                this.setState({ visiblePickerModal: false });
-                this.setState({ uploadedImages: images });
+                this.setState({ uploadedImages: images, showImagePanLoader: false });
             });
         }
         else if (index == 1) {
@@ -87,20 +87,22 @@ class Sell extends Component {
                 includeExif: true,
                 multiple: true,
             }).then(images => {
-                this.setState({ visiblePickerModal: false });
-                this.setState({ uploadedImages: images });
+                this.setState({ uploadedImages: images, showImagePanLoader: false });
             });
-        }
-        else {
-            this.setState({ visiblePickerModal: false });
         }
     }
 
     showPickerModal = () => {
+        if (this.state.showImagePanLoader)
+            return;
+
         this.setState({ visiblePickerModal: true })
     }
 
     createAds = async () => {
+        if (this.state.showImagePanLoader)
+            return;
+
         const { selectedCategory, selectedBreed, selectedGender, age, price, description, uploadedImages } = this.state;
         if (uploadedImages.length == 0) {
             Toast.show("Please choose pet images.");
@@ -296,6 +298,7 @@ class Sell extends Component {
                         <TouchableOpacity onPress={() => navigation.navigate("CustomMap")} activeOpacity={1}>
                             <MapView
                                 style={{ flex: 1, height: 160, marginTop: 10 }}
+                                scrollEnabled={false}
                             >
                             </MapView>
                         </TouchableOpacity>
