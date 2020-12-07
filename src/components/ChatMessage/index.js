@@ -29,14 +29,14 @@ export default class ChatMessage extends Component {
             <View>
                 {user_id == item.receiver.id ?
                     <View style={{ marginTop: 20, flex: 1, justifyContent: "flex-start", alignItems: "flex-start" }}>
-                        <View style={{ backgroundColor: BaseColor.primaryColor, borderTopLeftRadius: 10, borderTopRightRadius: 10, borderBottomRightRadius: 10, padding: 10, maxWidth: "70%" }}>
+                        <View style={{ backgroundColor: BaseColor.primaryColor, borderTopLeftRadius: 15, borderTopRightRadius: 15, borderBottomRightRadius: 15, padding: 10, maxWidth: "70%" }}>
                             <Text style={{ color: "white" }}>{item.message}</Text>
                             <Text style={{ color: "white", fontSize: 12, marginTop: 10 }}>{message_date}</Text>
                         </View>
                     </View>
                     :
                     <View style={{ justifyContent: "flex-end", alignItems: "flex-end", marginTop: 20, flex: 1 }}>
-                        <View style={{ backgroundColor: BaseColor.greyColor, borderTopLeftRadius: 10, borderTopRightRadius: 10, borderBottomLeftRadius: 10, padding: 10, justifyContent: "flex-end", alignItems: "flex-end", maxWidth: "70%" }}>
+                        <View style={{ backgroundColor: BaseColor.greyColor, borderTopLeftRadius: 15, borderTopRightRadius: 15, borderBottomLeftRadius: 15, padding: 10, justifyContent: "flex-end", alignItems: "flex-end", maxWidth: "70%" }}>
                             <Text style={{ color: "white", textAlign: "left" }}>{item.message}</Text>
                             <Text style={{ color: "white", fontSize: 12, marginTop: 10 }}>{message_date}</Text>
                         </View>

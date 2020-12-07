@@ -4,7 +4,12 @@ import {
     Text,
     TouchableOpacity,
     ScrollView,
-    ActivityIndicator
+    ActivityIndicator,
+    Linking,
+    Platform,
+    Share,
+    Modal,
+    TextInput
 } from 'react-native';
 import { BaseColor } from '@config';
 import { Header, Loader } from '@components';
@@ -13,6 +18,11 @@ import Swiper from 'react-native-swiper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Avatar, Image } from 'react-native-elements';
 import { Rating } from 'react-native-ratings';
+import Styles from './style';
+
+import Toast from 'react-native-simple-toast';
+
+import * as Animatable from 'react-native-animatable';
 
 import MapView, { Marker } from 'react-native-maps';
 
@@ -27,8 +37,16 @@ class AdDetail extends Component {
         super(props);
         this.state = {
             ads: {},
-
+            adsLocation: '',
             showLoader: false,
+            animType: null,
+
+            orderName: '',
+            orderEmail: '',
+            orderPhone: '',
+            orderDesc: '',
+
+            visibleOrderDialog: false,
         }
     }
 
@@ -37,6 +55,9 @@ class AdDetail extends Component {
         const param = { ad_id: this.props.navigation.state.params.ad_id };
         const response = await this.props.api.post('ads', param);
         this.setState({ showLoader: false, ads: response.data.ads });
+        Utils.getAddressByCoords(response.data.ads.lat, response.data.ads.long, false, (adsLocation) => {
+            this.setState({ adsLocation });
+        });
     }
 
     favouriteAds = async () => {
@@ -51,19 +72,82 @@ class AdDetail extends Component {
         this.props.navigation.goBack(null);
     }
 
-    shareAds = () => {
+    shareAds = async () => {
+        Share.share({
+            message:
+                "Fetch" + "\n" + "Pet marketplace app. Welcome to here!",
+        });
+    }
 
+    onChat = () => {
+        const { navigation } = this.props;
+        const { ads } = this.state;
+        navigation.navigate("Chat", { ad_id: ads.id });
+    }
+
+    onCall = () => {
+        const { ads } = this.state;
+        let phoneNumber = 'telprompt:' + ads.user.phonenumber;
+        if (Platform.OS === 'android') {
+            phoneNumber = 'tel:' + ads.user.phonenumber;
+        }
+
+        Linking.openURL(phoneNumber);
+    }
+
+    _onScroll = (event) => {
+        const scrollPosition = event.nativeEvent.contentOffset.y;
+        if (scrollPosition > 150) {
+            this.setState({ animType: "fadeInRight" });
+        }
+        else if (scrollPosition < 10) {
+            this.setState({ animType: "fadeOutRight" });
+        }
+    }
+
+    showOrderDialog = () => {
+        const { ads } = this.state;
+        this.setState({
+            orderName: ads.user.name,
+            orderEmail: ads.user.email,
+            orderPhone: ads.user.phonenumber,
+        })
+        this.setState({ visibleOrderDialog: true });
+    }
+
+    orderAds = async () => {
+        const { ads, orderName, orderEmail, orderPhone, orderDesc } = this.state;
+        if (orderName == '') {
+            Toast.show("Please input name.");
+            return;
+        }
+        if (orderEmail == '') {
+            Toast.show("Please input email");
+            return;
+        }
+        if (orderPhone == '') {
+            Toast.show("Please input phone number");
+            return;
+        }
+        this.setState({ showLoader: true });
+        const params = { id_ads: ads.id, name: orderName, email: orderEmail, phonenumber: orderPhone, description: orderDesc, status: 0 };
+        const response = await this.props.api.post('ads/order', params);
+        this.setState({ showLoader: false });
+        if (response?.success) {
+            this.setState({ visibleOrderDialog: false });
+            this.props.navigation.goBack(null);
+        }
     }
 
     render = () => {
-        const { ads, showLoader } = this.state;
+        const { ads, showLoader, adsLocation, animType, visibleOrderDialog, orderName, orderEmail, orderPhone, orderDesc } = this.state;
         const navigation = this.props.navigation;
         if (showLoader)
             return (<Loader />);
 
         return (
             <View style={{ flex: 1 }}>
-                <ScrollView style={{ flex: 1 }}>
+                <ScrollView style={{ flex: 1 }} onScroll={this._onScroll}>
                     <View style={{ height: slider_height }}>
                         <Swiper style={{ height: slider_height }} autoplay={true} dotColor={"white"} paginationStyle={{ position: "absolute", bottom: 10 }} activeDotColor={BaseColor.primaryColor} dotStyle={{ width: 8, height: 8, borderRadius: 100 }} activeDotStyle={{ width: 11, height: 11, borderRadius: 100 }}>
                             {ads?.meta?.map((item, key) => (
@@ -104,7 +188,7 @@ class AdDetail extends Component {
                                 <Text style={{ color: BaseColor.greyColor, fontSize: 13 }}>Breed</Text>
                                 <Text style={{ fontSize: 15, fontWeight: "bold" }}>{ads?.breed?.name}</Text>
                                 <Text style={{ color: BaseColor.greyColor, marginTop: 15, fontSize: 13 }}>Location</Text>
-                                <Text style={{ fontSize: 15, fontWeight: "bold" }}>{ads?.location}</Text>
+                                <Text style={{ fontSize: 15, fontWeight: "bold" }}>{adsLocation}</Text>
                             </View>
                         </View>
                         <Text style={{ color: BaseColor.greyColor, marginTop: 15, fontSize: 13 }}>Description</Text>
@@ -122,7 +206,6 @@ class AdDetail extends Component {
                             <View style={{ flex: 1 }}>
                                 <Text style={{ color: BaseColor.primaryColor }}>{ads?.user?.name}</Text>
                                 <Text style={{ fontSize: 10 }}>Member since JUN 2018</Text>
-                                <Text style={{ color: BaseColor.primaryColor, fontSize: 10 }}>SEE PROFILE</Text>
                                 <View style={{ justifyContent: "flex-start", alignItems: "flex-start" }}>
                                     <Rating
                                         readonly={true}
@@ -158,17 +241,85 @@ class AdDetail extends Component {
                 </ScrollView>
                 <View style={{ padding: 10, flexDirection: "row", height: 60 }}>
                     <TouchableOpacity
-                        onPress={() => navigation.navigate("Inbox")}
-                        style={{ borderWidth: 1, borderColor: BaseColor.greyColor, marginRight: "10%", borderRadius: 10, height: 40, width: "45%", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
+                        onPress={this.onChat}
+                        style={{ borderWidth: 1, borderColor: BaseColor.greyColor, marginRight: "10%", borderRadius: 5, height: 40, width: "45%", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
                         <Icon name={"comment"} color={BaseColor.primaryColor} size={20}></Icon>
                         <Text style={{ color: BaseColor.primaryColor, fontSize: 18, marginLeft: 10 }}>Chat</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        style={{ backgroundColor: BaseColor.primaryColor, borderRadius: 10, height: 40, width: "45%", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
+                        onPress={this.onCall}
+                        style={{ backgroundColor: BaseColor.primaryColor, borderRadius: 5, height: 40, width: "45%", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
                         <Icon name={"phone"} color={BaseColor.whiteColor} size={20}></Icon>
                         <Text style={{ color: BaseColor.whiteColor, fontSize: 18, marginLeft: 10 }}>Call</Text>
                     </TouchableOpacity>
                 </View>
+                {animType &&
+                    <View style={{ position: "absolute", right: 0, bottom: Math.floor(Utils.SCREEN.HEIGHT / 2) }}>
+                        <Animatable.View animation={animType} iterationCount={1} direction="normal">
+                            <TouchableOpacity
+                                onPress={this.showOrderDialog}
+                                style={{ flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: "row" }}>
+                                <View style={{ paddingHorizontal: 15, paddingVertical: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
+                                    <Text style={{ color: BaseColor.whiteColor, fontSize: 18 }}>Order</Text>
+                                </View>
+                                <View style={{ transform: [{ rotateZ: '45deg' }], width: 8, height: 8, backgroundColor: BaseColor.primaryColor, marginLeft: -4 }}></View>
+                            </TouchableOpacity>
+                        </Animatable.View>
+                    </View>
+                }
+
+                <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={visibleOrderDialog}>
+                    <View style={Styles.modalContainer}>
+                        <View style={Styles.modalContentContainer}>
+                            <Text style={{ fontSize: 20, marginBottom: 20 }}>Make an Order</Text>
+                            <TouchableOpacity style={{ position: "absolute", top: 0, right: 0, padding: 10 }} onPress={() => this.setState({ visibleOrderDialog: false })}>
+                                <Icon name={"times"} size={22} color={BaseColor.primaryColor}></Icon>
+                            </TouchableOpacity>
+                            <Text style={{ color: BaseColor.greyColor, marginBottom: 5 }}>Name</Text>
+                            <TextInput
+                                value={orderName}
+                                onChangeText={(text) => this.setState({ orderName: text })}
+                                placeholderTextColor={BaseColor.greyColor} style={{ borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor, fontSize: 15, height: 50, paddingHorizontal: 10, justifyContent: "center", alignItems: "center" }}
+                            />
+                            <Text style={{ color: BaseColor.greyColor, marginBottom: 5, marginTop: 10 }}>Email</Text>
+                            <TextInput
+                                value={orderEmail}
+                                onChangeText={(text) => this.setState({ orderEmail: text })}
+                                placeholderTextColor={BaseColor.greyColor} style={{ borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor, fontSize: 15, height: 50, paddingHorizontal: 10, justifyContent: "center", alignItems: "center" }}
+                            />
+                            <Text style={{ color: BaseColor.greyColor, marginBottom: 5, marginTop: 10 }}>Phone number</Text>
+                            <TextInput
+                                value={orderPhone}
+                                onChangeText={(text) => this.setState({ orderPhone: text })}
+                                placeholderTextColor={BaseColor.greyColor}
+                                keyboardType="number-pad"
+                                style={{ borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor, fontSize: 15, height: 50, paddingHorizontal: 10, justifyContent: "center", alignItems: "center" }}
+                            />
+                            <Text style={{ color: BaseColor.greyColor, marginBottom: 5, marginTop: 10 }}>Description</Text>
+                            <TextInput
+                                value={orderDesc}
+                                onChangeText={(text) => this.setState({ orderDesc: text })}
+                                placeholderTextColor={BaseColor.greyColor} style={{ borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor, fontSize: 15, height: 100, paddingHorizontal: 10, justifyContent: "center", alignItems: "center", textAlign: "left" }}
+                            />
+                            <View style={{ paddingVertical: 10, flexDirection: "row" }}>
+                                <TouchableOpacity
+                                    onPress={() => this.setState({ visibleOrderDialog: false })}
+                                    style={{ borderWidth: 1, borderColor: BaseColor.greyColor, flex: 1, borderRadius: 5, height: 40, marginRight: 10, justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
+                                    <Text style={{ color: BaseColor.primaryColor, fontSize: 18, marginLeft: 10 }}>Cancel</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={this.orderAds}
+                                    style={{ backgroundColor: BaseColor.primaryColor, borderRadius: 5, flex: 1, height: 40, justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
+                                    <Text style={{ color: BaseColor.whiteColor, fontSize: 18, marginLeft: 10 }}>Order</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
+
             </View>
         )
     }

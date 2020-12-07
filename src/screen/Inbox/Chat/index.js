@@ -77,7 +77,11 @@ class Chat extends Component {
 
             const user_id = store.getState().auth.login.user.id;
             const last_message = response.data.chat[response.data.chat.length - 1];
-            const other_user = user_id == last_message?.sender.id ? last_message?.receiver : last_message?.sender;
+            let other_user;
+            if (response.data.ads.user.id != user_id)
+                other_user = response.data.ads.user;
+            else
+                other_user = (user_id == last_message?.sender.id) ? last_message?.receiver : last_message?.sender;
 
             this.setState({
                 chat: response.data.chat,
@@ -138,6 +142,7 @@ class Chat extends Component {
     render = () => {
         const { chat, ads, showLoader, showRefresh, other_user, is_sending } = this.state;
         const last_message = chat[chat.length - 1];
+        const navigation = this.props.navigation;
 
         if (showLoader)
             return (<Loader />);
@@ -145,10 +150,10 @@ class Chat extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <View style={{ width: "100%", height: 80, backgroundColor: BaseColor.primaryColor, flexDirection: "row", padding: 10 }}>
-                    <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", padding: 10 }} onPress={() => this.props.navigation.goBack(null)} >
+                    <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", padding: 10 }} onPress={() => navigation.navigate("Inbox")} >
                         <Icon name={"arrow-left"} size={20} color={BaseColor.whiteColor}></Icon>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate("Profile")} style={{ justifyContent: "center", alignItems: "center", marginLeft: 10 }}>
+                    <TouchableOpacity onPress={() => navigation.navigate("Profile")} style={{ justifyContent: "center", alignItems: "center", marginLeft: 10 }}>
                         <Avatar
                             size='large'
                             rounded

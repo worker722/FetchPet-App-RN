@@ -26,9 +26,9 @@ class Inbox extends Component {
             showLoader: false,
         }
 
-        // props.navigation.addListener("willFocus", (event) => {
-        //     this.componentWillMount();
-        // });
+        props.navigation.addListener("willFocus", (event) => {
+            this.componentWillMount();
+        });
     }
 
     componentWillMount = async () => {
