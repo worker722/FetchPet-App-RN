@@ -15,7 +15,7 @@ import { Picker, PickerIOS } from '@react-native-community/picker';
 import { BaseColor } from '@config';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Header, Loader } from '@components';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import ImagePicker from 'react-native-image-crop-picker';
 import Toast from 'react-native-simple-toast';
 import Styles from './style';
@@ -25,7 +25,7 @@ import { store, SetPrefrence, GetPrefrence } from "@store";
 import * as Api from '@api';
 import * as Utils from '@utils';
 
-const image_size = (Utils.screen.width - 40) / 3;
+const image_size = (Utils.SCREEN.WIDTH - 40) / 3;
 
 class Sell extends Component {
     constructor(props) {
@@ -37,7 +37,12 @@ class Sell extends Component {
             age: 0,
             description: '',
             price: 0,
-            location: 'USA boulder',
+            region: {
+                latitude: 0,
+                longitude: 0,
+                latitudeDelta: 0.0001,
+                longitudeDelta: 0.0001
+            },
             category: [],
             breed: [],
             gender: [
@@ -47,7 +52,6 @@ class Sell extends Component {
 
             visiblePickerModal: false,
             showLoader: false,
-            showImagePanLoader: false,
             uploadedImages: [],
         }
     }
@@ -67,7 +71,7 @@ class Sell extends Component {
     }
 
     openPhotoPicker = (index) => {
-        this.setState({ visiblePickerModal: false, showImagePanLoader: true });
+        this.setState({ visiblePickerModal: false });
         if (index == 0) {
             ImagePicker.openCamera({
                 mediaType: 'photo',
@@ -76,7 +80,7 @@ class Sell extends Component {
                 includeExif: true,
                 multiple: true,
             }).then(images => {
-                this.setState({ uploadedImages: images, showImagePanLoader: false });
+                this.setState({ uploadedImages: images });
             });
         }
         else if (index == 1) {
@@ -87,23 +91,27 @@ class Sell extends Component {
                 includeExif: true,
                 multiple: true,
             }).then(images => {
-                this.setState({ uploadedImages: images, showImagePanLoader: false });
+                this.setState({ uploadedImages: images });
             });
         }
     }
 
     showPickerModal = () => {
-        if (this.state.showImagePanLoader)
-            return;
-
         this.setState({ visiblePickerModal: true })
     }
 
-    createAds = async () => {
-        if (this.state.showImagePanLoader)
-            return;
+    selectLocation = (region) => {
+        let currentRegion = {
+            latitude: region.latitude,
+            longitude: region.longitude,
+            latitudeDelta: 0.0001,
+            longitudeDelta: 0.0001,
+        }
+        this.setState({ region: currentRegion });
+    }
 
-        const { selectedCategory, selectedBreed, selectedGender, age, price, description, uploadedImages } = this.state;
+    createAds = async () => {
+        const { selectedCategory, selectedBreed, selectedGender, age, price, description, uploadedImages, region } = this.state;
         if (uploadedImages.length == 0) {
             Toast.show("Please choose pet images.");
             return;
@@ -124,8 +132,12 @@ class Sell extends Component {
             Toast.show("Please input pet price");
             return;
         }
+        if (region.latitude == 0 && region.longitude == 0) {
+            Toast.show("Please select location");
+            return;
+        }
         this.setState({ showLoader: true });
-        const params = { category: selectedCategory, breed: selectedBreed, age: age, price: price, gender: selectedGender == 'Male' ? 1 : 0, image_key: 'ad_image', lat: 0.0, long: 0.0, description: description };
+        const params = { category: selectedCategory, breed: selectedBreed, age: age, price: price, gender: selectedGender == 'Male' ? 1 : 0, image_key: 'ad_image', lat: region.latitude, long: region.longitude, description: description };
         const response = await this.props.api.createAds('ads/create', uploadedImages, params);
         this.setState({ showLoader: false });
         if (response?.success) {
@@ -148,7 +160,7 @@ class Sell extends Component {
     }
 
     render = () => {
-        const { selectedCategory, selectedBreed, selectedGender, category, breed, gender, visiblePickerModal, showLoader, uploadedImages, showImagePanLoader } = this.state;
+        const { selectedCategory, selectedBreed, selectedGender, category, breed, gender, visiblePickerModal, showLoader, uploadedImages, region } = this.state;
         const navigation = this.props.navigation;
 
         if (showLoader)
@@ -168,29 +180,25 @@ class Sell extends Component {
                         }
                     </View>
                     <View style={{ width: "100%", height: image_size + 40, borderRadius: 10, borderColor: BaseColor.dddColor, borderWidth: 1, marginTop: 10, justifyContent: "center", alignItems: "center", paddingRight: 10 }}>
-                        {showImagePanLoader ?
-                            <Loader size={30} />
-                            :
-                            <>
-                                {uploadedImages.length == 0 ?
-                                    <>
-                                        <Icon name={"image"} size={35} color={BaseColor.primaryColor}></Icon>
-                                        <TouchableOpacity
-                                            onPress={this.showPickerModal}
-                                            style={{ backgroundColor: BaseColor.primaryColor, paddingVertical: 7, borderWidth: 1, borderColor: BaseColor.dddColor, borderRadius: 10, paddingHorizontal: 10, borderRadius: 5, marginTop: 5 }}>
-                                            <Text style={{ color: BaseColor.whiteColor }}>Choose from gallery</Text>
-                                        </TouchableOpacity>
-                                    </>
-                                    :
-                                    <FlatList
-                                        keyExtractor={(item, index) => index.toString()}
-                                        data={uploadedImages}
-                                        horizontal={true}
-                                        renderItem={this.renderImage}
-                                    />
-                                }
-                            </>
-                        }
+                        <>
+                            {uploadedImages.length == 0 ?
+                                <>
+                                    <Icon name={"image"} size={35} color={BaseColor.primaryColor}></Icon>
+                                    <TouchableOpacity
+                                        onPress={this.showPickerModal}
+                                        style={{ backgroundColor: BaseColor.primaryColor, paddingVertical: 7, borderWidth: 1, borderColor: BaseColor.dddColor, borderRadius: 10, paddingHorizontal: 10, borderRadius: 5, marginTop: 5 }}>
+                                        <Text style={{ color: BaseColor.whiteColor }}>Choose from gallery</Text>
+                                    </TouchableOpacity>
+                                </>
+                                :
+                                <FlatList
+                                    keyExtractor={(item, index) => index.toString()}
+                                    data={uploadedImages}
+                                    horizontal={true}
+                                    renderItem={this.renderImage}
+                                />
+                            }
+                        </>
                     </View>
                     <View style={{ width: "100%", marginTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
                         <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, borderColor: BaseColor.dddColor }}>
@@ -295,11 +303,15 @@ class Sell extends Component {
                     </View>
                     <View style={{ padding: 10, marginTop: 10 }}>
                         <Text style={{ color: BaseColor.primaryColor, fontSize: 18 }}>Location</Text>
-                        <TouchableOpacity onPress={() => navigation.navigate("CustomMap")} activeOpacity={1}>
+                        <TouchableOpacity onPress={() => navigation.navigate("CustomMap", { selectLocation: this.selectLocation })} activeOpacity={1}>
                             <MapView
                                 style={{ flex: 1, height: 160, marginTop: 10 }}
                                 scrollEnabled={false}
+                                region={region}
                             >
+                                {region.latitude != 0 && region.longitude != 0 &&
+                                    <Marker coordinate={region} />
+                                }
                             </MapView>
                         </TouchableOpacity>
                     </View>

@@ -14,20 +14,19 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Avatar, Image } from 'react-native-elements';
 import { Rating } from 'react-native-ratings';
 
-import MapView from 'react-native-maps';
-import Geocoder from 'react-native-geocoder';
+import MapView, { Marker } from 'react-native-maps';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { store, SetPrefrence, GetPrefrence } from "@store";
 import * as Api from '@api';
 
-const slider_height = Math.floor(Utils.screen.height / 11 * 3);
+const slider_height = Math.floor(Utils.SCREEN.HEIGHT / 11 * 3);
 class AdDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            ads: null,
+            ads: {},
 
             showLoader: false,
         }
@@ -38,17 +37,6 @@ class AdDetail extends Component {
         const param = { ad_id: this.props.navigation.state.params.ad_id };
         const response = await this.props.api.post('ads', param);
         this.setState({ showLoader: false, ads: response.data.ads });
-
-        var NY = {
-            lat: 40.7809261,
-            lng: -73.9637594
-        };
-        try {
-            const res = await Geocoder.geocodePosition(NY);
-            console.log(res)
-        } catch (error) {
-            console.log(error);
-        }
     }
 
     favouriteAds = async () => {
@@ -70,7 +58,6 @@ class AdDetail extends Component {
     render = () => {
         const { ads, showLoader } = this.state;
         const navigation = this.props.navigation;
-
         if (showLoader)
             return (<Loader />);
 
@@ -79,7 +66,7 @@ class AdDetail extends Component {
                 <ScrollView style={{ flex: 1 }}>
                     <View style={{ height: slider_height }}>
                         <Swiper style={{ height: slider_height }} autoplay={true} dotColor={"white"} paginationStyle={{ position: "absolute", bottom: 10 }} activeDotColor={BaseColor.primaryColor} dotStyle={{ width: 8, height: 8, borderRadius: 100 }} activeDotStyle={{ width: 11, height: 11, borderRadius: 100 }}>
-                            {ads.meta.map((item, key) => (
+                            {ads?.meta?.map((item, key) => (
                                 <View key={key} style={{ flex: 1 }}>
                                     <Image source={{ uri: Api.SERVER_HOST + item.meta_value }}
                                         style={{ width: "100%", height: slider_height }}
@@ -94,46 +81,46 @@ class AdDetail extends Component {
                         <Header icon_left={"arrow-left"} icon_right={"share-alt"} color_icon_left={"white"} color_icon_right={"white"} callback_left={this.goBack} callback_right={this.shareAds} />
                     </View>
                     <View style={{ position: "absolute", top: (slider_height - 40), right: 10 }}>
-                        <Text style={{ fontSize: 18, color: BaseColor.whiteColor, fontWeight: "bold" }}>$ {ads.price}</Text>
+                        <Text style={{ fontSize: 18, color: BaseColor.whiteColor, fontWeight: "bold" }}>$ {ads?.price}</Text>
                     </View>
 
                     <View style={{ flex: 1, padding: 20 }}>
                         <View style={{ flexDirection: "row" }}>
                             <Text style={{ fontSize: 20, color: BaseColor.primaryColor, fontWeight: "bold" }}>Detail</Text>
                             <TouchableOpacity onPress={() => this.favouriteAds()} style={{ flex: 1, alignItems: "flex-end", justifyContent: "flex-end" }}>
-                                <Icon name={"heart"} size={20} color={BaseColor.primaryColor} solid={ads.is_fav}></Icon>
+                                <Icon name={"heart"} size={20} color={BaseColor.primaryColor} solid={ads?.is_fav}></Icon>
                             </TouchableOpacity>
                         </View>
                         <View style={{ flexDirection: "row", marginTop: 10 }}>
                             <View style={{ flex: 1 }}>
                                 <Text style={{ color: BaseColor.greyColor, fontSize: 13 }}>Pet</Text>
-                                <Text style={{ color: BaseColor.primaryColor, fontSize: 17, fontWeight: "bold" }}>{ads.category.name}</Text>
+                                <Text style={{ color: BaseColor.primaryColor, fontSize: 17, fontWeight: "bold" }}>{ads?.category?.name}</Text>
                                 <Text style={{ color: BaseColor.greyColor, marginTop: 15, fontSize: 13 }}>Age</Text>
-                                <Text style={{ fontSize: 15, fontWeight: "bold" }}>{ads.age} Years</Text>
+                                <Text style={{ fontSize: 15, fontWeight: "bold" }}>{ads?.age} Years</Text>
                                 <Text style={{ color: BaseColor.greyColor, marginTop: 15, fontSize: 13 }}>Gender</Text>
                                 <Text style={{ fontSize: 15, fontWeight: "bold" }}>Male</Text>
                             </View>
                             <View style={{ flex: 0.7 }}>
                                 <Text style={{ color: BaseColor.greyColor, fontSize: 13 }}>Breed</Text>
-                                <Text style={{ fontSize: 15, fontWeight: "bold" }}>{ads.breed.name}</Text>
+                                <Text style={{ fontSize: 15, fontWeight: "bold" }}>{ads?.breed?.name}</Text>
                                 <Text style={{ color: BaseColor.greyColor, marginTop: 15, fontSize: 13 }}>Location</Text>
-                                <Text style={{ fontSize: 15, fontWeight: "bold" }}>{ads.location}</Text>
+                                <Text style={{ fontSize: 15, fontWeight: "bold" }}>{ads?.location}</Text>
                             </View>
                         </View>
                         <Text style={{ color: BaseColor.greyColor, marginTop: 15, fontSize: 13 }}>Description</Text>
-                        <Text style={{ fontSize: 14 }}>{ads.description}</Text>
+                        <Text style={{ fontSize: 14 }}>{ads?.description}</Text>
                         <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }} onPress={() => navigation.navigate("Profile", { user_id: ads.user.id })}>
                             <Avatar
                                 size='medium'
                                 rounded
-                                source={{ uri: Api.SERVER_HOST + ads.user.avatar }}
+                                source={{ uri: Api.SERVER_HOST + ads?.user?.avatar }}
                                 activeOpacity={0.7}
                                 placeholderStyle={{ backgroundColor: "transparent" }}
                                 PlaceholderContent={<ActivityIndicator size={15} color-={BaseColor.primaryColor} />}
-                                containerStyle={{ alignSelf: 'center', marginVertical: 20, marginHorizontal: 10 }}
-                            ></Avatar>
+                                containerStyle={{ alignSelf: 'center', marginVertical: 20, marginHorizontal: 10 }}>
+                            </Avatar>
                             <View style={{ flex: 1 }}>
-                                <Text style={{ color: BaseColor.primaryColor }}>{ads.user.name}</Text>
+                                <Text style={{ color: BaseColor.primaryColor }}>{ads?.user?.name}</Text>
                                 <Text style={{ fontSize: 10 }}>Member since JUN 2018</Text>
                                 <Text style={{ color: BaseColor.primaryColor, fontSize: 10 }}>SEE PROFILE</Text>
                                 <View style={{ justifyContent: "flex-start", alignItems: "flex-start" }}>
@@ -151,13 +138,20 @@ class AdDetail extends Component {
                         <View style={{ width: "100%", height: 200, paddingTop: 10 }}>
                             <MapView
                                 region={{
-                                    latitude: 40.014984,
-                                    longitude: -105.270546,
-                                    latitudeDelta: 0.1,
-                                    longitudeDelta: 0.1,
+                                    latitude: ads?.lat,
+                                    longitude: ads?.long,
+                                    latitudeDelta: 0.0005,
+                                    longitudeDelta: 0.0005,
                                 }}
+                                scrollEnabled={false}
                                 style={{ flex: 1 }}
                             >
+                                <Marker coordinate={{
+                                    latitude: ads?.lat,
+                                    longitude: ads?.long,
+                                    latitudeDelta: 0.0001,
+                                    longitudeDelta: 0.0001,
+                                }} />
                             </MapView>
                         </View>
                     </View>

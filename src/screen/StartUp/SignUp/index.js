@@ -27,7 +27,7 @@ import Toast from 'react-native-simple-toast';
 import { Images, BaseColor } from '@config';
 import * as Utils from '@utils';
 
-const image_height = Utils.screen.height / 4;
+const image_height = Utils.SCREEN.HEIGHT / 4;
 
 class SignUp extends Component {
     constructor(props) {
