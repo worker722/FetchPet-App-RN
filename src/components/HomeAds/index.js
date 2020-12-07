@@ -18,7 +18,7 @@ export default class HomeAds extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userLocation: '',
+            adsLocation: '',
             item: {},
         }
     }
@@ -27,13 +27,15 @@ export default class HomeAds extends Component {
         const { data } = this.props;
         const item = data.item;
         this.setState({ item });
-        Utils.getAddressByCoords(item.lat, item.long, true, (userLocation) => {
-            this.setState({ userLocation });
+        Utils.getAddressByCoords(item.lat, item.long, true, (adsLocation) => {
+            this.setState({ adsLocation });
         });
     }
 
     onChat = () => {
-
+        const { navigation } = this.props;
+        const { item } = this.state;
+        navigation.navigate("Chat", { ad_id: item.id });
     }
 
     onCall = () => {
@@ -49,7 +51,7 @@ export default class HomeAds extends Component {
     render = () => {
         const user_id = store.getState().auth.login.user.id;
 
-        const { userLocation, item } = this.state;
+        const { adsLocation, item } = this.state;
 
         const { onItemClick, onFavourite } = this.props;
 
@@ -70,7 +72,7 @@ export default class HomeAds extends Component {
                     <Text style={{ color: "grey", fontSize: 10 }}>Age</Text>
                     <Text>{item.age} Years</Text>
                     <Text style={{ color: "grey", fontSize: 10 }}>Location</Text>
-                    <Text numberOfLines={1}>{userLocation}</Text>
+                    <Text numberOfLines={1}>{adsLocation}</Text>
                 </View>
                 <View style={{ flexDirection: "column", paddingLeft: 10, }}>
                     <Text style={{ color: "grey", fontSize: 10 }}>10 requestes, 16 hours ago</Text>

@@ -68,7 +68,9 @@ class Home extends Component {
                 min: 0,
                 max: 10000,
             },
+
             searchText: '',
+            currentCategoryID: -1,
 
             showRefresh: false,
             showLoader: false,
@@ -266,14 +268,10 @@ class Home extends Component {
                 if (item.id == id) item.is_selected = true;
                 else item.is_selected = false;
             });
-            this.setState({ topCategory: topCategory });
-            const param = { id_category: id };
-            const response = await this.props.api.post('home/filter_category', param);
-            this.setState({ showContentLoader: false });
-
-            if (response?.success) {
-                this.setState({ pets: response.data.ads });
-            }
+            this.setState({ topCategory: topCategory, currentCategoryID: id }, () => {
+                this.setState({ showContentLoader: true });
+                this.getFilterData();
+            });
         }
         else if (type == FILTER_TYPE.CATEGORY) {
             let filterCategory = this.state.filterCategory;
@@ -301,6 +299,21 @@ class Home extends Component {
         }
     }
 
+    getFilterData = async () => {
+        const { currentCategoryID, searchText } = this.state;
+        console.log(currentCategoryID);
+
+        this.setState({ pets: [] });
+        const param = { id_category: currentCategoryID, searchText: searchText };
+        const response = await this.props.api.post('home/filter_category', param);
+        this.setState({ showContentLoader: false, showRefresh: false });
+
+        if (response?.success) {
+            const ads = await this.nearestSortAds(response.data.ads);
+            this.setState({ pets: ads });
+        }
+    }
+
     filterPet = () => {
         const { filterCategory, filterBreed, filterGender, filterPrice } = this.state;
         let categoryItem = filterCategory.filter((item, index) => {
@@ -325,18 +338,11 @@ class Home extends Component {
     }
 
     searchAds = async () => {
-        const { searchText } = this.state;
-        if (searchText == '')
+        if (this.state.searchText == '')
             return;
 
         this.setState({ showContentLoader: true });
-        const param = { searchText: searchText };
-        const response = await this.props.api.post('home/search', param);
-        this.setState({ showContentLoader: false });
-        if (response?.success) {
-            let ads = await this.nearestSortAds(response.data.ads);
-            this.setState({ pets: ads });
-        }
+        this.getFilterData();
     }
 
     goAdsDetail = (id) => {
@@ -345,7 +351,7 @@ class Home extends Component {
 
     _onRefresh = async () => {
         this.setState({ showRefresh: true });
-        await this.start();
+        this.getFilterData();
     }
 
     handleScroll = () => {
@@ -355,6 +361,7 @@ class Home extends Component {
     render = () => {
 
         const { pets, showLoader, showRefresh, showContentLoader, topCategory, filterCategory, filterBreed, filterGender } = this.state;
+        const navigation = this.props.navigation;
 
         if (showLoader)
             return (<Loader />);
@@ -424,7 +431,7 @@ class Home extends Component {
                             keyExtractor={(item, index) => index.toString()}
                             data={pets}
                             renderItem={(item, index) => (
-                                <HomeAds data={item} onItemClick={this.goAdsDetail} onFavourite={this.favouriteAds} />
+                                <HomeAds data={item} onItemClick={this.goAdsDetail} onFavourite={this.favouriteAds} navigation={navigation} />
                             )}
                         />
                     </ScrollView>

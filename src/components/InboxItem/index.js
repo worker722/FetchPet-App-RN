@@ -45,7 +45,7 @@ export default class InboxItem extends Component {
                 </View>
                 <View style={{ marginLeft: 10, justifyContent: "center", flex: 1 }}>
                     <Text>{user_id == sender.id ? receiver.name : sender.name}</Text>
-                    <Text style={{ color: BaseColor.greyColor, fontSize: 12 }} numberOfLines={1}>{latest_message.message}</Text>
+                    <Text style={{ color: BaseColor.greyColor, fontSize: 12, marginTop: 10 }} numberOfLines={1}>{latest_message.message}</Text>
                 </View>
                 <View style={{ justifyContent: "center", alignItems: "center" }}>
                     <Text style={{ color: BaseColor.greyColor, fontSize: 12 }}>{Utils.relativeTime(latest_message.created_at)}</Text>
