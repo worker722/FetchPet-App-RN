@@ -8,7 +8,9 @@ import {
     ActivityIndicator,
     AppState,
     Platform,
-    Alert
+    Alert,
+    ScrollView,
+    RefreshControl
 } from 'react-native';
 import { Image } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -23,12 +25,13 @@ import * as global from "@api/global";
 
 import firebase from 'react-native-firebase';
 
-import { Loader, Header } from '@components';
+import { Loader, Header, HomeAds } from '@components';
 
 import { BaseColor } from '@config';
 import * as Utils from '@utils';
+import { createPersistoid } from 'redux-persist';
 
-const filterItem_width = (Utils.screen.width - 20) / 4;
+const filterItem_width = (Utils.SCREEN.WIDTH - 20) / 4;
 
 const FILTER_TYPE = {
     TOP_CATEGORY: 0,
@@ -67,6 +70,7 @@ class Home extends Component {
             },
             searchText: '',
 
+            showRefresh: false,
             showLoader: false,
             showContentLoader: false
         }
@@ -176,7 +180,7 @@ class Home extends Component {
             .then(enabled => {
                 if (enabled) {
                     firebase.messaging().getToken().then(token => {
-                        console.log('fcmToken', token)
+                        // console.log('fcmToken', token)
                     })
                 } else {
                     firebase.messaging().requestPermission()
@@ -192,17 +196,17 @@ class Home extends Component {
     }
 
     componentWillMount = async () => {
+        this.setState({ showLoader: true })
         await this.start();
     }
 
     start = async () => {
-        this.setState({ showLoader: true })
         const response = await this.props.api.get('home');
-        this.setState({ showLoader: false });
+        this.setState({ showLoader: false, showRefresh: false });
 
         if (response?.success) {
 
-            let ads = response.data.ads;
+            let ads = await this.nearestSortAds(response.data.ads);
             // let filterCategory = response.data.category;
             let topCategory = response.data.category;
             let filterBreed = response.data.breed;
@@ -228,8 +232,30 @@ class Home extends Component {
                 topCategory: topCategory,
                 // filterCategory: filterCategory,
                 filterBreed: filterBreed
-            })
+            });
         }
+    }
+
+    nearestSortAds = async (ads) => {
+        const adsWithDistance = await Promise.all(ads.map(async item => await this.getAdsDistance(item)));
+        adsWithDistance.sort((a, b) => {
+            if (a.distance > b.distance) return 1;
+            else if (a.distance < b.distance) return -1;
+            return 0;
+        });
+        return adsWithDistance;
+    }
+
+    getAdsDistance = async (item) => {
+        const currentLocation = await Utils.getCurrentLocation();
+        item.distance = await Utils.getDistance(item.lat, item.long, currentLocation.latitude, currentLocation.longitude);
+        return item;
+    }
+
+    getMetadataPromise(entry) {
+        return new Promise((resolve, reject) => {
+            entry.getMetadata(resolve, reject);
+        });
     }
 
     filterSelected = async (type, id) => {
@@ -308,7 +334,8 @@ class Home extends Component {
         const response = await this.props.api.post('home/search', param);
         this.setState({ showContentLoader: false });
         if (response?.success) {
-            this.setState({ pets: response.data.ads });
+            let ads = await this.nearestSortAds(response.data.ads);
+            this.setState({ pets: ads });
         }
     }
 
@@ -316,46 +343,18 @@ class Home extends Component {
         this.props.navigation.navigate("AdDetail", { ad_id: id });
     }
 
-    renderPetItem = ({ item, index }) => {
-        return (
-            <TouchableOpacity style={{ flex: 1, flexDirection: "row", marginBottom: 20 }} onPress={() => this.goAdsDetail(item.id)}>
-                <View>
-                    <Image
-                        source={{ uri: Api.SERVER_HOST + item.meta[0].meta_value }}
-                        style={{ width: 120, height: "100%", borderRadius: 5 }}
-                        placeholderStyle={{ backgroundColor: "transparent" }}
-                        PlaceholderContent={<ActivityIndicator size={20} color={BaseColor.primaryColor}></ActivityIndicator>}></Image>
-                </View>
-                <View style={{ flexDirection: "column", flex: 1, paddingLeft: 10, justifyContent: "center", alignItems: "flex-start" }}>
-                    <Text style={{ color: "grey", fontSize: 10 }}>Category</Text>
-                    <Text style={{ color: BaseColor.primaryColor }}>{item.category.name}</Text>
-                    <Text style={{ color: "grey", fontSize: 10 }}>Breed</Text>
-                    <Text>{item.breed.name}</Text>
-                    <Text style={{ color: "grey", fontSize: 10 }}>Age</Text>
-                    <Text>{item.age} Years</Text>
-                    <Text style={{ color: "grey", fontSize: 10 }}>Location</Text>
-                    <Text>{item.location}</Text>
-                </View>
-                <View style={{ flexDirection: "column", paddingLeft: 10, }}>
-                    <Text style={{ color: "grey", fontSize: 10 }}>10 requestes, 16 hours ago</Text>
-                    <Text style={{ fontSize: 20, textAlign: "right" }}>$ {item.price}</Text>
-                    {item.is_fav ?
-                        <TouchableOpacity onPress={() => this.favouriteAds(index, item, false)} style={{ position: "absolute", bottom: 0, right: 0 }}>
-                            <Icon name={"heart"} size={20} color={BaseColor.primaryColor} solid></Icon>
-                        </TouchableOpacity>
-                        :
-                        <TouchableOpacity onPress={() => this.favouriteAds(index, item, true)} style={{ position: "absolute", bottom: 0, right: 0 }}>
-                            <Icon name={"heart"} size={20} color={BaseColor.primaryColor} ></Icon>
-                        </TouchableOpacity>
-                    }
-                </View>
-            </TouchableOpacity>
-        )
+    _onRefresh = async () => {
+        this.setState({ showRefresh: true });
+        await this.start();
+    }
+
+    handleScroll = () => {
+
     }
 
     render = () => {
 
-        const { pets, showLoader, showContentLoader, topCategory, filterCategory, filterBreed, filterGender } = this.state;
+        const { pets, showLoader, showRefresh, showContentLoader, topCategory, filterCategory, filterBreed, filterGender } = this.state;
 
         if (showLoader)
             return (<Loader />);
@@ -412,19 +411,30 @@ class Home extends Component {
                 {showContentLoader ?
                     <Loader />
                     :
-                    <FlatList
-                        style={{ paddingHorizontal: 10, marginTop: 10 }}
-                        keyExtractor={(item, index) => index.toString()}
-                        data={pets}
-                        renderItem={this.renderPetItem}
-                    />
+                    <ScrollView
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={showRefresh}
+                                onRefresh={this._onRefresh}
+                            />
+                        }
+                        onScroll={this.handleScroll}>
+                        <FlatList
+                            style={{ paddingHorizontal: 10, marginTop: 10 }}
+                            keyExtractor={(item, index) => index.toString()}
+                            data={pets}
+                            renderItem={(item, index) => (
+                                <HomeAds data={item} onItemClick={this.goAdsDetail} onFavourite={this.favouriteAds} />
+                            )}
+                        />
+                    </ScrollView>
                 }
 
                 <RBSheet
                     ref={ref => {
                         this.RBSheetRef = ref;
                     }}
-                    height={Utils.screen.height / 5 * 3}
+                    height={Utils.SCREEN.HEIGHT / 5 * 3}
                     openDuration={250}
                     customStyles={{
                         container: {
@@ -468,7 +478,7 @@ class Home extends Component {
                         <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingVertical: 10, fontWeight: "bold" }}>Price</Text>
                         <View style={{ width: "100%", height: 20 }}>
                             <RangeSlider
-                                style={{ width: Utils.screen.width - 20, height: 20 }}
+                                style={{ width: Utils.SCREEN.WIDTH - 20, height: 20 }}
                                 gravity={'center'}
                                 min={0}
                                 max={800}

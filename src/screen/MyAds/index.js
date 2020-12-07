@@ -75,7 +75,7 @@ export default class MyAds extends Component {
                         renderScene={this._renderScene}
                         renderTabBar={this._renderTabBar}
                         tabBarPosition="top"
-                        initialLayout={{width: Utils.screen.width}}
+                        initialLayout={{width: Utils.SCREEN.WIDTH}}
                     /> */}
                     <View style={{ flexDirection: "row" }}>
                         <TouchableOpacity style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 10, }} onPress={() => this.setState({ index: 0 })}>
