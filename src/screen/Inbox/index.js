@@ -5,7 +5,8 @@ import {
     ScrollView,
     FlatList,
     TouchableOpacity,
-    ActivityIndicator
+    ActivityIndicator,
+    RefreshControl
 } from 'react-native';
 import { Image } from 'react-native-elements';
 import { BaseColor } from '@config';
@@ -24,6 +25,7 @@ class Inbox extends Component {
         this.state = {
             chatInbox: [],
             showLoader: false,
+            showRefresh: false,
         }
 
         props.navigation.addListener("willFocus", (event) => {
@@ -33,8 +35,12 @@ class Inbox extends Component {
 
     componentWillMount = async () => {
         this.setState({ showLoader: true });
+        this.start();
+    }
+
+    start = async () => {
         const response = await this.props.api.get('inbox');
-        this.setState({ showLoader: false });
+        this.setState({ showLoader: false, showRefresh: false });
         if (response?.success) {
             let inbox = response.data.inbox;
             inbox.sort((a, b) => {
@@ -49,8 +55,12 @@ class Inbox extends Component {
         }
     }
 
+    _onRefresh = () => {
+        this.start();
+    }
+
     render = () => {
-        const { chatInbox, showLoader } = this.state;
+        const { chatInbox, showLoader, showRefresh } = this.state;
 
         if (showLoader)
             return (<Loader />)
@@ -61,7 +71,13 @@ class Inbox extends Component {
                 <Text style={{ color: BaseColor.primaryColor, fontSize: 20, fontWeight: "bold", paddingLeft: 10 }}>Chat</Text>
                 <View style={{ padding: 10, paddingTop: 0 }}>
                     <Text style={{ fontSize: 18, marginTop: 10 }}>Active Chat</Text>
-                    <ScrollView>
+                    <ScrollView
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={showRefresh}
+                                onRefresh={this._onRefresh}
+                            />
+                        } >
                         <FlatList
                             style={{ marginTop: 30 }}
                             keyExtractor={(item, index) => index.toString()}

@@ -9,7 +9,8 @@ import {
     Platform,
     Share,
     Modal,
-    TextInput
+    TextInput,
+    RefreshControl
 } from 'react-native';
 import { BaseColor } from '@config';
 import { Header, Loader } from '@components';
@@ -39,6 +40,7 @@ class AdDetail extends Component {
             ads: {},
             adsLocation: '',
             showLoader: false,
+            showRefresh: false,
             animType: null,
 
             orderName: '',
@@ -132,22 +134,35 @@ class AdDetail extends Component {
         this.setState({ showLoader: true });
         const params = { id_ads: ads.id, name: orderName, email: orderEmail, phonenumber: orderPhone, description: orderDesc, status: 0 };
         const response = await this.props.api.post('ads/order', params);
-        this.setState({ showLoader: false });
+
         if (response?.success) {
             this.setState({ visibleOrderDialog: false });
             this.props.navigation.goBack(null);
         }
+        else
+            this.setState({ showLoader: false });
+    }
+
+    _onRefresh = () => {
+        
     }
 
     render = () => {
-        const { ads, showLoader, adsLocation, animType, visibleOrderDialog, orderName, orderEmail, orderPhone, orderDesc } = this.state;
+        const { ads, showLoader, showRefresh, adsLocation, animType, visibleOrderDialog, orderName, orderEmail, orderPhone, orderDesc } = this.state;
         const navigation = this.props.navigation;
         if (showLoader)
             return (<Loader />);
 
         return (
             <View style={{ flex: 1 }}>
-                <ScrollView style={{ flex: 1 }} onScroll={this._onScroll}>
+                <ScrollView style={{ flex: 1 }}
+                    onScroll={this._onScroll}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={showRefresh}
+                            onRefresh={this._onRefresh}
+                        />
+                    }>
                     <View style={{ height: slider_height }}>
                         <Swiper style={{ height: slider_height }} autoplay={true} dotColor={"white"} paginationStyle={{ position: "absolute", bottom: 10 }} activeDotColor={BaseColor.primaryColor} dotStyle={{ width: 8, height: 8, borderRadius: 100 }} activeDotStyle={{ width: 11, height: 11, borderRadius: 100 }}>
                             {ads?.meta?.map((item, key) => (

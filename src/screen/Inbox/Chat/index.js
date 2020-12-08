@@ -173,7 +173,7 @@ class Chat extends Component {
                     </TouchableOpacity>
                     <View style={{ justifyContent: "center", paddingLeft: 10, flex: 1 }}>
                         <Text style={{ color: "white" }}>{other_user?.name}</Text>
-                        <Text style={{ color: "white", fontSize: 12 }}>Last Seen: {Utils.relativeTime(last_message?.last_seen_time)}</Text>
+                        {/* <Text style={{ color: "white", fontSize: 12 }}>Last Seen: {Utils.relativeTime(last_message?.last_seen_time)}</Text> */}
                     </View>
                     <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", paddingLeft: 30 }}>
                         <Icon name={"ellipsis-v"} size={18} color={"white"}></Icon>
