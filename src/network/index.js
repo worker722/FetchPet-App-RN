@@ -16,7 +16,6 @@ const onLogin = data => {
 export const _TOKEN = () => {
     try {
         const token = store.getState().auth.login.user.token;
-        console.log('token', token);
         return token;
     } catch (error) {
         return null;
