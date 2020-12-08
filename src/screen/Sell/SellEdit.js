@@ -28,7 +28,7 @@ import * as Utils from '@utils';
 
 const image_size = (Utils.SCREEN.WIDTH - 40) / 3;
 
-class Sell extends Component {
+class SellEdit extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -41,9 +41,10 @@ class Sell extends Component {
             region: {
                 latitude: 0,
                 longitude: 0,
-                latitudeDelta: 0.001,
+                latitudeDelta: 0.0001,
                 longitudeDelta: 0.0001
             },
+            ads: {},
             category: [],
             breed: [],
             gender: [
@@ -64,30 +65,44 @@ class Sell extends Component {
     }
 
     start = async () => {
-        const response = await this.props.api.get('ads/sell');
+        const param = { ad_id: this.props.navigation.state.params.ad_id };
+        let response = await this.props.api.get('ads/sell');
         if (response?.success) {
             const { category, breed } = response.data;
             if (category.length > 0) {
-                this.setState({ category: category, selectedCategory: category[0].name });
+                this.setState({ category: category });
             }
             if (breed.length > 0)
-                this.setState({ breed: breed, selectedBreed: breed[0].name });
+                this.setState({ breed: breed });
         }
+        response = await this.props.api.post('ads', param);
+        if (response?.success) {
+            const { ads } = response.data;
+            this.setState({ ads });
+            this.setState({
+                price: ads.price,
+                age: ads.age,
+                description: ads.description,
+                selectedCategory: ads.category.name,
+                selectedBreed: ads.breed.name,
+                selectedGender: ads.gender == 1 ? "Male" : "Female"
+            });
 
-        Utils.getCurrentLocation().then(
-            (data) => {
-                this.setState({
-                    region: {
-                        latitude: data.latitude,
-                        longitude: data.longitude,
-                        latitudeDelta: 0.0005,
-                        longitudeDelta: 0.0005
-                    }
-                });
-                console.log(data)
+            let region = {
+                latitude: ads.lat,
+                longitude: ads.long,
+                latitudeDelta: 0.0001,
+                longitudeDelta: 0.0001,
             }
-        );
+            this.setState({ region });
 
+            let uploadedImages = [];
+            ads.meta.forEach((item, key) => {
+                if (item.meta_key == '_ad_image')
+                    uploadedImages.push({ id: item.id, path: Api.SERVER_HOST + item.meta_value });
+            });
+            this.setState({ uploadedImages });
+        }
         this.setState({ showLoader: false, showRefresh: false });
     }
 
@@ -122,12 +137,11 @@ class Sell extends Component {
     }
 
     selectLocation = (region) => {
-        console.log(region);
         let currentRegion = {
             latitude: region.latitude,
             longitude: region.longitude,
-            latitudeDelta: 0.0005,
-            longitudeDelta: 0.0005,
+            latitudeDelta: 0.0001,
+            longitudeDelta: 0.0001,
         }
         this.setState({ region: currentRegion });
     }
@@ -160,7 +174,7 @@ class Sell extends Component {
         }
         this.setState({ showLoader: true });
         const params = { category: selectedCategory, breed: selectedBreed, age: age, price: price, gender: selectedGender == 'Male' ? 1 : 0, image_key: 'ad_image', lat: region.latitude, long: region.longitude, description: description };
-        const response = await this.props.api.createAds('ads/create', uploadedImages, params);
+        const response = await this.props.api.editAds('ads/edit', uploadedImages, params);
         this.setState({ showLoader: false });
         if (response?.success) {
             this.props.navigation.navigate("Home");
@@ -187,7 +201,7 @@ class Sell extends Component {
     }
 
     render = () => {
-        const { selectedCategory, selectedBreed, selectedGender, category, breed, gender, visiblePickerModal, showLoader, showRefresh, uploadedImages, region } = this.state;
+        const { selectedCategory, selectedBreed, selectedGender, category, breed, gender, age, description, price, visiblePickerModal, showLoader, showRefresh, uploadedImages, region } = this.state;
         const navigation = this.props.navigation;
 
         if (showLoader)
@@ -204,7 +218,7 @@ class Sell extends Component {
                     }>
                     <Header navigation={navigation} mainHeader={true} />
                     <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                        <Text style={{ color: BaseColor.primaryColor, fontSize: 20, paddingLeft: 10 }}>Create A New Ads</Text>
+                        <Text style={{ color: BaseColor.primaryColor, fontSize: 20, paddingLeft: 10 }}>Edit Ads</Text>
                         <View style={{ flex: 1 }}></View>
                         {uploadedImages.length > 0 &&
                             <TouchableOpacity style={{ paddingRight: 10 }} onPress={this.showPickerModal}>
@@ -212,7 +226,7 @@ class Sell extends Component {
                             </TouchableOpacity>
                         }
                     </View>
-                    <View style={{ height: image_size + 40, marginHorizontal: 5, borderRadius: 10, borderColor: BaseColor.dddColor, borderWidth: 1, marginTop: 10, justifyContent: "center", alignItems: "center", paddingRight: 10 }}>
+                    <View style={{ height: image_size + 40, borderRadius: 10, marginHorizontal: 5, borderColor: BaseColor.dddColor, borderWidth: 1, marginTop: 10, justifyContent: "center", alignItems: "center", paddingRight: 10 }}>
                         <>
                             {uploadedImages.length == 0 ?
                                 <>
@@ -292,6 +306,7 @@ class Sell extends Component {
                     <View style={{ width: "100%", marginTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
                         <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor }}>
                             <TextInput
+                                value={`${age}`}
                                 onChangeText={(text) => this.setState({ age: text })}
                                 placeholder={"Age"} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10, justifyContent: "center", alignItems: "center" }} />
                         </View>
@@ -326,13 +341,17 @@ class Sell extends Component {
                     <View style={{ width: "100%", marginTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
                         <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor }}>
                             <TextInput
+                                value={`${price}`}
                                 onChangeText={(text) => this.setState({ price: text })}
                                 placeholder={"Price"} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10, justifyContent: "center", alignItems: "center" }} />
                         </View>
                         <View style={{ flex: 1, marginLeft: 10 }}></View>
                     </View>
                     <View style={{ padding: 10, height: 100, marginTop: 10, borderWidth: 1, borderColor: BaseColor.dddColor, borderRadius: 10, marginHorizontal: 10 }}>
-                        <TextInput style={{ flex: 1, textAlign: "left" }} placeholder={"Let them know about your pet."} multiline={true}></TextInput>
+                        <TextInput
+                            value={description}
+                            onChangeText={(text) => this.setState({ description: text })}
+                            style={{ flex: 1, textAlign: "left" }} placeholder={"Let them know about your pet."} multiline={true}></TextInput>
                     </View>
                     <View style={{ padding: 10, marginTop: 10 }}>
                         <Text style={{ color: BaseColor.primaryColor, fontSize: 18 }}>Location</Text>
@@ -351,7 +370,7 @@ class Sell extends Component {
                     <TouchableOpacity
                         onPress={this.createAds}
                         style={{ marginTop: 15, marginBottom: 20, backgroundColor: BaseColor.primaryColor, borderRadius: 5, justifyContent: "center", alignItems: "center", paddingVertical: 10, marginHorizontal: 15 }}>
-                        <Text style={{ color: BaseColor.whiteColor, fontSize: 18 }}>Create AD</Text>
+                        <Text style={{ color: BaseColor.whiteColor, fontSize: 18 }}>Edit AD</Text>
                     </TouchableOpacity>
                 </ScrollView>
 
@@ -395,4 +414,4 @@ const mapDispatchToProps = dispatch => {
         api: bindActionCreators(Api, dispatch)
     };
 };
-export default connect(null, mapDispatchToProps)(Sell);
+export default connect(null, mapDispatchToProps)(SellEdit);

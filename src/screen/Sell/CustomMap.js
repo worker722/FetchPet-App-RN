@@ -18,6 +18,9 @@ export default class CustomMap extends Component {
             userLocation: '',
             animType: null
         };
+    }
+
+    componentWillMount = () => {
         this.getCurrentLocation();
     }
 
@@ -28,18 +31,33 @@ export default class CustomMap extends Component {
     }
 
     getCurrentLocation = () => {
-        Utils.getCurrentLocation().then(
-            (data) => {
-                this.setState({
-                    region: {
-                        latitude: data.latitude,
-                        longitude: data.longitude,
-                        latitudeDelta: 0.001,
-                        longitudeDelta: 0.001
-                    }
-                });
-            }
-        );
+        const currentRegion = this.props.navigation.state.params.currentRegion;
+        if (currentRegion) {
+            this.setState({
+                region: {
+                    latitude: currentRegion.latitude,
+                    longitude: currentRegion.longitude,
+                    latitudeDelta: 0.001,
+                    longitudeDelta: 0.001
+                }
+            });
+            this.getUserLocation(currentRegion.latitude, currentRegion.longitude);
+        }
+        else {
+            Utils.getCurrentLocation().then(
+                (data) => {
+                    this.setState({
+                        region: {
+                            latitude: data.latitude,
+                            longitude: data.longitude,
+                            latitudeDelta: 0.001,
+                            longitudeDelta: 0.001
+                        }
+                    });
+                    this.getUserLocation(data.latitude, data.longitude);
+                }
+            );
+        }
     }
 
     onAddressSelected = (location) => {
@@ -96,6 +114,13 @@ export default class CustomMap extends Component {
                         query={{
                             key: Utils.GOOGLE_API_KEY,
                             language: 'en',
+                        }}
+                        styles={{
+                            textInput: {
+                                borderColor: BaseColor.dddColor,
+                                borderWidth: 1,
+                                borderRadius: 10,
+                            },
                         }}
                     />
                 </View>

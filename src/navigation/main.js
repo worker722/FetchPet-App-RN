@@ -20,6 +20,7 @@ import Notification from "@screen/Notification";
 
 // sell
 import Sell from "@screen/Sell";
+import SellEdit from "@screen/Sell/SellEdit";
 import CustomMap from "@screen/Sell/CustomMap";
 
 // my ads
@@ -165,6 +166,9 @@ const StackNavigator = createStackNavigator(
 		},
 		CustomMap: {
 			screen: CustomMap
+		},
+		SellEdit: {
+			screen: SellEdit
 		}
 	},
 	{

@@ -52,11 +52,15 @@ class AdDetail extends Component {
         }
     }
 
-    componentWillMount = async () => {
+    componentWillMount = () => {
         this.setState({ showLoader: true });
+        this.start();
+    }
+
+    start = async () => {
         const param = { ad_id: this.props.navigation.state.params.ad_id };
         const response = await this.props.api.post('ads', param);
-        this.setState({ showLoader: false, ads: response.data.ads });
+        this.setState({ showLoader: false, showRefresh: false, ads: response.data.ads });
         Utils.getAddressByCoords(response.data.ads.lat, response.data.ads.long, false, (adsLocation) => {
             this.setState({ adsLocation });
         });
@@ -144,7 +148,8 @@ class AdDetail extends Component {
     }
 
     _onRefresh = () => {
-        
+        this.setState({ showRefresh: true });
+        this.start();
     }
 
     render = () => {
