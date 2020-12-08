@@ -204,7 +204,6 @@ class Home extends Component {
 
     start = async () => {
         const response = await this.props.api.get('home');
-        this.setState({ showLoader: false, showRefresh: false });
 
         if (response?.success) {
 
@@ -236,6 +235,7 @@ class Home extends Component {
                 filterBreed: filterBreed
             });
         }
+        this.setState({ showLoader: false, showRefresh: false });
     }
 
     nearestSortAds = async (ads) => {

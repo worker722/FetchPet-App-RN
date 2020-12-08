@@ -27,6 +27,10 @@ class Notification extends Component {
             showLoader: false,
             showRefresh: false
         }
+
+        props.navigation.addListener("willFocus", (event) => {
+            this.componentWillMount();
+        });
     }
 
     componentWillMount = () => {
@@ -58,13 +62,20 @@ class Notification extends Component {
         else {
             this.props.navigation.navigate("AdDetail", { ad_id: item.id_type });
         }
+
+        if (item.read_status == 0) {
+            const params = { id: item.id };
+            this.props.api.post('notification/read', params);
+        }
     }
 
     renderItem = ({ item, key }) => {
         return (
             <TouchableOpacity onPress={() => this._onNotificationClicked(item)}>
-                <View style={{ marginTop: 5, borderWidth: 1, borderColor: BaseColor.dddColor, borderRadius: 10, flexDirection: "row", alignItems:"center", justifyContent:"center" }}>
-                    <View style={{ width: 3, height: "80%", backgroundColor: BaseColor.primaryColor }}></View>
+                <View style={{ marginTop: 5, borderWidth: 1, borderColor: BaseColor.dddColor, borderRadius: 10, flexDirection: "row" }}>
+                    {item.read_status == 0 &&
+                        <View style={{ width: 2, marginVertical: 15, backgroundColor: BaseColor.primaryColor }}></View>
+                    }
                     <View style={{ margin: 15 }}>
                         <Text style={{ color: BaseColor.primaryColor, fontSize: 16 }}>{item.title}</Text>
                         <Text style={{ color: BaseColor.greyColor, marginTop: 5, fontSize: 12 }}>{Utils.relativeTime(item.created_at)}</Text>

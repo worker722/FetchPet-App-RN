@@ -40,7 +40,6 @@ class Inbox extends Component {
 
     start = async () => {
         const response = await this.props.api.get('inbox');
-        this.setState({ showLoader: false, showRefresh: false });
         if (response?.success) {
             let inbox = response.data.inbox;
             inbox.sort((a, b) => {
@@ -53,6 +52,7 @@ class Inbox extends Component {
             });
             this.setState({ chatInbox: inbox });
         }
+        this.setState({ showLoader: false, showRefresh: false });
     }
 
     _onRefresh = () => {
