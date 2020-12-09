@@ -137,6 +137,7 @@ class Login extends Component {
                 this.props.navigation.navigate("Home");
             }
         } catch (error) {
+            this.setState({ showLoading: false });
             if (error.code === statusCodes.SIGN_IN_CANCELLED) {
                 Toast.show(error + '');
             } else if (error.code === statusCodes.IN_PROGRESS) {
