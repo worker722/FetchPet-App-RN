@@ -47,7 +47,7 @@ export const relativeTime = (date) => {
     return DATE2STR(date);
 };
 
-export const getCurrentLocation = () => {
+export const getCurrentLocation = async () => {
     return new Promise(
         (resolve, reject) => {
             geolocation.getCurrentPosition(
@@ -58,7 +58,7 @@ export const getCurrentLocation = () => {
     );
 };
 
-export const getAddressByCoords = (latitude, longitude, shortAddress, callback) => {
+export const getAddressByCoords = async (latitude, longitude, shortAddress, callback) => {
     const params = `address=${latitude},${longitude}&key=${GOOGLE_API_KEY}`;
     fetch(`${GOOGLE_MAP_API_URL}geocode/json?${encodeURI(params)}`)
         .then((response) => response.json())

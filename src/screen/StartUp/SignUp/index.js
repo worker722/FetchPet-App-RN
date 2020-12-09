@@ -100,7 +100,7 @@ class SignUp extends Component {
         this.setState({ showLoading: false });
 
         if (response?.success) {
-            SetPrefrence('rememberMe', 0);
+            SetPrefrence('rememberMe', 1);
             this.props.navigation.navigate("Home");
         }
     }
