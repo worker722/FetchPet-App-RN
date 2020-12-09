@@ -78,33 +78,26 @@ export default class HomeAds extends Component {
                     <Text style={{ color: "grey", fontSize: 10 }}>Location</Text>
                     <Text numberOfLines={1}>{adsLocation}</Text>
                 </View>
-                <View style={{ flexDirection: "column", paddingLeft: 10, }}>
-                    <Text style={{ color: "grey", fontSize: 10 }}>10 requestes, 16 hours ago</Text>
+                <View style={{ flexDirection: "column", flex: 1, paddingLeft: 10, }}>
+                    <Text style={{ color: "grey", fontSize: 12, textAlign: "right" }}>{Utils.relativeTime(item.updated_at)} posted</Text>
                     <Text style={{ fontSize: 20, textAlign: "right" }}>$ {item.price}</Text>
                     <View style={{ flex: 1 }}></View>
                     <View style={{ flexDirection: "row" }}>
                         {user_id != item.user.id ?
                             <>
                                 <TouchableOpacity onPress={this.onChat} style={{ flex: 1 }}>
-                                    <Icon name={"comment"} size={20} color={BaseColor.primaryColor} solid></Icon>
+                                    <Icon name={"comment-dots"} size={20} color={BaseColor.primaryColor}></Icon>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={this.onCall} style={{ flex: 1 }}>
                                     <Icon name={"phone"} size={20} color={BaseColor.primaryColor} ></Icon>
                                 </TouchableOpacity>
-                                <View style={{ flex: 1 }}></View>
-                                {item.is_fav ?
-                                    <TouchableOpacity onPress={() => onFavourite(index, item, false)} style={{ position: "absolute", bottom: 0, right: 0 }}>
-                                        <Icon name={"heart"} size={20} color={BaseColor.primaryColor} solid></Icon>
-                                    </TouchableOpacity>
-                                    :
-                                    <TouchableOpacity onPress={() => onFavourite(index, item, true)} style={{ position: "absolute", bottom: 0, right: 0 }}>
-                                        <Icon name={"heart"} size={20} color={BaseColor.primaryColor} ></Icon>
-                                    </TouchableOpacity>
-                                }
+                                <View style={{ flex: 1 }} />
+                                <TouchableOpacity onPress={() => onFavourite(index, item, !item.is_fav)} style={{ position: "absolute", bottom: 0, right: 0 }}>
+                                    <Icon name={"heart"} size={20} color={BaseColor.primaryColor} solid={item.is_fav}></Icon>
+                                </TouchableOpacity>
                             </>
                             :
                             <>
-                                <Text>{Utils.relativeTime(item.updated_at)}</Text>
                                 <View style={{ flex: 1 }}></View>
                                 <TouchableOpacity onPress={this.onEdit} style={{ position: "absolute", bottom: 0, right: 0 }}>
                                     <Icon name={"edit"} size={20} color={BaseColor.primaryColor} solid></Icon>

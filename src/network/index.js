@@ -4,8 +4,8 @@ import Toast from 'react-native-simple-toast';
 import * as global from "./global";
 import { store } from '@store';
 
-// export const SERVER_HOST = 'http://10.0.2.2:8000';
-export const SERVER_HOST = 'http://54.177.72.41';
+export const SERVER_HOST = 'http://10.0.2.2:8000';
+// export const SERVER_HOST = 'http://54.177.72.41';
 
 const onLogin = data => {
     return {
@@ -17,7 +17,6 @@ const onLogin = data => {
 export const _TOKEN = () => {
     try {
         const token = store.getState().auth.login.user.token;
-        console.log(token);
         return token;
     } catch (error) {
         return null;
@@ -66,6 +65,45 @@ export const post = (route, params, is_store) => async dispatch => {
         .catch(err => {
             if (_TOKEN() != null) {
                 console.log('method-post-error', err);
+                // showNetworkError();
+            }
+        });
+}
+
+export const editProfile = (route, image, params) => async dispatch => {
+    const formData = new FormData();
+
+    const keys = Object.keys(params);
+    keys.forEach(item => {
+        formData.append(item, params[item]);
+    });
+
+    const extension = image.mime.substring(image.mime.indexOf("/") + 1, image.mime.length);
+    const photo = {
+        uri: image.path,
+        type: image.mime,
+        name: "profile_image." + extension,
+    };
+    formData.append('profile_image', photo);
+
+    return fetch(`${SERVER_HOST}/api/${route}`, {
+        method: 'POST',
+        headers: {
+            'content-type': 'multipart/form-data',
+            'Authorization': `Bearer ${_TOKEN()}`
+        },
+        body: formData
+    })
+        .then(res => res.json())
+        .then(res => {
+            if (res.message != '')
+                Toast.show(res.message);
+            dispatch(onLogin(res.data))
+            return res;
+        })
+        .catch(err => {
+            if (_TOKEN() != null) {
+                console.log('ads-upload-error', err);
                 // showNetworkError();
             }
         });

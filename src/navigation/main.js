@@ -33,7 +33,7 @@ import Chat from "@screen/Inbox/Chat";
 //profile
 import Profile from "@screen/Profile";
 import ProfileEdit from "@screen/Profile/ProfileEdit";
-import Other from "@screen/Profile/Other";
+import ShowProfile from "@screen/Profile/ProfileEdit/ShowProfile";
 import Help from "@screen/Profile/Help";
 //setting
 import Setting from "@screen/Profile/Setting";
@@ -152,8 +152,8 @@ const StackNavigator = createStackNavigator(
 		ProfileEdit: {
 			screen: ProfileEdit
 		},
-		Other: {
-			screen: Other
+		ShowProfile: {
+			screen: ShowProfile
 		},
 		Help: {
 			screen: Help

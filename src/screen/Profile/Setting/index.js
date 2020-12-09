@@ -56,7 +56,6 @@ export default class Setting extends Component {
 
     }
 
-
     render = () => {
         const navigation = this.props.navigation;
         const { is_showNotification } = this.state;
@@ -65,11 +64,11 @@ export default class Setting extends Component {
             <View style={{ flex: 1, paddingHorizontal: 10 }}>
                 <Header icon_left={"arrow-left"} title={"Setting"} callback_left={this.goBack} />
 
-                <LinkItem title={"Privacy"} subtitle={"Passwork, Phone number visiblity"} icon_right={"angle-right"} action={this.goPrivacy} is_showLine={true} />
-                <LinkItem title={"Notification"} subtitle={""} icon_right={"angle-right"} action={this.setNotificationStatus} is_showLine={true} is_switch={true} switch_val={is_showNotification} />
+                <LinkItem title={"Privacy"} subtitle={"Passwork, Phone number visiblity"} icon_right={"angle-right"} action={this.goPrivacy} />
+                <LinkItem title={"Notification"} subtitle={""} icon_right={"angle-right"} action={this.setNotificationStatus} is_switch={true} switch_val={is_showNotification} />
                 <LinkItem title={"Logout"} subtitle={""} icon_right={"angle-right"} action={this.logOut} />
-                <LinkItem title={"Logout from all devices"} subtitle={""} icon_right={"angle-right"} action={this.logOutAll} is_showLine={true} />
-                <LinkItem title={"Deactivate account and delete my data"} subtitle={""} icon_right={"angle-right"} action={this.deactivateAccount} is_showLine={true} />
+                <LinkItem title={"Logout from all devices"} subtitle={""} icon_right={"angle-right"} action={this.logOutAll} />
+                <LinkItem title={"Deactivate account and delete my data"} subtitle={""} icon_right={"angle-right"} action={this.deactivateAccount} />
             </View>
         )
     }

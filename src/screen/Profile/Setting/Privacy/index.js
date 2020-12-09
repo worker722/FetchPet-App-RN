@@ -31,11 +31,11 @@ export default class Privacy extends Component {
     render = () => {
         const { is_showPhonenumber } = this.state;
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, paddingHorizontal: 10 }}>
                 <Header icon_left={"arrow-left"} callback_left={this.goBack} title={"Privacy"} />
 
-                <LinkItem title={"Show my phone number in ads"} subtitle={""} icon_right={"angle-right"} action={this.setPhonenumberStatus} is_showLine={true} is_switch={true} switch_val={is_showPhonenumber} />
-                <LinkItem title={"Change password"} subtitle={""} icon_right={"angle-right"} action={this.goChangePassword} is_showLine={true} />
+                <LinkItem title={"Show my phone number in ads"} subtitle={""} icon_right={"angle-right"} action={this.setPhonenumberStatus} is_switch={true} switch_val={is_showPhonenumber} />
+                <LinkItem title={"Change password"} subtitle={""} icon_right={"angle-right"} action={this.goChangePassword} />
 
             </View>
         )

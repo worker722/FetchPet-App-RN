@@ -13,10 +13,11 @@ import { BaseColor } from '@config';
 import PhoneInput from 'react-native-phone-input';
 import ImagePicker from 'react-native-image-crop-picker';
 import Styles from './style';
+import Toast from 'react-native-simple-toast';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { store, SetPrefrence, GetPrefrence } from "@store";
+import { store } from "@store";
 import * as Api from '@api';
 
 class ProfileEdit extends Component {
@@ -27,6 +28,7 @@ class ProfileEdit extends Component {
             showLoader: false,
 
             is_edit: false,
+            avatar: { path: Api.SERVER_HOST },
             name: '',
             email: '',
             phonenumber: "+1",
@@ -34,6 +36,8 @@ class ProfileEdit extends Component {
             visiblePickerModal: false,
             user: {},
         }
+
+        this.change_image_status = 0;
     }
 
     componentWillMount = async () => {
@@ -42,7 +46,7 @@ class ProfileEdit extends Component {
         const response = await this.props.api.post('profile', param);
         this.setState({ showLoader: false });
         if (response?.success) {
-            this.setState({ user: response.data.user, name: response.data.user.name, email: response.data.user.email });
+            this.setState({ user: response.data.user, name: response.data.user.name, email: response.data.user.email, avatar: { path: Api.SERVER_HOST + response.data.user.avatar } });
         }
     }
 
@@ -54,40 +58,75 @@ class ProfileEdit extends Component {
         this.setState({ is_edit: false })
     }
 
-    save = () => {
-        this.setState({ is_edit: false })
+    save = async () => {
+        this.setState({ is_edit: false });
+        const { name, phonenumber, email, avatar } = this.state;
+        if (name == '') {
+            Toast.show("Please input name.");
+            return;
+        }
+        if (phonenumber == '') {
+            Toast.show("Please input email.");
+            return;
+        }
+        if (email == '') {
+            Toast.show("Please input phone number.");
+            return;
+        }
+        const params = {
+            name: name,
+            email: email,
+            phonenumber: phonenumber,
+            change_image_status: this.change_image_status
+        };
+        this.setState({ showLoader: true });
+
+        let response = null;
+        if (this.change_image_status == 1)
+            response = await this.props.api.editProfile("profile/edit", avatar, params);
+        else
+            response = await this.props.api.post("profile/edit", params, true);
+
+        if (response?.success) {
+            this.setState({ user: response.data.user, name: response.data.user.name, email: response.data.user.email, phonenumber: response.data.user.phonenumber });
+            this.change_image_status = 0;
+        }
+        this.setState({ showLoader: false });
     }
 
     openPhotoPicker = (index) => {
         if (index == 0) {
             ImagePicker.openCamera({
+                multiple: false,
                 mediaType: 'photo',
                 width: 500,
                 height: 500,
                 includeExif: true
             }).then(images => {
-                console.log(images);
-                this.setState({ visiblePickerModal: false });
+                this.change_image_status = 1;
+                this.setState({ visiblePickerModal: false, avatar: images });
             });
         }
         else if (index == 1) {
             ImagePicker.openPicker({
+                multiple: false,
                 mediaType: 'photo',
                 width: 500,
                 height: 500,
                 includeExif: true
             }).then(images => {
-                console.log(images);
-                this.setState({ visiblePickerModal: false });
+                this.change_image_status = 1;
+                this.setState({ visiblePickerModal: false, avatar: images });
             });
         }
         else {
-            this.setState({ visiblePickerModal: false });
+            this.change_image_status = 2;
+            this.setState({ avatar: { path: Api.SERVER_HOST }, visiblePickerModal: false });
         }
     }
 
     render = () => {
-        const { is_edit, phonenumber, name, email, valid_phone, user, showLoader } = this.state;
+        const { is_edit, avatar, phonenumber, name, email, valid_phone, user, showLoader } = this.state;
 
         if (showLoader)
             return (<Loader />);
@@ -102,18 +141,24 @@ class ProfileEdit extends Component {
                 <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingHorizontal: 20 }}>{is_edit ? 'Basic Infomation' : 'Profile'}</Text>
                 <View style={{ marginTop: 15, marginLeft: 15, flexDirection: "row", paddingRight: 20 }}>
                     <View>
-                        <Avatar
-                            size='xlarge'
-                            rounded
-                            source={{ uri: Api.SERVER_HOST + user?.avatar }}
-                            activeOpacity={0.7}
-                            placeholderStyle={{ backgroundColor: "transparent" }}
-                            containerStyle={{ marginHorizontal: 10, borderWidth: 1, borderColor: "#808080", width: 90, height: 90, borderRadius: 100 }}>
-                        </Avatar>
+                        {avatar?.path != Api.SERVER_HOST ?
+                            <Avatar
+                                size='xlarge'
+                                rounded
+                                source={{ uri: avatar?.path }}
+                                activeOpacity={0.7}
+                                placeholderStyle={{ backgroundColor: "transparent" }}
+                                containerStyle={{ marginHorizontal: 10, borderWidth: 1, borderColor: "#808080", width: 80, height: 80, borderRadius: 100 }}>
+                            </Avatar>
+                            :
+                            <View style={{ width: 80, height: 80, marginHorizontal: 10, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
+                                <Text style={{ color: BaseColor.whiteColor, fontSize: 30 }}>{user?.name?.charAt(0).toUpperCase()}</Text>
+                            </View>
+                        }
                         {is_edit &&
                             <TouchableOpacity
                                 onPress={() => this.setState({ visiblePickerModal: true })}
-                                style={{ width: 40, height: 40, backgroundColor: BaseColor.primaryColor, position: "absolute", justifyContent: "center", alignItems: "center", bottom: 0, right: 0, borderRadius: 100, borderWidth: 3, borderColor: BaseColor.whiteColor }}>
+                                style={{ width: 40, height: 40, backgroundColor: BaseColor.primaryColor, position: "absolute", justifyContent: "center", alignItems: "center", bottom: -5, right: 0, borderRadius: 100, borderWidth: 3, borderColor: BaseColor.whiteColor }}>
                                 <Icon name={"camera"} size={18} color={BaseColor.whiteColor}></Icon>
                             </TouchableOpacity>
                         }
