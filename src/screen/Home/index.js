@@ -452,9 +452,9 @@ class Home extends Component {
                         }
                     }}>
 
-                    <View style={{ flex: 1, padding: 10 }}>
+                    <View style={{ flex: 1, paddingVertical: 20, paddingHorizontal: 10 }}>
                         <View style={{ justifyContent: "center", alignItems: "center" }}>
-                            <View style={{ width: 120, height: 8, backgroundColor: "#9b9b9b", borderRadius: 100 }}></View>
+                            <View style={{ width: 120, height: 6, backgroundColor: "#9b9b9b", borderRadius: 100 }}></View>
                         </View>
                         <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingVertical: 10, fontWeight: "bold" }}>Pet</Text>
                         <View style={{ flexDirection: "row", width: "100%" }}>
