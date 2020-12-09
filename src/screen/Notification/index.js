@@ -29,11 +29,11 @@ class Notification extends Component {
         }
 
         props.navigation.addListener("willFocus", (event) => {
-            this.componentWillMount();
+            this.UNSAFE_componentWillMount();
         });
     }
 
-    componentWillMount = () => {
+    UNSAFE_componentWillMount = () => {
         this.setState({ showLoader: true });
         this.start();
     }

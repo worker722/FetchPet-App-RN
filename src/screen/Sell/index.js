@@ -58,7 +58,7 @@ class Sell extends Component {
         }
     }
 
-    componentWillMount = () => {
+    UNSAFE_componentWillMount = () => {
         this.setState({ showLoader: true });
         this.start();
     }

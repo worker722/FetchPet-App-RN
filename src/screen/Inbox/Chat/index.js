@@ -68,7 +68,7 @@ class Chat extends Component {
         AppState.removeEventListener('change', this.handleAppStateChange);
     }
 
-    componentWillMount = async () => {
+    UNSAFE_componentWillMount = async () => {
         this.setState({ showLoader: true });
         const param = { ad_id: this.props.navigation.state.params.ad_id };
         const response = await this.props.api.post("chat", param);

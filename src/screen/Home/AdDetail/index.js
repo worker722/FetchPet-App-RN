@@ -47,7 +47,7 @@ class AdDetail extends Component {
         }
     }
 
-    componentWillMount = () => {
+    UNSAFE_componentWillMount = () => {
         this.setState({ showLoader: true, view: this.props.navigation.state.params.view ? true : false });
         this.start();
     }

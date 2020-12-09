@@ -20,7 +20,7 @@ export default class CustomMap extends Component {
         };
     }
 
-    componentWillMount = () => {
+    UNSAFE_componentWillMount = () => {
         this.getCurrentLocation();
     }
 
