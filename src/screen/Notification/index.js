@@ -71,7 +71,7 @@ class Notification extends Component {
 
     renderItem = ({ item, key }) => {
         return (
-            <TouchableOpacity onPress={() => this._onNotificationClicked(item)}>
+            <TouchableOpacity onPress={() => this._onNotificationClicked(item)} style={{ marginVertical: 1 }}>
                 <View style={{ marginTop: 5, borderWidth: 1, borderColor: BaseColor.dddColor, borderRadius: 10, flexDirection: "row" }}>
                     {item.read_status == 0 &&
                         <View style={{ width: 2, marginVertical: 15, backgroundColor: BaseColor.primaryColor }}></View>

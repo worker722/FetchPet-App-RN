@@ -121,7 +121,7 @@ class Login extends Component {
                 return;
             }
 
-            let params = { email: userInfo.user.email, password: "@fetch@", is_social: 1 };
+            let params = { email: userInfo.user.email, password: "123456", is_social: 1 };
 
             if (Platform.OS == "android")
                 params = Object.assign(params, { device_token: device_token });
