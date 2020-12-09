@@ -332,7 +332,9 @@ class Sell extends Component {
                         <View style={{ flex: 1, marginLeft: 10 }}></View>
                     </View>
                     <View style={{ padding: 10, height: 100, marginTop: 10, borderWidth: 1, borderColor: BaseColor.dddColor, borderRadius: 10, marginHorizontal: 10 }}>
-                        <TextInput style={{ flex: 1, textAlign: "left" }} placeholder={"Let them know about your pet."} multiline={true}></TextInput>
+                        <TextInput
+                            onChangeText={(text) => this.setState({ description: text })}
+                            style={{ flex: 1, textAlign: "left" }} placeholder={"Let them know about your pet."} multiline={true}></TextInput>
                     </View>
                     <View style={{ padding: 10, marginTop: 10 }}>
                         <Text style={{ color: BaseColor.primaryColor, fontSize: 18 }}>Location</Text>

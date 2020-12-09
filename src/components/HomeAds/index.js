@@ -49,7 +49,7 @@ export default class HomeAds extends Component {
     }
 
     onEdit = () => {
-        // this.props.navigation.navigate("SellEdit", { ad_id: this.state.item.id });
+        this.props.navigation.navigate("SellEdit", { ad_id: this.state.item.id });
     }
 
     render = () => {

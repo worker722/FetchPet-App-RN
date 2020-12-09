@@ -172,14 +172,14 @@ class SellEdit extends Component {
             Toast.show("Please select location");
             return;
         }
-        this.setState({ showLoader: true });
-        const params = { category: selectedCategory, breed: selectedBreed, age: age, price: price, gender: selectedGender == 'Male' ? 1 : 0, image_key: 'ad_image', lat: region.latitude, long: region.longitude, description: description };
-        const response = await this.props.api.editAds('ads/edit', uploadedImages, params);
-        this.setState({ showLoader: false });
-        if (response?.success) {
-            this.props.navigation.navigate("Home");
-            this.setState({ uploadedImages: [], age: 0, price: 0, description: '' });
-        }
+        // this.setState({ showLoader: true });
+        // const params = { category: selectedCategory, breed: selectedBreed, age: age, price: price, gender: selectedGender == 'Male' ? 1 : 0, image_key: 'ad_image', lat: region.latitude, long: region.longitude, description: description };
+        // const response = await this.props.api.editAds('ads/edit', uploadedImages, params);
+        // this.setState({ showLoader: false });
+        // if (response?.success) {
+        //     this.props.navigation.navigate("Home");
+        //     this.setState({ uploadedImages: [], age: 0, price: 0, description: '' });
+        // }
     }
 
     _onRefresh = () => {
@@ -370,7 +370,7 @@ class SellEdit extends Component {
                     <TouchableOpacity
                         onPress={this.createAds}
                         style={{ marginTop: 15, marginBottom: 20, backgroundColor: BaseColor.primaryColor, borderRadius: 5, justifyContent: "center", alignItems: "center", paddingVertical: 10, marginHorizontal: 15 }}>
-                        <Text style={{ color: BaseColor.whiteColor, fontSize: 18 }}>Edit AD</Text>
+                        <Text style={{ color: BaseColor.whiteColor, fontSize: 18 }}>Edit Ads</Text>
                     </TouchableOpacity>
                 </ScrollView>
 

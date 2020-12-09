@@ -4,7 +4,8 @@ import Toast from 'react-native-simple-toast';
 import * as global from "./global";
 import { store } from '@store';
 
-export const SERVER_HOST = 'http://10.0.2.2:8000';
+// export const SERVER_HOST = 'http://10.0.2.2:8000';
+export const SERVER_HOST = 'http://54.177.72.41';
 
 const onLogin = data => {
     return {
@@ -16,6 +17,7 @@ const onLogin = data => {
 export const _TOKEN = () => {
     try {
         const token = store.getState().auth.login.user.token;
+        console.log(token);
         return token;
     } catch (error) {
         return null;

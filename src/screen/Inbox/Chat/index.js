@@ -131,6 +131,7 @@ class Chat extends Component {
         }
         this.setState({ is_sending: true });
         const response = await this.props.api.post('chat/post', param);
+        console.log(response);
         this.setState({ is_sending: false });
         if (response.success) {
             let chat = this.state.chat;
