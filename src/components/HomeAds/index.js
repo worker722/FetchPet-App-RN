@@ -20,13 +20,20 @@ export default class HomeAds extends Component {
         this.state = {
             adsLocation: '',
             item: {},
+            ad_images: {}
         }
     }
 
     componentWillMount = () => {
         const { data } = this.props;
         const item = data.item;
-        this.setState({ item });
+        const ad_images = [];
+        item.meta.forEach((item, key) => {
+            if (item.meta_key == '_ad_image')
+                ad_images.push(item.meta_value);
+        });
+        this.setState({ ad_images, item });
+
         Utils.getAddressByCoords(item.lat, item.long, true, (adsLocation) => {
             this.setState({ adsLocation });
         });
@@ -55,7 +62,7 @@ export default class HomeAds extends Component {
     render = () => {
         const user_id = store.getState().auth.login.user.id;
 
-        const { adsLocation, item } = this.state;
+        const { adsLocation, item, ad_images } = this.state;
 
         const { onItemClick, onFavourite } = this.props;
 
@@ -63,7 +70,7 @@ export default class HomeAds extends Component {
             <TouchableOpacity style={{ flex: 1, flexDirection: "row", marginBottom: 20 }} onPress={() => onItemClick(item.id)}>
                 <View>
                     <Image
-                        source={{ uri: Api.SERVER_HOST + item.meta[0].meta_value }}
+                        source={{ uri: Api.SERVER_HOST + ad_images[0] }}
                         style={{ width: 120, height: "100%", borderRadius: 5 }}
                         placeholderStyle={{ backgroundColor: "transparent" }}
                         PlaceholderContent={<ActivityIndicator size={20} color={BaseColor.primaryColor}></ActivityIndicator>}></Image>

@@ -346,7 +346,7 @@ class Home extends Component {
     }
 
     goAdsDetail = (id) => {
-        this.props.navigation.navigate("AdDetail", { ad_id: id });
+        this.props.navigation.navigate("AdDetail", { ad_id: id, view: true });
     }
 
     _onRefresh = async () => {

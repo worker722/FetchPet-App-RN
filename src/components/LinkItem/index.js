@@ -8,7 +8,6 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import { BaseColor } from '@config';
-import { act } from 'react-test-renderer';
 
 export default class LinkItem extends Component {
     constructor(props) {
