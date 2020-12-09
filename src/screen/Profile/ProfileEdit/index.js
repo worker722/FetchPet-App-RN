@@ -30,7 +30,7 @@ class ProfileEdit extends Component {
             showLoader: false,
 
             is_edit: false,
-            avatar: { path: Api.SERVER_HOST },
+            avatar: { path: '' },
             name: '',
             email: '',
             phonenumber: "+1",
@@ -48,7 +48,10 @@ class ProfileEdit extends Component {
         const response = await this.props.api.post('profile', param);
         this.setState({ showLoader: false });
         if (response?.success) {
-            this.setState({ user: response.data.user, name: response.data.user.name, email: response.data.user.email, avatar: { path: Api.SERVER_HOST + response.data.user.avatar } });
+            let avatar = Api.SERVER_HOST + response.data.user.avatar;
+            if (response.data.user.avatar == null || response.data.user.avatar == '')
+                avatar = '';
+            this.setState({ user: response.data.user, name: response.data.user.name, email: response.data.user.email, avatar: { path: avatar } });
         }
     }
 
@@ -143,7 +146,7 @@ class ProfileEdit extends Component {
                 <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingHorizontal: 20 }}>{is_edit ? 'Basic Infomation' : 'Profile'}</Text>
                 <View style={{ marginTop: 15, marginLeft: 15, flexDirection: "row", paddingRight: 20 }}>
                     <View>
-                        {avatar?.path != Api.SERVER_HOST ?
+                        {avatar?.path ?
                             <Avatar
                                 size='xlarge'
                                 rounded

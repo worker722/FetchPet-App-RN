@@ -64,7 +64,7 @@ export default class HomeAds extends Component {
 
         const { adsLocation, item, ad_images } = this.state;
 
-        const { onItemClick, onFavourite } = this.props;
+        const { onItemClick, onFavourite, data } = this.props;
 
         return (
             <TouchableOpacity style={{ flex: 1, flexDirection: "row", marginBottom: 20 }} onPress={() => onItemClick(item.id)}>
@@ -99,7 +99,7 @@ export default class HomeAds extends Component {
                                     <Icon name={"phone"} size={20} color={BaseColor.primaryColor} ></Icon>
                                 </TouchableOpacity>
                                 <View style={{ flex: 1 }} />
-                                <TouchableOpacity onPress={() => onFavourite(index, item, !item.is_fav)} style={{ position: "absolute", bottom: 0, right: 0 }}>
+                                <TouchableOpacity onPress={() => onFavourite(data.index, item, !item.is_fav)} style={{ position: "absolute", bottom: 0, right: 0 }}>
                                     <Icon name={"heart"} size={20} color={BaseColor.primaryColor} solid={item.is_fav}></Icon>
                                 </TouchableOpacity>
                             </>
