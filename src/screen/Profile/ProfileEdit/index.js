@@ -20,6 +20,8 @@ import { bindActionCreators } from "redux";
 import { store } from "@store";
 import * as Api from '@api';
 
+import * as Utils from '@utils';
+
 class ProfileEdit extends Component {
     constructor(props) {
         super(props);
@@ -59,18 +61,18 @@ class ProfileEdit extends Component {
     }
 
     save = async () => {
-        this.setState({ is_edit: false });
         const { name, phonenumber, email, avatar } = this.state;
+        console.log(phonenumber);
         if (name == '') {
             Toast.show("Please input name.");
             return;
         }
-        if (phonenumber == '') {
-            Toast.show("Please input email.");
+        if (!Utils.isValidEmail(email)) {
+            Toast.show("Please input valid email.");
             return;
         }
-        if (email == '') {
-            Toast.show("Please input phone number.");
+        if (!this.phone.isValidNumber()) {
+            Toast.show("Please input valid phone number.");
             return;
         }
         const params = {
@@ -88,7 +90,7 @@ class ProfileEdit extends Component {
             response = await this.props.api.post("profile/edit", params, true);
 
         if (response?.success) {
-            this.setState({ user: response.data.user, name: response.data.user.name, email: response.data.user.email, phonenumber: response.data.user.phonenumber });
+            this.setState({ is_edit: false, user: response.data.user, name: response.data.user.name, email: response.data.user.email, phonenumber: response.data.user.phonenumber });
             this.change_image_status = 0;
         }
         this.setState({ showLoader: false });
@@ -212,7 +214,7 @@ class ProfileEdit extends Component {
                                 textProps={{ placeholder: "Please input your phone number" }}
                                 textStyle={{ fontSize: 17, color: valid_phone ? BaseColor.primaryColor : BaseColor.greyColor }}
                                 value={phonenumber}
-                                onChangePhoneNumber={(value) => this.setState({ valid_phone: this.phone.isValidNumber() })}
+                                onChangePhoneNumber={(value) => this.setState({ valid_phone: this.phone.isValidNumber(), phonenumber: value })}
                                 placeholderTextColor={BaseColor.greyColor}
                             />
                             <TextInput style={[Styles.textinput, { marginTop: 20 }]}
