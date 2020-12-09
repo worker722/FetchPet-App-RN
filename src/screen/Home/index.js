@@ -322,6 +322,7 @@ class Home extends Component {
     }
 
     favouriteAds = async (index, item, value) => {
+        console.log(index)
         let pets = this.state.pets;
         pets[index].is_fav = value;
         this.setState({ pets: pets });
@@ -430,7 +431,7 @@ class Home extends Component {
                             style={{ paddingHorizontal: 10, marginTop: 10 }}
                             keyExtractor={(item, index) => index.toString()}
                             data={pets}
-                            renderItem={(item, index) => (
+                            renderItem={(item, key) => (
                                 <HomeAds data={item} onItemClick={this.goAdsDetail} onFavourite={this.favouriteAds} navigation={navigation} />
                             )}
                         />
