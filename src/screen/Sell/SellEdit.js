@@ -56,6 +56,7 @@ class SellEdit extends Component {
             showLoader: false,
             showRefresh: false,
             uploadedImages: [],
+            is_edit_image: false,
         }
     }
 
@@ -116,7 +117,7 @@ class SellEdit extends Component {
                 includeExif: true,
                 multiple: true,
             }).then(images => {
-                this.setState({ uploadedImages: images });
+                this.setState({ uploadedImages: images, is_edit_image: true });
             });
         }
         else if (index == 1) {
@@ -127,7 +128,7 @@ class SellEdit extends Component {
                 includeExif: true,
                 multiple: true,
             }).then(images => {
-                this.setState({ uploadedImages: images });
+                this.setState({ uploadedImages: images, is_edit_image: true });
             });
         }
     }
@@ -146,8 +147,8 @@ class SellEdit extends Component {
         this.setState({ region: currentRegion });
     }
 
-    createAds = async () => {
-        const { selectedCategory, selectedBreed, selectedGender, age, price, description, uploadedImages, region } = this.state;
+    editAds = async () => {
+        const { ads, selectedCategory, selectedBreed, selectedGender, age, price, description, uploadedImages, region, is_edit_image } = this.state;
         if (uploadedImages.length == 0) {
             Toast.show("Please choose pet images.");
             return;
@@ -172,14 +173,20 @@ class SellEdit extends Component {
             Toast.show("Please select location");
             return;
         }
-        // this.setState({ showLoader: true });
-        // const params = { category: selectedCategory, breed: selectedBreed, age: age, price: price, gender: selectedGender == 'Male' ? 1 : 0, image_key: 'ad_image', lat: region.latitude, long: region.longitude, description: description };
-        // const response = await this.props.api.editAds('ads/edit', uploadedImages, params);
-        // this.setState({ showLoader: false });
-        // if (response?.success) {
-        //     this.props.navigation.navigate("Home");
-        //     this.setState({ uploadedImages: [], age: 0, price: 0, description: '' });
-        // }
+        this.setState({ showLoader: true });
+        const params = { is_edit_image: is_edit_image, ad_id: ads.id, category: selectedCategory, breed: selectedBreed, age: age, price: price, gender: selectedGender == 'Male' ? 1 : 0, image_key: 'ad_image', lat: region.latitude, long: region.longitude, description: description };
+        let response;
+        if (is_edit_image) {
+            response = await this.props.api.createAds('ads/edit', uploadedImages, params);
+        }
+        else {
+            response = await this.props.api.post('ads/edit', params);
+        }
+        this.setState({ showLoader: false });
+        if (response?.success) {
+            this.props.navigation.navigate("Home");
+            this.setState({ uploadedImages: [], age: 0, price: 0, description: '', is_edit_image: false });
+        }
     }
 
     _onRefresh = () => {
@@ -368,7 +375,7 @@ class SellEdit extends Component {
                         </TouchableOpacity>
                     </View>
                     <TouchableOpacity
-                        onPress={this.createAds}
+                        onPress={this.editAds}
                         style={{ marginTop: 15, marginBottom: 20, backgroundColor: BaseColor.primaryColor, borderRadius: 5, justifyContent: "center", alignItems: "center", paddingVertical: 10, marginHorizontal: 15 }}>
                         <Text style={{ color: BaseColor.whiteColor, fontSize: 18 }}>Edit Ads</Text>
                     </TouchableOpacity>
