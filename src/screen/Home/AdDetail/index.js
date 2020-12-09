@@ -33,29 +33,37 @@ import { store, SetPrefrence, GetPrefrence } from "@store";
 import * as Api from '@api';
 
 const slider_height = Math.floor(Utils.SCREEN.HEIGHT / 11 * 3);
+
 class AdDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
             ads: {},
+            ad_images: [],
             adsLocation: '',
             showLoader: false,
             showRefresh: false,
+            view: false
         }
     }
 
     componentWillMount = () => {
-        this.setState({ showLoader: true });
+        this.setState({ showLoader: true, view: this.props.navigation.state.params.view ? true : false });
         this.start();
     }
 
     start = async () => {
-        const param = { ad_id: this.props.navigation.state.params.ad_id };
+        const param = { ad_id: this.props.navigation.state.params.ad_id, view: this.state.view };
         const response = await this.props.api.post('ads', param);
         await Utils.getAddressByCoords(response.data.ads.lat, response.data.ads.long, false, (adsLocation) => {
             this.setState({ adsLocation });
         });
-        this.setState({ showLoader: false, showRefresh: false, ads: response.data.ads });
+        const ad_images = [];
+        response.data.ads.meta.forEach((item, key) => {
+            if (item.meta_key == '_ad_image')
+                ad_images.push(item.meta_value);
+        });
+        this.setState({ showLoader: false, showRefresh: false, view: false, ads: response.data.ads, ad_images });
     }
 
     favouriteAds = async () => {
@@ -114,7 +122,7 @@ class AdDetail extends Component {
 
     render = () => {
         const user_id = store.getState().auth.login.user.id;
-        const { ads, showLoader, showRefresh, adsLocation } = this.state;
+        const { ads, ad_images, showLoader, showRefresh, adsLocation } = this.state;
         const navigation = this.props.navigation;
 
         if (showLoader)
@@ -132,9 +140,9 @@ class AdDetail extends Component {
                     }>
                     <View style={{ height: slider_height }}>
                         <Swiper style={{ height: slider_height }} autoplay={true} dotColor={"white"} paginationStyle={{ position: "absolute", bottom: 10 }} activeDotColor={BaseColor.primaryColor} dotStyle={{ width: 8, height: 8, borderRadius: 100 }} activeDotStyle={{ width: 11, height: 11, borderRadius: 100 }}>
-                            {ads?.meta?.map((item, key) => (
+                            {ad_images.map((item, key) => (
                                 <View key={key} style={{ flex: 1 }}>
-                                    <Image source={{ uri: Api.SERVER_HOST + item.meta_value }}
+                                    <Image source={{ uri: Api.SERVER_HOST + item }}
                                         style={{ width: "100%", height: slider_height }}
                                         PlaceholderContent={<ActivityIndicator size={30} color={BaseColor.primaryColor}
                                             placeholderStyle={{ backgroundColor: "white" }} />}

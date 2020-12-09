@@ -6,6 +6,7 @@ const BaseColor = {
     greyColor: "#808080",
     dddColor:'#DDDDDD',
     whiteColor: "#FFFFFF",
+    activeColor: "#0CFA07",
     blackColor: "#000000",
     categoryColor: "#2B51C3",
     googleColor: "#E3411F",

@@ -3,165 +3,80 @@ import {
     View,
     Text,
     TouchableOpacity,
-    FlatList
+    FlatList,
+    ScrollView,
+    RefreshControl
 } from 'react-native';
 import { BaseColor } from '@config';
-import { Avatar } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import { ClosedAds, Loader } from '@components';
 
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as Api from '@api';
 
-const tempData = [
-    {
-        index: 0,
-        category: "Dog",
-        breed: "BullGod",
-        age: 10,
-        price: 999,
-        location: "Boulder, USA",
-        requestNum: 10,
-        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS1VsrTEpDB7xNbwxWYvcL8DR_N6RzMI-uRw&usqp=CAU",
-        latestTime: "17hours ago",
-        is_fav: false
-    },
-    {
-        index: 1,
-        category: "Dog",
-        breed: "BullGod",
-        age: 10,
-        price: 999,
-        location: "Boulder, USA",
-        requestNum: 10,
-        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS1VsrTEpDB7xNbwxWYvcL8DR_N6RzMI-uRw&usqp=CAU",
-        latestTime: "17hours ago",
-        is_fav: false
-    },
-    {
-        index: 2,
-        category: "Dog",
-        breed: "BullGod",
-        age: 10,
-        price: 999,
-        location: "Boulder, USA",
-        requestNum: 10,
-        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS1VsrTEpDB7xNbwxWYvcL8DR_N6RzMI-uRw&usqp=CAU",
-        latestTime: "17hours ago",
-        is_fav: false
-    }
-    , {
-        index: 3,
-        category: "Dog",
-        breed: "BullGod",
-        age: 10,
-        price: 999,
-        location: "Boulder, USA",
-        requestNum: 10,
-        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS1VsrTEpDB7xNbwxWYvcL8DR_N6RzMI-uRw&usqp=CAU",
-        latestTime: "17hours ago",
-        is_fav: false
-    },
-    {
-        index: 4,
-        category: "Dog",
-        breed: "BullGod",
-        age: 10,
-        price: 999,
-        location: "Boulder, USA",
-        requestNum: 10,
-        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS1VsrTEpDB7xNbwxWYvcL8DR_N6RzMI-uRw&usqp=CAU",
-        latestTime: "17hours ago",
-        is_fav: false
-    },
-    {
-        index: 5,
-        category: "Dog",
-        breed: "BullGod",
-        age: 10,
-        price: 999,
-        location: "Boulder, USA",
-        requestNum: 10,
-        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS1VsrTEpDB7xNbwxWYvcL8DR_N6RzMI-uRw&usqp=CAU",
-        latestTime: "17hours ago",
-        is_fav: false
-    },
-    {
-        index: 6,
-        category: "Dog",
-        breed: "BullGod",
-        age: 10,
-        price: 999,
-        location: "Boulder, USA",
-        requestNum: 10,
-        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS1VsrTEpDB7xNbwxWYvcL8DR_N6RzMI-uRw&usqp=CAU",
-        latestTime: "17hours ago",
-        is_fav: false
-    }
-];
-
-export default class Closed extends Component {
+class Closed extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            tempData: tempData
+            showLoader: false,
+            showRefresh: false,
+
+            ads: null,
         }
     }
 
-    renderItem = ({ item }) => {
-        const { navigation } = this.props;
+    componentWillMount = () => {
+        this.setState({ showLoader: true });
+        this.start();
+    }
 
-        return (
-            <TouchableOpacity style={{ flex: 1, flexDirection: "row", marginBottom: 10, backgroundColor: "grey", borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor, paddingLeft: 7 }}
-                onPress={() => navigation.navigate("AdDetail", { ad_id: 1 })}>
-                <View style={{ justifyContent: "center", alignItems: "center", flexDirection: "row", backgroundColor: "white", paddingRight: 10 }}>
-                    <Avatar
-                        size='large'
-                        rounded
-                        source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS1VsrTEpDB7xNbwxWYvcL8DR_N6RzMI-uRw&usqp=CAU' }}
-                        activeOpacity={0.7}
-                        placeholderStyle={{ backgroundColor: "transparent" }}
-                        containerStyle={{ alignSelf: 'center', marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 65, height: 65 }}>
-                    </Avatar>
-                    <Text style={{ color: BaseColor.primaryColor, textAlign: "center", marginLeft: 5, fontWeight: "bold" }}>{item.category}</Text>
-                </View>
+    start = async () => {
+        const response = await this.props.api.get('ads/closedAds');
+        if (response?.success) {
+            this.setState({ ads: response.data.ads });
+        }
+        this.setState({ showLoader: false, showRefresh: false });
+    }
 
-                <View style={{ flex: 1, backgroundColor: "white", padding: 10 }}>
-                    <View>
-                        <View style={{ paddingLeft: 10 }}>
-                            <Text style={{ textAlign: "right", flex: 1, textAlignVertical: "center", fontWeight: "bold" }}>$ {item.price}</Text>
-                            <View style={{ flexDirection: "row", justifyContent: "flex-end", alignItems: "center" }}>
-                                <View style={{ width: 10, height: 10, borderRadius: 100, backgroundColor: BaseColor.greyColor, marginRight: 5 }}></View>
-                                <Text style={{ color: BaseColor.greyColor, fontSize: 12, textAlign: "right" }}>Status: Closed</Text>
-                            </View>
-                        </View>
-                        <View style={{ flexDirection: "row", marginTop: 15 }}>
-                            <View style={{ flex: 1 }}>
-                                <Text style={{ fontSize: 10, color: BaseColor.greyColor }} numberOfLines={1}>10 requests, 16hours ago</Text>
-                            </View>
-                            <View style={{ paddingLeft: 10, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                                <Icon name={"eye"} size={13} color={BaseColor.greyColor}></Icon>
-                                <Text style={{ fontSize: 10, color: BaseColor.greyColor, marginLeft: 5 }}>View : 58</Text>
-                            </View>
-                            <View style={{ paddingLeft: 10, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                                <Icon name={"heart"} size={13} color={BaseColor.greyColor}></Icon>
-                                <Text style={{ fontSize: 10, color: BaseColor.greyColor, marginLeft: 5 }}>Like : 94</Text>
-                            </View>
-                        </View>
-                    </View>
-                </View>
-            </TouchableOpacity>
-        )
+    _onRefresh = () => {
+        this.setState({ showRefresh: true, ads: null });
+        this.start();
     }
 
     render = () => {
+        const { ads, showLoader, showRefresh } = this.state;
+
+        if (showLoader)
+            return (<Loader />);
+
         return (
             <View style={{ flex: 1 }}>
-                <FlatList
-                    style={{ paddingHorizontal: 10, marginTop: 10 }}
-                    keyExtractor={(item, index) => index.toString()}
-                    data={this.state.tempData}
-                    renderItem={this.renderItem}
-                >
-                </FlatList>
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={showRefresh}
+                            onRefresh={this._onRefresh}
+                        />
+                    }>
+                    <FlatList
+                        style={{ paddingHorizontal: 10, marginTop: 10 }}
+                        keyExtractor={(item, index) => index.toString()}
+                        data={ads}
+                        renderItem={(item, key) => (
+                            <ClosedAds data={item} navigation={this.props.navigation} />
+                        )}
+                    >
+                    </FlatList>
+                </ScrollView>
             </View>
         )
     }
 }
+
+
+const mapDispatchToProps = dispatch => {
+    return {
+        api: bindActionCreators(Api, dispatch)
+    };
+};
+export default connect(null, mapDispatchToProps)(Closed);

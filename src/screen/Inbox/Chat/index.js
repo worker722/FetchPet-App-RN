@@ -188,9 +188,9 @@ class Chat extends Component {
                         <Text style={{ color: "white" }}>{other_user?.name}</Text>
                         {/* <Text style={{ color: "white", fontSize: 12 }}>Last Seen: {Utils.relativeTime(last_message?.last_seen_time)}</Text> */}
                     </View>
-                    <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", paddingLeft: 30 }}>
+                    {/* <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", paddingLeft: 30 }}>
                         <Icon name={"ellipsis-v"} size={18} color={"white"}></Icon>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
                 <ScrollView
                     ref={ref => this.scrollView = ref}
