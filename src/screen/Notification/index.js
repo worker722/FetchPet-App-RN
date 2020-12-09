@@ -69,10 +69,20 @@ class Notification extends Component {
         }
     }
 
+    delete = async (index, key) => {
+        const params = { id: index };
+        const response = await this.props.api.post("notification/delete", params);
+        if (response?.success) {
+            let notification = this.state.notification;
+            notification.splice(key, 1);
+            this.setState({ notification });
+        }
+    }
+
     renderItem = ({ item, key }) => {
         return (
-            <TouchableOpacity onPress={() => this._onNotificationClicked(item)} style={{ marginVertical: 1 }}>
-                <View style={{ marginTop: 5, borderWidth: 1, borderColor: BaseColor.dddColor, borderRadius: 10, flexDirection: "row" }}>
+            <TouchableOpacity onPress={() => this._onNotificationClicked(item)} style={{ marginTop: 6, marginBottom: 1, flexDirection: "row", borderWidth: 1, borderColor: BaseColor.dddColor, borderRadius: 10 }}>
+                <View style={{ flex: 1, flexDirection: "row" }}>
                     {item.read_status == 0 &&
                         <View style={{ width: 2, marginVertical: 15, backgroundColor: BaseColor.primaryColor }}></View>
                     }
@@ -81,6 +91,9 @@ class Notification extends Component {
                         <Text style={{ color: BaseColor.greyColor, marginTop: 5, fontSize: 12 }}>{Utils.relativeTime(item.created_at)}</Text>
                     </View>
                 </View>
+                <TouchableOpacity onPress={() => this.delete(item.id, key)} style={{ justifyContent: "center", alignItems: "center", paddingRight: 10 }}>
+                    <Icon name={"trash-alt"} size={20} color={BaseColor.primaryColor} />
+                </TouchableOpacity>
             </TouchableOpacity>
         )
     }
