@@ -154,24 +154,36 @@ class Chat extends Component {
                     <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", padding: 10 }} onPress={() => navigation.navigate("Inbox")} >
                         <Icon name={"arrow-left"} size={20} color={BaseColor.whiteColor}></Icon>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate("Profile")} style={{ justifyContent: "center", alignItems: "center", marginLeft: 10 }}>
-                        <Avatar
-                            size='large'
-                            rounded
-                            source={{ uri: Api.SERVER_HOST + other_user?.avatar }}
-                            activeOpacity={0.7}
-                            placeholderStyle={{ backgroundColor: "transparent" }}
-                            containerStyle={{ alignSelf: 'center', marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 60, height: 60 }}>
-                        </Avatar>
-                        <Avatar
-                            size='small'
-                            rounded
-                            source={{ uri: Api.SERVER_HOST + ads?.meta[0].meta_value }}
-                            activeOpacity={0.7}
-                            placeholderStyle={{ backgroundColor: "transparent" }}
-                            containerStyle={{ position: "absolute", bottom: 0, right: 0, borderWidth: 1, borderColor: BaseColor.whiteColor, width: 30, height: 30 }}>
-                        </Avatar>
-                    </TouchableOpacity>
+                    <View style={{ justifyContent: "center", alignItems: "center", marginLeft: 10 }}>
+                        <TouchableOpacity onPress={() => navigation.navigate("ShowProfile", { user_id: other_user.id })} >
+                            {other_user?.avatar ?
+                                <Avatar
+                                    size='large'
+                                    rounded
+                                    source={{ uri: Api.SERVER_HOST + other_user?.avatar }}
+                                    activeOpacity={0.7}
+                                    placeholderStyle={{ backgroundColor: "transparent" }}
+                                    containerStyle={{ alignSelf: 'center', marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 60, height: 60 }}>
+                                </Avatar>
+                                :
+                                <View style={{ width: 60, height: 60, borderRadius: 100, borderWidth: 2, borderColor: BaseColor.whiteColor, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
+                                    <Text style={{ color: BaseColor.whiteColor, fontSize: 25 }}>{other_user?.name.charAt(0).toUpperCase()}</Text>
+                                </View>
+                            }
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate("AdDetail", { ad_id: ads.id })}
+                            style={{ position: "absolute", bottom: -5, right: 0, width: 25, height: 25, borderRadius: 100 }}>
+                            <Avatar
+                                size='small'
+                                rounded
+                                source={{ uri: Api.SERVER_HOST + ads?.meta[0].meta_value }}
+                                activeOpacity={0.7}
+                                placeholderStyle={{ backgroundColor: "transparent" }}
+                                containerStyle={{ borderWidth: 1, borderColor: BaseColor.whiteColor, width: 25, height: 25 }}>
+                            </Avatar>
+                        </TouchableOpacity>
+                    </View>
                     <View style={{ justifyContent: "center", paddingLeft: 10, flex: 1 }}>
                         <Text style={{ color: "white" }}>{other_user?.name}</Text>
                         {/* <Text style={{ color: "white", fontSize: 12 }}>Last Seen: {Utils.relativeTime(last_message?.last_seen_time)}</Text> */}

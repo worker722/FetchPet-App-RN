@@ -176,30 +176,38 @@ class AdDetail extends Component {
                         </View>
                         <Text style={{ color: BaseColor.greyColor, marginTop: 15, fontSize: 13 }}>Description</Text>
                         <Text style={{ fontSize: 14 }}>{ads?.description}</Text>
-                        <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                            <Avatar
-                                size='medium'
-                                rounded
-                                source={{ uri: Api.SERVER_HOST + ads?.user?.avatar }}
-                                activeOpacity={0.7}
-                                placeholderStyle={{ backgroundColor: "transparent" }}
-                                PlaceholderContent={<ActivityIndicator size={15} color-={BaseColor.primaryColor} />}
-                                containerStyle={{ alignSelf: 'center', marginVertical: 20, marginHorizontal: 10 }}>
-                            </Avatar>
-                            <View style={{ flex: 1 }}>
-                                <Text style={{ color: BaseColor.primaryColor }}>{ads?.user?.name}</Text>
-                                <Text style={{ fontSize: 10 }}>Member since JUN 2018</Text>
-                                <View style={{ justifyContent: "flex-start", alignItems: "flex-start" }}>
-                                    <Rating
-                                        readonly={true}
-                                        ratingCount={5}
-                                        startingValue={5}
-                                        imageSize={13}
-                                    />
+                        {user_id != ads?.user?.id &&
+                            <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }} onPress={() => navigation.navigate("ShowProfile", { user_id: ads.user.id })}>
+                                {ads?.user?.avatar ?
+                                    <Avatar
+                                        size='medium'
+                                        rounded
+                                        source={{ uri: Api.SERVER_HOST + ads?.user?.avatar }}
+                                        activeOpacity={0.7}
+                                        placeholderStyle={{ backgroundColor: "transparent" }}
+                                        PlaceholderContent={<ActivityIndicator size={15} color-={BaseColor.primaryColor} />}
+                                        containerStyle={{ alignSelf: 'center', marginVertical: 20, marginHorizontal: 10, width: 60, height: 60, borderRadius: 100 }}>
+                                    </Avatar>
+                                    :
+                                    <View style={{ width: 60, height: 60, marginVertical: 20, marginHorizontal: 10, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
+                                        <Text style={{ color: BaseColor.whiteColor, fontSize: 25 }}>{ads?.user?.name?.charAt(0).toUpperCase()}</Text>
+                                    </View>
+                                }
+                                <View style={{ flex: 1 }}>
+                                    <Text style={{ color: BaseColor.primaryColor }}>{ads?.user?.name}</Text>
+                                    <Text style={{ fontSize: 10 }}>Member since JUN 2018</Text>
+                                    <View style={{ justifyContent: "flex-start", alignItems: "flex-start" }}>
+                                        <Rating
+                                            readonly={true}
+                                            ratingCount={5}
+                                            startingValue={5}
+                                            imageSize={13}
+                                        />
+                                    </View>
                                 </View>
-                            </View>
-                            <Icon name={"angle-right"} color={BaseColor.primaryColor} size={25}></Icon>
-                        </TouchableOpacity>
+                                <Icon name={"angle-right"} color={BaseColor.primaryColor} size={25}></Icon>
+                            </TouchableOpacity>
+                        }
                         <Text style={{ color: BaseColor.primaryColor, marginTop: 15, fontSize: 20, fontWeight: "bold" }}>Location</Text>
                         <View style={{ width: "100%", height: 200, paddingTop: 10 }}>
                             <MapView

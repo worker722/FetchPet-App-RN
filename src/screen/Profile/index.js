@@ -22,6 +22,10 @@ class Profile extends Component {
             user: null,
             showLoader: false
         }
+
+        props.navigation.addListener("willFocus", (event) => {
+            this.componentWillMount();
+        });
     }
 
     componentWillMount = async () => {
@@ -55,24 +59,29 @@ class Profile extends Component {
             <View style={{ flex: 1, paddingHorizontal: 10 }}>
                 <Header navigation={navigation} mainHeader={true} />
                 <Text style={{ color: BaseColor.primaryColor, fontSize: 20, fontWeight: "bold", paddingLeft: 10 }}>Profile</Text>
-                <TouchableOpacity onPress={() => navigation.navigate("ProfileEdit")} style={{ flexDirection: "row", width: "100%", justifyContent: "center", marginTop: 10 }}>
-                    <Avatar
-                        size='large'
-                        rounded
-                        source={{ uri: Api.SERVER_HOST + user?.avatar }}
-                        activeOpacity={0.7}
-                        placeholderStyle={{ backgroundColor: "transparent" }}
-                        containerStyle={{ marginHorizontal: 10, borderWidth: 1, borderColor: "#808080", width: 80, height: 80, borderRadius: 100 }}>
-                    </Avatar>
-                    <View style={{ justifyContent: "center", flex: 1 }}>
+                <TouchableOpacity onPress={() => navigation.navigate("ProfileEdit")} style={{ flexDirection: "row", width: "100%", marginBottom: 15, justifyContent: "center", marginTop: 10 }}>
+                    {user?.avatar ?
+                        <Avatar
+                            size='large'
+                            rounded
+                            source={{ uri: Api.SERVER_HOST + user?.avatar }}
+                            activeOpacity={0.7}
+                            placeholderStyle={{ backgroundColor: "transparent" }}
+                            containerStyle={{ marginHorizontal: 10, borderWidth: 1, borderColor: "#808080", width: 80, height: 80, borderRadius: 100 }}>
+                        </Avatar>
+                        :
+                        <View style={{ width: 80, height: 80, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
+                            <Text style={{ color: BaseColor.whiteColor, fontSize: 30 }}>{user?.name?.charAt(0).toUpperCase()}</Text>
+                        </View>
+                    }
+                    <View style={{ justifyContent: "center", flex: 1, paddingLeft: 10 }}>
                         <Text style={{ color: BaseColor.primaryColor, fontSize: 20, fontWeight: "bold" }}>{user?.name}</Text>
                         <Text style={{ color: "#808080" }}>View & edit Profile</Text>
                     </View>
                 </TouchableOpacity>
 
-                <LinkItem title={"Setting"} subtitle={"Privacy & Logout"} icon_left={"cog"} icon_right={"angle-right"} action={this.goSetting} is_showLine={true} />
-                <LinkItem title={"Others"} subtitle={"Billing & Invoices"} icon_left={"money-bill"} icon_right={"angle-right"} action={this.goOthers} is_showLine={true} />
-                <LinkItem title={"Help & Support"} subtitle={"Help center and legal terms"} icon_left={"cog"} icon_right={"angle-right"} action={this.goHelp} is_showLine={true} />
+                <LinkItem title={"Setting"} subtitle={"Privacy & Logout"} icon_left={"cog"} icon_right={"angle-right"} action={this.goSetting} />
+                <LinkItem title={"Help & Support"} subtitle={"Help center and legal terms"} icon_left={"cog"} icon_right={"angle-right"} action={this.goHelp} />
             </View>
         )
     }
