@@ -29,11 +29,11 @@ class Inbox extends Component {
         }
 
         props.navigation.addListener("willFocus", (event) => {
-            this.componentWillMount();
+            this.UNSAFE_componentWillMount();
         });
     }
 
-    componentWillMount = async () => {
+    UNSAFE_componentWillMount = async () => {
         this.setState({ showLoader: true });
         this.start();
     }

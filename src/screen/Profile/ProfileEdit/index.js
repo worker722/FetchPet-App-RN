@@ -42,7 +42,7 @@ class ProfileEdit extends Component {
         this.change_image_status = 0;
     }
 
-    componentWillMount = async () => {
+    UNSAFE_componentWillMount = async () => {
         this.setState({ showLoader: true });
         const param = { user_id: store.getState().auth.login.user.id };
         const response = await this.props.api.post('profile', param);

@@ -21,7 +21,7 @@ export default class ActiveAds extends Component {
         }
     }
 
-    componentWillMount = () => {
+    UNSAFE_componentWillMount = () => {
         const { data } = this.props;
         const item = data.item;
         const ad_images = [];

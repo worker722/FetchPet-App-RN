@@ -24,11 +24,11 @@ class Profile extends Component {
         }
 
         props.navigation.addListener("willFocus", (event) => {
-            this.componentWillMount();
+            this.UNSAFE_componentWillMount();
         });
     }
 
-    componentWillMount = async () => {
+    UNSAFE_componentWillMount = async () => {
         this.setState({ showLoader: true });
         const param = { user_id: store.getState().auth.login.user.id };
         const response = await this.props.api.post('profile', param);

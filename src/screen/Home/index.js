@@ -78,7 +78,7 @@ class Home extends Component {
         }
 
         props.navigation.addListener("willFocus", (event) => {
-            this.componentWillMount();
+            this.UNSAFE_componentWillMount();
         });
     }
 
@@ -197,7 +197,7 @@ class Home extends Component {
             });
     }
 
-    componentWillMount = async () => {
+    UNSAFE_componentWillMount = async () => {
         this.setState({ showLoader: true })
         await this.start();
     }

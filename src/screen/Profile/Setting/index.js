@@ -19,7 +19,7 @@ export default class Setting extends Component {
         }
     }
 
-    componentWillMount = async () => {
+    UNSAFE_componentWillMount = async () => {
         GoogleSignin.configure({
             iosClientId: 'YOUR IOS CLIENT ID',
         });
