@@ -92,7 +92,9 @@ class ProfileEdit extends Component {
             this.change_image_status = 0;
             this.goBack();
         }
-        this.setState({ showLoader: false });
+        else {
+            this.setState({ showLoader: false });
+        }
     }
 
     openPhotoPicker = (index) => {
