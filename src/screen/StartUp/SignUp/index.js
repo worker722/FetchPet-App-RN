@@ -276,7 +276,7 @@ class SignUp extends Component {
                                     </View>
                                 </TouchableOpacity>
                             }
-                            <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 10, }} onPress={this.fbsdk}>
+                            <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 10, }}>
                                 <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.faceBookColor, justifyContent: "center", alignItems: "center" }}>
                                     <Text style={{ color: BaseColor.whiteColor, fontSize: 13 }}>Sign Up with</Text>
                                     <Icon name={"facebook-f"} size={15} color={BaseColor.whiteColor} style={{ position: "absolute", right: 10 }}></Icon>
