@@ -12,7 +12,9 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native-elements';
 import Toast from 'react-native-simple-toast';
+
 import { GoogleSignin, statusCodes } from 'react-native-google-signin';
+import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
 
 import firebase from 'react-native-firebase';
 import RNRestart from 'react-native-restart';
@@ -149,6 +151,53 @@ class Login extends Component {
                 console.log(error)
             }
         }
+    }
+
+    fbsdk = () => {
+        // Attempt a login using the Facebook login dialog asking for default permissions.
+        LoginManager.logInWithPermissions(['public_profile', 'email']).then(
+            functionFun = (result) => {
+                if (result.isCancelled) {
+                    console.log("Login cancelled");
+                } else {
+                    // console.warn(
+                    //   "Login success with permissions: " +
+                    //   JSON.stringify(result)
+                    // );
+                    // Create a graph request asking for user information with a callback to handle the response.
+                    const infoRequest = new GraphRequest(
+                        '/me?fields=id,first_name,last_name,name,picture.type(large),email,gender',
+                        null,
+                        this._responseInfoCallback,
+                    );
+                    // Start the graph request.
+                    new GraphRequestManager().addRequest(infoRequest).start();
+
+                    AccessToken.getCurrentAccessToken().then((data) => {
+                        console.warn('getCurrentAccessToken=======================>', data);
+                        // console.log(data.accessToken.toString())
+
+                    })
+                }
+            },
+            function (error) {
+            }
+        );
+    }
+
+    facebookLogin = async () => {
+        LoginManager.logInWithReadPermissions(['email']).then(
+            onResult = (result) => {
+                if (result.isCancelled) {
+
+                } else {
+                    console.log(result);
+                }
+            },
+            onError = (error) => {
+            }
+        );
+
     }
 
     render = () => {

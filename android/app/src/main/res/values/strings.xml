@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">Fetch</string>
     <!-- notification channel -->
-    <string name="default_notification_channel_id">FETCH-APP</string>
-    <string name="default_notification_channel_name">FETCH-APP</string>
-    <string name="default_notification_channel_description">FETCH-APP</string>
+    <string name="default_notification_channel_id" translatable="false">FETCH-APP</string>
+    <string name="default_notification_channel_name" translatable="false">FETCH-APP</string>
+    <string name="default_notification_channel_description" translatable="false">FETCH-APP</string>
     <!-- app key -->
-    <string name="geo_api_key">AIzaSyDwsnaloETj-w5fU_eSSHfvs7dSRcnfKjg</string>
+    <string name="geo_api_key" translatable="false">AIzaSyDwsnaloETj-w5fU_eSSHfvs7dSRcnfKjg</string>
+    <string name="facebook_app_id" translatable="false">3110075205773492</string>
 </resources>
