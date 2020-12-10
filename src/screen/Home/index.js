@@ -497,7 +497,7 @@ class Home extends Component {
                                 }}
                                 selectedStyle={{ backgroundColor: BaseColor.primaryColor, height: 3 }}
                                 onValuesChange={this.priceRangeChanged}
-                                values={[filterPrice.basic_min, filterPrice.basic_max]}
+                                values={[filterPrice.min, filterPrice.max]}
                                 min={filterPrice.basic_min}
                                 max={filterPrice.basic_max}
                                 sliderLength={Utils.SCREEN.WIDTH - 40}
