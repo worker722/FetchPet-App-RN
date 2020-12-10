@@ -50,11 +50,6 @@ class Setting extends Component {
         if (response?.success) {
             this.setState({ is_showNotification: !this.state.is_showNotification });
         }
-        response.data.user.meta.forEach((item, key) => {
-            console.log(item)
-            if (item.meta_key == global._SHOW_NOTIFICATION)
-                console.log(item.meta_value)
-        })
     }
 
     logOut = async () => {

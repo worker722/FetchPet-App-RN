@@ -35,6 +35,7 @@ import Profile from "@screen/Profile";
 import ProfileEdit from "@screen/Profile/ProfileEdit";
 import ShowProfile from "@screen/Profile/ProfileEdit/ShowProfile";
 import Help from "@screen/Profile/Help";
+import Version from "@screen/Profile/Help/Version";
 //setting
 import Setting from "@screen/Profile/Setting";
 import Privacy from "@screen/Profile/Setting/Privacy";
@@ -157,6 +158,9 @@ const StackNavigator = createStackNavigator(
 		},
 		Help: {
 			screen: Help
+		},
+		Version: {
+			screen: Version
 		},
 		Setting: {
 			screen: Setting

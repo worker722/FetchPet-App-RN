@@ -66,6 +66,13 @@ export default class HomeAds extends Component {
 
         const { onItemClick, onFavourite, data } = this.props;
 
+        const user_meta = item.meta;
+        let is_showPhonenumber = false;
+        user_meta?.forEach((item, key) => {
+            if (item.meta_key == global._SHOW_PHONE_ON_ADS)
+                is_showPhonenumber = item.meta_value == 1 ? true : false;
+        });
+
         return (
             <TouchableOpacity style={{ flex: 1, flexDirection: "row", marginBottom: 20 }} onPress={() => onItemClick(item.id)}>
                 <View>
@@ -95,9 +102,11 @@ export default class HomeAds extends Component {
                                 <TouchableOpacity onPress={this.onChat} style={{ flex: 1 }}>
                                     <Icon name={"comment-dots"} size={20} color={BaseColor.primaryColor}></Icon>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={this.onCall} style={{ flex: 1 }}>
-                                    <Icon name={"phone"} size={20} color={BaseColor.primaryColor} ></Icon>
-                                </TouchableOpacity>
+                                {is_showPhonenumber && item.user.phonenumber &&
+                                    <TouchableOpacity onPress={this.onCall} style={{ flex: 1 }}>
+                                        <Icon name={"phone"} size={20} color={BaseColor.primaryColor} ></Icon>
+                                    </TouchableOpacity>
+                                }
                                 <View style={{ flex: 1 }} />
                                 <TouchableOpacity onPress={() => onFavourite(data.index, item, !item.is_fav)} style={{ position: "absolute", bottom: 0, right: 0 }}>
                                     <Icon name={"heart"} size={20} color={BaseColor.primaryColor} solid={item.is_fav}></Icon>

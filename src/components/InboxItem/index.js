@@ -58,7 +58,7 @@ export default class InboxItem extends Component {
                 <View style={{ justifyContent: "center", alignItems: "center" }}>
                     <Text style={{ color: BaseColor.greyColor, fontSize: 12 }}>{Utils.relativeTime(latest_message.created_at)}</Text>
                     <TouchableOpacity style={{ alignSelf: "flex-end", paddingVertical: 5, paddingRight: 5, paddingLeft: 15 }}>
-                        <Icon name={"ellipsis-v"} color={BaseColor.greyColor} size={20}></Icon>
+                        {/* <Icon name={"ellipsis-v"} color={BaseColor.greyColor} size={20}></Icon> */}
                     </TouchableOpacity>
                 </View>
             </TouchableOpacity>

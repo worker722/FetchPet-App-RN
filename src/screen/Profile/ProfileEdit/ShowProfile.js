@@ -6,10 +6,11 @@ import {
     TextInput,
     Modal,
     RefreshControl,
-    ScrollView
+    ScrollView,
+    FlatList
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { Header, Loader } from '@components';
+import { Header, Loader, HomeAds } from '@components';
 import { Avatar } from 'react-native-elements';
 import { BaseColor } from '@config';
 import Styles from './style';
@@ -27,6 +28,7 @@ class ShowProfile extends Component {
             showLoader: false,
             showRefresh: false,
             user: null,
+            pets: null
         }
     }
 
@@ -36,10 +38,10 @@ class ShowProfile extends Component {
     }
 
     start = async () => {
-        const param = { user_id: this.props.navigation.state.params.user_id };
+        const param = { user_id: this.props.navigation.state.params.user_id, inventory: true };
         const response = await this.props.api.post('profile', param);
         if (response?.success) {
-            this.setState({ user: response.data.user });
+            this.setState({ user: response.data.user, pets: response.data.ads });
         }
         this.setState({ showLoader: false, showRefresh: false });
     }
@@ -53,8 +55,21 @@ class ShowProfile extends Component {
         this.props.navigation.goBack(null);
     }
 
+    goAdsDetail = (id) => {
+        this.props.navigation.navigate("AdDetail", { ad_id: id, view: true });
+    }
+
+    favouriteAds = async (index, item, value) => {
+        let pets = this.state.pets;
+        pets[index].is_fav = value;
+        this.setState({ pets: pets });
+        const param = { ad_id: item.id, is_fav: value };
+        const response = await this.props.api.post('ads/ad_favourite', param);
+    }
+
     render = () => {
-        const { user, showLoader, showRefresh } = this.state;
+        const { user, showLoader, showRefresh, pets } = this.state;
+        const navigation = this.props.navigation;
 
         if (showLoader)
             return (<Loader />);
@@ -103,8 +118,28 @@ class ShowProfile extends Component {
                             </View>
                         </View>
                     </View>
+                    <View style={{ flexDirection: "row", padding: 20 }}>
+                        <Text style={{ fontSize: 17, color: BaseColor.greyColor }}>Name : </Text>
+                        <Text style={{ fontSize: 17 }}>{user?.name}</Text>
+                    </View>
+                    <View style={{ flexDirection: "row", paddingHorizontal: 20, paddingBottom: 20 }}>
+                        <Text style={{ fontSize: 17, color: BaseColor.greyColor }}>Email : </Text>
+                        <Text style={{ fontSize: 17 }}>{user?.email}</Text>
+                    </View>
+                    <View style={{ flexDirection: "row", paddingHorizontal: 20, paddingBottom: 20 }}>
+                        <Text style={{ fontSize: 17, color: BaseColor.greyColor }}>Phone number : </Text>
+                        <Text style={{ fontSize: 17 }}>{user?.phonenumber}</Text>
+                    </View>
+                    <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingHorizontal: 20, marginTop: 20 }}>Inventory</Text>
+                    <FlatList
+                        style={{ paddingHorizontal: 10, marginTop: 10 }}
+                        keyExtractor={(item, index) => index.toString()}
+                        data={pets}
+                        renderItem={(item, key) => (
+                            <HomeAds data={item} onItemClick={this.goAdsDetail} onFavourite={this.favouriteAds} navigation={navigation} />
+                        )}
+                    />
                 </ScrollView>
-
             </View>
         )
     }
