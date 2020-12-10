@@ -12,7 +12,7 @@ export const NOTIFICATION_CHANNEL_DESCRIPTION = "FETCH-APP";
 export const NOTIFICATION_CHAT_MESSAGE = 'chat_message';
 
 //user meta key
-export const _SHOW_NOTIFICATION = '_SHOW_NOTIFICATION';
-export const _SHOW_PHONE_ON_ADS = '_SHOW_PHONE_ON_ADS';
+export const _SHOW_NOTIFICATION = '_show_notification';
+export const _SHOW_PHONE_ON_ADS = '_show_phone_on_ads';
 
 

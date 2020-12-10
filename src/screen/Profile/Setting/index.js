@@ -46,10 +46,15 @@ class Setting extends Component {
 
     setNotificationStatus = async () => {
         const params = { key: global._SHOW_NOTIFICATION, value: this.state.is_showNotification ? 0 : 1 };
-        const response = await this.props.api.post("profile/setting", params);
+        const response = await this.props.api.post("profile/setting", params, true);
         if (response?.success) {
             this.setState({ is_showNotification: !this.state.is_showNotification });
         }
+        response.data.user.meta.forEach((item, key) => {
+            console.log(item)
+            if (item.meta_key == global._SHOW_NOTIFICATION)
+                console.log(item.meta_value)
+        })
     }
 
     logOut = async () => {
