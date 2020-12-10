@@ -29,7 +29,7 @@ export default class Version extends Component {
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 20 }}>
                     <Text>Current Version : </Text>
-                    <Text>12.32</Text>
+                    <Text>1.0.1</Text>
                 </View>
             </View>
         )
