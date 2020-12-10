@@ -47,7 +47,7 @@ class ShowProfile extends Component {
     }
 
     _onRefresh = async () => {
-        this.setState({ showRefresh: true });
+        this.setState({ showRefresh: true, pets: [] });
         this.start();
     }
 
@@ -70,6 +70,13 @@ class ShowProfile extends Component {
     render = () => {
         const { user, showLoader, showRefresh, pets } = this.state;
         const navigation = this.props.navigation;
+
+        const user_meta = user.meta;
+        let is_showPhonenumber = false;
+        user_meta?.forEach((item, key) => {
+            if (item.meta_key == global._SHOW_PHONE_ON_ADS)
+                is_showPhonenumber = item.meta_value == 1 ? true : false;
+        });
 
         if (showLoader)
             return (<Loader />);
@@ -126,10 +133,12 @@ class ShowProfile extends Component {
                         <Text style={{ fontSize: 17, color: BaseColor.greyColor }}>Email : </Text>
                         <Text style={{ fontSize: 17 }}>{user?.email}</Text>
                     </View>
-                    <View style={{ flexDirection: "row", paddingHorizontal: 20, paddingBottom: 20 }}>
-                        <Text style={{ fontSize: 17, color: BaseColor.greyColor }}>Phone number : </Text>
-                        <Text style={{ fontSize: 17 }}>{user?.phonenumber}</Text>
-                    </View>
+                    {is_showPhonenumber && user?.phonenumber &&
+                        <View style={{ flexDirection: "row", paddingHorizontal: 20, paddingBottom: 20 }}>
+                            <Text style={{ fontSize: 17, color: BaseColor.greyColor }}>Phone number : </Text>
+                            <Text style={{ fontSize: 17 }}>{user?.phonenumber}</Text>
+                        </View>
+                    }
                     <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingHorizontal: 20, marginTop: 20 }}>Inventory</Text>
                     <FlatList
                         style={{ paddingHorizontal: 10, marginTop: 10 }}
