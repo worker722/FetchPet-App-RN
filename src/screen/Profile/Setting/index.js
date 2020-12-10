@@ -6,12 +6,15 @@ import {
 } from 'react-native';
 import { BaseColor } from '@config';
 import { Header, LinkItem } from '@components';
-import { Avatar } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import { GoogleSignin, statusCodes } from 'react-native-google-signin';
 
-import { store, SetPrefrence } from '@store';
-export default class Setting extends Component {
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { store, SetPrefrence, GetPrefrence } from "@store";
+import * as Api from '@api';
+import * as global from "@api/global";
+
+class Setting extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -23,6 +26,14 @@ export default class Setting extends Component {
         GoogleSignin.configure({
             iosClientId: 'YOUR IOS CLIENT ID',
         });
+
+        const user_meta = store.getState().auth.login.user.meta;
+        let is_showNotification = false;
+        user_meta?.forEach((item, key) => {
+            if (item.meta_key == global._SHOW_NOTIFICATION)
+                is_showNotification = item.meta_value == 1 ? true : false;
+        });
+        this.setState({ is_showNotification });
     }
 
     goBack = () => {
@@ -33,10 +44,12 @@ export default class Setting extends Component {
         this.props.navigation.navigate("Privacy")
     }
 
-    setNotificationStatus = () => {
-        this.setState({
-            is_showNotification: !this.state.is_showNotification
-        })
+    setNotificationStatus = async () => {
+        const params = { key: global._SHOW_NOTIFICATION, value: this.state.is_showNotification ? 0 : 1 };
+        const response = await this.props.api.post("profile/setting", params);
+        if (response?.success) {
+            this.setState({ is_showNotification: !this.state.is_showNotification });
+        }
     }
 
     logOut = async () => {
@@ -52,12 +65,11 @@ export default class Setting extends Component {
 
     }
 
-    deactivateAccount = () => {
+    deactivateAccount = async () => {
 
     }
 
     render = () => {
-        const navigation = this.props.navigation;
         const { is_showNotification } = this.state;
 
         return (
@@ -73,3 +85,10 @@ export default class Setting extends Component {
         )
     }
 }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        api: bindActionCreators(Api, dispatch)
+    };
+};
+export default connect(null, mapDispatchToProps)(Setting);
