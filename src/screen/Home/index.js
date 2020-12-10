@@ -43,7 +43,6 @@ class Home extends Component {
 
             pets: [],
             topCategory: [],
-            max_price: 0,
 
             filterCategory: [],
             filterBreed: [],
@@ -62,8 +61,10 @@ class Home extends Component {
                 }
             ],
             filterPrice: {
+                basic_min: 0,
+                basic_max: 10000,
                 min: 0,
-                max: 10000,
+                max: 1000,
             },
 
             searchText: '',
@@ -225,7 +226,12 @@ class Home extends Component {
                 item.type = FILTER_TYPE.BREED;
             })
             this.setState({
-                max_price: response.data.max_price,
+                filterPrice: {
+                    basic_min: 0,
+                    basic_max: response.data.max_price,
+                    min: 0,
+                    max: response.data.max_price,
+                },
                 pets: ads,
                 topCategory: topCategory,
                 filterBreed: filterBreed
@@ -347,13 +353,16 @@ class Home extends Component {
         this.getFilterData();
     }
 
-    handleScroll = () => {
-
+    priceRangeChanged = (values) => {
+        let filterPrice = this.state.filterPrice;
+        filterPrice.min = values[0];
+        filterPrice.max = values[1];
+        this.setState({ filterPrice });
     }
 
     render = () => {
 
-        const { pets, showLoader, showRefresh, showContentLoader, topCategory, filterBreed, filterGender, max_price } = this.state;
+        const { pets, showLoader, showRefresh, showContentLoader, topCategory, filterBreed, filterGender, filterPrice } = this.state;
         const navigation = this.props.navigation;
 
         if (showLoader)
@@ -400,8 +409,7 @@ class Home extends Component {
                                 refreshing={showRefresh}
                                 onRefresh={this._onRefresh}
                             />
-                        }
-                        onScroll={this.handleScroll}>
+                        }>
                         <FlatList
                             style={{ paddingHorizontal: 10, marginTop: 10 }}
                             keyExtractor={(item, index) => index.toString()}
@@ -451,8 +459,8 @@ class Home extends Component {
                         </View>
                         <Text style={{ fontSize: 18, color: BaseColor.primaryColor, marginTop: 10 }}>Price</Text>
                         <View style={{ flexDirection: "row", paddingHorizontal: 5 }}>
-                            <Text style={{ flex: 1 }}>0</Text>
-                            <Text style={{ flex: 1, textAlign: "right" }}>100</Text>
+                            <Text style={{ flex: 1 }}>$ {filterPrice.min}</Text>
+                            <Text style={{ flex: 1, textAlign: "right" }}>$ {filterPrice.max}</Text>
                         </View>
                         <View style={{ paddingHorizontal: 10 }}>
                             <MultiSlider
@@ -488,9 +496,10 @@ class Home extends Component {
                                     })
                                 }}
                                 selectedStyle={{ backgroundColor: BaseColor.primaryColor, height: 3 }}
-                                values={[0, max_price]}
-                                min={0}
-                                max={max_price}
+                                onValuesChange={this.priceRangeChanged}
+                                values={[filterPrice.basic_min, filterPrice.basic_max]}
+                                min={filterPrice.basic_min}
+                                max={filterPrice.basic_max}
                                 sliderLength={Utils.SCREEN.WIDTH - 40}
                                 allowOverlap={false}
                             />

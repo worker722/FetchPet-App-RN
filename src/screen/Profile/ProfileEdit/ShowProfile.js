@@ -71,7 +71,7 @@ class ShowProfile extends Component {
         const { user, showLoader, showRefresh, pets } = this.state;
         const navigation = this.props.navigation;
 
-        const user_meta = user.meta;
+        const user_meta = user?.meta;
         let is_showPhonenumber = false;
         user_meta?.forEach((item, key) => {
             if (item.meta_key == global._SHOW_PHONE_ON_ADS)
@@ -89,9 +89,9 @@ class ShowProfile extends Component {
                         onRefresh={this._onRefresh}
                     />
                 }>
-                    <Header icon_left={"arrow-left"} callback_left={this.goBack} title={"Show Profile"} />
+                    <Header icon_left={"arrow-left"} callback_left={this.goBack} title={"See Profile"} />
                     <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingHorizontal: 20 }}>Basic Infomation</Text>
-                    <View style={{ marginTop: 15, marginLeft: 15, flexDirection: "row", paddingRight: 20 }}>
+                    <View style={{ marginTop: 15, marginLeft: 15, paddingRight: 20 }}>
                         <View>
                             {user?.avatar ?
                                 <Avatar
@@ -107,22 +107,6 @@ class ShowProfile extends Component {
                                     <Text style={{ color: BaseColor.whiteColor, fontSize: 30 }}>{user?.name?.charAt(0).toUpperCase()}</Text>
                                 </View>
                             }
-                        </View>
-                        <View style={{ flex: 1 }}>
-                            <View style={{ flex: 1, flexDirection: "row" }}>
-                                <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
-                                    <Text style={{ fontSize: 18 }}>21</Text>
-                                    <Text style={{ color: BaseColor.greyColor, fontSize: 13 }}>Following</Text>
-                                </View>
-                                <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
-                                    <Text style={{ fontSize: 18 }}>66</Text>
-                                    <Text style={{ color: BaseColor.greyColor, fontSize: 13 }}>Followers</Text>
-                                </View>
-                                <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
-                                    <Text style={{ fontSize: 18 }}>54</Text>
-                                    <Text style={{ color: BaseColor.greyColor, fontSize: 13 }}>Total ads</Text>
-                                </View>
-                            </View>
                         </View>
                     </View>
                     <View style={{ flexDirection: "row", padding: 20 }}>
