@@ -19,47 +19,6 @@ export default class MyAds extends Component {
         }
     }
 
-    // _renderLabel = ({ route }) => (
-    //     <Text style={{ textAlign: "center" }}>{route.title}</Text>
-    // );
-
-    // _renderTabBar = props => (
-    //     <TabBar
-    //         {...props}
-    //         scrollEnabled
-    //         pressColor={BaseColor.primaryColor}
-    //         indicatorStyle={{ backgroundColor: "white", height: 5 }}
-    //         style={{ backgroundColor: 'white', height: 45, justifyContent: 'center', alignItems: "center" }}
-    //         labelStyle={{ color: BaseColor.primaryColor, alignSelf: "center" }}
-    //         renderLabel={this._renderLabel}
-    //     />
-    // );
-
-    // _renderScene = ({ route, jumpTo }) => {
-    //     switch (route.key) {
-    //         case 'active':
-    //             return <Active navigation={this.props.navigation} />;
-    //         case 'closed':
-    //             return <Closed navigation={this.props.navigation} />;
-    //     }
-    // };
-
-    // _getNavigationState = () => {
-    //     return {
-    //         index: this.state.index,
-    //         routes: [
-    //             {
-    //                 key: 'active',
-    //                 title: 'Active'
-    //             },
-    //             {
-    //                 key: 'closed',
-    //                 title: 'Closed'
-    //             }
-    //         ]
-    //     }
-    // }
-
     render = () => {
         const navigation = this.props.navigation;
         const { index } = this.state;
@@ -69,14 +28,6 @@ export default class MyAds extends Component {
                 <Header navigation={navigation} mainHeader={true} />
                 <Text style={{ color: BaseColor.primaryColor, fontSize: 20, fontWeight: "bold", paddingLeft: 10 }}>My Ads</Text>
                 <View style={{ flex: 1, marginTop: 10 }}>
-                    {/* <TabView
-                        navigationState={this._getNavigationState()}
-                        onIndexChange={(index) => this.setState({ index: index })}
-                        renderScene={this._renderScene}
-                        renderTabBar={this._renderTabBar}
-                        tabBarPosition="top"
-                        initialLayout={{width: Utils.SCREEN.WIDTH}}
-                    /> */}
                     <View style={{ flexDirection: "row" }}>
                         <TouchableOpacity style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 10, }} onPress={() => this.setState({ index: 0 })}>
                             <Text style={{ color: index == 0 ? BaseColor.primaryColor : BaseColor.greyColor }}>Active</Text>

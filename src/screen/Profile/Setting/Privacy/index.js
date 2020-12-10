@@ -15,6 +15,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { store, SetPrefrence, GetPrefrence } from "@store";
 import * as Api from '@api';
+import * as global from "@api/global";
 
 class Privacy extends Component {
     constructor(props) {
@@ -31,14 +32,27 @@ class Privacy extends Component {
         }
     }
 
+    UNSAFE_componentWillMount = async () => {
+        const user_meta = store.getState().auth.login.user.meta;
+        let is_showPhonenumber = false;
+        user_meta?.forEach((item, key) => {
+            if (item.meta_key == global._SHOW_PHONE_ON_ADS)
+                is_showPhonenumber = item.meta_value == 1 ? true : false;
+        });
+        this.setState({ is_showPhonenumber });
+    }
+
     goBack = () => {
         this.props.navigation.goBack(null);
     }
 
-    setPhonenumberStatus = () => {
-        this.setState({
-            is_showPhonenumber: !this.state.is_showPhonenumber
-        })
+    setPhonenumberStatus = async () => {
+        const params = { key: global._SHOW_PHONE_ON_ADS, value: this.state.is_showPhonenumber ? 0 : 1 };
+        console.log(params)
+        const response = await this.props.api.post("profile/setting", params, true);
+        if (response?.success) {
+            this.setState({ is_showPhonenumber: !this.state.is_showPhonenumber });
+        }
     }
 
     showPasswordModal = () => {
