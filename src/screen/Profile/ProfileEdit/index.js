@@ -29,7 +29,6 @@ class ProfileEdit extends Component {
         this.state = {
             showLoader: false,
 
-            is_edit: false,
             avatar: { path: '' },
             name: '',
             email: '',
@@ -51,16 +50,12 @@ class ProfileEdit extends Component {
             let avatar = Api.SERVER_HOST + response.data.user.avatar;
             if (response.data.user.avatar == null || response.data.user.avatar == '')
                 avatar = '';
-            this.setState({ user: response.data.user, name: response.data.user.name, email: response.data.user.email, avatar: { path: avatar } });
+            this.setState({ user: response.data.user, name: response.data.user.name, phonenumber: response.data.user.phonenumber, email: response.data.user.email, avatar: { path: avatar } });
         }
     }
 
     goBack = () => {
         this.props.navigation.goBack(null);
-    }
-
-    cancelEdit = () => {
-        this.setState({ is_edit: false })
     }
 
     save = async () => {
@@ -93,8 +88,9 @@ class ProfileEdit extends Component {
             response = await this.props.api.post("profile/edit", params, true);
 
         if (response?.success) {
-            this.setState({ is_edit: false, user: response.data.user, name: response.data.user.name, email: response.data.user.email, phonenumber: response.data.user.phonenumber });
+            this.setState({ user: response.data.user, name: response.data.user.name, email: response.data.user.email, phonenumber: response.data.user.phonenumber });
             this.change_image_status = 0;
+            this.goBack();
         }
         this.setState({ showLoader: false });
     }
@@ -131,19 +127,15 @@ class ProfileEdit extends Component {
     }
 
     render = () => {
-        const { is_edit, avatar, phonenumber, name, email, valid_phone, user, showLoader } = this.state;
+        const { avatar, phonenumber, name, email, valid_phone, user, showLoader } = this.state;
 
         if (showLoader)
             return (<Loader />);
 
         return (
             <View style={{ flex: 1 }}>
-                {is_edit ?
-                    <Header icon_left={"times"} callback_left={this.cancelEdit} title={"Edit Profile"} text_right={"save"} callback_right={this.save} />
-                    :
-                    <Header icon_left={"arrow-left"} callback_left={this.goBack} title={"Edit Profile"} />
-                }
-                <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingHorizontal: 20 }}>{is_edit ? 'Basic Infomation' : 'Profile'}</Text>
+                <Header icon_left={"times"} callback_left={this.goBack} title={"Edit Profile"} text_right={"save"} callback_right={this.save} />
+                <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingHorizontal: 20 }}>Basic Infomation</Text>
                 <View style={{ marginTop: 15, marginLeft: 15, flexDirection: "row", paddingRight: 20 }}>
                     <View>
                         {avatar?.path ?
@@ -160,75 +152,41 @@ class ProfileEdit extends Component {
                                 <Text style={{ color: BaseColor.whiteColor, fontSize: 30 }}>{user?.name?.charAt(0).toUpperCase()}</Text>
                             </View>
                         }
-                        {is_edit &&
-                            <TouchableOpacity
-                                onPress={() => this.setState({ visiblePickerModal: true })}
-                                style={{ width: 40, height: 40, backgroundColor: BaseColor.primaryColor, position: "absolute", justifyContent: "center", alignItems: "center", bottom: -5, right: 0, borderRadius: 100, borderWidth: 3, borderColor: BaseColor.whiteColor }}>
-                                <Icon name={"camera"} size={18} color={BaseColor.whiteColor}></Icon>
-                            </TouchableOpacity>
-                        }
-                    </View>
-                    {is_edit ?
-                        <View style={{ flex: 1, justifyContent: "center", paddingLeft: 20 }}>
-                            <TextInput style={[Styles.textinput, { fontSize: 16 }]}
-                                value={name}
-                                onChangeText={(text) => this.setState({ name: text })}
-                                underlineColorAndroid="transparent"
-                                placeholder="Enter Your Name"
-                                placeholderTextColor={BaseColor.greyColor} />
-                        </View>
-                        :
-                        <View style={{ flex: 1 }}>
-                            <View style={{ flex: 1, flexDirection: "row" }}>
-                                <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
-                                    <Text style={{ fontSize: 18 }}>21</Text>
-                                    <Text style={{ color: BaseColor.greyColor, fontSize: 13 }}>Following</Text>
-                                </View>
-                                <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
-                                    <Text style={{ fontSize: 18 }}>66</Text>
-                                    <Text style={{ color: BaseColor.greyColor, fontSize: 13 }}>Followers</Text>
-                                </View>
-                                <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
-                                    <Text style={{ fontSize: 18 }}>54</Text>
-                                    <Text style={{ color: BaseColor.greyColor, fontSize: 13 }}>Total ads</Text>
-                                </View>
-                            </View>
-                            <View style={{ width: "100%", height: 1, backgroundColor: BaseColor.dddColor, position: "absolute", bottom: 10 }}></View>
-                        </View>
-                    }
-                </View>
-                {!is_edit ?
-                    <View style={{ marginLeft: 15, marginTop: 10 }}>
-                        <Text style={{ fontSize: 20 }}>{user?.name}</Text>
-                        <TouchableOpacity onPress={() => { this.setState({ is_edit: true }); this.forceUpdate() }}
-                            style={{ justifyContent: "center", alignItems: "center", marginTop: 10, borderWidth: 1, borderColor: BaseColor.primaryColor, paddingHorizontal: 10, paddingVertical: 5, width: "30%", borderRadius: 5 }}>
-                            <Text style={{ color: BaseColor.primaryColor }}>Edit Profile</Text>
+                        <TouchableOpacity
+                            onPress={() => this.setState({ visiblePickerModal: true })}
+                            style={{ width: 40, height: 40, backgroundColor: BaseColor.primaryColor, position: "absolute", justifyContent: "center", alignItems: "center", bottom: -5, right: 0, borderRadius: 100, borderWidth: 3, borderColor: BaseColor.whiteColor }}>
+                            <Icon name={"camera"} size={18} color={BaseColor.whiteColor}></Icon>
                         </TouchableOpacity>
                     </View>
-                    :
-                    <>
-                        <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingHorizontal: 20, marginTop: 30 }}>Contact Infomation</Text>
-                        <View style={{ paddingHorizontal: 20, paddingTop: 30 }}>
-                            <PhoneInput
-                                ref={(ref) => { this.phone = ref; }}
-                                style={[Styles.textinput, { width: "100%", paddingVertical: 15 }]}
-                                initialCountry={"en"}
-                                flagStyle={{ width: 35, height: 20 }}
-                                textProps={{ placeholder: "Please input your phone number" }}
-                                textStyle={{ fontSize: 17, color: valid_phone ? BaseColor.primaryColor : BaseColor.greyColor }}
-                                value={phonenumber}
-                                onChangePhoneNumber={(value) => this.setState({ valid_phone: this.phone.isValidNumber(), phonenumber: value })}
-                                placeholderTextColor={BaseColor.greyColor}
-                            />
-                            <TextInput style={[Styles.textinput, { marginTop: 20 }]}
-                                value={email}
-                                onChangeText={(text) => this.setState({ email: text })}
-                                underlineColorAndroid="transparent"
-                                placeholder="Email"
-                                placeholderTextColor={BaseColor.greyColor} />
-                        </View>
-                    </>
-                }
+                    <View style={{ flex: 1, justifyContent: "center", paddingLeft: 20 }}>
+                        <TextInput style={[Styles.textinput, { fontSize: 16 }]}
+                            value={name}
+                            onChangeText={(text) => this.setState({ name: text })}
+                            underlineColorAndroid="transparent"
+                            placeholder="Enter Your Name"
+                            placeholderTextColor={BaseColor.greyColor} />
+                    </View>
+                </View>
+                <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingHorizontal: 20, marginTop: 30 }}>Contact Infomation</Text>
+                <View style={{ paddingHorizontal: 20, paddingTop: 30 }}>
+                    <PhoneInput
+                        ref={(ref) => { this.phone = ref; }}
+                        style={[Styles.textinput, { width: "100%", paddingVertical: 15 }]}
+                        initialCountry={"en"}
+                        flagStyle={{ width: 35, height: 20 }}
+                        textProps={{ placeholder: "Please input your phone number" }}
+                        textStyle={{ fontSize: 17, color: valid_phone ? BaseColor.primaryColor : BaseColor.greyColor }}
+                        value={phonenumber}
+                        onChangePhoneNumber={(value) => this.setState({ valid_phone: this.phone.isValidNumber(), phonenumber: value })}
+                        placeholderTextColor={BaseColor.greyColor}
+                    />
+                    <TextInput style={[Styles.textinput, { marginTop: 20 }]}
+                        value={email}
+                        onChangeText={(text) => this.setState({ email: text })}
+                        underlineColorAndroid="transparent"
+                        placeholder="Email"
+                        placeholderTextColor={BaseColor.greyColor} />
+                </View>
 
                 <Modal
                     animationType="fade"
