@@ -5,21 +5,18 @@ import {
     FlatList,
     TouchableOpacity,
     TextInput,
-    ActivityIndicator,
     AppState,
     Platform,
-    Alert,
     ScrollView,
     RefreshControl
 } from 'react-native';
-import { Image } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import RBSheet from "react-native-raw-bottom-sheet";
-import RangeSlider from 'rn-range-slider';
+
+import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { store, SetPrefrence, GetPrefrence } from "@store";
 import * as Api from '@api';
 import * as global from "@api/global";
 
@@ -29,7 +26,6 @@ import { Loader, Header, HomeAds } from '@components';
 
 import { BaseColor } from '@config';
 import * as Utils from '@utils';
-import { createPersistoid } from 'redux-persist';
 
 const filterItem_width = (Utils.SCREEN.WIDTH - 20) / 4;
 
@@ -47,6 +43,7 @@ class Home extends Component {
 
             pets: [],
             topCategory: [],
+            max_price: 0,
 
             filterCategory: [],
             filterBreed: [],
@@ -58,7 +55,7 @@ class Home extends Component {
                     is_selected: true
                 },
                 {
-                    id: 2,
+                    id: 0,
                     type: FILTER_TYPE.GENDER,
                     name: 'Female',
                     is_selected: false
@@ -71,6 +68,8 @@ class Home extends Component {
 
             searchText: '',
             currentCategoryID: -1,
+            currentBreedID: -1,
+            currentGender: 1,
 
             showRefresh: false,
             showLoader: false,
@@ -188,7 +187,7 @@ class Home extends Component {
                     firebase.messaging().requestPermission()
                         .then(() => {
                             firebase.messaging().registerForNotifications()
-                            alert("User Now Has Permission")
+                            console.log("User Now Has Permission");
                         })
                         .catch(error => {
                             console.log(error);
@@ -207,8 +206,7 @@ class Home extends Component {
 
         if (response?.success) {
 
-            let ads = await this.nearestSortAds(response.data.ads);
-            // let filterCategory = response.data.category;
+            let ads = await this.sortAdsByDistance(response.data.ads);
             let topCategory = response.data.category;
             let filterBreed = response.data.breed;
 
@@ -218,27 +216,28 @@ class Home extends Component {
             });
             topCategory.unshift({ id: -1, name: "All", is_selected: true, type: FILTER_TYPE.TOP_CATEGORY });
 
-            // filterCategory.filter((item, index) => {
-            //     if (index == 0) item.is_selected = true;
-            //     else item.is_selected = false;
-            // });
-
             filterBreed.filter((item, index) => {
-                if (index == 0) item.is_selected = true;
+                if (index == 0) {
+                    item.is_selected = true;
+                    this.setState({ currentBreedID: item.id });
+                }
                 else item.is_selected = false;
+                item.type = FILTER_TYPE.BREED;
             })
-
             this.setState({
+                max_price: response.data.max_price,
                 pets: ads,
                 topCategory: topCategory,
-                // filterCategory: filterCategory,
                 filterBreed: filterBreed
             });
         }
         this.setState({ showLoader: false, showRefresh: false });
     }
 
-    nearestSortAds = async (ads) => {
+    sortAdsByDistance = async (ads) => {
+        if (!ads)
+            return [];
+
         const adsWithDistance = await Promise.all(ads.map(async item => await this.getAdsDistance(item)));
         adsWithDistance.sort((a, b) => {
             if (a.distance > b.distance) return 1;
@@ -254,12 +253,6 @@ class Home extends Component {
         return item;
     }
 
-    getMetadataPromise(entry) {
-        return new Promise((resolve, reject) => {
-            entry.getMetadata(resolve, reject);
-        });
-    }
-
     filterSelected = async (type, id) => {
         if (type == FILTER_TYPE.TOP_CATEGORY) {
             this.setState({ showContentLoader: true });
@@ -273,14 +266,6 @@ class Home extends Component {
                 this.getFilterData();
             });
         }
-        else if (type == FILTER_TYPE.CATEGORY) {
-            let filterCategory = this.state.filterCategory;
-            filterCategory.forEach((item, key) => {
-                if (item.id == id) item.is_selected = true;
-                else item.is_selected = false;
-            });
-            this.setState({ filterCategory: filterCategory });
-        }
         else if (type == FILTER_TYPE.BREED) {
             let filterBreed = this.state.filterBreed;
             filterBreed.forEach((item, key) => {
@@ -292,7 +277,10 @@ class Home extends Component {
         else if (type == FILTER_TYPE.GENDER) {
             let filterGender = this.state.filterGender;
             filterGender.forEach((item, key) => {
-                if (item.id == id) item.is_selected = true;
+                if (item.id == id) {
+                    item.is_selected = true;
+                    this.setState({ currentGender: item.id });
+                }
                 else item.is_selected = false;
             });
             this.setState({ filterGender: filterGender });
@@ -301,7 +289,6 @@ class Home extends Component {
 
     getFilterData = async () => {
         const { currentCategoryID, searchText } = this.state;
-        console.log(currentCategoryID);
 
         this.setState({ pets: [] });
         const param = { id_category: currentCategoryID, searchText: searchText };
@@ -309,20 +296,25 @@ class Home extends Component {
         this.setState({ showContentLoader: false, showRefresh: false });
 
         if (response?.success) {
-            const ads = await this.nearestSortAds(response.data.ads);
+            const ads = await this.sortAdsByDistance(response.data.ads);
             this.setState({ pets: ads });
         }
     }
 
-    filterPet = () => {
-        const { filterCategory, filterBreed, filterGender, filterPrice } = this.state;
-        let categoryItem = filterCategory.filter((item, index) => {
-            return item.is_selected;
-        });
+    filterPet = async () => {
+        this.RBSheetRef.close();
+        this.setState({ showLoader: true, ads: [] });
+        const { currentCategoryID, currentBreedID, currentGender, filterPrice } = this.state;
+        const params = { id_category: currentCategoryID, id_breed: currentBreedID, gender: currentGender, price: filterPrice };
+        const response = await this.props.api.post("home/filter", params);
+        if (response?.success) {
+            const ads = await this.sortAdsByDistance(response.data.ads);
+            this.setState({ pets: ads });
+        }
+        this.setState({ showLoader: false });
     }
 
     favouriteAds = async (index, item, value) => {
-        console.log(index)
         let pets = this.state.pets;
         pets[index].is_fav = value;
         this.setState({ pets: pets });
@@ -361,28 +353,11 @@ class Home extends Component {
 
     render = () => {
 
-        const { pets, showLoader, showRefresh, showContentLoader, topCategory, filterCategory, filterBreed, filterGender } = this.state;
+        const { pets, showLoader, showRefresh, showContentLoader, topCategory, filterBreed, filterGender, max_price } = this.state;
         const navigation = this.props.navigation;
 
         if (showLoader)
             return (<Loader />);
-
-        ///range slider
-        const renderThumb = () => {
-            return (<View style={{ width: 15, height: 15, backgroundColor: BaseColor.primaryColor, borderRadius: 100 }}></View>)
-        }
-        const renderRail = () => {
-            return (<View style={{ height: 8, flex: 1, backgroundColor: "#9b9b9b", borderRadius: 100 }}></View>)
-        }
-        const renderRailSelected = () => {
-            return (<View style={{ height: 8, backgroundColor: BaseColor.primaryColor }}></View>)
-        }
-        const renderLabel = () => {
-            return (<View></View>)
-        }
-        const renderNotch = () => {
-            return (<View></View>)
-        }
 
         return (
             <View style={{ flex: 1, zIndex: -1 }}>
@@ -403,9 +378,9 @@ class Home extends Component {
                 </View>
                 <View style={{ flexDirection: "row", marginHorizontal: 10, marginTop: 10, justifyContent: "center", alignItems: "center" }}>
                     <Text style={{ color: BaseColor.primaryColor, fontSize: 20, flex: 1, fontWeight: "600" }}>Category of Pets</Text>
-                    <TouchableOpacity style={{ marginLeft: 10, marginTop: 10 }}>
+                    {/* <TouchableOpacity style={{ marginLeft: 10, marginTop: 10 }}>
                         <Text style={{ color: BaseColor.primaryColor, fontSize: 13 }}>Show All</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
                 <View style={{ width: "100%", height: 50, paddingHorizontal: 10, flexDirection: "row", marginTop: 10 }}>
                     <FlatList
@@ -442,8 +417,8 @@ class Home extends Component {
                     ref={ref => {
                         this.RBSheetRef = ref;
                     }}
-                    height={Utils.SCREEN.HEIGHT / 5 * 3}
-                    openDuration={250}
+                    height={Utils.SCREEN.HEIGHT / 2}
+                    openDuration={10}
                     customStyles={{
                         container: {
                             justifyContent: "center",
@@ -456,17 +431,8 @@ class Home extends Component {
                         <View style={{ justifyContent: "center", alignItems: "center" }}>
                             <View style={{ width: 120, height: 6, backgroundColor: "#9b9b9b", borderRadius: 100 }}></View>
                         </View>
-                        <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingVertical: 10, fontWeight: "bold" }}>Pet</Text>
-                        <View style={{ flexDirection: "row", width: "100%" }}>
-                            <FlatList
-                                keyExtractor={(item, index) => index.toString()}
-                                data={filterCategory}
-                                horizontal={true}
-                                renderItem={this.renderFilterItem}
-                            />
-                        </View>
-                        <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingVertical: 10, fontWeight: "bold" }}>Breed</Text>
-                        <View style={{ flexDirection: "row", width: "100%", marginTop: 10 }}>
+                        <Text style={{ fontSize: 18, color: BaseColor.primaryColor, marginTop: 10 }}>Breed</Text>
+                        <View style={{ flexDirection: "row", width: "100%", marginTop: 5 }}>
                             <FlatList
                                 keyExtractor={(item, index) => index.toString()}
                                 data={filterBreed}
@@ -474,8 +440,8 @@ class Home extends Component {
                                 renderItem={this.renderFilterItem}
                             />
                         </View>
-                        <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingVertical: 10, fontWeight: "bold" }}>Gender</Text>
-                        <View style={{ flexDirection: "row", width: "100%", marginTop: 10 }}>
+                        <Text style={{ fontSize: 18, color: BaseColor.primaryColor, marginTop: 10 }}>Gender</Text>
+                        <View style={{ flexDirection: "row", width: "100%", marginTop: 5 }}>
                             <FlatList
                                 keyExtractor={(item, index) => index.toString()}
                                 data={filterGender}
@@ -483,26 +449,58 @@ class Home extends Component {
                                 renderItem={this.renderFilterItem}
                             />
                         </View>
-                        <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingVertical: 10, fontWeight: "bold" }}>Price</Text>
-                        <View style={{ width: "100%", height: 20 }}>
-                            <RangeSlider
-                                style={{ width: Utils.SCREEN.WIDTH - 20, height: 20 }}
-                                gravity={'center'}
+                        <Text style={{ fontSize: 18, color: BaseColor.primaryColor, marginTop: 10 }}>Price</Text>
+                        <View style={{ flexDirection: "row", paddingHorizontal: 5 }}>
+                            <Text style={{ flex: 1 }}>0</Text>
+                            <Text style={{ flex: 1, textAlign: "right" }}>100</Text>
+                        </View>
+                        <View style={{ paddingHorizontal: 10 }}>
+                            <MultiSlider
+                                markerStyle={{
+                                    ...Platform.select({
+                                        ios: {
+                                            height: 20,
+                                            width: 20,
+                                            shadowColor: '#000000',
+                                            shadowOffset: {
+                                                width: 0,
+                                                height: 3
+                                            },
+                                            shadowRadius: 1,
+                                            shadowOpacity: 0.1
+                                        },
+                                        android: {
+                                            height: 20,
+                                            width: 20,
+                                            borderRadius: 10,
+                                            backgroundColor: BaseColor.primaryColor
+                                        }
+                                    })
+                                }}
+                                pressedMarkerStyle={{
+                                    ...Platform.select({
+                                        android: {
+                                            height: 16,
+                                            width: 16,
+                                            borderRadius: 8,
+                                            backgroundColor: BaseColor.primaryColor
+                                        }
+                                    })
+                                }}
+                                selectedStyle={{ backgroundColor: BaseColor.primaryColor, height: 3 }}
+                                values={[0, max_price]}
                                 min={0}
-                                max={800}
-                                textFormat='$'
-                                step={200}
-                                selectionColor="#3df"
-                                blankColor="#f618"
-                                renderThumb={renderThumb}
-                                renderRail={renderRail}
-                                renderRailSelected={renderRailSelected}
-                                renderLabel={renderLabel}
-                                renderNotch={renderNotch}
-                            // onValueChanged={(low, high, fromUser) => {
-                            //     this.setState({ rangeLow: low, rangeHigh: high })
-                            // }}
+                                max={max_price}
+                                sliderLength={Utils.SCREEN.WIDTH - 40}
+                                allowOverlap={false}
                             />
+                        </View>
+                        <View style={{ justifyContent: "center", alignItems: "center", marginTop: 10 }}>
+                            <TouchableOpacity
+                                onPress={this.filterPet}
+                                style={{ justifyContent: "center", alignItems: "center", borderRadius: 5, paddingHorizontal: 40, height: 40, backgroundColor: BaseColor.primaryColor }}>
+                                <Text style={{ color: BaseColor.whiteColor }}>Filter</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </RBSheet>
