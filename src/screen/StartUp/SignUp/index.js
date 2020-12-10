@@ -159,12 +159,12 @@ class SignUp extends Component {
         }
     }
 
-    fbsdk = () => {
+    fbsdk = async () => {
         // Attempt a login using the Facebook login dialog asking for default permissions.
         LoginManager.logInWithPermissions(['public_profile', 'email']).then(
             functionFun = (result) => {
                 if (result.isCancelled) {
-                    // console.log("Login cancelled");
+                    console.log("Login cancelled");
                 } else {
                     // console.warn(
                     //   "Login success with permissions: " +
@@ -262,21 +262,21 @@ class SignUp extends Component {
                                 <View style={{ flex: 1, height: 1, backgroundColor: BaseColor.dddColor }}></View>
                             </View>
                             {Platform.OS == "android" ?
-                                <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 5 }} onPress={() => this.googleSignup()}>
+                                <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 5 }} onPress={this.googleSignup}>
                                     <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.googleColor, justifyContent: "center", alignItems: "center" }}>
                                         <Text style={{ color: BaseColor.whiteColor, fontSize: 13 }}>Sign Up with</Text>
                                         <Icon name={"google-plus-g"} size={15} color={BaseColor.whiteColor} style={{ position: "absolute", right: 10 }}></Icon>
                                     </View>
                                 </TouchableOpacity>
                                 :
-                                <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 10, }} onPress={() => this.appleSignup()}>
+                                <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 10, }} onPress={this.appleSignup}>
                                     <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.whiteColor, borderWidth: 1, borderColor: BaseColor.dddColor, justifyContent: "center", alignItems: "center" }}>
                                         <Text style={{ color: BaseColor.blackColor, fontSize: 13 }}>Sign Up with</Text>
                                         <Icon name={"apple"} size={15} color={BaseColor.blackColor} style={{ position: "absolute", right: 10 }}></Icon>
                                     </View>
                                 </TouchableOpacity>
                             }
-                            <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 10, }}>
+                            <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 10, }} onPress={this.fbsdk}>
                                 <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.faceBookColor, justifyContent: "center", alignItems: "center" }}>
                                     <Text style={{ color: BaseColor.whiteColor, fontSize: 13 }}>Sign Up with</Text>
                                     <Icon name={"facebook-f"} size={15} color={BaseColor.whiteColor} style={{ position: "absolute", right: 10 }}></Icon>
