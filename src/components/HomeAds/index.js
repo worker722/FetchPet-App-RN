@@ -13,6 +13,7 @@ import { BaseColor } from '@config';
 import * as Api from '@api';
 import { store } from '@store';
 import * as Utils from '@utils';
+import * as global from "@api/global";
 
 export default class HomeAds extends Component {
     constructor(props) {
@@ -66,7 +67,7 @@ export default class HomeAds extends Component {
 
         const { onItemClick, onFavourite, data } = this.props;
 
-        const user_meta = item.meta;
+        const user_meta = item.user.meta;
         let is_showPhonenumber = false;
         user_meta?.forEach((item, key) => {
             if (item.meta_key == global._SHOW_PHONE_ON_ADS)
