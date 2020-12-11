@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import {
     View,
-    Text,
-    TouchableOpacity,
     FlatList,
     ScrollView,
     RefreshControl
 } from 'react-native';
-import { BaseColor } from '@config';
 import { ActiveAds, Loader } from '@components';
 
 import { connect } from "react-redux";

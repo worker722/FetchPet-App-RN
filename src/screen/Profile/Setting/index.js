@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 import {
     View,
-    Text,
-    TouchableOpacity
 } from 'react-native';
-import { BaseColor } from '@config';
 import { Header, LinkItem } from '@components';
-import { GoogleSignin, statusCodes } from 'react-native-google-signin';
+import { GoogleSignin } from 'react-native-google-signin';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { store, SetPrefrence, GetPrefrence } from "@store";
+import { store, SetPrefrence } from "@store";
 import * as Api from '@api';
 import * as global from "@api/global";
 

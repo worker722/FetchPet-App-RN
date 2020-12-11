@@ -20,7 +20,7 @@ import RNRestart from 'react-native-restart';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { store, SetPrefrence, GetPrefrence } from "@store";
+import { store, SetPrefrence } from "@store";
 import * as Api from '@api';
 import { Loader } from '@components';
 

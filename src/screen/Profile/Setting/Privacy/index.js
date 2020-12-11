@@ -13,7 +13,7 @@ import Toast from 'react-native-simple-toast';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { store, SetPrefrence, GetPrefrence } from "@store";
+import { store } from "@store";
 import * as Api from '@api';
 import * as global from "@api/global";
 

@@ -4,15 +4,13 @@ import {
     TouchableOpacity,
     Text
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import { Image } from 'react-native-elements';
-
 import { Images, BaseColor } from '@config';
 import * as Utils from '@utils';
 
-
 const image_height = Utils.SCREEN.HEIGHT / 4;
+
 export default class Welcome extends Component {
     constructor(props) {
         super(props);
