@@ -124,7 +124,7 @@ class ProfileEdit extends Component {
         }
         else {
             this.change_image_status = 2;
-            this.setState({ avatar: { path: Api.SERVER_HOST }, visiblePickerModal: false });
+            this.setState({ avatar: '', visiblePickerModal: false });
         }
     }
 
