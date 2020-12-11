@@ -146,16 +146,16 @@ class SignUp extends Component {
 
         } catch (error) {
             this.setState({ showLoading: false });
-            if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-                Toast.show(error + '');
-            } else if (error.code === statusCodes.IN_PROGRESS) {
-                Toast.show(error + '');
-            } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-                Toast.show(error + '');
-            } else {
-                Toast.show(error + '');
-                console.log(error)
-            }
+            // if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+            //     Toast.show(error + '');
+            // } else if (error.code === statusCodes.IN_PROGRESS) {
+            //     Toast.show(error + '');
+            // } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+            //     Toast.show(error + '');
+            // } else {
+            //     Toast.show(error + '');
+            //     console.log(error)
+            // }
         }
     }
 
@@ -276,12 +276,12 @@ class SignUp extends Component {
                                     </View>
                                 </TouchableOpacity>
                             }
-                            <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 10, }}>
+                            {/* <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 10, }}>
                                 <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.faceBookColor, justifyContent: "center", alignItems: "center" }}>
                                     <Text style={{ color: BaseColor.whiteColor, fontSize: 13 }}>Sign Up with</Text>
                                     <Icon name={"facebook-f"} size={15} color={BaseColor.whiteColor} style={{ position: "absolute", right: 10 }}></Icon>
                                 </View>
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                         </View>
                     </ScrollView>
                 </View>

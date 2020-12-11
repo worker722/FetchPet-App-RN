@@ -15,6 +15,8 @@ import RBSheet from "react-native-raw-bottom-sheet";
 
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
+import { store } from "@store";
+
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Api from '@api';
@@ -94,7 +96,6 @@ class Home extends Component {
         if (Platform.OS == "android") {
             this.notificationListenerANDROID = firebase.notifications().onNotification((notification) => {
                 const { title, body, data } = notification;
-                console.log('home notification', data);
                 if (data.type != global.NOTIFICATION_CHAT_MESSAGE)
                     this.showNotification(title, body);
             });
@@ -127,6 +128,15 @@ class Home extends Component {
     }
 
     showNotification(title, body) {
+        const user_meta = store.getState().auth.login.user.meta;
+        let is_showNotification = false;
+        user_meta?.forEach((item, key) => {
+            if (item.meta_key == global._SHOW_NOTIFICATION)
+                is_showNotification = item.meta_value == 1 ? true : false;
+        });
+        if (!is_showNotification)
+            return;
+
         if (Platform.OS === "android") {
             const localNotification = new firebase.notifications.Notification({
                 sound: 'default',
@@ -136,7 +146,8 @@ class Home extends Component {
                 .setTitle(title)
                 .setBody(body)
                 .android.setChannelId(global.NOTIFICATION_CHANNEL_ID)
-                .android.setColor('#ffffff')
+                .android.setColor(BaseColor.primaryColor)
+                .android.setSmallIcon('ic_notification')
                 .android.setPriority(firebase.notifications.Android.Priority.High);
 
             firebase.notifications()
