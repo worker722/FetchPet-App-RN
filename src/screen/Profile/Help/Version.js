@@ -2,12 +2,9 @@ import React, { Component } from 'react';
 import {
     View,
     Text,
-    TouchableOpacity,
 } from 'react-native';
-import { BaseColor, Images } from '@config';
-import { Header, LinkItem } from '@components';
-import { Avatar } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import { Images } from '@config';
+import { Header } from '@components';
 import { Image } from 'react-native-elements';
 
 export default class Version extends Component {

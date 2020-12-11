@@ -6,7 +6,6 @@ import {
     ActivityIndicator
 } from 'react-native';
 import { Image } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import { BaseColor } from '@config';
 import * as Api from '@api';
 import * as Utils from '@utils';

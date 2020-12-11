@@ -22,7 +22,6 @@ import Toast from 'react-native-simple-toast';
 import Styles from './style';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { store, SetPrefrence, GetPrefrence } from "@store";
 import * as Api from '@api';
 import * as Utils from '@utils';
 

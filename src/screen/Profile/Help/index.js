@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
 import {
     View,
-    Text,
-    TouchableOpacity
 } from 'react-native';
-import { BaseColor } from '@config';
 import { Header, LinkItem } from '@components';
-import { Avatar } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import Rate, { AndroidMarket } from 'react-native-rate';
 
 export default class Help extends Component {

@@ -5,7 +5,8 @@ import {
 
 import { Image } from 'react-native-elements';
 import { BaseColor, Images } from '@config';
-import { store, SetPrefrence, GetPrefrence } from '@store';
+import { store, GetPrefrence } from '@store';
+
 export default class Splash extends Component {
   constructor(props) {
     super(props);

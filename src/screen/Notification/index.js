@@ -13,10 +13,8 @@ import { Header, Loader } from '@components';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { store, SetPrefrence, GetPrefrence } from "@store";
 import * as Api from '@api';
 import * as Utils from '@utils';
-import * as global from "@api/global";
 
 class Notification extends Component {
     constructor(props) {

@@ -18,9 +18,8 @@ import firebase from 'react-native-firebase';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { store, SetPrefrence, GetPrefrence } from "@store";
+import { store } from "@store";
 import * as Api from '@api';
-import * as Utils from '@utils';
 import { ChatMessage, Loader } from '@components';
 import * as global from "@api/global";
 

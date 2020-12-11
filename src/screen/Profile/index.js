@@ -7,11 +7,10 @@ import {
 import { BaseColor } from '@config';
 import { Header, LinkItem, Loader } from '@components';
 import { Avatar } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { store, SetPrefrence, GetPrefrence } from "@store";
+import { store } from "@store";
 import * as Api from '@api';
 
 class Profile extends Component {

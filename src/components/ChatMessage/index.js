@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
 import {
     View,
-    TouchableOpacity,
     Text,
-    ActivityIndicator
 } from 'react-native';
-import { Image } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import { BaseColor } from '@config';
-import * as Api from '@api';
 import { store } from '@store';
 import * as Utils from '@utils';
 

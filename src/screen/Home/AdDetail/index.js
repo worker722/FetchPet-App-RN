@@ -8,8 +8,6 @@ import {
     Linking,
     Platform,
     Share,
-    Modal,
-    TextInput,
     RefreshControl
 } from 'react-native';
 import { BaseColor } from '@config';
@@ -19,17 +17,12 @@ import Swiper from 'react-native-swiper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Avatar, Image } from 'react-native-elements';
 import { Rating } from 'react-native-ratings';
-import Styles from './style';
-
-import Toast from 'react-native-simple-toast';
-
-import * as Animatable from 'react-native-animatable';
 
 import MapView, { Marker } from 'react-native-maps';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { store, SetPrefrence, GetPrefrence } from "@store";
+import { store } from "@store";
 import * as Api from '@api';
 
 const slider_height = Math.floor(Utils.SCREEN.HEIGHT / 11 * 3);

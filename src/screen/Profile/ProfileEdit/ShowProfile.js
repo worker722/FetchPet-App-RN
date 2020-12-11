@@ -2,19 +2,13 @@ import React, { Component } from 'react';
 import {
     View,
     Text,
-    TouchableOpacity,
-    TextInput,
-    Modal,
     RefreshControl,
     ScrollView,
     FlatList
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Header, Loader, HomeAds } from '@components';
 import { Avatar } from 'react-native-elements';
 import { BaseColor } from '@config';
-import Styles from './style';
-import Toast from 'react-native-simple-toast';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";

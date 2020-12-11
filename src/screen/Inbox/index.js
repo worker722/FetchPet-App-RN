@@ -4,20 +4,14 @@ import {
     Text,
     ScrollView,
     FlatList,
-    TouchableOpacity,
-    ActivityIndicator,
     RefreshControl
 } from 'react-native';
-import { Image } from 'react-native-elements';
 import { BaseColor } from '@config';
 import { Header, Loader, InboxItem } from '@components';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { store, SetPrefrence, GetPrefrence } from "@store";
 import * as Api from '@api';
-import * as global from "@api/global";
 
 class Inbox extends Component {
     constructor(props) {
