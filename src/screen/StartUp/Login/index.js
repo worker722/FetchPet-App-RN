@@ -139,16 +139,6 @@ class Login extends Component {
             }
         } catch (error) {
             this.setState({ showLoading: false });
-            // if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-            //     Toast.show(error + '');
-            // } else if (error.code === statusCodes.IN_PROGRESS) {
-            //     Toast.show(error + '');
-            // } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-            //     Toast.show(error + '');
-            // } else {
-            //     Toast.show(error + '');
-            //     console.log(error)
-            // }
         }
     }
 
