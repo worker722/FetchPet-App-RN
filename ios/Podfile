@@ -10,7 +10,8 @@ target 'Fetch' do
 
   pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
 
-  pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
+  pod 'Firebase/Core', '~> 7.3.0'
+  pod 'Firebase/Messaging', '~> 7.3.0'
 
   pod 'react-native-geolocation', :path => '../node_modules/@react-native-community/geolocation'
 
