@@ -17,6 +17,7 @@
 		2DCD954D1E0B4F2C00145EB5 /* FetchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* FetchTests.m */; };
 		7A6B99190B4AE65D0F60D5F3 /* libPods-Fetch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FD553219D2E75D71891A9C36 /* libPods-Fetch.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		949D2ACC25842176001738EC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 949D2ACB25842176001738EC /* GoogleService-Info.plist */; };
 		AD84E91C6D4B630EA3CBA52E /* libPods-Fetch-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E217AD55130C7AE3FFF54891 /* libPods-Fetch-tvOS.a */; };
 		EAF7FFA65C64DADA40CA2432 /* libPods-Fetch-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A8560C2675EBC524DC7A0863 /* libPods-Fetch-tvOSTests.a */; };
 		F2DB50929361353F236FB69E /* libPods-Fetch-FetchTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4914DED0AA9CB3A528294C8 /* libPods-Fetch-FetchTests.a */; };
@@ -69,6 +70,7 @@
 		7C853E99C7C0751B4B088F42 /* Pods-Fetch-FetchTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fetch-FetchTests.release.xcconfig"; path = "Target Support Files/Pods-Fetch-FetchTests/Pods-Fetch-FetchTests.release.xcconfig"; sourceTree = "<group>"; };
 		7FAE77D1A9D0821D1F8BFE55 /* Pods-Fetch-FetchTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fetch-FetchTests.debug.xcconfig"; path = "Target Support Files/Pods-Fetch-FetchTests/Pods-Fetch-FetchTests.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Fetch/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		949D2ACB25842176001738EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Fetch/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9A843BD5B36397293BD38D15 /* Pods-Fetch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fetch.release.xcconfig"; path = "Target Support Files/Pods-Fetch/Pods-Fetch.release.xcconfig"; sourceTree = "<group>"; };
 		A82A8E3341FF4A0E8A42CA4B /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		A8560C2675EBC524DC7A0863 /* libPods-Fetch-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Fetch-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -175,6 +177,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				949D2ACB25842176001738EC /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* Fetch */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* FetchTests */,
@@ -381,6 +384,7 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				949D2ACC25842176001738EC /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -414,7 +418,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		16442CE3466CC011A0D7170D /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -779,7 +783,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.darryl.fetch;
 				PRODUCT_NAME = Fetch;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -801,7 +805,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.darryl.fetch;
 				PRODUCT_NAME = Fetch;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

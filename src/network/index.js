@@ -41,7 +41,7 @@ export const get = (route) => async dispatch => {
         .catch(err => {
             if (_TOKEN() != null) {
                 console.log('method-get-error', err);
-                showNetworkError();
+                // showNetworkError();
             }
         });
 }
@@ -66,7 +66,7 @@ export const post = (route, params, is_store) => async dispatch => {
         .catch(err => {
             if (_TOKEN() != null) {
                 console.log('method-post-error', err);
-                showNetworkError();
+                // showNetworkError();
             }
         });
 }
@@ -105,7 +105,7 @@ export const editProfile = (route, image, params) => async dispatch => {
         .catch(err => {
             if (_TOKEN() != null) {
                 console.log('ads-upload-error', err);
-                showNetworkError();
+                // showNetworkError();
             }
         });
 }
@@ -145,7 +145,7 @@ export const createAds = (route, images, params) => async dispatch => {
         .catch(err => {
             if (_TOKEN() != null) {
                 console.log('ads-upload-error', err);
-                showNetworkError();
+                // showNetworkError();
             }
         });
 }
