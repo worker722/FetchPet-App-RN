@@ -8,18 +8,26 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1007858365668:android:3064b64a1254f59427a8f1",
+        "mobilesdk_app_id": "1:1007858365668:android:93fb15753464a75a27a8f1",
         "android_client_info": {
-          "package_name": "com.fetch"
+          "package_name": "com.darryl.fetch"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1007858365668-hl02u1t9ptqea1q88oig9hubl649g9js.apps.googleusercontent.com",
+          "client_id": "1007858365668-516apeqv45qildki6d70fb4j5sd5detr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.fetch",
-            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+            "package_name": "com.darryl.fetch",
+            "certificate_hash": "14bcbbbf95e751aa5f84da66142a3b8004c3fc18"
+          }
+        },
+        {
+          "client_id": "1007858365668-64oar8rql43ve7nre6jop5hcb0m6rkr9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.darryl.fetch",
+            "certificate_hash": "7f5172389c2d3bd4c054ddfd486e6c6ccecb95fd"
           }
         },
         {
@@ -29,7 +37,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAW7oaT1IA9Mv1O7TReYa7nuUqp8tq8TTY"
+          "current_key": "AIzaSyAmn7GDLY18bKttFN71VLWkBtczBVBMjRM"
         }
       ],
       "services": {
