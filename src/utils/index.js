@@ -36,8 +36,8 @@ export const relativeTime = (date) => {
     const secs = diffDuration.seconds();
     if (days <= 0) {
         if (hours <= 0) {
-            if (mins <= 0) return `${secs} second${secs > 1 ? 's ago' : ' ago'}`;
-            else return `${mins} minute${mins > 1 ? 's ago' : ' ago'}`;
+            if (mins <= 0) return `${secs} sec${secs > 1 ? 's ago' : ' ago'}`;
+            else return `${mins} min${mins > 1 ? 's ago' : ' ago'}`;
         } else {
             return `${hours} hour${hours > 1 ? 's ago' : ' ago'}`;
         }
