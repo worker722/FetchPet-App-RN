@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import firebase from 'react-native-firebase';
 import * as global from "@api/global";
+import { BaseColor } from '@config';
 
 export default async (message) => {
   console.log("background message")
@@ -16,7 +17,8 @@ export default async (message) => {
       .setTitle(message.data.title)
       .setBody(message.data.body)
       .android.setChannelId(global.NOTIFICATION_CHANNEL_ID)
-      .android.setColor('#ffffff')
+      .android.setColor(BaseColor.primaryColor)
+      .android.setSmallIcon('ic_notification')
       .android.setPriority(firebase.notifications.Android.Priority.High);
 
     firebase.notifications()

@@ -58,8 +58,13 @@ class Setting extends Component {
         this.props.navigation.navigate('Welcome');
     }
 
-    logOutAll = () => {
-
+    logOutAll = async () => {
+        await SetPrefrence("rememberMe", 0);
+        await SetPrefrence('user', null);
+        if (store.getState().auth.login.user.is_social == 1) {
+            await GoogleSignin.signOut();
+        }
+        this.props.navigation.navigate('Welcome');
     }
 
     deactivateAccount = async () => {
@@ -77,7 +82,7 @@ class Setting extends Component {
                 <LinkItem title={"Notification"} subtitle={""} icon_right={"angle-right"} action={this.setNotificationStatus} is_switch={true} switch_val={is_showNotification} />
                 <LinkItem title={"Logout"} subtitle={""} icon_right={"angle-right"} action={this.logOut} />
                 <LinkItem title={"Logout from all devices"} subtitle={""} icon_right={"angle-right"} action={this.logOutAll} />
-                <LinkItem title={"Deactivate account and delete my data"} subtitle={""} icon_right={"angle-right"} action={this.deactivateAccount} />
+                {/* <LinkItem title={"Deactivate account and delete my data"} subtitle={""} icon_right={"angle-right"} action={this.deactivateAccount} /> */}
             </View>
         )
     }
