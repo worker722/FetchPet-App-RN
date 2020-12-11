@@ -181,7 +181,7 @@ class Login extends Component {
                                 <Switch
                                     value={rememberMe}
                                     onValueChange={(value) => this.toggleRememberMe(value)}
-                                    thumbColor={BaseColor.primaryColor}
+                                    thumbColor={Platform.OS == "android" ? BaseColor.primaryColor : BaseColor.whiteColor}
                                     trackColor={{ true: BaseColor.primaryColor, false: BaseColor.dddColor }}
                                 />
                                 <Text style={{ marginLeft: 10, textAlign: "left", flex: 1 }}>Remember Me</Text>

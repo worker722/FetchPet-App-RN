@@ -6,7 +6,8 @@ import {
     TextInput,
     ScrollView,
     Platform,
-    Alert
+    Alert,
+    Switch
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { CheckBox } from 'react-native-elements';
@@ -202,11 +203,19 @@ class SignUp extends Component {
                                 </TouchableOpacity>
                             </View>
                             <View style={{ width: "80%", height: 30, marginTop: 10, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                                <CheckBox
-                                    onPress={() => this.setState({ termAgree: !termAgree })}
-                                    checked={termAgree}
-                                    checkedColor={BaseColor.primaryColor}
-                                />
+                                {Platform.OS == "android" ?
+                                    <CheckBox
+                                        onPress={() => this.setState({ termAgree: !termAgree })}
+                                        checked={termAgree}
+                                        checkedColor={BaseColor.primaryColor}
+                                    />
+                                    :
+                                    <Switch
+                                        value={termAgree}
+                                        onValueChange={(termAgree) => this.setState({ termAgree: termAgree })}
+                                        thumbColor={Platform.OS == "android" ? BaseColor.primaryColor : BaseColor.whiteColor}
+                                        trackColor={{ true: BaseColor.primaryColor, false: BaseColor.dddColor }}
+                                    />}
                                 <Text style={{ marginLeft: 10, textAlign: "left", flex: 1 }}>I agree with the terms & conditions</Text>
                             </View>
                             <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 20 }} onPress={() => this.signUp()}>
