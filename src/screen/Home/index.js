@@ -96,15 +96,13 @@ class Home extends Component {
         if (Platform.OS == "android") {
             this.notificationListenerANDROID = firebase.notifications().onNotification((notification) => {
                 const { title, body, data } = notification;
-                if (data.type != global.NOTIFICATION_CHAT_MESSAGE)
-                    this.showNotification(title, body);
+                this.showNotification(title, body);
             });
         }
         else {
             this.notificationListenerIOS = firebase.messaging().onMessage((notification) => {
                 const { title, body, data } = notification;
-                if (data.type != global.NOTIFICATION_CHAT_MESSAGE)
-                    this.showNotification(title, body);
+                this.showNotification(title, body);
             })
         }
 
