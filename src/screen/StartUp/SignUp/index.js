@@ -13,7 +13,6 @@ import { CheckBox } from 'react-native-elements';
 import { Image } from 'react-native-elements';
 
 import { GoogleSignin, statusCodes } from 'react-native-google-signin';
-import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
 
 import firebase from 'react-native-firebase';
 import RNRestart from 'react-native-restart';
@@ -159,37 +158,6 @@ class SignUp extends Component {
         }
     }
 
-    fbsdk = async () => {
-        // Attempt a login using the Facebook login dialog asking for default permissions.
-        LoginManager.logInWithPermissions(['public_profile', 'email']).then(
-            functionFun = (result) => {
-                if (result.isCancelled) {
-                    console.log("Login cancelled");
-                } else {
-                    // console.warn(
-                    //   "Login success with permissions: " +
-                    //   JSON.stringify(result)
-                    // );
-                    // Create a graph request asking for user information with a callback to handle the response.
-                    const infoRequest = new GraphRequest(
-                        '/me?fields=id,first_name,last_name,name,picture.type(large),email,gender',
-                        null,
-                        this._responseInfoCallback,
-                    );
-                    // Start the graph request.
-                    new GraphRequestManager().addRequest(infoRequest).start();
-
-                    AccessToken.getCurrentAccessToken().then((data) => {
-                        // console.warn('datae',data);
-
-                    })
-                }
-            },
-            function (error) {
-            }
-        );
-    }
-
     appleSignup = () => {
 
     }
@@ -276,12 +244,6 @@ class SignUp extends Component {
                                     </View>
                                 </TouchableOpacity>
                             }
-                            {/* <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 10, }}>
-                                <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.faceBookColor, justifyContent: "center", alignItems: "center" }}>
-                                    <Text style={{ color: BaseColor.whiteColor, fontSize: 13 }}>Sign Up with</Text>
-                                    <Icon name={"facebook-f"} size={15} color={BaseColor.whiteColor} style={{ position: "absolute", right: 10 }}></Icon>
-                                </View>
-                            </TouchableOpacity> */}
                         </View>
                     </ScrollView>
                 </View>
