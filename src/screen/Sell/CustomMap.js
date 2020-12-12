@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import {
     View,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+    Platform
 } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -97,7 +98,7 @@ export default class CustomMap extends Component {
                         <Marker
                             coordinate={region} />}
                 </MapView>
-                <View style={{ position: "absolute", top: 30, left: 15, right: 15 }}>
+                <View style={{ position: "absolute", top: Platform.OS == "android" ? 30 : 60, left: 15, right: 15 }}>
                     <GooglePlacesAutocomplete
                         placeholder='Search'
                         autoFocus={false}

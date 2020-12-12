@@ -6,6 +6,7 @@ import ChatMessage from './ChatMessage';
 import HomeAds from './HomeAds';
 import ActiveAds from './ActiveAds';
 import ClosedAds from './ClosedAds';
+import CustomModalPicker from './CustomModalPicker';
 
 export {
     Header,
@@ -15,5 +16,6 @@ export {
     ChatMessage,
     HomeAds,
     ActiveAds,
-    ClosedAds
+    ClosedAds,
+    CustomModalPicker
 }
