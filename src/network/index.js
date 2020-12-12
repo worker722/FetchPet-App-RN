@@ -17,7 +17,6 @@ const onLogin = data => {
 export const _TOKEN = () => {
     try {
         const token = store.getState().auth.login.user.token;
-        console.log(token)
         return token;
     } catch (error) {
         return null;
@@ -104,7 +103,7 @@ export const editProfile = (route, image, params) => async dispatch => {
         })
         .catch(err => {
             if (_TOKEN() != null) {
-                console.log('ads-upload-error', err);
+                console.log('profile-upload-error', err);
                 // showNetworkError();
             }
         });

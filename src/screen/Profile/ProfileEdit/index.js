@@ -121,6 +121,7 @@ class ProfileEdit extends Component {
             }).then(images => {
                 this.change_image_status = 1;
                 this.setState({ visiblePickerModal: false, avatar: images });
+                console.log(images);
             });
         }
         else {
