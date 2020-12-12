@@ -10,6 +10,7 @@ target 'Fetch' do
 
   pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
 
+  pod 'Firebase', '~> 7.3.0'
   pod 'Firebase/Core', '~> 7.3.0'
   pod 'Firebase/Messaging', '~> 7.3.0'
 
