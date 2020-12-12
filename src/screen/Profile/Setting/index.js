@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import { Header, LinkItem } from '@components';
 import { GoogleSignin } from 'react-native-google-signin';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -75,14 +76,13 @@ class Setting extends Component {
         const { is_showNotification } = this.state;
 
         return (
-            <View style={{ flex: 1, paddingHorizontal: 10 }}>
+            <View style={{ flex: 1, paddingHorizontal: 10, paddingTop: getStatusBarHeight() }}>
                 <Header icon_left={"arrow-left"} title={"Setting"} callback_left={this.goBack} />
 
                 <LinkItem title={"Privacy"} subtitle={"Passwork, Phone number visiblity"} icon_right={"angle-right"} action={this.goPrivacy} />
                 <LinkItem title={"Notification"} subtitle={""} icon_right={"angle-right"} action={this.setNotificationStatus} is_switch={true} switch_val={is_showNotification} />
                 <LinkItem title={"Logout"} subtitle={""} icon_right={"angle-right"} action={this.logOut} />
                 <LinkItem title={"Logout from all devices"} subtitle={""} icon_right={"angle-right"} action={this.logOutAll} />
-                {/* <LinkItem title={"Deactivate account and delete my data"} subtitle={""} icon_right={"angle-right"} action={this.deactivateAccount} /> */}
             </View>
         )
     }

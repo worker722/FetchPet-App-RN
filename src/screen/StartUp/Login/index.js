@@ -12,6 +12,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native-elements';
 import Toast from 'react-native-simple-toast';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import { GoogleSignin, statusCodes } from 'react-native-google-signin';
 
@@ -150,7 +151,7 @@ class Login extends Component {
             return <Loader />;
 
         return (
-            <View style={{ flex: 1, paddingBottom: 20 }}>
+            <View style={{ flex: 1, paddingBottom: 20, paddingTop: getStatusBarHeight() }}>
                 <View style={{ position: "absolute", top: 0, width: "100%", height: image_height }}>
                     <Image
                         source={{ uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQA1CPdgmCrD4Q68677We1wsLOaCsDbgwk6hQ&usqp=CAU" }}
