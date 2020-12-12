@@ -53,6 +53,7 @@ class Sell extends Component {
 
             visiblePickerModal: false,
             showLoader: false,
+            showImagePanLoader: false,
             showRefresh: false,
             uploadedImages: [],
         }
@@ -91,7 +92,6 @@ class Sell extends Component {
     }
 
     openPhotoPicker = (index) => {
-        this.setState({ visiblePickerModal: false });
         if (index == 0) {
             ImagePicker.openCamera({
                 mediaType: 'photo',
@@ -100,7 +100,9 @@ class Sell extends Component {
                 includeExif: true,
                 multiple: true,
             }).then(images => {
-                this.setState({ uploadedImages: images });
+                this.setState({ visiblePickerModal: false, showImagePanLoader: true, uploadedImages: images }, () => {
+                    this.setState({ showImagePanLoader: false });
+                });
             });
         }
         else if (index == 1) {
@@ -111,7 +113,9 @@ class Sell extends Component {
                 includeExif: true,
                 multiple: true,
             }).then(images => {
-                this.setState({ uploadedImages: images });
+                this.setState({ visiblePickerModal: false, showImagePanLoader: true, uploadedImages: images }, () => {
+                    this.setState({ showImagePanLoader: false });
+                });
             });
         }
     }
@@ -185,7 +189,7 @@ class Sell extends Component {
     }
 
     render = () => {
-        const { selectedCategory, selectedBreed, selectedGender, category, breed, gender, visiblePickerModal, showLoader, showRefresh, uploadedImages, region } = this.state;
+        const { selectedCategory, selectedBreed, selectedGender, category, breed, gender, visiblePickerModal, showLoader, showImagePanLoader, showRefresh, uploadedImages, region } = this.state;
         const navigation = this.props.navigation;
 
         if (showLoader)
@@ -211,25 +215,29 @@ class Sell extends Component {
                         }
                     </View>
                     <View style={{ height: image_size + 40, marginHorizontal: 5, borderRadius: 10, borderColor: BaseColor.dddColor, borderWidth: 1, marginTop: 10, justifyContent: "center", alignItems: "center", paddingRight: 10 }}>
-                        <>
-                            {uploadedImages.length == 0 ?
-                                <>
-                                    <Icon name={"image"} size={35} color={BaseColor.primaryColor}></Icon>
-                                    <TouchableOpacity
-                                        onPress={this.showPickerModal}
-                                        style={{ backgroundColor: BaseColor.primaryColor, paddingVertical: 7, borderWidth: 1, borderColor: BaseColor.dddColor, borderRadius: 10, paddingHorizontal: 10, borderRadius: 5, marginTop: 5 }}>
-                                        <Text style={{ color: BaseColor.whiteColor }}>Choose from gallery</Text>
-                                    </TouchableOpacity>
-                                </>
-                                :
-                                <FlatList
-                                    keyExtractor={(item, index) => index.toString()}
-                                    data={uploadedImages}
-                                    horizontal={true}
-                                    renderItem={this.renderImage}
-                                />
-                            }
-                        </>
+                        {showImagePanLoader ?
+                            <Loader size={15} />
+                            :
+                            <>
+                                {uploadedImages.length == 0 ?
+                                    <>
+                                        <Icon name={"image"} size={35} color={BaseColor.primaryColor}></Icon>
+                                        <TouchableOpacity
+                                            onPress={this.showPickerModal}
+                                            style={{ backgroundColor: BaseColor.primaryColor, paddingVertical: 7, borderWidth: 1, borderColor: BaseColor.dddColor, borderRadius: 10, paddingHorizontal: 10, borderRadius: 5, marginTop: 5 }}>
+                                            <Text style={{ color: BaseColor.whiteColor }}>Choose from gallery</Text>
+                                        </TouchableOpacity>
+                                    </>
+                                    :
+                                    <FlatList
+                                        keyExtractor={(item, index) => index.toString()}
+                                        data={uploadedImages}
+                                        horizontal={true}
+                                        renderItem={this.renderImage}
+                                    />
+                                }
+                            </>
+                        }
                     </View>
                     <View style={{ width: "100%", marginTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
                         <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, borderColor: BaseColor.dddColor }}>

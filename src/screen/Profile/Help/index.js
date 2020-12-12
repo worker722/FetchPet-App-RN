@@ -5,6 +5,7 @@ import {
 import { Header, LinkItem } from '@components';
 import Rate, { AndroidMarket } from 'react-native-rate';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
+import * as global from "@api/global";
 
 export default class Help extends Component {
     constructor(props) {
@@ -25,8 +26,11 @@ export default class Help extends Component {
 
     rateApp = () => {
         const options = {
-            GooglePackageName: "com.fetch",
+            GooglePackageName: global.ANDROID_PACKAGE,
             preferredAndroidMarket: AndroidMarket.Google,
+            AppleAppID: global.APPLE_APP_ID,
+            preferInApp: true,
+            openAppStoreIfInAppFails: true,
         }
         Rate.rate(options, success => { });
     }
