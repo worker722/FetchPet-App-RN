@@ -28,7 +28,7 @@ export default class Header extends Component {
                         </TouchableOpacity>
                     </>
                 }
-                <TouchableOpacity onPress={() => callback_left()} style={{ position: "absolute", left: 20 }}>
+                <TouchableOpacity onPress={() => callback_left()}>
                     <>
                         {icon_left &&
                             <Icon name={icon_left} color={color_icon_left ? color_icon_left : BaseColor.primaryColor} size={25}></Icon>

@@ -15,6 +15,7 @@ import { BaseColor } from '@config';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Avatar } from 'react-native-elements';
 import firebase from 'react-native-firebase';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -148,7 +149,7 @@ class Chat extends Component {
             return (<Loader />);
 
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, paddingTop: getStatusBarHeight() }}>
                 <View style={{ width: "100%", height: 80, backgroundColor: BaseColor.primaryColor, flexDirection: "row", padding: 10 }}>
                     <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", padding: 10 }} onPress={() => navigation.navigate("Inbox")} >
                         <Icon name={"arrow-left"} size={20} color={BaseColor.whiteColor}></Icon>
@@ -185,11 +186,7 @@ class Chat extends Component {
                     </View>
                     <View style={{ justifyContent: "center", paddingLeft: 10, flex: 1 }}>
                         <Text style={{ color: "white" }}>{other_user?.name}</Text>
-                        {/* <Text style={{ color: "white", fontSize: 12 }}>Last Seen: {Utils.relativeTime(last_message?.last_seen_time)}</Text> */}
                     </View>
-                    {/* <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", paddingLeft: 30 }}>
-                        <Icon name={"ellipsis-v"} size={18} color={"white"}></Icon>
-                    </TouchableOpacity> */}
                 </View>
                 <ScrollView
                     ref={ref => this.scrollView = ref}

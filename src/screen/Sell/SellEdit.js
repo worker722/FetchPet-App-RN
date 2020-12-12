@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { Image } from 'react-native-elements';
 import { Picker, PickerIOS } from '@react-native-community/picker';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { BaseColor } from '@config';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Header, Loader } from '@components';
@@ -214,7 +215,7 @@ class SellEdit extends Component {
             return (<Loader />);
 
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, paddingTop: getStatusBarHeight() }}>
                 <ScrollView style={{ flex: 1 }}
                     refreshControl={
                         <RefreshControl

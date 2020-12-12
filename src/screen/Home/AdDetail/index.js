@@ -17,6 +17,7 @@ import Swiper from 'react-native-swiper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Avatar, Image } from 'react-native-elements';
 import { Rating } from 'react-native-ratings';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import MapView, { Marker } from 'react-native-maps';
 
@@ -129,7 +130,7 @@ class AdDetail extends Component {
             return (<Loader />);
 
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, paddingTop: getStatusBarHeight() }}>
                 <ScrollView style={{ flex: 1 }}
                     onScroll={this._onScroll}
                     refreshControl={

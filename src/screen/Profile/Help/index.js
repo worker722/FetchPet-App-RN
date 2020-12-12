@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import { Header, LinkItem } from '@components';
 import Rate, { AndroidMarket } from 'react-native-rate';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 export default class Help extends Component {
     constructor(props) {
@@ -31,14 +32,12 @@ export default class Help extends Component {
     }
 
     render = () => {
-        const navigation = this.props.navigation;
         return (
-            <View style={{ flex: 1, paddingHorizontal: 10 }}>
+            <View style={{ flex: 1, paddingHorizontal: 10, paddingTop: getStatusBarHeight() }}>
                 <Header icon_left={"arrow-left"} title={"Help & Support"} callback_left={this.goBack} />
 
                 <LinkItem title={"Help Center"} subtitle={"See FAQ and contact support"} icon_right={"angle-right"} action={this.contactUs} />
                 <LinkItem title={"Rate us"} subtitle={"If you love our app, please rake a moment to rate it"} icon_right={"angle-right"} action={this.rateApp} />
-                {/* <LinkItem title={"Invite friends Fetch"} subtitle={"Invite your friend to buy and sell pets"} icon_right={"angle-right"} /> */}
                 <LinkItem title={"Version"} subtitle={"1.0.1"} icon_right={"angle-right"} action={this.version} />
             </View>
         )

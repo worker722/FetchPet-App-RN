@@ -5,7 +5,7 @@ import {
     Text,
     ActivityIndicator,
     Platform,
-    Linking
+    Linking,
 } from 'react-native';
 import { Image } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -48,9 +48,9 @@ export default class HomeAds extends Component {
 
     onCall = () => {
         const { item } = this.state;
-        let phoneNumber = 'telprompt:' + item.phonenumber;
+        let phoneNumber = `telprompt:${item.user.phonenumber}`;
         if (Platform.OS === 'android') {
-            phoneNumber = 'tel:' + item.phonenumber;
+            phoneNumber = `tel:${item.user.phonenumber}`;
         }
 
         Linking.openURL(phoneNumber);

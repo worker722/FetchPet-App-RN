@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import RBSheet from "react-native-raw-bottom-sheet";
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
@@ -380,7 +381,7 @@ class Home extends Component {
             return (<Loader />);
 
         return (
-            <View style={{ flex: 1, zIndex: -1 }}>
+            <View style={{ flex: 1, paddingTop: getStatusBarHeight() }}>
                 <Header navigation={this.props.navigation} mainHeader={true} />
                 <View style={{ flexDirection: "row", width: "100%", height: 40, paddingHorizontal: 10, alignItems: "center", justifyContent: "center" }}>
                     <View style={{ borderRadius: 5, height: 40, flex: 1, backgroundColor: BaseColor.primaryColor }}>
@@ -398,9 +399,6 @@ class Home extends Component {
                 </View>
                 <View style={{ flexDirection: "row", marginHorizontal: 10, marginTop: 10, justifyContent: "center", alignItems: "center" }}>
                     <Text style={{ color: BaseColor.primaryColor, fontSize: 20, flex: 1, fontWeight: "600" }}>Category of Pets</Text>
-                    {/* <TouchableOpacity style={{ marginLeft: 10, marginTop: 10 }}>
-                        <Text style={{ color: BaseColor.primaryColor, fontSize: 13 }}>Show All</Text>
-                    </TouchableOpacity> */}
                 </View>
                 <View style={{ width: "100%", height: 50, paddingHorizontal: 10, flexDirection: "row", marginTop: 10 }}>
                     <FlatList

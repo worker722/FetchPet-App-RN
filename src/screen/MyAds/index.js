@@ -4,6 +4,7 @@ import {
     Text,
     TouchableOpacity
 } from 'react-native';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { BaseColor } from '@config';
 import { Header } from '@components';
 import Active from './Active';
@@ -22,7 +23,7 @@ export default class MyAds extends Component {
         const { index } = this.state;
 
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, paddingTop: getStatusBarHeight() }}>
                 <Header navigation={navigation} mainHeader={true} />
                 <Text style={{ color: BaseColor.primaryColor, fontSize: 20, fontWeight: "bold", paddingLeft: 10 }}>My Ads</Text>
                 <View style={{ flex: 1, marginTop: 10 }}>

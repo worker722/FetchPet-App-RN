@@ -15,6 +15,7 @@ import { Image } from 'react-native-elements';
 import { Picker, PickerIOS } from '@react-native-community/picker';
 import { BaseColor } from '@config';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { Header, Loader } from '@components';
 import MapView, { Marker } from 'react-native-maps';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -193,7 +194,7 @@ class Sell extends Component {
             return (<Loader />);
 
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, paddingTop: getStatusBarHeight() }}>
                 <ScrollView style={{ flex: 1 }}
                     refreshControl={
                         <RefreshControl
@@ -308,7 +309,7 @@ class Sell extends Component {
                                     ))}
                                 </Picker>
                                 :
-                                <PickerIOS
+                                <Picker
                                     selectedValue={selectedGender}
                                     style={{ height: 40, flex: 1, color: BaseColor.primaryColor }}
                                     onValueChange={(value, index) => this.setState({ selectedGender: value })}
@@ -318,11 +319,11 @@ class Sell extends Component {
                                     {gender.map((item, index) => (
                                         <Picker.Item key={index} label={item.name} value={item.name} />
                                     ))}
-                                </PickerIOS>
+                                </Picker>
                             }
                         </View>
                     </View>
-                    <View style={{ width: "100%", marginTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
+                    <View style={{ width: "100%", marginTop: 10, flexDirection: "row", height: 50, paddingHorizontal: 10 }}>
                         <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor }}>
                             <TextInput
                                 onChangeText={(text) => this.setState({ price: text })}

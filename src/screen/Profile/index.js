@@ -7,6 +7,7 @@ import {
 import { BaseColor } from '@config';
 import { Header, LinkItem, Loader } from '@components';
 import { Avatar } from 'react-native-elements';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -55,7 +56,7 @@ class Profile extends Component {
             return (<Loader />);
 
         return (
-            <View style={{ flex: 1, paddingHorizontal: 10 }}>
+            <View style={{ flex: 1, paddingHorizontal: 10, paddingTop: getStatusBarHeight() }}>
                 <Header navigation={navigation} mainHeader={true} />
                 <Text style={{ color: BaseColor.primaryColor, fontSize: 20, fontWeight: "bold", paddingLeft: 10 }}>Profile</Text>
                 <TouchableOpacity onPress={() => navigation.navigate("ProfileEdit")} style={{ flexDirection: "row", width: "100%", marginBottom: 15, justifyContent: "center", marginTop: 10 }}>

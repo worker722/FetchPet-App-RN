@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { BaseColor } from '@config';
 import { Header, Loader, InboxItem } from '@components';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -60,7 +61,7 @@ class Inbox extends Component {
             return (<Loader />)
 
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, paddingTop: getStatusBarHeight() }}>
                 <Header navigation={this.props.navigation} mainHeader={true} />
                 <Text style={{ color: BaseColor.primaryColor, fontSize: 20, fontWeight: "bold", paddingLeft: 10 }}>Chat</Text>
                 <View style={{ padding: 10, paddingTop: 0 }}>
