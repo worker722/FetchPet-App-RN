@@ -12,11 +12,11 @@ import {
     RefreshControl
 } from 'react-native';
 import { Image } from 'react-native-elements';
-import { Picker, PickerIOS } from '@react-native-community/picker';
+import { Picker } from '@react-native-community/picker';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { BaseColor } from '@config';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { Header, Loader } from '@components';
+import { Header, Loader, CustomModalPicker } from '@components';
 import MapView, { Marker } from 'react-native-maps';
 import ImagePicker from 'react-native-image-crop-picker';
 import Toast from 'react-native-simple-toast';
@@ -269,17 +269,7 @@ class SellEdit extends Component {
                                     ))}
                                 </Picker>
                                 :
-                                <PickerIOS
-                                    selectedValue={selectedCategory}
-                                    style={{ height: 40, flex: 1, color: BaseColor.primaryColor }}
-                                    onValueChange={(value, index) => this.setState({ selectedCategory: value })}
-                                    itemStyle={{ height: 40 }}
-                                    mode="dropdown"
-                                >
-                                    {category.map((item, index) => (
-                                        <Picker.Item key={index} label={item.name} value={item.name} />
-                                    ))}
-                                </PickerIOS>
+                                <CustomModalPicker title={"Select a Category"} data={category} selectedValue={selectedCategory} onValueChange={(item, key) => this.setState({ selectedCategory: item.name })} />
                             }
                         </View>
                         <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, marginLeft: 10, borderColor: BaseColor.dddColor }}>
@@ -296,17 +286,7 @@ class SellEdit extends Component {
                                     ))}
                                 </Picker>
                                 :
-                                <PickerIOS
-                                    selectedValue={selectedBreed}
-                                    style={{ height: 40, flex: 1, color: BaseColor.primaryColor }}
-                                    onValueChange={(value, index) => this.setState({ selectedBreed: value })}
-                                    itemStyle={{ height: 40 }}
-                                    mode="dropdown"
-                                >
-                                    {breed.map((item, index) => (
-                                        <Picker.Item key={index} label={item.name} value={item.name} />
-                                    ))}
-                                </PickerIOS>
+                                <CustomModalPicker title={"Select a Breed"} data={breed} selectedValue={selectedBreed} onValueChange={(item, key) => this.setState({ selectedBreed: item.name })} />
                             }
                         </View>
                     </View>
@@ -331,22 +311,12 @@ class SellEdit extends Component {
                                     ))}
                                 </Picker>
                                 :
-                                <PickerIOS
-                                    selectedValue={selectedGender}
-                                    style={{ height: 40, flex: 1, color: BaseColor.primaryColor }}
-                                    onValueChange={(value, index) => this.setState({ selectedGender: value })}
-                                    itemStyle={{ height: 40 }}
-                                    mode="dropdown"
-                                >
-                                    {gender.map((item, index) => (
-                                        <Picker.Item key={index} label={item.name} value={item.name} />
-                                    ))}
-                                </PickerIOS>
+                                <CustomModalPicker title={"Select a Gender"} data={gender} selectedValue={selectedGender} onValueChange={(item, key) => this.setState({ selectedGender: item.name })} />
                             }
                         </View>
                     </View>
                     <View style={{ width: "100%", marginTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor }}>
+                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, borderColor: BaseColor.dddColor }}>
                             <TextInput
                                 value={`${price}`}
                                 onChangeText={(text) => this.setState({ price: text })}
@@ -362,17 +332,16 @@ class SellEdit extends Component {
                     </View>
                     <View style={{ padding: 10, marginTop: 10 }}>
                         <Text style={{ color: BaseColor.primaryColor, fontSize: 18 }}>Location</Text>
-                        <TouchableOpacity onPress={() => navigation.navigate("CustomMap", { selectLocation: this.selectLocation, currentRegion: region })} activeOpacity={1}>
-                            <MapView
-                                style={{ flex: 1, height: 160, marginTop: 10 }}
-                                scrollEnabled={false}
-                                region={region}
-                            >
-                                {region.latitude != 0 && region.longitude != 0 &&
-                                    <Marker coordinate={region} />
-                                }
-                            </MapView>
-                        </TouchableOpacity>
+                        <MapView
+                            onPress={() => navigation.navigate("CustomMap", { selectLocation: this.selectLocation, currentRegion: region })}
+                            style={{ flex: 1, height: 160, marginTop: 10 }}
+                            scrollEnabled={false}
+                            region={region}
+                        >
+                            {region.latitude != 0 && region.longitude != 0 &&
+                                <Marker coordinate={region} />
+                            }
+                        </MapView>
                     </View>
                     <TouchableOpacity
                         onPress={this.editAds}
