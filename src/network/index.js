@@ -89,7 +89,7 @@ export const editProfile = (route, image, params) => async dispatch => {
     return fetch(`${SERVER_HOST}/api/${route}`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'multipart/form-data',
+            'Content-Type': 'multipart/form-data; boundary=Boundary-3A42CBDB-01A2-4DDE-A9EE-425A344ABA13',
             'Authorization': `Bearer ${_TOKEN()}`
         },
         body: formData
