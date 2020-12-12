@@ -27,7 +27,7 @@ export const get = (route) => async dispatch => {
     return fetch(`${SERVER_HOST}/api/${route}`, {
         method: 'GET',
         headers: {
-            'content-type': 'application/json',
+            'Content-Type': 'application/json',
             'Authorization': `Bearer ${_TOKEN()}`
         },
     })
@@ -49,7 +49,7 @@ export const post = (route, params, is_store) => async dispatch => {
     return fetch(`${SERVER_HOST}/api/${route}`, {
         method: 'POST',
         headers: {
-            'content-type': 'application/json',
+            'Content-Type': 'application/json',
             'Authorization': `Bearer ${_TOKEN()}`
         },
         body: JSON.stringify(params)
@@ -82,14 +82,14 @@ export const editProfile = (route, image, params) => async dispatch => {
     const photo = {
         uri: image.path,
         type: image.mime,
-        name: "profile_image." + extension,
+        name: `profile_image.${extension}`,
     };
     formData.append('profile_image', photo);
 
     return fetch(`${SERVER_HOST}/api/${route}`, {
         method: 'POST',
         headers: {
-            'content-type': 'multipart/form-data',
+            'Content-Type': 'multipart/form-data',
             'Authorization': `Bearer ${_TOKEN()}`
         },
         body: formData
@@ -122,7 +122,7 @@ export const createAds = (route, images, params) => async dispatch => {
         const photo = {
             uri: images[i].path,
             type: images[i].mime,
-            name: "ad_image." + extension,
+            name: `ad_image.${extension}`,
         };
         formData.append('ad_image[]', photo);
     }
@@ -130,7 +130,7 @@ export const createAds = (route, images, params) => async dispatch => {
     return fetch(`${SERVER_HOST}/api/${route}`, {
         method: 'POST',
         headers: {
-            'content-type': 'multipart/form-data',
+            'Content-Type': 'multipart/form-data',
             'Authorization': `Bearer ${_TOKEN()}`
         },
         body: formData
