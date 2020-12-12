@@ -3,7 +3,8 @@ import {
     View,
     Text,
     TouchableOpacity,
-    Switch
+    Switch,
+    Platform
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
@@ -40,7 +41,7 @@ export default class LinkItem extends Component {
                                 value={switch_val}
                                 onValueChange={(value) => action()}
                                 style={{ scaleX: 0.8, scaleY: 0.8 }}
-                                thumbColor={BaseColor.primaryColor}
+                                thumbColor={Platform.OS == "android" ? BaseColor.primaryColor : BaseColor.whiteColor}
                                 trackColor={{ true: BaseColor.primaryColor, false: BaseColor.dddColor }}
                             />
                             :

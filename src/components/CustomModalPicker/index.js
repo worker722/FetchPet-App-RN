@@ -47,6 +47,7 @@ export default class CustomModalPicker extends Component {
                                             this.setState({ visibleModal: false })
                                             onValueChange(item, key);
                                         }}
+                                        key={key}
                                         style={{ marginHorizontal: 10, justifyContent: "center", alignItems: "center", paddingVertical: 5, borderWidth: 1, borderColor: "#fff", borderBottomColor: BaseColor.dddColor, borderTopColor: key == 0 && BaseColor.dddColor }}>
                                         <Text style={{ color: BaseColor.primaryColor, marginVertical: 10, fontSize: 15 }}>{item.name}</Text>
                                     </TouchableOpacity>

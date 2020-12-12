@@ -162,7 +162,7 @@ class ProfileEdit extends Component {
                         </TouchableOpacity>
                     </View>
                     <View style={{ flex: 1, justifyContent: "center", paddingLeft: 20 }}>
-                        <TextInput style={[Styles.textinput, { fontSize: 16 }]}
+                        <TextInput style={[Styles.textinput, { fontSize: 16, paddingVertical: 15 }]}
                             value={name}
                             onChangeText={(text) => this.setState({ name: text })}
                             underlineColorAndroid="transparent"
@@ -183,7 +183,7 @@ class ProfileEdit extends Component {
                         onChangePhoneNumber={(value) => this.setState({ valid_phone: this.phone.isValidNumber(), phonenumber: value })}
                         placeholderTextColor={BaseColor.greyColor}
                     />
-                    <TextInput style={[Styles.textinput, { marginTop: 20 }]}
+                    <TextInput style={[Styles.textinput, { marginTop: 20, paddingVertical: 15 }]}
                         value={email}
                         onChangeText={(text) => this.setState({ email: text })}
                         underlineColorAndroid="transparent"
