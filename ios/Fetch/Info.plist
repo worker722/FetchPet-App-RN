@@ -35,6 +35,8 @@
 	<string>Fetch is need to access your location.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Fetch is need to access your gallery.</string>
+  <key>NSMicrophoneUsageDescription</key>
+  <string>Fetch is need to access your microphone.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
