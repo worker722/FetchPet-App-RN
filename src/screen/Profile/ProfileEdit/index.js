@@ -59,9 +59,40 @@ class ProfileEdit extends Component {
         this.props.navigation.goBack(null);
     }
 
+    openPhotoPicker = (index) => {
+        if (index == 0) {
+            ImagePicker.openCamera({
+                multiple: false,
+                mediaType: 'photo',
+                width: 500,
+                height: 500,
+                includeExif: true
+            }).then(images => {
+                this.change_image_status = 1;
+                this.setState({ visiblePickerModal: false, avatar: images });
+            });
+        }
+        else if (index == 1) {
+            ImagePicker.openPicker({
+                multiple: false,
+                mediaType: 'photo',
+                width: 500,
+                height: 500,
+                includeExif: true
+            }).then(images => {
+                this.change_image_status = 1;
+                this.setState({ visiblePickerModal: false, avatar: images });
+                console.log(images.size);
+            });
+        }
+        else {
+            this.change_image_status = 2;
+            this.setState({ avatar: '', visiblePickerModal: false });
+        }
+    }
+
     save = async () => {
         const { name, phonenumber, email, avatar } = this.state;
-        console.log(phonenumber);
         if (name == '') {
             Toast.show("Please input name.");
             return;
@@ -95,38 +126,6 @@ class ProfileEdit extends Component {
         }
         else {
             this.setState({ showLoader: false });
-        }
-    }
-
-    openPhotoPicker = (index) => {
-        if (index == 0) {
-            ImagePicker.openCamera({
-                multiple: false,
-                mediaType: 'photo',
-                width: 500,
-                height: 500,
-                includeExif: true
-            }).then(images => {
-                this.change_image_status = 1;
-                this.setState({ visiblePickerModal: false, avatar: images });
-            });
-        }
-        else if (index == 1) {
-            ImagePicker.openPicker({
-                multiple: false,
-                mediaType: 'photo',
-                width: 500,
-                height: 500,
-                includeExif: true
-            }).then(images => {
-                this.change_image_status = 1;
-                this.setState({ visiblePickerModal: false, avatar: images });
-                console.log(images);
-            });
-        }
-        else {
-            this.change_image_status = 2;
-            this.setState({ avatar: '', visiblePickerModal: false });
         }
     }
 

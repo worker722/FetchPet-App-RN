@@ -290,7 +290,7 @@ class Home extends Component {
                 if (item.id == id) item.is_selected = true;
                 else item.is_selected = false;
             });
-            this.setState({ filterBreed: filterBreed });
+            this.setState({ filterBreed: filterBreed, currentBreedID: id });
         }
         else if (type == FILTER_TYPE.GENDER) {
             let filterGender = this.state.filterGender;
@@ -301,7 +301,7 @@ class Home extends Component {
                 }
                 else item.is_selected = false;
             });
-            this.setState({ filterGender: filterGender });
+            this.setState({ filterGender: filterGender, currentGender: id });
         }
     }
 
@@ -324,6 +324,7 @@ class Home extends Component {
         this.setState({ showLoader: true, ads: [] });
         const { currentCategoryID, currentBreedID, currentGender, filterPrice } = this.state;
         const params = { id_category: currentCategoryID, id_breed: currentBreedID, gender: currentGender, price: filterPrice };
+        console.log(params)
         const response = await this.props.api.post("home/filter", params);
         if (response?.success) {
             const ads = await this.sortAdsByDistance(response.data.ads);
