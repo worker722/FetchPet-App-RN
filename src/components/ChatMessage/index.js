@@ -18,7 +18,7 @@ export default class ChatMessage extends Component {
         const { data } = this.props;
         const item = data.item;
 
-        const message_date = Utils.DATE2STR(item.created_at);
+        const message_date = Utils.DATE2STR(item.created_at, 'D MMM HH:mm');
 
         return (
             <View>
