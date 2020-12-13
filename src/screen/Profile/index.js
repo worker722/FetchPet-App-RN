@@ -56,7 +56,7 @@ class Profile extends Component {
             return (<Loader />);
 
         return (
-            <View style={{ flex: 1, paddingHorizontal: 10, paddingTop: getStatusBarHeight() }}>
+            <View style={{ flex: 1, paddingHorizontal: 10, paddingTop: getStatusBarHeight(true) }}>
                 <Header navigation={navigation} mainHeader={true} />
                 <Text style={{ color: BaseColor.primaryColor, fontSize: 20, fontWeight: "bold", paddingLeft: 10 }}>Profile</Text>
                 <TouchableOpacity onPress={() => navigation.navigate("ProfileEdit")} style={{ flexDirection: "row", width: "100%", marginBottom: 15, justifyContent: "center", marginTop: 10 }}>

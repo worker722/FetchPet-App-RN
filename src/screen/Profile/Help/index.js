@@ -37,7 +37,7 @@ export default class Help extends Component {
 
     render = () => {
         return (
-            <View style={{ flex: 1, paddingHorizontal: 10, paddingTop: getStatusBarHeight() }}>
+            <View style={{ flex: 1, paddingHorizontal: 10, paddingTop: getStatusBarHeight(true) }}>
                 <Header icon_left={"arrow-left"} title={"Help & Support"} callback_left={this.goBack} />
 
                 <LinkItem title={"Help Center"} subtitle={"See FAQ and contact support"} icon_right={"angle-right"} action={this.contactUs} />

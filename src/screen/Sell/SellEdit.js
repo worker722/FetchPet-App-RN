@@ -215,7 +215,7 @@ class SellEdit extends Component {
             return (<Loader />);
 
         return (
-            <View style={{ flex: 1, paddingTop: getStatusBarHeight() }}>
+            <View style={{ flex: 1, paddingTop: getStatusBarHeight(true) }}>
                 <ScrollView style={{ flex: 1 }}
                     refreshControl={
                         <RefreshControl

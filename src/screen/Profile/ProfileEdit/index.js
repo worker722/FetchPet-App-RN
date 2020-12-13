@@ -136,7 +136,7 @@ class ProfileEdit extends Component {
             return (<Loader />);
 
         return (
-            <View style={{ flex: 1, paddingTop: getStatusBarHeight() }}>
+            <View style={{ flex: 1, paddingTop: getStatusBarHeight(true) }}>
                 <Header icon_left={"times"} callback_left={this.goBack} title={"Edit Profile"} text_right={"save"} callback_right={this.save} />
                 <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingHorizontal: 20 }}>Basic Infomation</Text>
                 <View style={{ marginTop: 15, marginLeft: 15, flexDirection: "row", paddingRight: 20 }}>

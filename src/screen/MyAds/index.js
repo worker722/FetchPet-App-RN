@@ -23,7 +23,7 @@ export default class MyAds extends Component {
         const { index } = this.state;
 
         return (
-            <View style={{ flex: 1, paddingTop: getStatusBarHeight() }}>
+            <View style={{ flex: 1, paddingTop: getStatusBarHeight(true) }}>
                 <Header navigation={navigation} mainHeader={true} />
                 <Text style={{ color: BaseColor.primaryColor, fontSize: 20, fontWeight: "bold", paddingLeft: 10 }}>My Ads</Text>
                 <View style={{ flex: 1, marginTop: 10 }}>
