@@ -4,7 +4,7 @@ import Toast from 'react-native-simple-toast';
 import * as global from "./global";
 import { store } from '@store';
 
-// export const SERVER_HOST = 'http://10.0.2.2:8000';
+// export const SERVER_HOST = 'http://127.0.0.1:8000';
 export const SERVER_HOST = 'http://54.177.72.41';
 
 const onLogin = data => {
@@ -40,7 +40,7 @@ export const get = (route) => async dispatch => {
         .catch(err => {
             if (_TOKEN() != null) {
                 console.log('method-get-error', err);
-                // showNetworkError();
+                showNetworkError();
             }
         });
 }
@@ -65,7 +65,7 @@ export const post = (route, params, is_store) => async dispatch => {
         .catch(err => {
             if (_TOKEN() != null) {
                 console.log('method-post-error', err);
-                // showNetworkError();
+                showNetworkError();
             }
         });
 }
@@ -89,7 +89,7 @@ export const editProfile = (route, image, params) => async dispatch => {
     return fetch(`${SERVER_HOST}/api/${route}`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'multipart/form-data; boundary=Boundary-3A42CBDB-01A2-4DDE-A9EE-425A344ABA13',
+            'Content-Type': 'multipart/form-data',
             'Authorization': `Bearer ${_TOKEN()}`
         },
         body: formData
@@ -104,7 +104,7 @@ export const editProfile = (route, image, params) => async dispatch => {
         .catch(err => {
             if (_TOKEN() != null) {
                 console.log('profile-upload-error', err);
-                // showNetworkError();
+                showNetworkError();
             }
         });
 }
@@ -144,7 +144,7 @@ export const createAds = (route, images, params) => async dispatch => {
         .catch(err => {
             if (_TOKEN() != null) {
                 console.log('ads-upload-error', err);
-                // showNetworkError();
+                showNetworkError();
             }
         });
 }

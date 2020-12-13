@@ -161,7 +161,7 @@ class SignUp extends Component {
             return <Loader />;
 
         return (
-            <View style={{ flex: 1, paddingBottom: 20, paddingTop: getStatusBarHeight() }}>
+            <View style={{ flex: 1, paddingBottom: 20, marginTop: getStatusBarHeight() }}>
                 <View style={{ position: "absolute", top: 0, width: "100%", height: image_height }}>
                     <Image
                         source={{ uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQA1CPdgmCrD4Q68677We1wsLOaCsDbgwk6hQ&usqp=CAU" }}

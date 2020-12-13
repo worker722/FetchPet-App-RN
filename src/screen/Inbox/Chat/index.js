@@ -218,9 +218,9 @@ class Chat extends Component {
                     >
                     </TextInput>
                     <View style={{ position: "absolute", right: 0, top: 0, bottom: 0, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                        <TouchableOpacity style={{ paddingHorizontal: 15 }}>
+                        {/* <TouchableOpacity style={{ paddingHorizontal: 15 }}>
                             <Icon name={"paperclip"} size={20} color={"grey"}></Icon>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         {is_sending ?
                             <View style={{ padding: 8, marginRight: 25, borderRadius: 100, backgroundColor: "white", justifyContent: "center", alignItems: "center" }}>
                                 <ActivityIndicator size={20} color={BaseColor.primaryColor} />
