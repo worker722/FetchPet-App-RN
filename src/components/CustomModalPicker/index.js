@@ -10,6 +10,7 @@ import {
 import { BaseColor } from '@config';
 import Styles from './style';
 import * as Utils from '@utils';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 export default class CustomModalPicker extends Component {
     constructor(props) {
@@ -28,8 +29,9 @@ export default class CustomModalPicker extends Component {
             <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
                 <TouchableOpacity
                     onPress={() => this.setState({ visibleModal: true })}
-                    style={{ width: "100%", height: 40, justifyContent: "center", alignItems: "center" }}>
+                    style={{ width: "100%", height: 40, justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
                     <Text style={{ fontSize: 15 }}>{selectedValue}</Text>
+                    <Icon name={"caret-down"} size={18} style={{ position: "absolute", right: 10 }} />
                 </TouchableOpacity>
                 <Modal
                     animationType="none"

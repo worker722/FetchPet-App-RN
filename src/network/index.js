@@ -1,4 +1,4 @@
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import RNRestart from 'react-native-restart';
 import Toast from 'react-native-simple-toast';
 import * as global from "./global";
@@ -80,7 +80,7 @@ export const editProfile = (route, image, params) => async dispatch => {
 
     const extension = image.mime.substring(image.mime.indexOf("/") + 1, image.mime.length);
     const photo = {
-        uri: image.path,
+        uri: Platform.OS == "android" ? image.path : `file://${image.path}`,
         type: image.mime,
         name: `profile_image.${extension}`,
     };
@@ -120,7 +120,7 @@ export const createAds = (route, images, params) => async dispatch => {
     for (var i = 0; i < images.length; i++) {
         const extension = images[i].mime.substring(images[i].mime.indexOf("/") + 1, images[i].mime.length);
         const photo = {
-            uri: images[i].path,
+            uri: Platform.OS == "android" ? images[i].path : `file://${images[i].path}`,
             type: images[i].mime,
             name: `ad_image.${extension}`,
         };
@@ -144,7 +144,7 @@ export const createAds = (route, images, params) => async dispatch => {
         .catch(err => {
             if (_TOKEN() != null) {
                 console.log('ads-upload-error', err);
-                showNetworkError();
+                // showNetworkError();
             }
         });
 }

@@ -53,6 +53,10 @@ class ProfileEdit extends Component {
                 avatar = '';
             this.setState({ user: response.data.user, name: response.data.user.name, phonenumber: response.data.user.phonenumber, email: response.data.user.email, avatar: { path: avatar } });
         }
+
+        ImagePicker.clean().then(() => {
+        }).catch(e => {
+        });
     }
 
     goBack = () => {
@@ -66,7 +70,8 @@ class ProfileEdit extends Component {
                 mediaType: 'photo',
                 width: 500,
                 height: 500,
-                includeExif: true
+                includeExif: true,
+                cropping: true
             }).then(images => {
                 this.change_image_status = 1;
                 this.setState({ visiblePickerModal: false, avatar: images });
@@ -78,11 +83,11 @@ class ProfileEdit extends Component {
                 mediaType: 'photo',
                 width: 500,
                 height: 500,
-                includeExif: true
+                includeExif: true,
+                cropping: true
             }).then(images => {
                 this.change_image_status = 1;
                 this.setState({ visiblePickerModal: false, avatar: images });
-                console.log(images.size);
             });
         }
         else {

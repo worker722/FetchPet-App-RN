@@ -116,6 +116,7 @@ class SellEdit extends Component {
                 height: 500,
                 includeExif: true,
                 multiple: true,
+                cropping: true
             }).then(images => {
                 this.setState({ uploadedImages: images, is_edit_image: true });
             });
@@ -127,6 +128,7 @@ class SellEdit extends Component {
                 height: 500,
                 includeExif: true,
                 multiple: true,
+                cropping: true
             }).then(images => {
                 this.setState({ uploadedImages: images, is_edit_image: true });
             });

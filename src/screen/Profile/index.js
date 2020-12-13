@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import {
     View,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+    ActivityIndicator
 } from 'react-native';
+import { Image } from 'react-native-elements';
 import { BaseColor } from '@config';
 import { Header, LinkItem, Loader } from '@components';
-import { Avatar } from 'react-native-elements';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import { connect } from "react-redux";
@@ -61,14 +62,15 @@ class Profile extends Component {
                 <Text style={{ color: BaseColor.primaryColor, fontSize: 20, fontWeight: "bold", paddingLeft: 10 }}>Profile</Text>
                 <TouchableOpacity onPress={() => navigation.navigate("ProfileEdit")} style={{ flexDirection: "row", width: "100%", marginBottom: 15, justifyContent: "center", marginTop: 10 }}>
                     {user?.avatar ?
-                        <Avatar
+                        <Image
                             size='large'
                             rounded
                             source={{ uri: Api.SERVER_HOST + user?.avatar }}
                             activeOpacity={0.7}
                             placeholderStyle={{ backgroundColor: "transparent" }}
-                            containerStyle={{ marginHorizontal: 10, borderWidth: 1, borderColor: "#808080", width: 80, height: 80, borderRadius: 100 }}>
-                        </Avatar>
+                            PlaceholderContent={<ActivityIndicator size={20} color={BaseColor.primaryColor} />}
+                            style={{ marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 80, height: 80, borderRadius: 100 }}>
+                        </Image>
                         :
                         <View style={{ width: 80, height: 80, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
                             <Text style={{ color: BaseColor.whiteColor, fontSize: 30 }}>{user?.name?.charAt(0).toUpperCase()}</Text>
