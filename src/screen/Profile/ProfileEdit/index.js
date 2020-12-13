@@ -68,9 +68,10 @@ class ProfileEdit extends Component {
             ImagePicker.openCamera({
                 multiple: false,
                 mediaType: 'photo',
-                width: 500,
-                height: 500,
+                width: 300,
+                height: 300,
                 includeExif: true,
+                cropperCircleOverlay: true,
                 cropping: true
             }).then(images => {
                 this.change_image_status = 1;
@@ -81,10 +82,11 @@ class ProfileEdit extends Component {
             ImagePicker.openPicker({
                 multiple: false,
                 mediaType: 'photo',
-                width: 500,
-                height: 500,
+                width: 300,
+                height: 300,
                 includeExif: true,
-                cropping: true
+                cropping: true,
+                cropperCircleOverlay: true
             }).then(images => {
                 this.change_image_status = 1;
                 this.setState({ visiblePickerModal: false, avatar: images });
