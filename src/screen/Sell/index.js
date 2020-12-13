@@ -98,7 +98,6 @@ class Sell extends Component {
                 height: 500,
                 includeExif: true,
                 multiple: true,
-                cropping: true
             }).then(images => {
                 this.setState({ visiblePickerModal: false, uploadedImages: images });
             });
