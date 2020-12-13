@@ -104,7 +104,7 @@ class Notification extends Component {
             return (<Loader />);
 
         return (
-            <View style={{ flex: 1, paddingTop: getStatusBarHeight() }}>
+            <View style={{ flex: 1, paddingTop: getStatusBarHeight(true) }}>
                 <Header title={"Notification"} icon_left={"times-circle"} callback_left={this.goBack} />
                 <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingHorizontal: 20 }}>Notification</Text>
                 <ScrollView

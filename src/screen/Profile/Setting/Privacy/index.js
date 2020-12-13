@@ -81,7 +81,7 @@ class Privacy extends Component {
             return (<Loader />);
 
         return (
-            <View style={{ flex: 1, paddingHorizontal: 10, paddingTop: getStatusBarHeight() }}>
+            <View style={{ flex: 1, paddingHorizontal: 10, paddingTop: getStatusBarHeight(true) }}>
                 <Header icon_left={"arrow-left"} callback_left={this.goBack} title={"Privacy"} />
 
                 <LinkItem title={"Show my phone number in ads"} subtitle={""} icon_right={"angle-right"} action={this.setPhonenumberStatus} is_switch={true} switch_val={is_showPhonenumber} />

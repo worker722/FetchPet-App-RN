@@ -74,7 +74,7 @@ class Setting extends Component {
         const { is_showNotification } = this.state;
 
         return (
-            <View style={{ flex: 1, paddingHorizontal: 10, paddingTop: getStatusBarHeight() }}>
+            <View style={{ flex: 1, paddingHorizontal: 10, paddingTop: getStatusBarHeight(true) }}>
                 <Header icon_left={"arrow-left"} title={"Setting"} callback_left={this.goBack} />
 
                 <LinkItem title={"Privacy"} subtitle={"Passwork, Phone number visiblity"} icon_right={"angle-right"} action={this.goPrivacy} />

@@ -130,7 +130,7 @@ class AdDetail extends Component {
             return (<Loader />);
 
         return (
-            <View style={{ flex: 1, paddingTop: getStatusBarHeight() }}>
+            <View style={{ flex: 1, paddingTop: getStatusBarHeight(true) }}>
                 <ScrollView style={{ flex: 1 }}
                     onScroll={this._onScroll}
                     refreshControl={

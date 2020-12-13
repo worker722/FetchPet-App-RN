@@ -88,7 +88,7 @@ export default class CustomMap extends Component {
     render = () => {
         const { region, userLocation, animType } = this.state;
         return (
-            <View style={{ flex: 1, paddingTop: getStatusBarHeight() }}>
+            <View style={{ flex: 1, paddingTop: getStatusBarHeight(true) }}>
                 <MapView
                     style={{ flex: 1 }}
                     region={region}
