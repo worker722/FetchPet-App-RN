@@ -4,7 +4,7 @@ import Toast from 'react-native-simple-toast';
 import * as global from "./global";
 import { store } from '@store';
 
-// export const SERVER_HOST = 'http://127.0.0.1:8000';
+// export const SERVER_HOST = 'http://10.0.0.2:8000';
 export const SERVER_HOST = 'http://54.177.72.41';
 
 const onLogin = data => {
@@ -144,7 +144,7 @@ export const createAds = (route, images, params) => async dispatch => {
         .catch(err => {
             if (_TOKEN() != null) {
                 console.log('ads-upload-error', err);
-                // showNetworkError();
+                showNetworkError();
             }
         });
 }
