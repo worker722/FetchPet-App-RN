@@ -153,7 +153,7 @@ class AdDetail extends Component {
                         </Swiper>
                     </View>
                     <View style={{ position: "absolute", flexDirection: "row" }}>
-                        <Header icon_left={"arrow-left"} icon_right={user_id != ads?.user?.id && "share-alt"} color_icon_left={"white"} color_icon_right={"white"} callback_left={this.goBack} callback_right={this.shareAds} />
+                        <Header icon_left={"arrow-left"} icon_right={"share-alt"} color_icon_left={"white"} color_icon_right={"white"} callback_left={this.goBack} callback_right={this.shareAds} />
                     </View>
                     <View style={{ position: "absolute", top: (slider_height - 40), right: 10 }}>
                         <Text style={{ fontSize: 18, color: BaseColor.whiteColor, fontWeight: "bold" }}>$ {ads?.price}</Text>
@@ -204,7 +204,7 @@ class AdDetail extends Component {
                                 }
                                 <View style={{ flex: 1 }}>
                                     <Text style={{ color: BaseColor.primaryColor }}>{ads?.user?.name}</Text>
-                                    <Text style={{ fontSize: 10 }}>Member since JUN 2018</Text>
+                                    <Text style={{ fontSize: 10 }}>Member since {Utils.DATE2STR(ads?.user?.created_at, 'MMM YYYY')}</Text>
                                     <View style={{ justifyContent: "flex-start", alignItems: "flex-start" }}>
                                         <Rating
                                             readonly={true}

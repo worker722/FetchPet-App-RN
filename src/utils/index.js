@@ -19,9 +19,9 @@ export const isValidEmail = (email) => {
     return EMAIL_VALIDATE.test(String(email).toLowerCase());
 };
 
-export const DATE2STR = (date, onlyDate) => {
+export const DATE2STR = (date, format) => {
     if (!date) return '';
-    return onlyDate ? Moment(date).format('D MMM') : Moment(date).format('D MMM HH:mm');
+    return Moment(date).format(format)
 };
 
 export const relativeTime = (date) => {
@@ -44,7 +44,7 @@ export const relativeTime = (date) => {
     } else if (days < 3) {
         return `${days} day${days > 1 ? 's ago' : ' ago'}`;
     }
-    return DATE2STR(date, true);
+    return DATE2STR(date, 'D MMM');
 };
 
 export const getCurrentLocation = async () => {
