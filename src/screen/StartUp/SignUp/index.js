@@ -199,7 +199,7 @@ class SignUp extends Component {
     }
 
     render = () => {
-        const { passwordSec, termAgree, con_passwordSec, showLoading } = this.state;
+        const { passwordSec, termAgree, con_passwordSec, showLoading, username, email, password, con_password } = this.state;
 
         if (showLoading)
             return <Loader />;
@@ -223,16 +223,19 @@ class SignUp extends Component {
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center", marginBottom: 20 }}>
                             <View style={{ width: "80%", height: 50 }}>
                                 <TextInput
+                                    value={username}
                                     onChangeText={(text) => this.setState({ username: text })}
                                     placeholder={"Username*"} placeholderTextColor={BaseColor.whiteColor} style={{ fontSize: 15, paddingHorizontal: 20, color: BaseColor.whiteColor, flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }} />
                             </View>
                             <View style={{ width: "80%", height: 50, marginTop: 20, justifyContent: "center", }}>
                                 <TextInput
+                                    value={email}
                                     onChangeText={(text) => this.setState({ email: text })}
                                     placeholder={"Email  "} textContentType={"password"} placeholderTextColor={BaseColor.whiteColor} style={{ fontSize: 15, paddingHorizontal: 20, color: BaseColor.whiteColor, flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }} />
                             </View>
                             <View style={{ width: "80%", height: 50, marginTop: 20, justifyContent: "center", }}>
                                 <TextInput
+                                    value={password}
                                     onChangeText={(text) => this.setState({ password: text })}
                                     placeholder={"Password"} textContentType={"password"} secureTextEntry={passwordSec} placeholderTextColor={BaseColor.whiteColor} style={{ fontSize: 15, paddingLeft: 20, paddingRight: 45, color: BaseColor.whiteColor, flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }} />
                                 <TouchableOpacity style={{ position: "absolute", right: 0, padding: 10 }} onPress={() => this.setState({ passwordSec: !passwordSec })}>
@@ -241,6 +244,7 @@ class SignUp extends Component {
                             </View>
                             <View style={{ width: "80%", height: 50, marginTop: 20, justifyContent: "center", }}>
                                 <TextInput
+                                    value={con_password}
                                     onChangeText={(text) => this.setState({ con_password: text })}
                                     placeholder={"Retype Password"} textContentType={"password"} secureTextEntry={con_passwordSec} placeholderTextColor={BaseColor.whiteColor} style={{ fontSize: 15, paddingLeft: 20, paddingRight: 45, color: BaseColor.whiteColor, flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }} />
                                 <TouchableOpacity style={{ position: "absolute", right: 0, padding: 10 }} onPress={() => this.setState({ con_passwordSec: !con_passwordSec })}>

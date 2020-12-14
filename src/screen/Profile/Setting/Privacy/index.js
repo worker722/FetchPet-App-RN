@@ -96,9 +96,9 @@ class Privacy extends Component {
                     <View style={Styles.modalContainer}>
                         <View style={Styles.modalContentContainer}>
                             <Text style={{ fontSize: 20, marginBottom: 20 }}>Change passwrod</Text>
-                            <TextInput value={currentPwd} placeholder={"Old password"} style={Styles.textinput} onChangeText={(text) => this.setState({ currentPwd: text })} />
-                            <TextInput value={newPwd} placeholder={"New password"} style={Styles.textinput} onChangeText={(text) => this.setState({ newPwd: text })} />
-                            <TextInput value={reNewPwd} placeholder={"Re-type new password"} style={Styles.textinput} onChangeText={(text) => this.setState({ reNewPwd: text })} />
+                            <TextInput value={currentPwd} secureTextEntry={true} placeholder={"Old password"} style={Styles.textinput} onChangeText={(text) => this.setState({ currentPwd: text })} />
+                            <TextInput value={newPwd} secureTextEntry={true} placeholder={"New password"} style={Styles.textinput} onChangeText={(text) => this.setState({ newPwd: text })} />
+                            <TextInput value={reNewPwd} secureTextEntry={true} placeholder={"Re-type new password"} style={Styles.textinput} onChangeText={(text) => this.setState({ reNewPwd: text })} />
                             <View style={{ flexDirection: "row", marginTop: 20 }}>
                                 <TouchableOpacity
                                     onPress={() => this.setState({ visiblePasswordModal: false, currentPwd: '', newPwd: '', reNewPwd: '' })}

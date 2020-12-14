@@ -8,19 +8,21 @@ const styles = StyleSheet.create({
         borderColor: BaseColor.dddColor,
         borderRadius: 5,
         paddingHorizontal: 10,
+        paddingVertical: 15,
         marginTop: 10,
     },
     modalContainer: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: BaseColor.modalBackDropColor,
     },
     modalContentContainer: {
         width: '90%',
         backgroundColor: 'white',
         borderRadius: 10,
         padding: 15,
+        paddingTop: 30,
         justifyContent: 'center'
     },
 });

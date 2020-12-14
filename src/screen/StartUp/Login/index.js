@@ -196,7 +196,7 @@ class Login extends Component {
 
     render = () => {
         const navigation = this.props.navigation;
-        const { showLoading, rememberMe, passwordSecure } = this.state;
+        const { showLoading, rememberMe, passwordSecure, email, password } = this.state;
 
         if (showLoading)
             return <Loader />;
@@ -219,11 +219,11 @@ class Login extends Component {
                     <ScrollView style={{ flex: 1, marginTop: 30 }}>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center", marginBottom: 20 }}>
                             <View style={{ width: "80%", height: 50 }}>
-                                <TextInput onChangeText={(text) => this.setState({ email: text })} placeholder={"Email"} placeholderTextColor={BaseColor.whiteColor} style={{ fontSize: 15, paddingHorizontal: 20, color: BaseColor.whiteColor, flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
+                                <TextInput value={email} onChangeText={(text) => this.setState({ email: text })} placeholder={"Email"} placeholderTextColor={BaseColor.whiteColor} style={{ fontSize: 15, paddingHorizontal: 20, color: BaseColor.whiteColor, flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
                                 </TextInput>
                             </View>
                             <View style={{ width: "80%", height: 50, marginTop: 20, justifyContent: "center", }}>
-                                <TextInput onChangeText={(text) => this.setState({ password: text })} placeholder={"Password"} textContentType={"password"} secureTextEntry={passwordSecure} placeholderTextColor={BaseColor.whiteColor} style={{ fontSize: 15, paddingHorizontal: 20, color: BaseColor.whiteColor, flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
+                                <TextInput value={password} onChangeText={(text) => this.setState({ password: text })} placeholder={"Password"} textContentType={"password"} secureTextEntry={passwordSecure} placeholderTextColor={BaseColor.whiteColor} style={{ fontSize: 15, paddingHorizontal: 20, color: BaseColor.whiteColor, flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
                                 </TextInput>
                                 <TouchableOpacity style={{ position: "absolute", right: 10 }} onPress={() => passwordSecure ? this.setState({ passwordSecure: false }) : this.setState({ passwordSecure: true })}>
                                     <Icon name={passwordSecure ? "eye-slash" : "eye"} size={15} color={BaseColor.whiteColor} style={{ flex: 1 }}></Icon>
