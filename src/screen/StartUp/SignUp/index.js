@@ -14,14 +14,15 @@ import { CheckBox } from 'react-native-elements';
 import { Image } from 'react-native-elements';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
-import { GoogleSignin, statusCodes } from 'react-native-google-signin';
+import { GoogleSignin } from 'react-native-google-signin';
+import appleAuth, { AppleButton } from '@invertase/react-native-apple-authentication';
 
 import firebase from 'react-native-firebase';
 import RNRestart from 'react-native-restart';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { store, SetPrefrence } from "@store";
+import { SetPrefrence } from "@store";
 import * as Api from '@api';
 import { Loader } from '@components';
 
@@ -108,7 +109,7 @@ class SignUp extends Component {
         }
     }
 
-    googleSignup = async () => {
+    signUpWithGoogle = async () => {
         try {
             this.setState({ showLoading: true });
 
@@ -150,8 +151,51 @@ class SignUp extends Component {
         }
     }
 
-    appleSignup = () => {
+    signUpWithApple = async () => {
+        try {
+            this.setState({ showLoading: true });
+            const { device_token } = this.state;
 
+            if (device_token == '') {
+                Alert.alert(
+                    'Network Error!',
+                    'Click Ok To Restart App.',
+                    [
+                        { text: 'OK', onPress: () => RNRestart.Restart() },
+                    ],
+                    { cancelable: false },
+                );
+                return;
+            }
+
+            const appleAuthRequestResponse = await appleAuth.performRequest({
+                requestedOperation: appleAuth.Operation.LOGIN,
+                requestedScopes: [
+                    appleAuth.Scope.EMAIL,
+                    appleAuth.Scope.FULL_NAME
+                ],
+            });
+            const { identityToken, email, fullName } = appleAuthRequestResponse;
+            if (identityToken) {
+                let params = { name: email, email: fullName, password: "@fetch@", is_social: 3 };
+
+                if (Platform.OS == "android")
+                    params = Object.assign(params, { device_token: device_token });
+                else
+                    params = Object.assign(params, { iphone_device_token: device_token });
+
+                const response = await this.props.api.post("signup", params, true);
+
+                this.setState({ showLoading: false });
+
+                if (response?.success) {
+                    SetPrefrence('rememberMe', 0);
+                    this.props.navigation.navigate("Home");
+                }
+            }
+        } catch (error) {
+            this.setState({ showLoading: false });
+        }
     }
 
     render = () => {
@@ -220,7 +264,7 @@ class SignUp extends Component {
                                 <Text style={{ marginLeft: 10, textAlign: "left", flex: 1 }}>I agree with the terms & conditions</Text>
                             </View>
                             <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 20 }} onPress={() => this.signUp()}>
-                                <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.whiteColor, borderColor: BaseColor.dddColor, borderWidth: 1, justifyContent: "center", alignItems: "center" }}>
+                                <View style={{ flex: 1, borderRadius: 7, backgroundColor: BaseColor.whiteColor, borderColor: BaseColor.dddColor, borderWidth: 1, justifyContent: "center", alignItems: "center" }}>
                                     <Text style={{ color: BaseColor.whiteColor, fontSize: 15, color: BaseColor.primaryColor }}>SIGN UP</Text>
                                 </View>
                             </TouchableOpacity>
@@ -230,19 +274,33 @@ class SignUp extends Component {
                                 <View style={{ flex: 1, height: 1, backgroundColor: BaseColor.dddColor }}></View>
                             </View>
                             {Platform.OS == "android" ?
-                                <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 5 }} onPress={this.googleSignup}>
-                                    <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.googleColor, justifyContent: "center", alignItems: "center" }}>
+                                <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 5 }} onPress={this.signUpWithGoogle}>
+                                    <View style={{ flex: 1, borderRadius: 7, backgroundColor: BaseColor.googleColor, justifyContent: "center", alignItems: "center" }}>
                                         <Text style={{ color: BaseColor.whiteColor, fontSize: 13 }}>Sign Up with</Text>
                                         <Icon name={"google-plus-g"} size={15} color={BaseColor.whiteColor} style={{ position: "absolute", right: 10 }}></Icon>
                                     </View>
                                 </TouchableOpacity>
                                 :
-                                <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 10, }} onPress={this.appleSignup}>
-                                    <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.whiteColor, borderWidth: 1, borderColor: BaseColor.dddColor, justifyContent: "center", alignItems: "center" }}>
-                                        <Text style={{ color: BaseColor.blackColor, fontSize: 13 }}>Sign Up with</Text>
-                                        <Icon name={"apple"} size={15} color={BaseColor.blackColor} style={{ position: "absolute", right: 10 }}></Icon>
-                                    </View>
-                                </TouchableOpacity>
+                                <>
+                                    {appleAuth.isSupported && appleAuth.isSignUpButtonSupported &&
+                                        <AppleButton
+                                            buttonStyle={AppleButton.Style.BLACK}
+                                            buttonType={AppleButton.Type.SIGN_UP}
+                                            style={{
+                                                width: '70%',
+                                                height: 40,
+                                                shadowColor: '#555',
+                                                shadowOpacity: 0.5,
+                                                shadowOffset: {
+                                                    width: 0,
+                                                    height: 3
+                                                },
+                                                marginTop: 10,
+                                            }}
+                                            onPress={this.signUpWithApple}
+                                        />
+                                    }
+                                </>
                             }
                         </View>
                     </ScrollView>
