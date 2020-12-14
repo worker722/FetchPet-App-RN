@@ -1,9 +1,6 @@
 import { StyleSheet } from "react-native";
 import { BaseColor } from "./color";
 
-/**
- * Common basic style defines
- */
 export const BaseStyle = StyleSheet.create({
   tabBar: {
     shadowColor: BaseColor.whiteColor,
