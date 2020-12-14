@@ -16,6 +16,6 @@ export const _SHOW_PHONE_ON_ADS = '_show_phone_on_ads';
 
 //ANDROID PACKAGE, APPLEAPP ID
 export const ANDROID_PACKAGE = 'com.darryl.fetch';
-export const APPLE_APP_ID = '1537325278';
+export const APPLE_APP_ID = '1544704957';
 
 
