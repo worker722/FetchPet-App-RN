@@ -59,9 +59,9 @@ class Setting extends Component {
             await GoogleSignin.signOut();
         }
         else if (is_social == 3) {
-            await appleAuth.performRequest({
-                requestedOperation: appleAuth.Operation.LOGOUT,
-            });
+            // await appleAuth.performRequest({
+            //     requestedOperation: appleAuth.Operation.REFRESH,
+            // });
         }
         this.props.navigation.navigate('Welcome');
     }
@@ -74,9 +74,9 @@ class Setting extends Component {
             await GoogleSignin.signOut();
         }
         else if (is_social == 3) {
-            await appleAuth.performRequest({
-                requestedOperation: appleAuth.Operation.LOGOUT,
-            });
+            // await appleAuth.performRequest({
+            //     requestedOperation: appleAuth.Operation.LOGOUT,
+            // });
         }
         this.props.navigation.navigate('Welcome');
     }
