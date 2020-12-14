@@ -69,7 +69,7 @@ class SignUp extends Component {
 
     signUp = async () => {
         const { username, email, password, con_password, termAgree, device_token } = this.state;
-        if (username == '') return Toast.show("Please input User name.");
+        if (username == '') return Toast.show("Please input user name.");
         else if (!Utils.isValidEmail(email)) return Toast.show("Please input valid email.");
         else if (password == '') return Toast.show("Please input password.");
         else if (password != con_password) return Toast.show("Password don't match.");
