@@ -1,7 +1,5 @@
 
-import {
-  Platform
-} from 'react-native';
+import { Platform } from 'react-native';
 import firebase from 'react-native-firebase';
 import * as global from "@api/global";
 import { BaseColor } from '@config';

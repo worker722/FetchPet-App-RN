@@ -1,48 +1,45 @@
 import React from "react";
-import { Image } from 'react-native';
+import { Image, View } from 'react-native';
 import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import Icon from 'react-native-vector-icons/FontAwesome5';
-
 import { BaseColor, BaseStyle, Images } from '@config';
 
-/* start up Screen */
+// START UP PAGE
 import Welcome from "@screen/StartUp/Welcome";
 import Login from "@screen/StartUp/Login";
 import SignUp from "@screen/StartUp/SignUp";
 
-// bottom navigation
+// HOME PAGE
 import Home from "@screen/Home";
 import AdDetail from "@screen/Home/AdDetail";
 
-// other page
+// OTHER PAGE
 import Notification from "@screen/Notification";
 
-// sell
+// SELL PAGE
 import Sell from "@screen/Sell";
 import SellEdit from "@screen/Sell/SellEdit";
 import CustomMap from "@screen/Sell/CustomMap";
 
-// my ads
+// MY ADS PAGE
 import MyAds from "@screen/MyAds";
 
-//chat
+// CHAT PAGE
 import Inbox from "@screen/Inbox";
 import Chat from "@screen/Inbox/Chat";
 
-//profile
+// PROFILE PAGE
 import Profile from "@screen/Profile";
 import ProfileEdit from "@screen/Profile/ProfileEdit";
 import ShowProfile from "@screen/Profile/ProfileEdit/ShowProfile";
 import Help from "@screen/Profile/Help";
 import Version from "@screen/Profile/Help/Version";
 import ContactSupport from "@screen/Profile/Help/ContactSupport";
-//setting
 import Setting from "@screen/Profile/Setting";
 import Privacy from "@screen/Profile/Setting/Privacy";
 
-
-// Config for bottom navigator
+// CONFIG FOR BOTTOM NAVIGATOR
 const bottomTabNavigatorConfig = {
 	initialRouteName: "Home",
 	tabBarOptions: {
@@ -57,7 +54,7 @@ const bottomTabNavigatorConfig = {
 	}
 };
 
-// Tab bar navigation
+// TAB BAR NAVIGATION
 const routeConfigs = {
 	Home: {
 		screen: Home,
@@ -83,17 +80,19 @@ const routeConfigs = {
 			title: "Sell",
 			tabBarIcon: ({ focused, tintColor }) => {
 				return (
-					<Image
-						source={focused ? Images.ic_sell_fill : Images.ic_sell}
+					<View
 						style={{
 							width: 40,
 							height: 40,
-							alignContent: 'center',
-							marginBottom: 15,
+							justifyContent: "center",
+							alignItems: "center",
+							marginBottom: 30,
 							borderRadius: 100,
-							zIndex: 1000
+							backgroundColor: "#fff"
 						}}
-					/>
+					>
+						<Image source={focused ? Images.ic_sell_fill : Images.ic_sell} />
+					</View>
 				)
 			}
 		})
@@ -118,13 +117,13 @@ const routeConfigs = {
 	}
 };
 
-// Define bottom navigator as a screen in stack
+// DEFINE BOTTOM NAVIGATOR AS A SCREEN IN STACK
 const BottomTabNavigator = createBottomTabNavigator(
 	routeConfigs,
 	bottomTabNavigatorConfig
 );
 
-// Main Stack View App
+// MAIN STACK VIEW APP
 const StackNavigator = createStackNavigator(
 	{
 		BottomTabNavigator: {
@@ -185,7 +184,7 @@ const StackNavigator = createStackNavigator(
 	}
 );
 
-// Define Root Stack support Modal Screen
+// DEFINE ROOT STACK SUPPORT MODAL SCREEN
 const RootStack = createStackNavigator(
 	{
 		StackNavigator: {
