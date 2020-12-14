@@ -193,17 +193,13 @@ class Home extends Component {
         await firebase.messaging().hasPermission()
             .then(enabled => {
                 if (enabled) {
-                    firebase.messaging().getToken().then(token => {
-                        // console.log('fcmToken', token)
-                    })
+                    firebase.messaging().getToken().then(token => { });
                 } else {
                     firebase.messaging().requestPermission()
                         .then(() => {
-                            firebase.messaging().registerForNotifications()
-                            console.log("User Now Has Permission");
+                            firebase.messaging().registerForNotifications();
                         })
                         .catch(error => {
-                            console.log(error);
                         });
                 }
             });
