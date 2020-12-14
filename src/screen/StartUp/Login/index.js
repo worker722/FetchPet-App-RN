@@ -261,7 +261,7 @@ class Login extends Component {
                                 </TouchableOpacity>
                                 :
                                 <>
-                                    {appleAuth.isSupported &&
+                                    {appleAuth.isSupported && appleAuth.isSignUpButtonSupported &&
                                         <AppleButton
                                             buttonStyle={AppleButton.Style.BLACK}
                                             buttonType={AppleButton.Type.SIGN_IN}

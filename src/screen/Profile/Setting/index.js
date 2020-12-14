@@ -3,7 +3,10 @@ import {
     View,
 } from 'react-native';
 import { Header, LinkItem } from '@components';
+
 import { GoogleSignin } from 'react-native-google-signin';
+import appleAuth, { AppleButton } from '@invertase/react-native-apple-authentication';
+
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import { connect } from "react-redux";
@@ -51,8 +54,14 @@ class Setting extends Component {
     logOut = async () => {
         await SetPrefrence("rememberMe", 0);
         await SetPrefrence('user', null);
-        if (store.getState().auth.login.user.is_social == 1) {
+        const is_social = store.getState().auth.login.user.is_social;
+        if (is_social == 1) {
             await GoogleSignin.signOut();
+        }
+        else if (is_social == 3) {
+            await appleAuth.performRequest({
+                requestedOperation: appleAuth.Operation.LOGOUT,
+            });
         }
         this.props.navigation.navigate('Welcome');
     }
@@ -60,8 +69,14 @@ class Setting extends Component {
     logOutAll = async () => {
         await SetPrefrence("rememberMe", 0);
         await SetPrefrence('user', null);
-        if (store.getState().auth.login.user.is_social == 1) {
+        const is_social = store.getState().auth.login.user.is_social;
+        if (is_social == 1) {
             await GoogleSignin.signOut();
+        }
+        else if (is_social == 3) {
+            await appleAuth.performRequest({
+                requestedOperation: appleAuth.Operation.LOGOUT,
+            });
         }
         this.props.navigation.navigate('Welcome');
     }
