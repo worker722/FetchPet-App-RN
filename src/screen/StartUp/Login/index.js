@@ -170,6 +170,12 @@ class Login extends Component {
             });
             const { identityToken, email } = appleAuthRequestResponse;
             if (identityToken) {
+                if (!email) {
+                    Toast.show("Please share your email.");
+                    this.setState({ showLoading: false });
+                    return;
+                }
+
                 let params = { email: email, password: "@fetch@", is_social: 3 };
 
                 if (Platform.OS == "android")
@@ -184,8 +190,6 @@ class Login extends Component {
                 if (response?.success) {
                     SetPrefrence('rememberMe', rememberMe ? 1 : 0);
                     this.props.navigation.navigate("Home");
-                } else {
-                    console.log("no token. failed sign in");
                 }
             }
         } catch (error) {

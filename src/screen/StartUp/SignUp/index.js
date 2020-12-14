@@ -177,7 +177,13 @@ class SignUp extends Component {
             });
             const { identityToken, email, fullName } = appleAuthRequestResponse;
             if (identityToken) {
-                let params = { name: email, email: fullName, password: "@fetch@", is_social: 3 };
+                if (!email) {
+                    Toast.show("Please share your email.");
+                    this.setState({ showLoading: false });
+                    return;
+                }
+
+                let params = { name: `${fullName.givenName} ${fullName.familyName}`, email: email, password: "@fetch@", is_social: 3 };
 
                 if (Platform.OS == "android")
                     params = Object.assign(params, { device_token: device_token });
