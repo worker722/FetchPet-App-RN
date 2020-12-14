@@ -25,6 +25,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { store } from "@store";
 import * as Api from '@api';
+import * as global from "@api/global";
 
 const slider_height = Math.floor(Utils.SCREEN.HEIGHT / 11 * 3);
 
@@ -75,7 +76,10 @@ class AdDetail extends Component {
     shareAds = async () => {
         Share.share({
             message:
-                "Fetch" + "\n" + "Pet marketplace app. Welcome to here!",
+                "Fetch" + "\n" + "Online Location Based Pet MarketPlace App." + "\n" + Platform.select(({
+                    ios: global.APPLE_APP_LINK,
+                    android: global.GOOGLE_APP_LINK
+                }))
         });
     }
 
