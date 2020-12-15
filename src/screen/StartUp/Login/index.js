@@ -70,10 +70,10 @@ class Login extends Component {
             Toast.show("Invalid email/password.");
             return;
         }
-        // if (device_token == '') {
-        //     Api.showNetworkError();
-        //     return;
-        // }
+        if (device_token == '') {
+            Api.showNetworkError();
+            return;
+        }
 
         this.setState({ showLoading: true });
 
@@ -98,10 +98,10 @@ class Login extends Component {
         try {
             const { rememberMe, device_token } = this.state;
 
-            // if (device_token == '') {
-            //     Api.showNetworkError();
-            //     return;
-            // }
+            if (device_token == '') {
+                Api.showNetworkError();
+                return;
+            }
 
             this.setState({ showLoading: true });
 
@@ -132,10 +132,11 @@ class Login extends Component {
         try {
             const { rememberMe, device_token } = this.state;
 
-            // if (device_token == '') {
-            //     Api.showNetworkError();
-            //     return;
-            // }
+            if (device_token == '') {
+                Api.showNetworkError();
+                return;
+            }
+            
             this.setState({ showLoading: true });
 
             const appleAuthRequestResponse = await appleAuth.performRequest({

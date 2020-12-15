@@ -150,12 +150,12 @@ export const createAds = (route, images, params) => async dispatch => {
 }
 
 export const showNetworkError = () => {
-    // Alert.alert(
-    //     'Network Error!',
-    //     'Click Ok To Restart App.',
-    //     [
-    //         { text: 'OK', onPress: () => RNRestart.Restart() },
-    //     ],
-    //     { cancelable: false },
-    // );
+    Alert.alert(
+        'Network Error!',
+        'Click Ok To Restart App.',
+        [
+            { text: 'OK', onPress: () => RNRestart.Restart() },
+        ],
+        { cancelable: false },
+    );
 }

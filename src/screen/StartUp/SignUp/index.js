@@ -72,10 +72,10 @@ class SignUp extends Component {
         else if (password == '') return Toast.show("Please input password.");
         else if (password != con_password) return Toast.show("Password don't match.");
 
-        // if (device_token == '') {
-        //     Api.showNetworkError();
-        //     return;
-        // }
+        if (device_token == '') {
+            Api.showNetworkError();
+            return;
+        }
 
         this.setState({ showLoading: true });
 
@@ -109,10 +109,10 @@ class SignUp extends Component {
             if (userInfo.user.name == null)
                 userInfo.user.name = "lucky-fetch";
 
-            // if (this.state.device_token == '') {
-            //     Api.showNetworkError();
-            //     return;
-            // }
+            if (this.state.device_token == '') {
+                Api.showNetworkError();
+                return;
+            }
 
             let params = { name: userInfo.user.name, email: userInfo.user.email, password: "@fetch@", is_social: 1 };
 
@@ -140,10 +140,10 @@ class SignUp extends Component {
             this.setState({ showLoading: true });
             const { device_token } = this.state;
 
-            // if (device_token == '') {
-            //     Api.showNetworkError();
-            //     return;
-            // }
+            if (device_token == '') {
+                Api.showNetworkError();
+                return;
+            }
 
             const appleAuthRequestResponse = await appleAuth.performRequest({
                 requestedOperation: appleAuth.Operation.LOGIN,
