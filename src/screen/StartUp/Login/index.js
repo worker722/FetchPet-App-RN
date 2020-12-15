@@ -7,7 +7,6 @@ import {
     TextInput,
     ScrollView,
     Platform,
-    Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native-elements';
@@ -18,7 +17,6 @@ import { GoogleSignin } from 'react-native-google-signin';
 import appleAuth, { AppleButton } from '@invertase/react-native-apple-authentication';
 
 import firebase from 'react-native-firebase';
-import RNRestart from 'react-native-restart';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -72,17 +70,10 @@ class Login extends Component {
             Toast.show("Invalid email/password.");
             return;
         }
-        if (device_token == '') {
-            Alert.alert(
-                'Network Error!',
-                'Click Ok To Restart App.',
-                [
-                    { text: 'OK', onPress: () => RNRestart.Restart() },
-                ],
-                { cancelable: false },
-            );
-            return;
-        }
+        // if (device_token == '') {
+        //     Api.showNetworkError();
+        //     return;
+        // }
 
         this.setState({ showLoading: true });
 
@@ -107,17 +98,10 @@ class Login extends Component {
         try {
             const { rememberMe, device_token } = this.state;
 
-            if (device_token == '') {
-                Alert.alert(
-                    'Network Error!',
-                    'Click Ok To Restart App.',
-                    [
-                        { text: 'OK', onPress: () => RNRestart.Restart() },
-                    ],
-                    { cancelable: false },
-                );
-                return;
-            }
+            // if (device_token == '') {
+            //     Api.showNetworkError();
+            //     return;
+            // }
 
             this.setState({ showLoading: true });
 
@@ -148,17 +132,10 @@ class Login extends Component {
         try {
             const { rememberMe, device_token } = this.state;
 
-            if (device_token == '') {
-                Alert.alert(
-                    'Network Error!',
-                    'Click Ok To Restart App.',
-                    [
-                        { text: 'OK', onPress: () => RNRestart.Restart() },
-                    ],
-                    { cancelable: false },
-                );
-                return;
-            }
+            // if (device_token == '') {
+            //     Api.showNetworkError();
+            //     return;
+            // }
             this.setState({ showLoading: true });
 
             const appleAuthRequestResponse = await appleAuth.performRequest({

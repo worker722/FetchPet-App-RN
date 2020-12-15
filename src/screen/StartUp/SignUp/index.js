@@ -6,7 +6,6 @@ import {
     TextInput,
     ScrollView,
     Platform,
-    Alert,
     Switch
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -18,7 +17,6 @@ import { GoogleSignin } from 'react-native-google-signin';
 import appleAuth, { AppleButton } from '@invertase/react-native-apple-authentication';
 
 import firebase from 'react-native-firebase';
-import RNRestart from 'react-native-restart';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -74,17 +72,10 @@ class SignUp extends Component {
         else if (password == '') return Toast.show("Please input password.");
         else if (password != con_password) return Toast.show("Password don't match.");
 
-        if (device_token == '') {
-            Alert.alert(
-                'Network Error!',
-                'Click Ok To Restart App.',
-                [
-                    { text: 'OK', onPress: () => RNRestart.Restart() },
-                ],
-                { cancelable: false },
-            );
-            return;
-        }
+        // if (device_token == '') {
+        //     Api.showNetworkError();
+        //     return;
+        // }
 
         this.setState({ showLoading: true });
 
@@ -118,17 +109,10 @@ class SignUp extends Component {
             if (userInfo.user.name == null)
                 userInfo.user.name = "lucky-fetch";
 
-            if (this.state.device_token == '') {
-                Alert.alert(
-                    'Network Error!',
-                    'Click Ok To Restart App.',
-                    [
-                        { text: 'OK', onPress: () => RNRestart.Restart() },
-                    ],
-                    { cancelable: false },
-                );
-                return;
-            }
+            // if (this.state.device_token == '') {
+            //     Api.showNetworkError();
+            //     return;
+            // }
 
             let params = { name: userInfo.user.name, email: userInfo.user.email, password: "@fetch@", is_social: 1 };
 
@@ -156,17 +140,10 @@ class SignUp extends Component {
             this.setState({ showLoading: true });
             const { device_token } = this.state;
 
-            if (device_token == '') {
-                Alert.alert(
-                    'Network Error!',
-                    'Click Ok To Restart App.',
-                    [
-                        { text: 'OK', onPress: () => RNRestart.Restart() },
-                    ],
-                    { cancelable: false },
-                );
-                return;
-            }
+            // if (device_token == '') {
+            //     Api.showNetworkError();
+            //     return;
+            // }
 
             const appleAuthRequestResponse = await appleAuth.performRequest({
                 requestedOperation: appleAuth.Operation.LOGIN,
