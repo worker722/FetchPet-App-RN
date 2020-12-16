@@ -16,7 +16,7 @@ import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
-import { store } from "@store";
+import { store, SetPrefrence } from "@store";
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -219,6 +219,8 @@ class Home extends Component {
             let ads = await this.sortAdsByDistance(response.data.ads);
             let topCategory = response.data.category;
             let filterBreed = response.data.breed;
+            let is_show_apple_button = response.data.is_show_apple_button;
+            await SetPrefrence('is_show_apple_button', is_show_apple_button);
 
             topCategory.filter((item, index) => {
                 item.type = FILTER_TYPE.TOP_CATEGORY;

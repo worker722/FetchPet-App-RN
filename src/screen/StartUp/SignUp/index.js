@@ -20,7 +20,7 @@ import firebase from 'react-native-firebase';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { SetPrefrence } from "@store";
+import { SetPrefrence, GetPrefrence } from "@store";
 import * as Api from '@api';
 import { Loader } from '@components';
 
@@ -50,7 +50,11 @@ class SignUp extends Component {
     UNSAFE_componentWillMount = async () => {
         GoogleSignin.configure({
             iosClientId: 'YOUR IOS CLIENT ID',
-        })
+        });
+
+        let is_show_apple_button = await GetPrefrence('is_show_apple_button');
+        if (is_show_apple_button == 1)
+            this.setState({ is_show_apple_button: true });
     }
 
     componentDidMount = async () => {
@@ -182,7 +186,7 @@ class SignUp extends Component {
     }
 
     render = () => {
-        const { passwordSec, termAgree, con_passwordSec, showLoading, username, email, password, con_password } = this.state;
+        const { passwordSec, termAgree, con_passwordSec, showLoading, username, email, password, con_password, is_show_apple_button } = this.state;
 
         if (showLoading)
             return <Loader />;
@@ -255,11 +259,13 @@ class SignUp extends Component {
                                     <Text style={{ color: BaseColor.whiteColor, fontSize: 15, color: BaseColor.primaryColor }}>SIGN UP</Text>
                                 </View>
                             </TouchableOpacity>
-                            <View style={{ width: "70%", height: 15, flexDirection: "row", marginTop: 5, justifyContent: "center", alignItems: "center" }}>
-                                <View style={{ flex: 1, height: 1, backgroundColor: BaseColor.dddColor }}></View>
-                                <Text style={{ marginHorizontal: 5, fontSize: 12 }}>OR</Text>
-                                <View style={{ flex: 1, height: 1, backgroundColor: BaseColor.dddColor }}></View>
-                            </View>
+                            {is_show_apple_button &&
+                                <View style={{ width: "70%", height: 15, flexDirection: "row", marginTop: 5, justifyContent: "center", alignItems: "center" }}>
+                                    <View style={{ flex: 1, height: 1, backgroundColor: BaseColor.dddColor }}></View>
+                                    <Text style={{ marginHorizontal: 5, fontSize: 12 }}>OR</Text>
+                                    <View style={{ flex: 1, height: 1, backgroundColor: BaseColor.dddColor }}></View>
+                                </View>
+                            }
                             {Platform.OS == "android" ?
                                 <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 5 }} onPress={this.signUpWithGoogle}>
                                     <View style={{ flex: 1, borderRadius: 7, backgroundColor: BaseColor.googleColor, justifyContent: "center", alignItems: "center" }}>
@@ -269,7 +275,7 @@ class SignUp extends Component {
                                 </TouchableOpacity>
                                 :
                                 <>
-                                    {/* {appleAuth.isSupported && appleAuth.isSignUpButtonSupported &&
+                                    {is_show_apple_button && appleAuth.isSupported && appleAuth.isSignUpButtonSupported &&
                                         <AppleButton
                                             buttonStyle={AppleButton.Style.BLACK}
                                             buttonType={AppleButton.Type.SIGN_UP}
@@ -286,7 +292,7 @@ class SignUp extends Component {
                                             }}
                                             onPress={this.signUpWithApple}
                                         />
-                                    } */}
+                                    }
                                 </>
                             }
                         </View>
