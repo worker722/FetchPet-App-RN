@@ -269,7 +269,7 @@ class SignUp extends Component {
                                 </TouchableOpacity>
                                 :
                                 <>
-                                    {appleAuth.isSupported && appleAuth.isSignUpButtonSupported &&
+                                    {/* {appleAuth.isSupported && appleAuth.isSignUpButtonSupported &&
                                         <AppleButton
                                             buttonStyle={AppleButton.Style.BLACK}
                                             buttonType={AppleButton.Type.SIGN_UP}
@@ -286,7 +286,7 @@ class SignUp extends Component {
                                             }}
                                             onPress={this.signUpWithApple}
                                         />
-                                    }
+                                    } */}
                                 </>
                             }
                         </View>
