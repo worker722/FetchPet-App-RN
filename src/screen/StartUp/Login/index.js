@@ -47,7 +47,7 @@ class Login extends Component {
         GoogleSignin.configure({
             iosClientId: 'YOUR IOS CLIENT ID',
         });
-        
+
         let is_show_apple_button = await GetPrefrence('is_show_apple_button');
         if (is_show_apple_button == 1)
             this.setState({ is_show_apple_button: true });
@@ -144,36 +144,60 @@ class Login extends Component {
 
             this.setState({ showLoading: true });
 
-            const appleAuthRequestResponse = await appleAuth.performRequest({
-                requestedOperation: appleAuth.Operation.LOGIN,
-                requestedScopes: [
-                    appleAuth.Scope.EMAIL,
-                    appleAuth.Scope.FULL_NAME
-                ],
-            });
-            const { identityToken, email } = appleAuthRequestResponse;
-            if (identityToken) {
-                if (!email) {
-                    Toast.show("Please share your email.");
+            let params = null;
+            let is_apple_exist = false;
+            let apple_name = '';
+            let apple_email = '';
+
+            const name = await GetPrefrence("apple_name");
+            const email = await GetPrefrence("apple_email");
+            if (name != '' && email != '') {
+                params = { name: name, email: email, password: "@fetch@", is_social: 3 };
+                is_apple_exist = true;
+            }
+            else {
+                const appleAuthRequestResponse = await appleAuth.performRequest({
+                    requestedOperation: appleAuth.Operation.LOGIN,
+                    requestedScopes: [
+                        appleAuth.Scope.EMAIL,
+                        appleAuth.Scope.FULL_NAME
+                    ],
+                });
+                const { identityToken, email, fullName } = appleAuthRequestResponse;
+                if (identityToken) {
+                    if (!email) {
+                        Toast.show("Please share your email.");
+                        this.setState({ showLoading: false });
+                        return;
+                    }
+
+                    apple_name = `${fullName.givenName} ${fullName.familyName}`;
+                    apple_email = email;
+
+                    params = { email: email, password: "@fetch@", is_social: 3 };
+                }
+                else {
                     this.setState({ showLoading: false });
                     return;
                 }
+            }
 
-                let params = { email: email, password: "@fetch@", is_social: 3 };
+            if (Platform.OS == "android")
+                params = Object.assign(params, { device_token: device_token });
+            else
+                params = Object.assign(params, { iphone_device_token: device_token });
 
-                if (Platform.OS == "android")
-                    params = Object.assign(params, { device_token: device_token });
-                else
-                    params = Object.assign(params, { iphone_device_token: device_token });
+            const response = await this.props.api.post("login", params, true);
 
-                const response = await this.props.api.post("login", params, true);
+            this.setState({ showLoading: false });
 
-                this.setState({ showLoading: false });
-
-                if (response?.success) {
-                    SetPrefrence('rememberMe', rememberMe ? 1 : 0);
-                    this.props.navigation.navigate("Home");
+            if (response?.success) {
+                SetPrefrence('rememberMe', rememberMe ? 1 : 0);
+                if (!is_apple_exist) {
+                    SetPrefrence('apple_email', apple_email);
+                    SetPrefrence('apple_name', apple_name);
                 }
+                this.props.navigation.navigate("Home");
             }
         } catch (error) {
             this.setState({ showLoading: false });
