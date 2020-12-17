@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Fetch</string>
+    <string name="app_name">Fetch - Your Local Pet Marketplace</string>
     <!-- notification channel -->
     <string name="default_notification_channel_id" translatable="false">FETCH-APP</string>
     <string name="default_notification_channel_name" translatable="false">FETCH-APP</string>
