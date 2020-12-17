@@ -1,4 +1,4 @@
-import { Dimensions } from 'react-native';
+import { Dimensions, Platform } from 'react-native';
 import Moment from 'moment';
 import geolocation from '@react-native-community/geolocation';
 
@@ -50,7 +50,8 @@ export const relativeTime = (date) => {
 export const getCurrentLocation = async () => {
     return new Promise(
         async (resolve, reject) => {
-            await geolocation.requestAuthorization();
+            if (Platform.OS == "ios")
+                await geolocation.requestAuthorization();
             geolocation.getCurrentPosition(
                 (data) => resolve(data.coords),
                 (err) => reject(err)
