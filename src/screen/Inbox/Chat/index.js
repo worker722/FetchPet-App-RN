@@ -211,7 +211,7 @@ class Chat extends Component {
                         />
                     </View>
                 </ScrollView>
-                <View style={{ height: 70, paddingVertical: 10, width: "100%", justifyContent: "center", alignItems: "center", borderTopWidth: 3, borderTopColor: BaseColor.dddColor }}>
+                <View style={{ height: 70, padding: 10, width: "100%", justifyContent: "center", alignItems: "center", borderTopWidth: 3, borderTopColor: BaseColor.dddColor }}>
                     <TextInput
                         style={{ flex: 1, backgroundColor: BaseColor.dddColor, width: "100%", borderRadius: 30, paddingLeft: 20, paddingRight: 100 }}
                         value={this.state.message}
@@ -219,9 +219,6 @@ class Chat extends Component {
                     >
                     </TextInput>
                     <View style={{ position: "absolute", right: 0, top: 0, bottom: 0, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                        {/* <TouchableOpacity style={{ paddingHorizontal: 15 }}>
-                            <Icon name={"paperclip"} size={20} color={"grey"}></Icon>
-                        </TouchableOpacity> */}
                         {is_sending ?
                             <View style={{ padding: 8, marginRight: 25, borderRadius: 100, backgroundColor: "white", justifyContent: "center", alignItems: "center" }}>
                                 <ActivityIndicator size={20} color={BaseColor.primaryColor} />

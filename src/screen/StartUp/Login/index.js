@@ -62,6 +62,11 @@ class Login extends Component {
                         this.setState({ device_token: token });
                     })
                 }
+                else {
+                    firebase.messaging().requestPermission();
+                }
+            }).catch(error => {
+
             })
     }
 

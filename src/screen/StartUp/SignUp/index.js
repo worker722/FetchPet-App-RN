@@ -66,6 +66,11 @@ class SignUp extends Component {
                         this.setState({ device_token: token });
                     })
                 }
+                else {
+                    firebase.messaging().requestPermission();
+                }
+            }).catch(error => {
+
             })
     }
 
@@ -109,6 +114,7 @@ class SignUp extends Component {
             this.setState({ showLoading: true });
 
             await GoogleSignin.hasPlayServices();
+
             let userInfo = await GoogleSignin.signIn();
             if (userInfo.user.name == null)
                 userInfo.user.name = "lucky-fetch";
