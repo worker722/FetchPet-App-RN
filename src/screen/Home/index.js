@@ -124,9 +124,6 @@ class Home extends Component {
         if (notificationOpen) {
             const { title, body } = notificationOpen.notification;
         }
-
-        firebase.messaging().onMessage(async message => {
-        });
     }
 
     showNotification(title, body) {
@@ -213,10 +210,10 @@ class Home extends Component {
 
     start = async () => {
         const response = await this.props.api.get('home');
-
         if (response?.success) {
 
             let ads = await this.sortAdsByDistance(response.data.ads);
+            console.log('ads', ads)
             let topCategory = response.data.category;
             let filterBreed = response.data.breed;
             let is_show_apple_button = response.data.is_show_apple_button;
@@ -376,7 +373,7 @@ class Home extends Component {
 
         const { pets, showLoader, showRefresh, showContentLoader, topCategory, filterBreed, filterGender, filterPrice } = this.state;
         const navigation = this.props.navigation;
-
+        
         if (showLoader)
             return (<Loader />);
 
