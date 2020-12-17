@@ -48,7 +48,7 @@
 		03E4D9775E6343F7A4520D5E /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		0F445561C3D640C7A253E4C4 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		10B9E4D9122149F4B9B2F7BE /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* Fetch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fetch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* Fetch - Your Local Pet Marketplace.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fetch - Your Local Pet Marketplace.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Fetch/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Fetch/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Fetch/Images.xcassets; sourceTree = "<group>"; };
@@ -196,7 +196,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* Fetch.app */,
+				13B07F961A680F5B00A75B9A /* Fetch - Your Local Pet Marketplace.app */,
 				00E356EE1AD99517003FC87E /* FetchTests.xctest */,
 				2D02E47B1E0B4A5D006451C7 /* Fetch-tvOS.app */,
 				2D02E4901E0B4A5D006451C7 /* Fetch-tvOSTests.xctest */,
@@ -283,7 +283,7 @@
 			);
 			name = Fetch;
 			productName = Fetch;
-			productReference = 13B07F961A680F5B00A75B9A /* Fetch.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* Fetch - Your Local Pet Marketplace.app */;
 			productType = "com.apple.product-type.application";
 		};
 		2D02E47A1E0B4A5D006451C7 /* Fetch-tvOS */ = {
@@ -781,7 +781,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fetch/Fetch.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9CBJTCQR99;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Fetch/Info.plist;
@@ -792,8 +792,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.darryl.fetchpet;
-				PRODUCT_NAME = Fetch;
+				PRODUCT_BUNDLE_IDENTIFIER = fetch.market;
+				PRODUCT_NAME = "Fetch - Your Local Pet Marketplace";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -811,7 +811,7 @@
 				CODE_SIGN_ENTITLEMENTS = Fetch/Fetch.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9CBJTCQR99;
 				INFOPLIST_FILE = Fetch/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -821,8 +821,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.darryl.fetchpet;
-				PRODUCT_NAME = Fetch;
+				PRODUCT_BUNDLE_IDENTIFIER = fetch.market;
+				PRODUCT_NAME = "Fetch - Your Local Pet Marketplace";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
