@@ -16,8 +16,22 @@ export default class InboxItem extends Component {
         super(props);
     }
 
+    UNSAFE_componentWillMount = () => {
+        const { data, navigation } = this.props;
+        const { message } = data.item;
+        const latest_message = message[message.length - 1];
+        const { sender, receiver, ads } = latest_message;
+        const ad_images = [];
+        ads.meta.forEach((item, key) => {
+            if (item.meta_key == '_ad_image')
+                ad_images.push(item.meta_value);
+        });
+        this.setState({ ad_images });
+    }
+
     render = () => {
         const user_id = store.getState().auth.login.user.id;
+        const {ad_images} = this.state;
 
         const { data, navigation } = this.props;
         const { message } = data.item;
@@ -44,7 +58,7 @@ export default class InboxItem extends Component {
                         </View>
                     }
                     <Image
-                        source={{ uri: Api.SERVER_HOST + ads.meta[0].meta_value }}
+                        source={{ uri: Api.SERVER_HOST + ad_images[0] }}
                         placeholderStyle={{ backgroundColor: "transparent" }}
                         PlaceholderContent={<ActivityIndicator size={10} color={BaseColor.primaryColor} />}
                         containerStyle={{ position: "absolute", bottom: 0, right: 0, borderWidth: 1, borderColor: BaseColor.dddColor, width: 30, height: 30, borderRadius: 100 }}>
