@@ -213,7 +213,6 @@ class Home extends Component {
         if (response?.success) {
 
             let ads = await this.sortAdsByDistance(response.data.ads);
-            console.log('ads', ads)
             let topCategory = response.data.category;
             let filterBreed = response.data.breed;
             let is_show_apple_button = response.data.is_show_apple_button;

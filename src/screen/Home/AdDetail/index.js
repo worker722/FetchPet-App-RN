@@ -91,10 +91,11 @@ class AdDetail extends Component {
 
     onCall = () => {
         const { ads } = this.state;
-        let phoneNumber = 'telprompt:' + ads.user.phonenumber;
-        if (Platform.OS === 'android') {
-            phoneNumber = 'tel:' + ads.user.phonenumber;
-        }
+        let phoneNumber = '';
+        if (Platform.OS === 'android')
+            phoneNumber = `tel:${ads.user.phonenumber}`;
+        else
+            phoneNumber = `tel://${ads.user.phonenumber}`;
 
         Linking.openURL(phoneNumber);
     }
@@ -123,7 +124,7 @@ class AdDetail extends Component {
         const { ads, ad_images, showLoader, showRefresh, adsLocation } = this.state;
         const navigation = this.props.navigation;
 
-        const user_meta = ads.meta;
+        const user_meta = ads?.user?.meta;
         let is_showPhonenumber = false;
         user_meta?.forEach((item, key) => {
             if (item.meta_key == global._SHOW_PHONE_ON_ADS)

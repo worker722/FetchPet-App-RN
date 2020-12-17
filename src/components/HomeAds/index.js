@@ -48,12 +48,13 @@ export default class HomeAds extends Component {
 
     onCall = () => {
         const { item } = this.state;
-        let phoneNumber = `telprompt:${item.user.phonenumber}`;
-        if (Platform.OS === 'android') {
+        let phoneNumber = '';
+        if (Platform.OS === 'android')
             phoneNumber = `tel:${item.user.phonenumber}`;
-        }
+        else
+            phoneNumber = `tel://${item.user.phonenumber}`;
 
-        Linking.openURL(phoneNumber);
+         Linking.openURL(phoneNumber);
     }
 
     onEdit = () => {
