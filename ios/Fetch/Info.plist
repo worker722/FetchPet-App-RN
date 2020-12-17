@@ -31,6 +31,8 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Fetch is need to access your camera.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Fetch is need to access your location.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Fetch is need to access your location.</string>
 	<key>NSMicrophoneUsageDescription</key>
@@ -58,6 +60,7 @@
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>location</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
@@ -66,6 +69,10 @@
 	<array>
 		<string>armv7</string>
 	</array>
+  <key>LSApplicationQueriesSchemes</key>
+  <array>
+      <string>tel</string>
+  </array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
