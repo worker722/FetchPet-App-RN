@@ -130,7 +130,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.darryl.fetch"
+        applicationId "fetch.market"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
