@@ -9,7 +9,8 @@ import {
     Modal,
     FlatList,
     ActivityIndicator,
-    RefreshControl
+    RefreshControl,
+    Alert
 } from 'react-native';
 import { Image } from 'react-native-elements';
 import { Picker } from '@react-native-community/picker';
@@ -156,7 +157,7 @@ class Sell extends Component {
             return;
         }
         this.setState({ showLoader: true });
-        const params = { category: selectedCategory, breed: selectedBreed, age: age, price: price, gender: selectedGender == 'Male' ? 1 : 0, image_key: 'ad_image', lat: region.latitude, long: region.longitude, description: description };
+        const params = { category: selectedCategory, breed: selectedBreed, age: age, price: price, gender: selectedGender == 'Male' ? 1 : 0, image_key: 'ad_image', lat: region.latitude, long: region.longitude, description: description ? description : '' };
         const response = await this.props.api.createAds('ads/create', uploadedImages, params);
         this.setState({ showLoader: false });
         if (response?.success) {
@@ -170,9 +171,31 @@ class Sell extends Component {
         this.start();
     }
 
-    renderImage = ({ item }) => {
+    deleteImage = (index) => {
+        const { uploadedImages } = this.state;
+        if (uploadedImages.length > 0) {
+            Alert.alert(
+                'Delete Image',
+                'Are you sure you want to delete this image?',
+                [
+                    {
+                        text: 'OK',
+                        onPress: () => { uploadedImages.splice(index, 1); this.setState({ uploadedImages }) }
+                    },
+                    {
+                        text: 'Cancel',
+                        onPress: () => console.log('Cancel Pressed'),
+                        style: 'cancel'
+                    },
+                ],
+                { cancelable: false }
+            );
+        }
+    }
+
+    renderImage = ({ item, index }) => {
         return (
-            <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", width: image_size, marginLeft: 10 }}>
+            <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", width: image_size, marginLeft: 10 }} onPress={() => this.deleteImage(index)}>
                 <Image
                     source={{ uri: item.path }}
                     style={{ width: image_size, height: image_size, borderColor: BaseColor.dddColor, borderWidth: 1, borderRadius: 10 }}
