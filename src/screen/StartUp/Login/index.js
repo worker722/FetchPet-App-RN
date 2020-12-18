@@ -50,6 +50,7 @@ class Login extends Component {
         });
 
         let is_show_apple_button = await GetPrefrence('is_show_apple_button');
+        console.log(is_show_apple_button);
         if (is_show_apple_button == 1)
             this.setState({ is_show_apple_button: true });
     }
@@ -135,6 +136,7 @@ class Login extends Component {
                 this.props.navigation.navigate("Home");
             }
         } catch (error) {
+            console.log(error)
             this.setState({ showLoading: false });
         }
     }
@@ -212,6 +214,12 @@ class Login extends Component {
     }
 
     loginWithFacebook = async () => {
+        const { device_token } = this.state;
+        if (device_token == '') {
+            Api.showNetworkError();
+            return;
+        }
+
         LoginManager.logInWithPermissions(['public_profile', 'email']).then(
             result => {
                 if (result.isCancelled) {
@@ -240,6 +248,7 @@ class Login extends Component {
     }
 
     _responseInfoCallback = async (error, result) => {
+        const { rememberMe } = this.state;
         if (error) {
             console.log(error);
         } else {
@@ -312,13 +321,11 @@ class Login extends Component {
                                     <Text style={{ color: BaseColor.whiteColor, fontSize: 15 }}>LOGIN</Text>
                                 </View>
                             </TouchableOpacity>
-                            {is_show_apple_button &&
-                                <View style={{ width: "70%", height: 15, flexDirection: "row", marginTop: 5, justifyContent: "center", alignItems: "center" }}>
-                                    <View style={{ flex: 1, height: 1, backgroundColor: BaseColor.dddColor }}></View>
-                                    <Text style={{ marginHorizontal: 5, fontSize: 12 }}>OR</Text>
-                                    <View style={{ flex: 1, height: 1, backgroundColor: BaseColor.dddColor }}></View>
-                                </View>
-                            }
+                            <View style={{ width: "70%", height: 15, flexDirection: "row", marginTop: 5, justifyContent: "center", alignItems: "center" }}>
+                                <View style={{ flex: 1, height: 1, backgroundColor: BaseColor.dddColor }}></View>
+                                <Text style={{ marginHorizontal: 5, fontSize: 12 }}>OR</Text>
+                                <View style={{ flex: 1, height: 1, backgroundColor: BaseColor.dddColor }}></View>
+                            </View>
                             {Platform.OS == "android" ?
                                 <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 5 }} onPress={() => this.loginWithGoogle()}>
                                     <View style={{ flex: 1, borderRadius: 7, backgroundColor: BaseColor.googleColor, justifyContent: "center", alignItems: "center" }}>
@@ -349,7 +356,7 @@ class Login extends Component {
                                 </>
                             }
                             <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 5, }} onPress={this.loginWithFacebook}>
-                                <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.faceBookColor, justifyContent: "center", alignItems: "center" }}>
+                                <View style={{ flex: 1, borderRadius: 7, backgroundColor: BaseColor.faceBookColor, justifyContent: "center", alignItems: "center" }}>
                                     <Text style={{ color: BaseColor.whiteColor, fontSize: 13 }}>Login With Facebook</Text>
                                     <Icon name={"facebook-f"} size={15} color={"#fff"} style={{ position: "absolute", right: 10 }}></Icon>
                                 </View>

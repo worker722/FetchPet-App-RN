@@ -217,6 +217,12 @@ class SignUp extends Component {
     }
 
     signUpWithFacebook = () => {
+        const { device_token } = this.state;
+        if (device_token == '') {
+            Api.showNetworkError();
+            return;
+        }
+
         LoginManager.logInWithPermissions(['public_profile', 'email']).then(
             result => {
                 if (result.isCancelled) {
@@ -342,13 +348,11 @@ class SignUp extends Component {
                                     <Text style={{ color: BaseColor.whiteColor, fontSize: 15, color: BaseColor.primaryColor }}>SIGN UP</Text>
                                 </View>
                             </TouchableOpacity>
-                            {is_show_apple_button &&
-                                <View style={{ width: "70%", height: 15, flexDirection: "row", marginTop: 5, justifyContent: "center", alignItems: "center" }}>
-                                    <View style={{ flex: 1, height: 1, backgroundColor: BaseColor.dddColor }}></View>
-                                    <Text style={{ marginHorizontal: 5, fontSize: 12 }}>OR</Text>
-                                    <View style={{ flex: 1, height: 1, backgroundColor: BaseColor.dddColor }}></View>
-                                </View>
-                            }
+                            <View style={{ width: "70%", height: 15, flexDirection: "row", marginTop: 5, justifyContent: "center", alignItems: "center" }}>
+                                <View style={{ flex: 1, height: 1, backgroundColor: BaseColor.dddColor }}></View>
+                                <Text style={{ marginHorizontal: 5, fontSize: 12 }}>OR</Text>
+                                <View style={{ flex: 1, height: 1, backgroundColor: BaseColor.dddColor }}></View>
+                            </View>
                             {Platform.OS == "android" ?
                                 <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 5 }} onPress={this.signUpWithGoogle}>
                                     <View style={{ flex: 1, borderRadius: 7, backgroundColor: BaseColor.googleColor, justifyContent: "center", alignItems: "center" }}>
@@ -379,7 +383,7 @@ class SignUp extends Component {
                                 </>
                             }
                             <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 5, }} onPress={this.signUpWithFacebook}>
-                                <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.faceBookColor, justifyContent: "center", alignItems: "center" }}>
+                                <View style={{ flex: 1, borderRadius: 7, backgroundColor: BaseColor.faceBookColor, justifyContent: "center", alignItems: "center" }}>
                                     <Text style={{ color: BaseColor.whiteColor, fontSize: 13 }}>Sign Up with</Text>
                                     <Icon name={"facebook-f"} size={15} color={BaseColor.whiteColor} style={{ position: "absolute", right: 10 }}></Icon>
                                 </View>
