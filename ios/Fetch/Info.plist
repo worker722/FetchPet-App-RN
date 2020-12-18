@@ -39,6 +39,8 @@
 	<string>Fetch is need to access your location.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Fetch is need to access your location.</string>
+  <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+  <string>Fetch is need to access your location.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Fetch is need to access your microphone.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

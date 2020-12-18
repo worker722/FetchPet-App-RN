@@ -8,6 +8,7 @@ import geolocation from '@react-native-community/geolocation';
 
 import { Image } from 'react-native-elements';
 import { BaseColor, Images } from '@config';
+import * as Utils from '@utils';
 import { store, GetPrefrence } from '@store';
 
 export default class Splash extends Component {
@@ -51,7 +52,9 @@ export default class Splash extends Component {
         }
       }
       else {
-        geolocation.requestAuthorization();
+        await geolocation.requestAuthorization();
+        const response = await Utils.getCurrentLocation();
+        console.log('location', response);
       }
     } catch (err) {
       console.log("permission eror", err)
