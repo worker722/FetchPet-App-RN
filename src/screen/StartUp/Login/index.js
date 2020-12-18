@@ -15,6 +15,7 @@ import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import { GoogleSignin } from 'react-native-google-signin';
 import appleAuth, { AppleButton } from '@invertase/react-native-apple-authentication';
+import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
 
 import firebase from 'react-native-firebase';
 
@@ -210,6 +211,58 @@ class Login extends Component {
         }
     }
 
+    loginWithFacebook = async () => {
+        LoginManager.logInWithPermissions(['public_profile', 'email']).then(
+            result => {
+                if (result.isCancelled) {
+                    console.log("Login cancelled");
+                } else {
+                    console.warn(
+                        "Login success with permissions: " +
+                        JSON.stringify(result)
+                    );
+                    // Create a graph request asking for user information with a callback to handle the response.
+                    const infoRequest = new GraphRequest(
+                        '/me?fields=id,first_name,last_name,name,picture.type(large),email,gender',
+                        null,
+                        this._responseInfoCallback,
+                    );
+                    // Start the graph request.
+                    new GraphRequestManager().addRequest(infoRequest).start();
+                    AccessToken.getCurrentAccessToken().then((data) => {
+                        console.warn('currentAccessToken', data);
+                    })
+                }
+            }, error => {
+                console.log('error', error);
+            }
+        );
+    }
+
+    _responseInfoCallback = async (error, result) => {
+        if (error) {
+            console.log(error);
+        } else {
+            this.setState({ showLoading: true });
+
+            let params = { email: result.email, password: "@fetch@", is_social: 2 };
+
+            if (Platform.OS == "android")
+                params = Object.assign(params, { device_token: device_token });
+            else
+                params = Object.assign(params, { iphone_device_token: device_token });
+
+            const response = await this.props.api.post("login", params, true);
+
+            this.setState({ showLoading: false });
+
+            if (response?.success) {
+                SetPrefrence('rememberMe', rememberMe ? 1 : 0);
+                this.props.navigation.navigate("Home");
+            }
+        }
+    }
+
     render = () => {
         const navigation = this.props.navigation;
         const { showLoading, rememberMe, passwordSecure, email, password, is_show_apple_button } = this.state;
@@ -295,6 +348,12 @@ class Login extends Component {
                                     }
                                 </>
                             }
+                            <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 5, }} onPress={this.loginWithFacebook}>
+                                <View style={{ flex: 1, borderRadius: 10, backgroundColor: BaseColor.faceBookColor, justifyContent: "center", alignItems: "center" }}>
+                                    <Text style={{ color: BaseColor.whiteColor, fontSize: 13 }}>Login With Facebook</Text>
+                                    <Icon name={"facebook-f"} size={15} color={"#fff"} style={{ position: "absolute", right: 10 }}></Icon>
+                                </View>
+                            </TouchableOpacity>
                         </View>
                     </ScrollView>
                 </View>
