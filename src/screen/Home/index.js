@@ -215,6 +215,7 @@ class Home extends Component {
             let topCategory = response.data.category;
             let filterBreed = response.data.breed;
             let is_show_apple_button = response.data.is_show_apple_button;
+            console.log(is_show_apple_button)
             await SetPrefrence('is_show_apple_button', is_show_apple_button);
 
             topCategory.filter((item, index) => {
