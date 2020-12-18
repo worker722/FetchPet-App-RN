@@ -43,15 +43,21 @@ class Chat extends Component {
         if (Platform.OS == "android") {
             this.notificationListenerANDROID = firebase.notifications().onNotification((notification) => {
                 const { title, body, data } = notification;
-                console.log('chat notification', data);
+                if (data.receiver.id == store.getState().auth.login.user.id) {
+                    let chat = this.state.chat;
+                    chat.push(data.body);
+                    this.setState({ chat: chat });
+                }
             });
         }
         else {
             this.notificationListenerIOS = firebase.messaging().onMessage((notification) => {
                 const { title, body, data } = notification;
-                console.log('notification', notification);
-                if (data.type != global.NOTIFICATION_CHAT_MESSAGE)
-                    this.showNotification(title, body);
+                if (data.receiver.id == store.getState().auth.login.user.id) {
+                    let chat = this.state.chat;
+                    chat.push(data.body);
+                    this.setState({ chat: chat });
+                }
             })
         }
     }
