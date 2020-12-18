@@ -96,17 +96,14 @@ class Home extends Component {
         * */
         if (Platform.OS == "android") {
             this.notificationListenerANDROID = firebase.notifications().onNotification((notification) => {
-                const { title, body, data } = notification;
-                if (data.type != global.NOTIFICATION_CHAT_MESSAGE)
-                    this.showNotification(title, body);
+                const { title, body } = notification;
+                this.showNotification(title, body);
             });
         }
         else {
             this.notificationListenerIOS = firebase.messaging().onMessage((notification) => {
-                const { title, body, data } = notification;
-                console.log('notification', notification);
-                if (data.type != global.NOTIFICATION_CHAT_MESSAGE)
-                    this.showNotification(title, body);
+                const { title, body } = notification;
+                this.showNotification(title, body);
             })
         }
 
@@ -372,7 +369,7 @@ class Home extends Component {
 
         const { pets, showLoader, showRefresh, showContentLoader, topCategory, filterBreed, filterGender, filterPrice } = this.state;
         const navigation = this.props.navigation;
-        
+
         if (showLoader)
             return (<Loader />);
 
