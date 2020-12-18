@@ -5,7 +5,8 @@ import {
 import { Header, LinkItem } from '@components';
 
 import { GoogleSignin } from 'react-native-google-signin';
-import appleAuth, { AppleButton } from '@invertase/react-native-apple-authentication';
+import appleAuth from '@invertase/react-native-apple-authentication';
+import { LoginManager } from 'react-native-fbsdk';
 
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
@@ -58,10 +59,13 @@ class Setting extends Component {
         if (is_social == 1) {
             await GoogleSignin.signOut();
         }
+        else if (is_social == 2) {
+            await LoginManager.logOut();
+        }
         else if (is_social == 3) {
-            // await appleAuth.performRequest({
-            //     requestedOperation: appleAuth.Operation.REFRESH,
-            // });
+            await appleAuth.performRequest({
+                requestedOperation: appleAuth.Operation.LOGOUT,
+            });
         }
         this.props.navigation.navigate('Welcome');
     }
@@ -73,10 +77,13 @@ class Setting extends Component {
         if (is_social == 1) {
             await GoogleSignin.signOut();
         }
+        else if (is_social == 2) {
+            await LoginManager.logOut();
+        }
         else if (is_social == 3) {
-            // await appleAuth.performRequest({
-            //     requestedOperation: appleAuth.Operation.LOGOUT,
-            // });
+            await appleAuth.performRequest({
+                requestedOperation: appleAuth.Operation.LOGOUT,
+            });
         }
         this.props.navigation.navigate('Welcome');
     }
