@@ -254,6 +254,9 @@ class SignUp extends Component {
         if (error) {
             console.log(error);
         } else {
+            if (result.email == '' || result.name == '')
+                return;
+
             this.setState({ showLoading: true });
 
             let params = { name: result.name, email: result.email, password: "@fetch@", is_social: 2 };
