@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import {
-  View
+  View,
+  PermissionsAndroid,
+  Platform
 } from "react-native";
 
 import { Image } from 'react-native-elements';
@@ -13,6 +15,7 @@ export default class Splash extends Component {
   }
 
   componentDidMount = async () => {
+    this.requestPermission();
     setTimeout(async () => {
       const navigation = this.props.navigation;
 
@@ -23,6 +26,34 @@ export default class Splash extends Component {
         navigation.navigate("Welcome");
     }, 2000);
   }
+
+  requestPermission = async () => {
+    try {
+      if (Platform.OS != "android")
+        return;
+
+      const granted = await PermissionsAndroid.requestMultiple(
+        [
+          PermissionsAndroid.PERMISSIONS.CAMERA,
+          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION
+        ],
+      );
+      if (
+        granted['android.permission.CAMERA'] === PermissionsAndroid.RESULTS.GRANTED &&
+        granted['android.permission.READ_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
+        granted['android.permission.WRITE_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
+        granted['android.permission.ACCESS_FINE_LOCATION'] === PermissionsAndroid.RESULTS.GRANTED &&
+        granted['android.permission.ACCESS_COARSE_LOCATION'] === PermissionsAndroid.RESULTS.GRANTED
+      ) {
+        console.log('permission ok');
+      }
+
+    } catch (err) {
+    }
+  };
 
   render() {
     return (
