@@ -50,8 +50,6 @@ export const relativeTime = (date) => {
 export const getCurrentLocation = async () => {
     return new Promise(
         async (resolve, reject) => {
-            if (Platform.OS == "ios")
-                await geolocation.requestAuthorization();
             geolocation.getCurrentPosition(
                 (data) => resolve(data.coords),
                 (err) => reject(err)
