@@ -39,15 +39,18 @@ class Chat extends Component {
     }
 
     createNotificationListeners = async () => {
-        const userId = store.getState().auth.login.user.id;
-        this.notificationListener = firebase.notifications().onNotification((notification) => {
-            const newMessage = JSON.parse(notification.data.data);
-            if (newMessage?.receiver?.id == userId) {
-                let chat = this.state.chat;
-                chat.push(newMessage);
-                this.setState({ chat: chat });
-            }
-        });
+        try {
+            const userId = store.getState().auth.login.user.id;
+            this.notificationListener = firebase.notifications().onNotification((notification) => {
+                const newMessage = JSON.parse(notification.data.data);
+                if (newMessage?.receiver?.id == userId) {
+                    let chat = this.state.chat;
+                    chat.push(newMessage);
+                    this.setState({ chat: chat });
+                }
+            });
+        } catch (error) {
+        }
     }
 
     handleAppStateChange = (nextAppState) => { }
