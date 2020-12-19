@@ -15,7 +15,6 @@ import { BaseColor } from '@config';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Avatar } from 'react-native-elements';
 import firebase from 'react-native-firebase';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -146,7 +145,7 @@ class Chat extends Component {
             return (<Loader />);
 
         return (
-            <View style={{ flex: 1, paddingTop: getStatusBarHeight(true) }}>
+            <View style={{ flex: 1 }}>
                 <View style={{ width: "100%", height: 80, backgroundColor: BaseColor.primaryColor, flexDirection: "row", padding: 10 }}>
                     <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", padding: 10 }} onPress={() => navigation.navigate("Inbox")} >
                         <Icon name={"arrow-left"} size={20} color={BaseColor.whiteColor}></Icon>

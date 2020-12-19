@@ -10,7 +10,6 @@ import { Header, LinkItem, Loader } from '@components';
 import Styles from './style';
 import { BaseColor } from '@config';
 import Toast from 'react-native-simple-toast';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -81,7 +80,7 @@ class Privacy extends Component {
             return (<Loader />);
 
         return (
-            <View style={{ flex: 1, paddingHorizontal: 10, paddingTop: getStatusBarHeight(true) }}>
+            <View style={{ flex: 1, paddingHorizontal: 10 }}>
                 <Header icon_left={"arrow-left"} callback_left={this.goBack} title={"Privacy"} />
 
                 <LinkItem title={"Show my phone number in ads"} subtitle={""} icon_right={"angle-right"} action={this.setPhonenumberStatus} is_switch={true} switch_val={is_showPhonenumber} />

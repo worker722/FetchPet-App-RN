@@ -10,7 +10,6 @@ import { Header, Loader, HomeAds } from '@components';
 import { Avatar } from 'react-native-elements';
 import { BaseColor } from '@config';
 
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -78,7 +77,7 @@ class ShowProfile extends Component {
             return (<Loader />);
 
         return (
-            <View style={{ flex: 1, paddingTop: getStatusBarHeight(true) }}>
+            <View style={{ flex: 1 }}>
                 <ScrollView refreshControl={
                     <RefreshControl
                         refreshing={showRefresh}

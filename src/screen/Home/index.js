@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import RBSheet from "react-native-raw-bottom-sheet";
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 import geolocation from '@react-native-community/geolocation';
 
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
@@ -81,6 +80,10 @@ class Home extends Component {
             showLoader: false,
             showContentLoader: false
         }
+
+        props.navigation.addListener("willFocus", (event) => {
+            this.UNSAFE_componentWillMount();
+        });
     }
 
     async createNotificationListeners() {
@@ -409,7 +412,7 @@ class Home extends Component {
             return (<Loader />);
 
         return (
-            <View style={{ flex: 1, paddingTop: getStatusBarHeight(true) }}>
+            <View style={{ flex: 1 }}>
                 <Header navigation={this.props.navigation} mainHeader={true} />
                 <View style={{ flexDirection: "row", width: "100%", height: 40, paddingHorizontal: 10, alignItems: "center", justifyContent: "center" }}>
                     <View style={{ borderRadius: 5, height: 40, flex: 1, backgroundColor: BaseColor.primaryColor }}>

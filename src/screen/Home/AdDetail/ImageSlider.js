@@ -42,9 +42,7 @@ export default class ImageSlider extends Component {
                         ref={ref => {
                             this.swiperRef = ref;
                         }}
-                        dotStyle={{
-                            backgroundColor: BaseColor.dddColor
-                        }}
+                        dotStyle={{ width: 8, height: 8, borderRadius: 100, backgroundColor: "white" }} dotColor={BaseColor.primaryColor} activeDotStyle={{ width: 11, height: 11, borderRadius: 100 }}
                         paginationStyle={{ bottom: 0 }}
                         loop={false}
                         activeDotColor={BaseColor.primaryColor}
@@ -69,7 +67,7 @@ export default class ImageSlider extends Component {
                     </TouchableOpacity>
                     <View style={{ flex: 1 }}></View>
                 </View>
-                <View style={{ paddingVertical: 10, height: 90 }}>
+                <View style={{ paddingBottom: 20, paddingTop: 10 }}>
                     <FlatList
                         ref={ref => {
                             this.flatListRef = ref;
@@ -93,8 +91,8 @@ export default class ImageSlider extends Component {
                                         height: index == selectedIndex ? 70 : 60,
                                         marginLeft: 15,
                                         borderRadius: 8,
-                                        borderColor: BaseColor.greyColor,
-                                        borderWidth: 1
+                                        borderColor: index == selectedIndex ? BaseColor.primaryColor : BaseColor.greyColor,
+                                        borderWidth: 3
                                     }}
                                     source={{ uri: Api.SERVER_HOST + item }}
                                 />

@@ -10,7 +10,6 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import * as Utils from '@utils';
 import { BaseColor } from '@config';
 import * as Animatable from 'react-native-animatable';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 export default class CustomMap extends Component {
     constructor(props) {
@@ -88,7 +87,7 @@ export default class CustomMap extends Component {
     render = () => {
         const { region, userLocation, animType } = this.state;
         return (
-            <View style={{ flex: 1, paddingTop: getStatusBarHeight(true) }}>
+            <View style={{ flex: 1 }}>
                 <MapView
                     style={{ flex: 1 }}
                     region={region}
