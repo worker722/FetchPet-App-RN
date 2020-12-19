@@ -7,9 +7,9 @@ import {
     TextInput,
     ScrollView,
     Platform,
+    Image
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { Image } from 'react-native-elements';
 import Toast from 'react-native-simple-toast';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
@@ -50,7 +50,6 @@ class Login extends Component {
         });
 
         let is_show_apple_button = await GetPrefrence('is_show_apple_button');
-        console.log(is_show_apple_button);
         if (is_show_apple_button == 1)
             this.setState({ is_show_apple_button: true });
     }

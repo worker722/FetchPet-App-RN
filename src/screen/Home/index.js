@@ -96,18 +96,10 @@ class Home extends Component {
         /*
         * Triggered when a particular notification has been received in foreground
         * */
-        if (Platform.OS == "android") {
-            this.notificationListenerANDROID = firebase.notifications().onNotification((notification) => {
-                const { title, body } = notification;
-                this.showNotification(title, body);
-            });
-        }
-        else {
-            this.notificationListenerIOS = firebase.messaging().onMessage((notification) => {
-                const { title, body } = notification;
-                this.showNotification(title, body);
-            })
-        }
+        this.notificationListener = firebase.notifications().onNotification((notification) => {
+            const { title, body } = notification;
+            this.showNotification(title, body);
+        });
 
         /*
         * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
@@ -168,10 +160,7 @@ class Home extends Component {
 
     componentWillUnmount = async () => {
         AppState.removeEventListener('change', this.handleAppStateChange);
-        if (Platform.OS === 'ios')
-            this.notificationListenerIOS && this.notificationListenerIOS();
-        else
-            this.notificationListenerANDROID && this.notificationListenerANDROID();
+        this.notificationListener && this.notificationListener();
     }
 
     componentDidMount = async () => {
@@ -248,7 +237,6 @@ class Home extends Component {
             let topCategory = response.data.category;
             let filterBreed = response.data.breed;
             let is_show_apple_button = response.data.is_show_apple_button;
-            console.log(is_show_apple_button)
             await SetPrefrence('is_show_apple_button', is_show_apple_button);
 
             topCategory.filter((item, index) => {

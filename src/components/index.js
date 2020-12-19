@@ -17,5 +17,5 @@ export {
     HomeAds,
     ActiveAds,
     ClosedAds,
-    CustomModalPicker
+    CustomModalPicker,
 }

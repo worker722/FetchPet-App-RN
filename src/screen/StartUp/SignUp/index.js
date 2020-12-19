@@ -3,6 +3,7 @@ import {
     View,
     TouchableOpacity,
     Text,
+    Image,
     TextInput,
     ScrollView,
     Platform,
@@ -10,7 +11,6 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { CheckBox } from 'react-native-elements';
-import { Image } from 'react-native-elements';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import { GoogleSignin } from 'react-native-google-signin';

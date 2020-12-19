@@ -119,6 +119,11 @@ class AdDetail extends Component {
         this.start();
     }
 
+    showFullScreen = () => {
+        const { ad_images } = this.state;
+        this.props.navigation.navigate("ImageSlider", { data: ad_images });
+    }
+
     render = () => {
         const user_id = store.getState().auth.login.user.id;
         const { ads, ad_images, showLoader, showRefresh, adsLocation } = this.state;
@@ -160,6 +165,9 @@ class AdDetail extends Component {
                     <View style={{ position: "absolute", flexDirection: "row" }}>
                         <Header icon_left={"arrow-left"} icon_right={"share-alt"} color_icon_left={"white"} color_icon_right={"white"} callback_left={this.goBack} callback_right={this.shareAds} />
                     </View>
+                    <TouchableOpacity style={{ position: "absolute", top: (slider_height - 40), left: 10 }} onPress={this.showFullScreen}>
+                        <Icon name="expand-arrows-alt" size={25} color={BaseColor.whiteColor}></Icon>
+                    </TouchableOpacity>
                     <View style={{ position: "absolute", top: (slider_height - 40), right: 10 }}>
                         <Text style={{ fontSize: 18, color: BaseColor.whiteColor, fontWeight: "bold" }}>$ {ads?.price}</Text>
                     </View>
@@ -167,9 +175,11 @@ class AdDetail extends Component {
                         <View style={{ flexDirection: "row" }}>
                             <Text style={{ fontSize: 20, color: BaseColor.primaryColor, fontWeight: "bold" }}>Detail</Text>
                             {user_id != ads?.user?.id &&
-                                <TouchableOpacity onPress={() => this.favouriteAds()} style={{ flex: 1, alignItems: "flex-end", justifyContent: "flex-end" }}>
-                                    <Icon name={"heart"} size={20} color={BaseColor.primaryColor} solid={ads?.is_fav}></Icon>
-                                </TouchableOpacity>
+                                <View style={{ flex: 1, alignItems: "flex-end", justifyContent: "flex-end" }}>
+                                    <TouchableOpacity onPress={() => this.favouriteAds()} >
+                                        <Icon name={"heart"} size={20} color={BaseColor.primaryColor} solid={ads?.is_fav}></Icon>
+                                    </TouchableOpacity>
+                                </View>
                             }
                         </View>
                         <View style={{ flexDirection: "row", marginTop: 10 }}>

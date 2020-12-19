@@ -13,6 +13,7 @@ import SignUp from "@screen/StartUp/SignUp";
 // HOME PAGE
 import Home from "@screen/Home";
 import AdDetail from "@screen/Home/AdDetail";
+import ImageSlider from "@screen/Home/AdDetail/ImageSlider";
 
 // OTHER PAGE
 import Notification from "@screen/Notification";
@@ -146,6 +147,9 @@ const StackNavigator = createStackNavigator(
 		},
 		AdDetail: {
 			screen: AdDetail
+		},
+		ImageSlider: {
+			screen: ImageSlider
 		},
 		Chat: {
 			screen: Chat
