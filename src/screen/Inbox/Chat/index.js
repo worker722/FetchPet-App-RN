@@ -40,10 +40,11 @@ class Chat extends Component {
     }
 
     createNotificationListeners = async () => {
+        const userId = store.getState().auth.login.user.id;
         if (Platform.OS == "android") {
             this.notificationListenerANDROID = firebase.notifications().onNotification((notification) => {
                 const newMessage = JSON.parse(notification.data.data);
-                if (newMessage.receiver.id == store.getState().auth.login.user.id) {
+                if (newMessage?.receiver?.id == userId) {
                     let chat = this.state.chat;
                     chat.push(newMessage);
                     this.setState({ chat: chat });
@@ -53,7 +54,7 @@ class Chat extends Component {
         else {
             this.notificationListenerIOS = firebase.messaging().onMessage((notification) => {
                 const newMessage = JSON.parse(notification.data.data);
-                if (newMessage.receiver.id == store.getState().auth.login.user.id) {
+                if (newMessage?.receiver?.id == userId) {
                     let chat = this.state.chat;
                     chat.push(newMessage);
                     this.setState({ chat: chat });
