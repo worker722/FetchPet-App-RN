@@ -157,23 +157,23 @@ class SellEdit extends Component {
             return;
         }
         if (selectedCategory == '') {
-            Toast.show("Please select pet category");
+            Toast.show("Please select pet category.");
             return;
         }
         if (selectedBreed == '') {
-            Toast.show("Please select pet breed");
+            Toast.show("Please select pet breed.");
             return;
         }
         if (age == 0) {
-            Toast.show("Please input pet age");
+            Toast.show("Please input pet age.");
             return;
         }
         if (price == 0) {
-            Toast.show("Please input pet price");
+            Toast.show("Please input pet price.");
             return;
         }
         if (region.latitude == 0 && region.longitude == 0) {
-            Toast.show("Please select location");
+            Toast.show("Please pick location.");
             return;
         }
         this.setState({ showLoader: true });
