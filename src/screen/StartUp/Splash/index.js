@@ -17,7 +17,7 @@ export default class Splash extends Component {
   }
 
   componentDidMount = async () => {
-    this.requestPermission();
+    await this.requestPermission();
     setTimeout(async () => {
       const navigation = this.props.navigation;
 
@@ -52,7 +52,7 @@ export default class Splash extends Component {
         }
       }
       else {
-        await geolocation.requestAuthorization();
+        geolocation.requestAuthorization();
         const response = await Utils.getCurrentLocation();
         console.log('location', response);
       }

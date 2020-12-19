@@ -8,11 +8,13 @@ import {
     AppState,
     Platform,
     ScrollView,
-    RefreshControl
+    RefreshControl,
+    PermissionsAndroid
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { getStatusBarHeight } from 'react-native-status-bar-height';
+import geolocation from '@react-native-community/geolocation';
 
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
@@ -173,6 +175,8 @@ class Home extends Component {
     }
 
     componentDidMount = async () => {
+        await this.requestPermission();
+
         await this.createNotificationListeners();
         AppState.addEventListener('change', this.handleAppStateChange);
 
@@ -199,6 +203,38 @@ class Home extends Component {
                 }
             });
     }
+
+    requestPermission = async () => {
+        try {
+            if (Platform.OS == "android") {
+                const granted = await PermissionsAndroid.requestMultiple(
+                    [
+                        PermissionsAndroid.PERMISSIONS.CAMERA,
+                        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+                        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                        PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION
+                    ],
+                );
+                if (
+                    granted['android.permission.CAMERA'] === PermissionsAndroid.RESULTS.GRANTED &&
+                    granted['android.permission.READ_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
+                    granted['android.permission.WRITE_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
+                    granted['android.permission.ACCESS_FINE_LOCATION'] === PermissionsAndroid.RESULTS.GRANTED &&
+                    granted['android.permission.ACCESS_COARSE_LOCATION'] === PermissionsAndroid.RESULTS.GRANTED
+                ) {
+                    console.log('permission ok');
+                }
+            }
+            else {
+                geolocation.requestAuthorization();
+                const response = await Utils.getCurrentLocation();
+                console.log('location', response);
+            }
+        } catch (err) {
+            console.log("permission eror", err)
+        }
+    };
 
     UNSAFE_componentWillMount = async () => {
         this.setState({ showLoader: true })
