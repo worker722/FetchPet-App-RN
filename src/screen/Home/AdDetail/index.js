@@ -15,7 +15,7 @@ import { Header, Loader } from '@components';
 import * as Utils from '@utils';
 import Swiper from 'react-native-swiper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { Avatar, Image } from 'react-native-elements';
+import { Image } from 'react-native-elements';
 import { Rating } from 'react-native-ratings';
 
 import MapView, { Marker } from 'react-native-maps';
@@ -206,15 +206,13 @@ class AdDetail extends Component {
                         {user_id != ads?.user?.id &&
                             <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }} onPress={() => navigation.navigate("ShowProfile", { user_id: ads.user.id })}>
                                 {ads?.user?.avatar ?
-                                    <Avatar
-                                        size='large'
-                                        rounded
+                                    <Image
                                         source={{ uri: Api.SERVER_HOST + ads?.user?.avatar }}
                                         activeOpacity={0.7}
-                                        placeholderStyle={{ backgroundColor: "white" }}
+                                        PlaceholderStyle={{ backgroundColor: "white" }}
                                         PlaceholderContent={<ActivityIndicator color-={BaseColor.primaryColor} />}
-                                        containerStyle={{ alignSelf: 'center', marginVertical: 20, marginHorizontal: 10, width: 60, height: 60, borderRadius: 100 }}>
-                                    </Avatar>
+                                        style={{ alignSelf: 'center', marginVertical: 20, marginHorizontal: 10, width: 60, height: 60, borderRadius: 100 }}>
+                                    </Image>
                                     :
                                     <View style={{ width: 60, height: 60, marginVertical: 20, marginHorizontal: 10, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
                                         <Text style={{ color: BaseColor.whiteColor, fontSize: 25 }}>{ads?.user?.name?.charAt(0).toUpperCase()}</Text>
