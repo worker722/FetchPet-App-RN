@@ -1,4 +1,4 @@
-import { Dimensions, Platform } from 'react-native';
+import { Dimensions } from 'react-native';
 import Moment from 'moment';
 import geolocation from '@react-native-community/geolocation';
 
