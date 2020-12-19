@@ -132,8 +132,8 @@ class Sell extends Component {
 
     createAds = async () => {
         const { selectedCategory, selectedBreed, selectedGender, age, price, description, uploadedImages, region } = this.state;
-        if (uploadedImages.length == 0) {
-            Toast.show("Please choose pet images.");
+        if (uploadedImages.length < 5) {
+            Toast.show("Please choose over 5 pet images.");
             return;
         }
         if (selectedCategory == '') {
