@@ -9,11 +9,12 @@ import {
     RefreshControl,
     ActivityIndicator,
     AppState,
-    Platform
+    Platform,
+    KeyboardAvoidingView
 } from 'react-native';
 import { BaseColor } from '@config';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { Avatar } from 'react-native-elements';
+import { Image } from 'react-native-elements';
 import firebase from 'react-native-firebase';
 
 import { connect } from "react-redux";
@@ -27,6 +28,7 @@ class Chat extends Component {
         super(props);
         this.state = {
             chat: [],
+            ad_images: [],
             ads: null,
             other_user: null,
             message: '',
@@ -79,10 +81,18 @@ class Chat extends Component {
             else
                 other_user = (user_id == last_message?.sender.id) ? last_message?.receiver : last_message?.sender;
 
+            const ad_images = [];
+            response.data.ads.meta.forEach((item, key) => {
+                if (item.meta_key == '_ad_image')
+                    ad_images.push(item.meta_value);
+            });
+            this.setState({ ad_images });
+
             this.setState({
                 chat: response.data.chat,
                 ads: response.data.ads,
-                other_user: other_user
+                ad_images,
+                other_user
             })
             this.scrollView.scrollToEnd({ animated: true })
         }
@@ -137,15 +147,14 @@ class Chat extends Component {
     }
 
     render = () => {
-        const { chat, ads, showLoader, showRefresh, other_user, is_sending } = this.state;
-        const last_message = chat[chat.length - 1];
+        const { chat, ads, showLoader, showRefresh, other_user, is_sending, ad_images } = this.state;
         const navigation = this.props.navigation;
 
         if (showLoader)
             return (<Loader />);
 
         return (
-            <View style={{ flex: 1 }}>
+            <KeyboardAvoidingView style={{ flex: 1 }} behavior="position">
                 <View style={{ width: "100%", height: 80, backgroundColor: BaseColor.primaryColor, flexDirection: "row", padding: 10 }}>
                     <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", padding: 10 }} onPress={() => navigation.navigate("Inbox")} >
                         <Icon name={"arrow-left"} size={20} color={BaseColor.whiteColor}></Icon>
@@ -153,14 +162,13 @@ class Chat extends Component {
                     <View style={{ justifyContent: "center", alignItems: "center", marginLeft: 10 }}>
                         <TouchableOpacity onPress={() => navigation.navigate("ShowProfile", { user_id: other_user.id })} >
                             {other_user?.avatar ?
-                                <Avatar
-                                    size='large'
-                                    rounded
+                                <Image
                                     source={{ uri: Api.SERVER_HOST + other_user?.avatar }}
                                     activeOpacity={0.7}
-                                    placeholderStyle={{ backgroundColor: "white" }}
-                                    containerStyle={{ alignSelf: 'center', marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 60, height: 60 }}>
-                                </Avatar>
+                                    PlaceholderStyle={{ backgroundColor: "white" }}
+                                    PlaceholderContent={<ActivityIndicator color={BaseColor.whiteColor} />}
+                                    style={{ alignSelf: 'center', marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 60, height: 60, borderRadius: 100 }}>
+                                </Image>
                                 :
                                 <View style={{ width: 60, height: 60, borderRadius: 100, borderWidth: 2, borderColor: BaseColor.whiteColor, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
                                     <Text style={{ color: BaseColor.whiteColor, fontSize: 25 }}>{other_user?.name.charAt(0).toUpperCase()}</Text>
@@ -169,15 +177,14 @@ class Chat extends Component {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => navigation.navigate("AdDetail", { ad_id: ads.id })}
-                            style={{ position: "absolute", bottom: -5, right: 0, width: 25, height: 25, borderRadius: 100 }}>
-                            <Avatar
-                                size='small'
-                                rounded
-                                source={{ uri: Api.SERVER_HOST + ads?.meta[0].meta_value }}
+                            style={{ position: "absolute", bottom: 5, right: 0, width: 25, height: 25, borderRadius: 100 }}>
+                            <Image
+                                source={{ uri: Api.SERVER_HOST + ad_images[0] }}
                                 activeOpacity={0.7}
-                                placeholderStyle={{ backgroundColor: "white" }}
-                                containerStyle={{ borderWidth: 1, borderColor: BaseColor.whiteColor, width: 25, height: 25 }}>
-                            </Avatar>
+                                PlaceholderStyle={{ backgroundColor: "white" }}
+                                PlaceholderContent={<ActivityIndicator color={BaseColor.whiteColor} />}
+                                style={{ borderWidth: 1, borderColor: BaseColor.whiteColor, width: 25, height: 25, borderRadius: 100 }}>
+                            </Image>
                         </TouchableOpacity>
                     </View>
                     <View style={{ justifyContent: "center", paddingLeft: 10, flex: 1 }}>
@@ -206,7 +213,7 @@ class Chat extends Component {
                         />
                     </View>
                 </ScrollView>
-                <View style={{ height: 70, padding: 10, width: "100%", justifyContent: "center", alignItems: "center", borderTopWidth: 3, borderTopColor: BaseColor.dddColor }}>
+                <View style={{ height: 50, paddingHorizontal: 10, width: "100%", justifyContent: "center", alignItems: "center" }}>
                     <TextInput
                         style={{ flex: 1, backgroundColor: BaseColor.dddColor, width: "100%", borderRadius: 30, paddingLeft: 20, paddingRight: 100 }}
                         value={this.state.message}
@@ -216,7 +223,7 @@ class Chat extends Component {
                     <View style={{ position: "absolute", right: 0, top: 0, bottom: 0, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                         {is_sending ?
                             <View style={{ padding: 8, marginRight: 25, borderRadius: 100, backgroundColor: "white", justifyContent: "center", alignItems: "center" }}>
-                                <ActivityIndicator size={20} color={BaseColor.primaryColor} />
+                                <ActivityIndicator color={BaseColor.primaryColor} />
                             </View>
                             :
                             <TouchableOpacity onPress={() => this.sendMessage()} style={{ padding: 8, marginRight: 25, borderRadius: 100, backgroundColor: "white", justifyContent: "center", alignItems: "center" }}>
@@ -225,7 +232,7 @@ class Chat extends Component {
                         }
                     </View>
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         )
     }
 }

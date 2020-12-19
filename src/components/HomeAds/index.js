@@ -54,7 +54,7 @@ export default class HomeAds extends Component {
         else
             phoneNumber = `tel://${item.user.phonenumber}`;
 
-         Linking.openURL(phoneNumber);
+        Linking.openURL(phoneNumber);
     }
 
     onEdit = () => {
@@ -81,8 +81,8 @@ export default class HomeAds extends Component {
                     <Image
                         source={{ uri: Api.SERVER_HOST + ad_images[0] }}
                         style={{ width: 120, height: "100%", borderRadius: 5, borderWidth: 1, borderColor: BaseColor.dddColor }}
-                        placeholderStyle={{ backgroundColor: "white" }}
-                        PlaceholderContent={<ActivityIndicator size={20} color={BaseColor.primaryColor}></ActivityIndicator>}></Image>
+                        PlaceholderStyle={{ backgroundColor: "white" }}
+                        PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}></Image>
                 </View>
                 <View style={{ flexDirection: "column", flex: 1, paddingLeft: 10, justifyContent: "center", alignItems: "flex-start" }}>
                     <Text style={{ color: "grey", fontSize: 10 }}>Category</Text>

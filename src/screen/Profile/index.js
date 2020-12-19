@@ -62,12 +62,10 @@ class Profile extends Component {
                 <TouchableOpacity onPress={() => navigation.navigate("ProfileEdit")} style={{ flexDirection: "row", width: "100%", marginBottom: 15, justifyContent: "center", marginTop: 10 }}>
                     {user?.avatar ?
                         <Image
-                            size='large'
-                            rounded
                             source={{ uri: Api.SERVER_HOST + user?.avatar }}
                             activeOpacity={0.7}
-                            placeholderStyle={{ backgroundColor: "white" }}
-                            PlaceholderContent={<ActivityIndicator size={20} color={BaseColor.primaryColor} />}
+                            PlaceholderStyle={{ backgroundColor: "white" }}
+                            PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}
                             style={{ marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 80, height: 80, borderRadius: 100 }}>
                         </Image>
                         :

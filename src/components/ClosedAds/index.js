@@ -3,9 +3,10 @@ import {
     View,
     Text,
     TouchableOpacity,
+    ActivityIndicator
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { Avatar } from 'react-native-elements';
+import { Image } from 'react-native-elements';
 
 import { BaseColor } from '@config';
 import * as Api from '@api';
@@ -40,14 +41,13 @@ export default class ClosedAds extends Component {
             <TouchableOpacity style={{ flex: 1, flexDirection: "row", marginBottom: 10, backgroundColor: BaseColor.greyColor, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor, paddingLeft: 7 }}
                 onPress={() => navigation.navigate("AdDetail", { ad_id: item.id })}>
                 <View style={{ justifyContent: "center", alignItems: "center", flexDirection: "row", backgroundColor: BaseColor.whiteColor, paddingRight: 10 }}>
-                    <Avatar
-                        size='large'
-                        rounded
+                    <Image
                         source={{ uri: Api.SERVER_HOST + ad_images[0] }}
                         activeOpacity={0.7}
-                        placeholderStyle={{ backgroundColor: "white" }}
-                        containerStyle={{ alignSelf: 'center', marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 65, height: 65 }}>
-                    </Avatar>
+                        PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}
+                        PlaceholderStyle={{ backgroundColor: "white" }}
+                        style={{ alignSelf: 'center', marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 65, height: 65, borderRadius: 100 }}>
+                    </Image>
                     <Text style={{ color: BaseColor.primaryColor, textAlign: "center", marginLeft: 5, fontWeight: "bold" }}>{item.category.name}</Text>
                 </View>
                 <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor, padding: 10 }}>

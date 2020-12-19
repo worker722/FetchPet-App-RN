@@ -10,7 +10,8 @@ import {
     FlatList,
     ActivityIndicator,
     RefreshControl,
-    Alert
+    Alert,
+    KeyboardAvoidingView
 } from 'react-native';
 import { Image } from 'react-native-elements';
 import { Picker } from '@react-native-community/picker';
@@ -199,8 +200,8 @@ class Sell extends Component {
                     source={{ uri: item.path }}
                     style={{ width: image_size, height: image_size, borderColor: BaseColor.dddColor, borderWidth: 1, borderRadius: 10 }}
                     resizeMode="cover"
-                    placeholderStyle={{ backgroundColor: "white" }}
-                    PlaceholderContent={<ActivityIndicator size={20} color={BaseColor.primaryColor}></ActivityIndicator>}></Image>
+                    PlaceholderStyle={{ backgroundColor: "white" }}
+                    PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}></Image>
             </TouchableOpacity>
         )
     }
@@ -213,7 +214,7 @@ class Sell extends Component {
             return (<Loader />);
 
         return (
-            <View style={{ flex: 1 }}>
+            <KeyboardAvoidingView style={{ flex: 1 }} behavior="position">
                 <ScrollView style={{ flex: 1 }}
                     refreshControl={
                         <RefreshControl
@@ -376,7 +377,7 @@ class Sell extends Component {
                     </View>
                 </Modal>
 
-            </View>
+            </KeyboardAvoidingView>
         )
     }
 }

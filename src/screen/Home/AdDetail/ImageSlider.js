@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { View, FlatList, TouchableOpacity, Image } from "react-native";
+import {
+    View,
+    FlatList,
+    TouchableOpacity,
+    ActivityIndicator
+} from "react-native";
+import { Image } from 'react-native-elements';
 import Swiper from "react-native-swiper";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { BaseColor } from "@config";
@@ -56,6 +62,8 @@ export default class ImageSlider extends Component {
                                     style={{ width: "100%", height: "100%", borderRadius: 20 }}
                                     resizeMode={'contain'}
                                     source={{ uri: Api.SERVER_HOST + item }}
+                                    PlaceholderStyle={{ backgroundColor: "transparent" }}
+                                    PlaceholderContent={<ActivityIndicator color={BaseColor.whiteColor} size={"large"} />}
                                 />
                             );
                         })}
@@ -91,10 +99,12 @@ export default class ImageSlider extends Component {
                                         height: index == selectedIndex ? 70 : 60,
                                         marginLeft: 15,
                                         borderRadius: 8,
-                                        borderColor: index == selectedIndex ? BaseColor.primaryColor : BaseColor.greyColor,
+                                        borderColor: index == selectedIndex ? BaseColor.whiteColor : BaseColor.greyColor,
                                         borderWidth: 3
                                     }}
                                     source={{ uri: Api.SERVER_HOST + item }}
+                                    PlaceholderStyle={{ backgroundColor: "transparent" }}
+                                    PlaceholderContent={<ActivityIndicator color={BaseColor.whiteColor} size={"small"} />}
                                 />
                             </TouchableOpacity>
                         )}

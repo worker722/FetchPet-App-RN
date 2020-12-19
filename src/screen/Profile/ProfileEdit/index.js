@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Header, Loader } from '@components';
-import { Avatar } from 'react-native-elements';
+import { Image } from 'react-native-elements';
 import { BaseColor } from '@config';
 import PhoneInput from 'react-native-phone-input';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -148,14 +148,12 @@ class ProfileEdit extends Component {
                 <View style={{ marginTop: 15, marginLeft: 15, flexDirection: "row", paddingRight: 20 }}>
                     <View>
                         {avatar?.path ?
-                            <Avatar
-                                size='xlarge'
-                                rounded
+                            <Image
                                 source={{ uri: avatar?.path }}
                                 activeOpacity={0.7}
-                                placeholderStyle={{ backgroundColor: "white" }}
+                                PlaceholderStyle={{ backgroundColor: "white" }}
                                 containerStyle={{ marginHorizontal: 10, borderWidth: 1, borderColor: "#808080", width: 80, height: 80, borderRadius: 100 }}>
-                            </Avatar>
+                            </Image>
                             :
                             <View style={{ width: 80, height: 80, marginHorizontal: 10, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
                                 <Text style={{ color: BaseColor.whiteColor, fontSize: 30 }}>{user?.name?.charAt(0).toUpperCase()}</Text>
