@@ -48,7 +48,7 @@ export default class ActiveAds extends Component {
                         rounded
                         source={{ uri: Api.SERVER_HOST + ad_images[0] }}
                         activeOpacity={0.7}
-                        placeholderStyle={{ backgroundColor: "transparent" }}
+                        placeholderStyle={{ backgroundColor: "white" }}
                         containerStyle={{ alignSelf: 'center', marginRight: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 100, height: 100 }}>
                     </Avatar>
                     <View style={{ width: 1, height: 100, backgroundColor: BaseColor.dddColor }}></View>

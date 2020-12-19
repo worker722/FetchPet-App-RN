@@ -45,7 +45,7 @@ export default class ClosedAds extends Component {
                         rounded
                         source={{ uri: Api.SERVER_HOST + ad_images[0] }}
                         activeOpacity={0.7}
-                        placeholderStyle={{ backgroundColor: "transparent" }}
+                        placeholderStyle={{ backgroundColor: "white" }}
                         containerStyle={{ alignSelf: 'center', marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 65, height: 65 }}>
                     </Avatar>
                     <Text style={{ color: BaseColor.primaryColor, textAlign: "center", marginLeft: 5, fontWeight: "bold" }}>{item.category.name}</Text>

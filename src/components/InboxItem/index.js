@@ -49,7 +49,7 @@ export default class InboxItem extends Component {
                         <Image
                             source={{ uri: Api.SERVER_HOST + avatar }}
                             PlaceholderContent={<ActivityIndicator size={20} color={BaseColor.primaryColor} />}
-                            placeholderStyle={{ backgroundColor: "transparent" }}
+                            placeholderStyle={{ backgroundColor: "white" }}
                             style={{ alignSelf: 'center', marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 80, height: 80, borderRadius: 100 }}>
                         </Image>
                         :
@@ -59,7 +59,7 @@ export default class InboxItem extends Component {
                     }
                     <Image
                         source={{ uri: Api.SERVER_HOST + ad_images[0] }}
-                        placeholderStyle={{ backgroundColor: "transparent" }}
+                        placeholderStyle={{ backgroundColor: "white" }}
                         PlaceholderContent={<ActivityIndicator size={10} color={BaseColor.primaryColor} />}
                         containerStyle={{ position: "absolute", bottom: 0, right: 0, borderWidth: 1, borderColor: BaseColor.dddColor, width: 30, height: 30, borderRadius: 100 }}>
                     </Image>

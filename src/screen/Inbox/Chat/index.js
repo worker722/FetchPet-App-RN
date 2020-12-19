@@ -170,7 +170,7 @@ class Chat extends Component {
                                     rounded
                                     source={{ uri: Api.SERVER_HOST + other_user?.avatar }}
                                     activeOpacity={0.7}
-                                    placeholderStyle={{ backgroundColor: "transparent" }}
+                                    placeholderStyle={{ backgroundColor: "white" }}
                                     containerStyle={{ alignSelf: 'center', marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 60, height: 60 }}>
                                 </Avatar>
                                 :
@@ -187,7 +187,7 @@ class Chat extends Component {
                                 rounded
                                 source={{ uri: Api.SERVER_HOST + ads?.meta[0].meta_value }}
                                 activeOpacity={0.7}
-                                placeholderStyle={{ backgroundColor: "transparent" }}
+                                placeholderStyle={{ backgroundColor: "white" }}
                                 containerStyle={{ borderWidth: 1, borderColor: BaseColor.whiteColor, width: 25, height: 25 }}>
                             </Avatar>
                         </TouchableOpacity>
