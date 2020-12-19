@@ -59,20 +59,22 @@ class SignUp extends Component {
     }
 
     componentDidMount = async () => {
-        firebase.messaging().hasPermission()
-            .then(enabled => {
-                if (enabled) {
-                    firebase.messaging().getToken().then(token => {
-                        console.log('fcmToken', token)
-                        this.setState({ device_token: token });
-                    })
-                }
-                else {
-                    firebase.messaging().requestPermission();
-                }
-            }).catch(error => {
-
-            })
+        try {
+            firebase.messaging().hasPermission()
+                .then(enabled => {
+                    if (enabled) {
+                        firebase.messaging().getToken().then(token => {
+                            console.log('fcmToken', token)
+                            this.setState({ device_token: token });
+                        })
+                    }
+                    else {
+                        firebase.messaging().requestPermission();
+                    }
+                }).catch(error => {
+                })
+        } catch (error) {
+        }
     }
 
     signUp = async () => {
@@ -223,31 +225,34 @@ class SignUp extends Component {
             return;
         }
 
-        LoginManager.logInWithPermissions(['public_profile', 'email']).then(
-            result => {
-                if (result.isCancelled) {
-                    console.log("Login cancelled");
-                } else {
-                    console.warn(
-                        "Login success with permissions: " +
-                        JSON.stringify(result)
-                    );
-                    // Create a graph request asking for user information with a callback to handle the response.
-                    const infoRequest = new GraphRequest(
-                        '/me?fields=id,first_name,last_name,name,picture.type(large),email,gender',
-                        null,
-                        this._responseInfoCallback,
-                    );
-                    // Start the graph request.
-                    new GraphRequestManager().addRequest(infoRequest).start();
-                    AccessToken.getCurrentAccessToken().then((data) => {
-                        console.warn('currentAccessToken', data);
-                    })
+        try {
+            LoginManager.logInWithPermissions(['public_profile', 'email']).then(
+                result => {
+                    if (result.isCancelled) {
+                        console.log("Login cancelled");
+                    } else {
+                        console.warn(
+                            "Login success with permissions: " +
+                            JSON.stringify(result)
+                        );
+                        // Create a graph request asking for user information with a callback to handle the response.
+                        const infoRequest = new GraphRequest(
+                            '/me?fields=id,first_name,last_name,name,picture.type(large),email,gender',
+                            null,
+                            this._responseInfoCallback,
+                        );
+                        // Start the graph request.
+                        new GraphRequestManager().addRequest(infoRequest).start();
+                        AccessToken.getCurrentAccessToken().then((data) => {
+                            console.warn('currentAccessToken', data);
+                        })
+                    }
+                }, error => {
+                    console.log('error', error);
                 }
-            }, error => {
-                console.log('error', error);
-            }
-        );
+            );
+        } catch (error) {
+        }
     }
 
     _responseInfoCallback = async (error, result) => {

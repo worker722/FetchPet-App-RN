@@ -164,33 +164,36 @@ class Home extends Component {
     }
 
     componentDidMount = async () => {
-        await this.requestPermission();
+        try {
+            await this.requestPermission();
 
-        await this.createNotificationListeners();
-        AppState.addEventListener('change', this.handleAppStateChange);
+            await this.createNotificationListeners();
+            AppState.addEventListener('change', this.handleAppStateChange);
 
-        if (Platform.OS == "android") {
-            const channel = new firebase.notifications.Android.Channel(
-                global.NOTIFICATION_CHANNEL_ID,
-                global.NOTIFICATION_CHANNEL_NAME,
-                firebase.notifications.Android.Importance.High
-            ).setDescription(global.NOTIFICATION_CHANNEL_DESCRIPTION);
-            firebase.notifications().android.createChannel(channel);
+            if (Platform.OS == "android") {
+                const channel = new firebase.notifications.Android.Channel(
+                    global.NOTIFICATION_CHANNEL_ID,
+                    global.NOTIFICATION_CHANNEL_NAME,
+                    firebase.notifications.Android.Importance.High
+                ).setDescription(global.NOTIFICATION_CHANNEL_DESCRIPTION);
+                firebase.notifications().android.createChannel(channel);
+            }
+
+            await firebase.messaging().hasPermission()
+                .then(enabled => {
+                    if (enabled) {
+                        firebase.messaging().getToken().then(token => { });
+                    } else {
+                        firebase.messaging().requestPermission()
+                            .then(() => {
+                                firebase.messaging().registerForNotifications();
+                            })
+                            .catch(error => {
+                            });
+                    }
+                });
+        } catch (error) {
         }
-
-        await firebase.messaging().hasPermission()
-            .then(enabled => {
-                if (enabled) {
-                    firebase.messaging().getToken().then(token => { });
-                } else {
-                    firebase.messaging().requestPermission()
-                        .then(() => {
-                            firebase.messaging().registerForNotifications();
-                        })
-                        .catch(error => {
-                        });
-                }
-            });
     }
 
     requestPermission = async () => {

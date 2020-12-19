@@ -55,20 +55,23 @@ class Login extends Component {
     }
 
     componentDidMount = async () => {
-        firebase.messaging().hasPermission()
-            .then(enabled => {
-                if (enabled) {
-                    firebase.messaging().getToken().then(token => {
-                        console.log('fcmToken', token)
-                        this.setState({ device_token: token });
-                    })
-                }
-                else {
-                    firebase.messaging().requestPermission();
-                }
-            }).catch(error => {
+        try {
+            firebase.messaging().hasPermission()
+                .then(enabled => {
+                    if (enabled) {
+                        firebase.messaging().getToken().then(token => {
+                            console.log('fcmToken', token)
+                            this.setState({ device_token: token });
+                        })
+                    }
+                    else {
+                        firebase.messaging().requestPermission();
+                    }
+                }).catch(error => {
 
-            })
+                })
+        } catch (error) {
+        }
     }
 
     toggleRememberMe = async (value) => {
