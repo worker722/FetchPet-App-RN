@@ -22,7 +22,6 @@ import { bindActionCreators } from "redux";
 import { store } from "@store";
 import * as Api from '@api';
 import { ChatMessage, Loader } from '@components';
-import * as global from "@api/global";
 
 class Chat extends Component {
     constructor(props) {
@@ -41,26 +40,14 @@ class Chat extends Component {
 
     createNotificationListeners = async () => {
         const userId = store.getState().auth.login.user.id;
-        if (Platform.OS == "android") {
-            this.notificationListenerANDROID = firebase.notifications().onNotification((notification) => {
-                const newMessage = JSON.parse(notification.data.data);
-                if (newMessage?.receiver?.id == userId) {
-                    let chat = this.state.chat;
-                    chat.push(newMessage);
-                    this.setState({ chat: chat });
-                }
-            });
-        }
-        else {
-            this.notificationListenerIOS = firebase.messaging().onMessage((notification) => {
-                const newMessage = JSON.parse(notification.data.data);
-                if (newMessage?.receiver?.id == userId) {
-                    let chat = this.state.chat;
-                    chat.push(newMessage);
-                    this.setState({ chat: chat });
-                }
-            })
-        }
+        this.notificationListener = firebase.notifications().onNotification((notification) => {
+            const newMessage = JSON.parse(notification.data.data);
+            if (newMessage?.receiver?.id == userId) {
+                let chat = this.state.chat;
+                chat.push(newMessage);
+                this.setState({ chat: chat });
+            }
+        });
     }
 
     handleAppStateChange = (nextAppState) => { }
@@ -71,8 +58,7 @@ class Chat extends Component {
     }
 
     componentWillUnmount = () => {
-        this.notificationListenerANDROID && this.notificationListenerANDROID();
-        this.notificationListenerIOS && this.notificationListenerIOS();
+        this.notificationListener && this.notificationListener();
         AppState.removeEventListener('change', this.handleAppStateChange);
     }
 
