@@ -170,14 +170,14 @@ class Chat extends Component {
                                     style={{ alignSelf: 'center', marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 60, height: 60, borderRadius: 100 }}>
                                 </Image>
                                 :
-                                <View style={{ width: 60, height: 60, borderRadius: 100, borderWidth: 2, borderColor: BaseColor.whiteColor, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
+                                <View style={{ width: 60, height: 60, borderRadius: 100, marginHorizontal: 10, borderWidth: 2, borderColor: BaseColor.whiteColor, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
                                     <Text style={{ color: BaseColor.whiteColor, fontSize: 25 }}>{other_user?.name.charAt(0).toUpperCase()}</Text>
                                 </View>
                             }
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => navigation.navigate("AdDetail", { ad_id: ads.id })}
-                            style={{ position: "absolute", bottom: 5, right: 0, width: 25, height: 25, borderRadius: 100 }}>
+                            style={{ position: "absolute", bottom: 0, right: 3, width: 25, height: 25, borderRadius: 100 }}>
                             <Image
                                 source={{ uri: Api.SERVER_HOST + ad_images[0] }}
                                 activeOpacity={0.7}

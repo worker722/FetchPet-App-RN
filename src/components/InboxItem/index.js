@@ -31,7 +31,7 @@ export default class InboxItem extends Component {
 
     render = () => {
         const user_id = store.getState().auth.login.user.id;
-        const {ad_images} = this.state;
+        const { ad_images } = this.state;
 
         const { data, navigation } = this.props;
         const { message } = data.item;
@@ -53,16 +53,18 @@ export default class InboxItem extends Component {
                             style={{ alignSelf: 'center', marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 80, height: 80, borderRadius: 100 }}>
                         </Image>
                         :
-                        <View style={{ width: 80, height: 80, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
+                        <View style={{ width: 80, height: 80, marginHorizontal: 10, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
                             <Text style={{ color: BaseColor.whiteColor, fontSize: 30 }}>{name?.charAt(0).toUpperCase()}</Text>
                         </View>
                     }
-                    <Image
-                        source={{ uri: Api.SERVER_HOST + ad_images[0] }}
-                        PlaceholderStyle={{ backgroundColor: "white" }}
-                        PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}
-                        containerStyle={{ position: "absolute", bottom: 0, right: 0, borderWidth: 1, borderColor: BaseColor.dddColor, width: 30, height: 30, borderRadius: 100 }}>
-                    </Image>
+                    <TouchableOpacity style={{ position: "absolute", bottom: 0, right: 3 }}>
+                        <Image
+                            source={{ uri: Api.SERVER_HOST + ad_images[0] }}
+                            PlaceholderStyle={{ backgroundColor: "white" }}
+                            PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}
+                            style={{ width: 30, height: 30, borderRadius: 100, borderWidth: 1, borderColor: BaseColor.dddColor }}>
+                        </Image>
+                    </TouchableOpacity>
                 </View>
                 <View style={{ marginLeft: 10, justifyContent: "center", flex: 1 }}>
                     <Text>{user_id == sender.id ? receiver.name : sender.name}</Text>
