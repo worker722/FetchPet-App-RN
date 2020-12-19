@@ -22,7 +22,7 @@ export default class Version extends Component {
             <View style={{ flex: 1, paddingHorizontal: 10, paddingTop: getStatusBarHeight(true) }}>
                 <Header icon_left={"arrow-left"} title={"Version"} callback_left={this.goBack} />
                 <View style={{ justifyContent: "center", alignItems: "center", paddingTop: 20 }}>
-                    <Image placeholderStyle={{ backgroundColor: "transparent" }} source={Images.logo} style={{ width: 196, height: 70 }} resizeMode={"stretch"}></Image>
+                    <Image placeholderStyle={{ backgroundColor: "white" }} source={Images.logo} style={{ width: 196, height: 70 }} resizeMode={"stretch"}></Image>
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 30 }}>
                     <Text>Current Version : </Text>

@@ -198,7 +198,7 @@ class AdDetail extends Component {
                                         rounded
                                         source={{ uri: Api.SERVER_HOST + ads?.user?.avatar }}
                                         activeOpacity={0.7}
-                                        placeholderStyle={{ backgroundColor: "transparent" }}
+                                        placeholderStyle={{ backgroundColor: "white" }}
                                         PlaceholderContent={<ActivityIndicator size={15} color-={BaseColor.primaryColor} />}
                                         containerStyle={{ alignSelf: 'center', marginVertical: 20, marginHorizontal: 10, width: 60, height: 60, borderRadius: 100 }}>
                                     </Avatar>

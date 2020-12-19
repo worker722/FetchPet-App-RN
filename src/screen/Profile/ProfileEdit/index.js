@@ -154,7 +154,7 @@ class ProfileEdit extends Component {
                                 rounded
                                 source={{ uri: avatar?.path }}
                                 activeOpacity={0.7}
-                                placeholderStyle={{ backgroundColor: "transparent" }}
+                                placeholderStyle={{ backgroundColor: "white" }}
                                 containerStyle={{ marginHorizontal: 10, borderWidth: 1, borderColor: "#808080", width: 80, height: 80, borderRadius: 100 }}>
                             </Avatar>
                             :

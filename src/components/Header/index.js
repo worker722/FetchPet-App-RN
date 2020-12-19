@@ -22,7 +22,7 @@ export default class Header extends Component {
                 {mainHeader &&
                     <>
                         <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-                            <Image placeholderStyle={{ backgroundColor: "transparent" }} source={Images.logo} style={{ width: 100, height: 35 }} resizeMode={"stretch"}></Image>
+                            <Image placeholderStyle={{ backgroundColor: "white" }} source={Images.logo} style={{ width: 100, height: 35 }} resizeMode={"stretch"}></Image>
                         </TouchableOpacity>
                         <View style={{ flex: 1 }}></View>
                         <TouchableOpacity style={{ position: "absolute", right: 10 }} onPress={() => navigation.navigate("Notification")}>
