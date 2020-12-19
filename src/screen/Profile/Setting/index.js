@@ -8,7 +8,6 @@ import { GoogleSignin } from 'react-native-google-signin';
 import appleAuth from '@invertase/react-native-apple-authentication';
 import { LoginManager } from 'react-native-fbsdk';
 
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -96,7 +95,7 @@ class Setting extends Component {
         const { is_showNotification } = this.state;
 
         return (
-            <View style={{ flex: 1, paddingHorizontal: 10, paddingTop: getStatusBarHeight(true) }}>
+            <View style={{ flex: 1, paddingHorizontal: 10 }}>
                 <Header icon_left={"arrow-left"} title={"Setting"} callback_left={this.goBack} />
 
                 <LinkItem title={"Privacy"} subtitle={"Passwork, Phone number visiblity"} icon_right={"angle-right"} action={this.goPrivacy} />

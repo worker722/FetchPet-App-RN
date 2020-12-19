@@ -6,7 +6,6 @@ import {
 import { Images } from '@config';
 import { Header } from '@components';
 import { Image } from 'react-native-elements';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 export default class ContactSupport extends Component {
     constructor(props) {
@@ -20,7 +19,7 @@ export default class ContactSupport extends Component {
     render = () => {
         const navigation = this.props.navigation;
         return (
-            <View style={{ flex: 1, paddingHorizontal: 10, paddingTop: getStatusBarHeight(true) }}>
+            <View style={{ flex: 1, paddingHorizontal: 10 }}>
                 <Header icon_left={"arrow-left"} title={"Help Center"} callback_left={this.goBack} />
                 <View style={{ justifyContent: "center", alignItems: "center", paddingTop: 20 }}>
                     <Image placeholderStyle={{ backgroundColor: "white" }} source={Images.logo} style={{ width: 196, height: 70 }} resizeMode={"stretch"}></Image>

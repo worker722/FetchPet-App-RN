@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { CheckBox } from 'react-native-elements';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import { GoogleSignin } from 'react-native-google-signin';
 import appleAuth, { AppleButton } from '@invertase/react-native-apple-authentication';
@@ -59,22 +58,19 @@ class SignUp extends Component {
     }
 
     componentDidMount = async () => {
-        try {
-            firebase.messaging().hasPermission()
-                .then(enabled => {
-                    if (enabled) {
-                        firebase.messaging().getToken().then(token => {
-                            console.log('fcmToken', token)
-                            this.setState({ device_token: token });
-                        })
-                    }
-                    else {
-                        firebase.messaging().requestPermission();
-                    }
-                }).catch(error => {
-                })
-        } catch (error) {
-        }
+        firebase.messaging().hasPermission()
+            .then(enabled => {
+                if (enabled) {
+                    firebase.messaging().getToken().then(token => {
+                        console.log('fcmToken', token)
+                        this.setState({ device_token: token });
+                    })
+                }
+                else {
+                    firebase.messaging().requestPermission();
+                }
+            }).catch(error => {
+            })
     }
 
     signUp = async () => {
@@ -289,7 +285,7 @@ class SignUp extends Component {
             return <Loader />;
 
         return (
-            <View style={{ flex: 1, paddingBottom: 20, marginTop: getStatusBarHeight(true) }}>
+            <View style={{ flex: 1, paddingBottom: 20 }}>
                 <View style={{ position: "absolute", top: 0, width: "100%", height: image_height }}>
                     <Image
                         source={Images.sign}

@@ -14,7 +14,6 @@ import PhoneInput from 'react-native-phone-input';
 import ImagePicker from 'react-native-image-crop-picker';
 import Styles from './style';
 import Toast from 'react-native-simple-toast';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -143,7 +142,7 @@ class ProfileEdit extends Component {
             return (<Loader />);
 
         return (
-            <View style={{ flex: 1, paddingTop: getStatusBarHeight(true) }}>
+            <View style={{ flex: 1 }}>
                 <Header icon_left={"times"} callback_left={this.goBack} title={"Edit Profile"} text_right={"save"} callback_right={this.save} />
                 <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingHorizontal: 20 }}>Basic Infomation</Text>
                 <View style={{ marginTop: 15, marginLeft: 15, flexDirection: "row", paddingRight: 20 }}>

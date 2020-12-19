@@ -16,7 +16,6 @@ import { Image } from 'react-native-elements';
 import { Picker } from '@react-native-community/picker';
 import { BaseColor } from '@config';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { Header, Loader, CustomModalPicker } from '@components';
 import MapView, { Marker } from 'react-native-maps';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -214,7 +213,7 @@ class Sell extends Component {
             return (<Loader />);
 
         return (
-            <View style={{ flex: 1, paddingTop: getStatusBarHeight(true) }}>
+            <View style={{ flex: 1 }}>
                 <ScrollView style={{ flex: 1 }}
                     refreshControl={
                         <RefreshControl
