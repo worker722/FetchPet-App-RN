@@ -7,7 +7,7 @@ import {
     FlatList,
 } from 'react-native';
 import { Header, Loader, HomeAds } from '@components';
-import { Avatar } from 'react-native-elements';
+import { Image } from 'react-native-elements';
 import { BaseColor } from '@config';
 
 
@@ -86,29 +86,27 @@ class ShowProfile extends Component {
                 }>
                     <Header icon_left={"arrow-left"} callback_left={this.goBack} title={"See Profile"} />
                     <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingHorizontal: 20 }}>Basic Infomation</Text>
-                    <View style={{ marginTop: 15, marginLeft: 15, paddingRight: 20 }}>
+                    <View style={{ marginTop: 15, marginLeft: 15, paddingRight: 20, flexDirection: "row" }}>
                         <View>
                             {user?.avatar ?
-                                <Avatar
-                                    size='xlarge'
-                                    rounded
+                                <Image
                                     source={{ uri: Api.SERVER_HOST + user?.avatar }}
                                     activeOpacity={0.7}
-                                    placeholderStyle={{ backgroundColor: "white" }}
+                                    PlaceholderStyle={{ backgroundColor: "white" }}
                                     containerStyle={{ marginHorizontal: 10, borderWidth: 1, borderColor: "#808080", width: 80, height: 80, borderRadius: 100 }}>
-                                </Avatar>
+                                </Image>
                                 :
                                 <View style={{ width: 80, height: 80, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
                                     <Text style={{ color: BaseColor.whiteColor, fontSize: 30 }}>{user?.name?.charAt(0).toUpperCase()}</Text>
                                 </View>
                             }
                         </View>
+                        <View style={{ justifyContent: "center", alignItems: "center", paddingHorizontal: 10 }}>
+                            <Text style={{ fontSize: 22, color: BaseColor.primaryColor }}>{user?.name}</Text>
+                        </View>
                     </View>
-                    <View style={{ flexDirection: "row", padding: 20 }}>
-                        <Text style={{ fontSize: 17, color: BaseColor.greyColor }}>Name : </Text>
-                        <Text style={{ fontSize: 17 }}>{user?.name}</Text>
-                    </View>
-                    <View style={{ flexDirection: "row", paddingHorizontal: 20, paddingBottom: 20 }}>
+                    <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingHorizontal: 20, paddingTop: 20 }}>Contact Infomation</Text>
+                    <View style={{ flexDirection: "row", paddingHorizontal: 20, paddingVertical: 20 }}>
                         <Text style={{ fontSize: 17, color: BaseColor.greyColor }}>Email : </Text>
                         <Text style={{ fontSize: 17 }}>{user?.email}</Text>
                     </View>

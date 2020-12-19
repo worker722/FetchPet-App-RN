@@ -39,6 +39,10 @@ class AdDetail extends Component {
             showRefresh: false,
             view: false
         }
+
+        props.navigation.addListener("willFocus", (event) => {
+            this.UNSAFE_componentWillMount();
+        });
     }
 
     UNSAFE_componentWillMount = () => {
@@ -75,7 +79,7 @@ class AdDetail extends Component {
     shareAds = async () => {
         Share.share({
             message:
-                "Fetch" + "\n" + "Online Location Based Pet MarketPlace App." + "\n" + Platform.select(({
+                "Fetch - Your Local Pet Marketplace App!" + "\n" + "Online Location Based Pet MarketPlace App." + "\n" + Platform.select(({
                     ios: global.APPLE_APP_LINK,
                     android: global.GOOGLE_APP_LINK
                 }))
@@ -154,7 +158,7 @@ class AdDetail extends Component {
                                 <View key={key} style={{ flex: 1 }}>
                                     <Image source={{ uri: Api.SERVER_HOST + item }}
                                         style={{ width: "100%", height: slider_height }}
-                                        PlaceholderContent={<ActivityIndicator size={30} color={BaseColor.primaryColor} />}
+                                        PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}
                                         placeholderStyle={{ backgroundColor: BaseColor.dddColor }}
                                     />
                                 </View>
@@ -208,7 +212,7 @@ class AdDetail extends Component {
                                         source={{ uri: Api.SERVER_HOST + ads?.user?.avatar }}
                                         activeOpacity={0.7}
                                         placeholderStyle={{ backgroundColor: "white" }}
-                                        PlaceholderContent={<ActivityIndicator size={15} color-={BaseColor.primaryColor} />}
+                                        PlaceholderContent={<ActivityIndicator color-={BaseColor.primaryColor} />}
                                         containerStyle={{ alignSelf: 'center', marginVertical: 20, marginHorizontal: 10, width: 60, height: 60, borderRadius: 100 }}>
                                     </Avatar>
                                     :

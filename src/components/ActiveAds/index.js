@@ -3,9 +3,10 @@ import {
     View,
     Text,
     TouchableOpacity,
+    ActivityIndicator
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { Avatar } from 'react-native-elements';
+import { Image } from 'react-native-elements';
 
 import { BaseColor } from '@config';
 import * as Api from '@api';
@@ -43,14 +44,13 @@ export default class ActiveAds extends Component {
             <TouchableOpacity style={{ flex: 1, flexDirection: "row", marginBottom: 10, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor, padding: 10 }}
                 onPress={() => navigation.navigate("AdDetail", { ad_id: item.id })}>
                 <View style={{ justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
-                    <Avatar
-                        size='xlarge'
-                        rounded
+                    <Image
                         source={{ uri: Api.SERVER_HOST + ad_images[0] }}
                         activeOpacity={0.7}
-                        placeholderStyle={{ backgroundColor: "white" }}
-                        containerStyle={{ alignSelf: 'center', marginRight: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 100, height: 100 }}>
-                    </Avatar>
+                        PlaceholderStyle={{ backgroundColor: "white" }}
+                        PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}
+                        style={{ alignSelf: 'center', marginRight: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 100, height: 100, borderRadius: 100 }}>
+                    </Image>
                     <View style={{ width: 1, height: 100, backgroundColor: BaseColor.dddColor }}></View>
                 </View>
                 <View style={{ flex: 1 }}>

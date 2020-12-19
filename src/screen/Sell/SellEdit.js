@@ -244,8 +244,8 @@ class SellEdit extends Component {
                     source={{ uri: item.path }}
                     style={{ width: image_size, height: image_size, borderColor: BaseColor.dddColor, borderWidth: 1, borderRadius: 10 }}
                     resizeMode="cover"
-                    placeholderStyle={{ backgroundColor: "white" }}
-                    PlaceholderContent={<ActivityIndicator size={20} color={BaseColor.primaryColor}></ActivityIndicator>}></Image>
+                    PlaceholderStyle={{ backgroundColor: "white" }}
+                    PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}></Image>
             </TouchableOpacity>
         )
     }
