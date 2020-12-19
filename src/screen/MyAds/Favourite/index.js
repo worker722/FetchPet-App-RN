@@ -5,7 +5,7 @@ import {
     ScrollView,
     RefreshControl
 } from 'react-native';
-import { ActiveAds, Loader } from '@components';
+import { FavouriteAds, Loader } from '@components';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -60,7 +60,7 @@ class Favourite extends Component {
                         keyExtractor={(item, index) => index.toString()}
                         data={ads}
                         renderItem={(item, key) => (
-                            <ActiveAds data={item} navigation={this.props.navigation} />
+                            <FavouriteAds data={item} navigation={this.props.navigation} />
                         )}
                     >
                     </FlatList>
