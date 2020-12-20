@@ -14,6 +14,11 @@ export const NOTIFICATION_CHAT_MESSAGE = 'chat_message';
 export const _SHOW_NOTIFICATION = '_show_notification';
 export const _SHOW_PHONE_ON_ADS = '_show_phone_on_ads';
 
+//PREF KEYS
+export const PREF_REMEMBER_ME = 'PREF_REMEMBER_ME';
+export const PREF_APPLE_EMAIL = 'PREF_APPLE_EMAIL';
+export const PREF_APPLE_NAME = 'PREF_APPLE_NAME';
+
 //ANDROID PACKAGE, APPLEAPP ID
 export const ANDROID_PACKAGE = 'fetch.market';
 export const APPLE_APP_ID = '1545467871';
