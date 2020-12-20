@@ -386,12 +386,12 @@ class SignUp extends Component {
                                     }
                                 </>
                             }
-                            <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 5, }} onPress={this.signUpWithFacebook}>
+                            {/* <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 5, }} onPress={this.signUpWithFacebook}>
                                 <View style={{ flex: 1, borderRadius: 7, backgroundColor: BaseColor.faceBookColor, justifyContent: "center", alignItems: "center" }}>
                                     <Text style={{ color: BaseColor.whiteColor, fontSize: 13 }}>Sign Up with</Text>
                                     <Icon name={"facebook-f"} size={15} color={BaseColor.whiteColor} style={{ position: "absolute", right: 10 }}></Icon>
                                 </View>
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                         </View>
                     </ScrollView>
                 </View>

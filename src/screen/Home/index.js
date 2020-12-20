@@ -105,10 +105,12 @@ class Home extends Component {
         firebase.notifications().onNotificationOpened((notificationOpen) => {
             try {
                 const { title, body, data } = notificationOpen.notification;
+                console.log('onNotificationOpened', data);
                 const newMessage = JSON.parse(data);
                 if (newMessage?.id_ads)
                     this.props.navigation.navigate("Chat", { ad_id: newMessage?.id_ads });
             } catch (error) {
+                console.log(error);
             }
         });
 
