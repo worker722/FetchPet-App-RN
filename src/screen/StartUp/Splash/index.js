@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import {
   View,
   PermissionsAndroid,
-  Platform
+  Platform,
+  Image
 } from "react-native";
 import geolocation from '@react-native-community/geolocation';
 
-import { Image } from 'react-native-elements';
 import { BaseColor, Images } from '@config';
 import * as Utils from '@utils';
 import { store, GetPrefrence } from '@store';
@@ -65,7 +65,7 @@ export default class Splash extends Component {
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor, alignItems: "center", justifyContent: "center" }}>
-        <Image placeholderStyle={{ backgroundColor: BaseColor.whiteColor }} source={Images.logo} style={{ width: 225, height: 80 }} resizeMode={"stretch"}></Image>
+        <Image source={Images.logo} style={{ width: 225, height: 80 }} resizeMode={"stretch"}></Image>
       </View>
     );
   }
