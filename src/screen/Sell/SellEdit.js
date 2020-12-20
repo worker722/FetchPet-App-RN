@@ -35,6 +35,7 @@ class SellEdit extends Component {
             selectedCategory: '',
             selectedBreed: '',
             selectedGender: 'Male',
+            selectedUnit: 'Day(s)',
             age: 0,
             description: '',
             price: 0,
@@ -50,6 +51,12 @@ class SellEdit extends Component {
             gender: [
                 { id: 1, name: 'Male' },
                 { id: 0, name: 'Female' }
+            ],
+            unit: [
+                { id: 0, name: "Day(s)" },
+                { id: 1, name: "Week(s)" },
+                { id: 2, name: "Month(s)" },
+                { id: 3, name: "Year(s)" },
             ],
 
             visiblePickerModal: false,
@@ -87,7 +94,8 @@ class SellEdit extends Component {
                 description: ads.description,
                 selectedCategory: ads.category.name,
                 selectedBreed: ads.breed.name,
-                selectedGender: ads.gender == 1 ? "Male" : "Female"
+                selectedGender: ads.gender == 1 ? "Male" : "Female",
+                selectedUnit: ads.unit
             });
 
             let region = {
@@ -150,7 +158,8 @@ class SellEdit extends Component {
     }
 
     editAds = async () => {
-        const { ads, selectedCategory, selectedBreed, selectedGender, age, price, description, uploadedImages, region, is_edit_image } = this.state;
+        const { ads, selectedCategory, selectedBreed, selectedGender, selectedUnit, age, price, description, uploadedImages, region, is_edit_image } = this.state;
+        console.log(selectedUnit)
         if (uploadedImages.length == 0) {
             Toast.show("Please choose pet images.");
             return;
@@ -176,7 +185,7 @@ class SellEdit extends Component {
             return;
         }
         this.setState({ showLoader: true });
-        const params = { is_edit_image: is_edit_image, ad_id: ads.id, category: selectedCategory, breed: selectedBreed, age: age, price: price, gender: selectedGender == 'Male' ? 1 : 0, image_key: 'ad_image', lat: region.latitude, long: region.longitude, description: description ? description : '' };
+        const params = { is_edit_image: is_edit_image, ad_id: ads.id, category: selectedCategory, breed: selectedBreed, age: age, unit: selectedUnit, price: price, gender: selectedGender == 'Male' ? 1 : 0, image_key: 'ad_image', lat: region.latitude, long: region.longitude, description: description ? description : '' };
         let response;
         if (is_edit_image) {
             response = await this.props.api.createAds('ads/edit', uploadedImages, params);
@@ -251,7 +260,7 @@ class SellEdit extends Component {
     }
 
     render = () => {
-        const { selectedCategory, selectedBreed, selectedGender, category, breed, gender, age, description, price, visiblePickerModal, showImagePanLoader, showLoader, showRefresh, uploadedImages, region } = this.state;
+        const { selectedCategory, selectedBreed, selectedGender, selectedUnit, category, breed, gender, age, unit, description, price, visiblePickerModal, showImagePanLoader, showLoader, showRefresh, uploadedImages, region } = this.state;
         const navigation = this.props.navigation;
 
         if (showLoader)
@@ -347,6 +356,25 @@ class SellEdit extends Component {
                         <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, marginLeft: 10, borderColor: BaseColor.dddColor }}>
                             {Platform.OS == "android" ?
                                 <Picker
+                                    selectedValue={selectedUnit}
+                                    style={{ height: 40, flex: 1, color: BaseColor.primaryColor }}
+                                    onValueChange={(value, index) => this.setState({ selectedUnit: value })}
+                                    itemStyle={{ height: 40 }}
+                                    mode="dropdown"
+                                >
+                                    {unit.map((item, index) => (
+                                        <Picker.Item key={index} label={item.name} value={item.name} />
+                                    ))}
+                                </Picker>
+                                :
+                                <CustomModalPicker title={"Select a Unit"} data={unit} selectedValue={selectedUnit} onValueChange={(item, key) => this.setState({ selectedUnit: item.name })} />
+                            }
+                        </View>
+                    </View>
+                    <View style={{ width: "100%", marginTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
+                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, borderColor: BaseColor.dddColor }}>
+                            {Platform.OS == "android" ?
+                                <Picker
                                     selectedValue={selectedGender}
                                     style={{ height: 40, flex: 1, color: BaseColor.primaryColor }}
                                     onValueChange={(value, index) => this.setState({ selectedGender: value })}
@@ -361,15 +389,12 @@ class SellEdit extends Component {
                                 <CustomModalPicker title={"Select a Gender"} data={gender} selectedValue={selectedGender} onValueChange={(item, key) => this.setState({ selectedGender: item.name })} />
                             }
                         </View>
-                    </View>
-                    <View style={{ width: "100%", marginTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, borderColor: BaseColor.dddColor }}>
+                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, marginLeft: 10, height: 50, borderColor: BaseColor.dddColor }}>
                             <TextInput
                                 value={`${price}`}
                                 onChangeText={(text) => this.setState({ price: text })}
                                 placeholder={"Price"} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10, justifyContent: "center", alignItems: "center" }} />
                         </View>
-                        <View style={{ flex: 1, marginLeft: 10 }}></View>
                     </View>
                     <View style={{ padding: 10, height: 100, marginTop: 10, borderWidth: 1, borderColor: BaseColor.dddColor, borderRadius: 10, marginHorizontal: 10 }}>
                         <TextInput
