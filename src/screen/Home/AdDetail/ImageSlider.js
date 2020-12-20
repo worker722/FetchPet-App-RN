@@ -59,7 +59,7 @@ export default class ImageSlider extends Component {
                             return (
                                 <Image
                                     key={`${key}`}
-                                    style={{ width: "100%", height: "100%", borderRadius: 20 }}
+                                    style={{ width: "100%", height: "100%", borderRadius: 5 }}
                                     resizeMode={'contain'}
                                     source={{ uri: Api.SERVER_HOST + item }}
                                     PlaceholderStyle={{ backgroundColor: "transparent" }}
@@ -100,7 +100,7 @@ export default class ImageSlider extends Component {
                                         marginLeft: 15,
                                         borderRadius: 8,
                                         borderColor: index == selectedIndex ? BaseColor.whiteColor : BaseColor.greyColor,
-                                        borderWidth: 3
+                                        borderWidth: 2
                                     }}
                                     source={{ uri: Api.SERVER_HOST + item }}
                                     PlaceholderStyle={{ backgroundColor: "transparent" }}

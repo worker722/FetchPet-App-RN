@@ -17,10 +17,10 @@ export default class InboxItem extends Component {
     }
 
     UNSAFE_componentWillMount = () => {
-        const { data, navigation } = this.props;
+        const { data } = this.props;
         const { message } = data.item;
         const latest_message = message[message.length - 1];
-        const { sender, receiver, ads } = latest_message;
+        const { ads } = latest_message;
         const ad_images = [];
         ads.meta.forEach((item, key) => {
             if (item.meta_key == '_ad_image')
@@ -57,7 +57,9 @@ export default class InboxItem extends Component {
                             <Text style={{ color: BaseColor.whiteColor, fontSize: 30 }}>{name?.charAt(0).toUpperCase()}</Text>
                         </View>
                     }
-                    <TouchableOpacity style={{ position: "absolute", bottom: 0, right: 3 }}>
+                    <TouchableOpacity
+                        style={{ position: "absolute", bottom: 0, right: 3 }}
+                        onPress={() => navigation.navigate("AdDetail", { ad_id: ads.id })}>
                         <Image
                             source={{ uri: Api.SERVER_HOST + ad_images[0] }}
                             PlaceholderStyle={{ backgroundColor: BaseColor.whiteColor }}
