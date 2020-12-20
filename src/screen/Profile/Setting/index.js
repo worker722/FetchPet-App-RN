@@ -8,7 +8,6 @@ import { GoogleSignin } from 'react-native-google-signin';
 import appleAuth from '@invertase/react-native-apple-authentication';
 import { LoginManager } from 'react-native-fbsdk';
 
-
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { store, SetPrefrence } from "@store";
@@ -48,11 +47,11 @@ class Setting extends Component {
     setNotificationStatus = async () => {
         const params = { key: global._SHOW_NOTIFICATION, value: this.state.is_showNotification ? 0 : 1 };
         this.setState({ is_showNotification: !this.state.is_showNotification });
-        const response = await this.props.api.post("profile/setting", params, true);
+        await this.props.api.post("profile/setting", params, true);
     }
 
     logOut = async () => {
-        await SetPrefrence("rememberMe", 0);
+        await SetPrefrence(global.PREF_REMEMBER_ME, 0);
         await SetPrefrence('user', null);
         const is_social = store.getState().auth.login.user.is_social;
         if (is_social == 1) {
@@ -70,7 +69,7 @@ class Setting extends Component {
     }
 
     logOutAll = async () => {
-        await SetPrefrence("rememberMe", 0);
+        await SetPrefrence(global.PREF_REMEMBER_ME, 0);
         await SetPrefrence('user', null);
         const is_social = store.getState().auth.login.user.is_social;
         if (is_social == 1) {

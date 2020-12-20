@@ -10,6 +10,7 @@ import { Image } from 'react-native-elements';
 import { BaseColor, Images } from '@config';
 import * as Utils from '@utils';
 import { store, GetPrefrence } from '@store';
+import * as global from "@api/global";
 
 export default class Splash extends Component {
   constructor(props) {
@@ -21,7 +22,7 @@ export default class Splash extends Component {
     setTimeout(async () => {
       const navigation = this.props.navigation;
 
-      const rememberMe = await GetPrefrence("rememberMe");
+      const rememberMe = await GetPrefrence(global.PREF_REMEMBER_ME);
       if (rememberMe == '1' && store.getState().auth.login?.user?.token)
         navigation.navigate("Home");
       else
