@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { CheckBox } from 'react-native-elements';
+import Toast from 'react-native-simple-toast';
 
 import { GoogleSignin } from 'react-native-google-signin';
 import appleAuth, { AppleButton } from '@invertase/react-native-apple-authentication';
@@ -22,12 +23,11 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { SetPrefrence, GetPrefrence } from "@store";
 import * as Api from '@api';
-import { Loader } from '@components';
-
-import Toast from 'react-native-simple-toast';
+import * as global from "@api/global";
 
 import { Images, BaseColor } from '@config';
 import * as Utils from '@utils';
+import { Loader } from '@components';
 
 const image_height = Utils.SCREEN.HEIGHT / 4;
 
@@ -103,7 +103,7 @@ class SignUp extends Component {
         this.setState({ showLoading: false });
 
         if (response?.success) {
-            SetPrefrence('rememberMe', 1);
+            SetPrefrence(global.PREF_REMEMBER_ME, 1);
             this.props.navigation.navigate("Home");
         }
     }
@@ -116,7 +116,7 @@ class SignUp extends Component {
 
             let userInfo = await GoogleSignin.signIn();
             if (userInfo.user.name == null)
-                userInfo.user.name = "lucky-fetch";
+                userInfo.user.name = "Fetch Lucky";
 
             if (this.state.device_token == '') {
                 Api.showNetworkError();
@@ -135,7 +135,7 @@ class SignUp extends Component {
             this.setState({ showLoading: false });
 
             if (response?.success) {
-                SetPrefrence('rememberMe', 0);
+                SetPrefrence(global.PREF_REMEMBER_ME, 0);
                 this.props.navigation.navigate("Home");
             }
 
@@ -159,8 +159,8 @@ class SignUp extends Component {
             let apple_name = '';
             let apple_email = '';
 
-            const name = await GetPrefrence("apple_name");
-            const email = await GetPrefrence("apple_email");
+            const name = await GetPrefrence(global.PREF_APPLE_NAME);
+            const email = await GetPrefrence(global.PREF_APPLE_EMAIL);
             if (name != '' && email != '') {
                 params = { name: name, email: email, password: "@fetch@", is_social: 3 };
                 is_apple_exist = true;
@@ -202,10 +202,10 @@ class SignUp extends Component {
             this.setState({ showLoading: false });
 
             if (response?.success) {
-                SetPrefrence('rememberMe', 0);
+                SetPrefrence(global.PREF_REMEMBER_ME, 0);
                 if (!is_apple_exist) {
-                    SetPrefrence('apple_email', apple_email);
-                    SetPrefrence('apple_name', apple_name);
+                    SetPrefrence(global.PREF_APPLE_EMAIL, apple_email);
+                    SetPrefrence(global.PREF_APPLE_NAME, apple_name);
                 }
                 this.props.navigation.navigate("Home");
             }
@@ -272,7 +272,7 @@ class SignUp extends Component {
             this.setState({ showLoading: false });
 
             if (response?.success) {
-                SetPrefrence('rememberMe', 0);
+                SetPrefrence(global.PREF_REMEMBER_ME, 0);
                 this.props.navigation.navigate("Home");
             }
         }
