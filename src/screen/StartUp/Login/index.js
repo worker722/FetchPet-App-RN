@@ -21,9 +21,9 @@ import firebase from 'react-native-firebase';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { SetPrefrence, GetPrefrence } from "@store";
+import * as global from "@api/global";
 import * as Api from '@api';
 import { Loader } from '@components';
-
 import { Images, BaseColor } from '@config';
 import * as Utils from '@utils';
 
@@ -77,14 +77,13 @@ class Login extends Component {
     login = async () => {
         const { email, password, rememberMe, device_token } = this.state;
         if (!Utils.isValidEmail(email) || password == '') {
-            Toast.show("Invalid email/password.");
+            Toast.show("Invalid email or password.");
             return;
         }
         if (device_token == '') {
             Api.showNetworkError();
             return;
         }
-
         this.setState({ showLoading: true });
 
         let params = { email: email, password: password };
@@ -99,7 +98,7 @@ class Login extends Component {
         this.setState({ showLoading: false });
 
         if (response?.success) {
-            SetPrefrence('rememberMe', rememberMe ? 1 : 0);
+            SetPrefrence(global.PREF_REMEMBER_ME, rememberMe ? 1 : 0);
             this.props.navigation.navigate("Home");
         }
     }
@@ -107,12 +106,10 @@ class Login extends Component {
     loginWithGoogle = async () => {
         try {
             const { rememberMe, device_token } = this.state;
-
             if (device_token == '') {
                 Api.showNetworkError();
                 return;
             }
-
             this.setState({ showLoading: true });
 
             await GoogleSignin.hasPlayServices();
@@ -130,7 +127,7 @@ class Login extends Component {
             this.setState({ showLoading: false });
 
             if (response?.success) {
-                SetPrefrence('rememberMe', rememberMe ? 1 : 0);
+                SetPrefrence(global.PREF_REMEMBER_ME, rememberMe ? 1 : 0);
                 this.props.navigation.navigate("Home");
             }
         } catch (error) {
@@ -142,7 +139,6 @@ class Login extends Component {
     loginWithApple = async () => {
         try {
             const { rememberMe, device_token } = this.state;
-
             if (device_token == '') {
                 Api.showNetworkError();
                 return;
@@ -155,8 +151,8 @@ class Login extends Component {
             let apple_name = '';
             let apple_email = '';
 
-            const name = await GetPrefrence("apple_name");
-            const email = await GetPrefrence("apple_email");
+            const name = await GetPrefrence(global.PREF_APPLE_NAME);
+            const email = await GetPrefrence(global.PREF_APPLE_EMAIL);
             if (name != '' && email != '') {
                 params = { name: name, email: email, password: "@fetch@", is_social: 3 };
                 is_apple_exist = true;
@@ -198,10 +194,10 @@ class Login extends Component {
             this.setState({ showLoading: false });
 
             if (response?.success) {
-                SetPrefrence('rememberMe', rememberMe ? 1 : 0);
+                SetPrefrence(global.PREF_REMEMBER_ME, rememberMe ? 1 : 0);
                 if (!is_apple_exist) {
-                    SetPrefrence('apple_email', apple_email);
-                    SetPrefrence('apple_name', apple_name);
+                    SetPrefrence(global.PREF_APPLE_EMAIL, apple_email);
+                    SetPrefrence(global.PREF_APPLE_NAME, apple_name);
                 }
                 this.props.navigation.navigate("Home");
             }
@@ -217,7 +213,6 @@ class Login extends Component {
             Api.showNetworkError();
             return;
         }
-
         LoginManager.logInWithPermissions(['public_profile', 'email']).then(
             result => {
                 if (result.isCancelled) {
@@ -246,7 +241,7 @@ class Login extends Component {
     }
 
     _responseInfoCallback = async (error, result) => {
-        const { rememberMe } = this.state;
+        const { rememberMe, device_token } = this.state;
         if (error) {
             console.log(error);
         } else {
@@ -267,7 +262,7 @@ class Login extends Component {
             this.setState({ showLoading: false });
 
             if (response?.success) {
-                SetPrefrence('rememberMe', rememberMe ? 1 : 0);
+                SetPrefrence(global.PREF_REMEMBER_ME, rememberMe ? 1 : 0);
                 this.props.navigation.navigate("Home");
             }
         }
