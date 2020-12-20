@@ -1,6 +1,6 @@
 
 import React, { Component } from "react";
-import { LogBox, View } from "react-native";
+import { LogBox, View, StatusBar } from "react-native";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import App from "@navigation";
@@ -15,11 +15,15 @@ export default class index extends Component {
         super(props);
     }
 
+    componentDidMount = () => {
+        StatusBar.setBackgroundColor(BaseColor.primaryColor, true);
+    }
+
     render() {
         return (
             <Provider store={store}>
                 <PersistGate loading={null} persistor={persistor}>
-                    <View style={{ height: getStatusBarHeight(true), backgroundColor: BaseColor.primaryColor }}></View>
+                    <View style={{ height: getStatusBarHeight(true), backgroundColor: BaseColor.primaryColor }} />
                     <App />
                 </PersistGate>
             </Provider>
