@@ -59,7 +59,7 @@ export default class ActiveAds extends Component {
                             <Text style={{ color: BaseColor.greyColor, fontSize: 10 }}>Category</Text>
                             <Text style={{ color: BaseColor.primaryColor }}>{item.category.name}</Text>
                             <Text style={{ color: BaseColor.greyColor, fontSize: 10 }}>Age</Text>
-                            <Text>{item.age}</Text>
+                            <Text>{item.age} {item.unit}</Text>
                             <Text style={{ color: BaseColor.greyColor, fontSize: 10 }}>Location</Text>
                             <Text numberOfLines={1}>{adsLocation}</Text>
                         </View>

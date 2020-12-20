@@ -36,6 +36,7 @@ class Sell extends Component {
             selectedCategory: '',
             selectedBreed: '',
             selectedGender: 'Male',
+            selectedUnit: 'Day(s)',
             age: 0,
             description: '',
             price: 0,
@@ -50,6 +51,12 @@ class Sell extends Component {
             gender: [
                 { id: 1, name: 'Male' },
                 { id: 0, name: 'Female' }
+            ],
+            unit: [
+                { id: 0, name: "Day(s)" },
+                { id: 1, name: "Week(s)" },
+                { id: 2, name: "Month(s)" },
+                { id: 3, name: "Year(s)" },
             ],
 
             visiblePickerModal: false,
@@ -131,7 +138,8 @@ class Sell extends Component {
     }
 
     createAds = async () => {
-        const { selectedCategory, selectedBreed, selectedGender, age, price, description, uploadedImages, region } = this.state;
+        const { selectedCategory, selectedBreed, selectedGender, selectedUnit, age, price, description, uploadedImages, region } = this.state;
+        console.log(selectedUnit)
         if (uploadedImages.length < 5) {
             Toast.show("Please choose over 5 pet images.");
             return;
@@ -157,7 +165,7 @@ class Sell extends Component {
             return;
         }
         this.setState({ showLoader: true });
-        const params = { category: selectedCategory, breed: selectedBreed, age: age, price: price, gender: selectedGender == 'Male' ? 1 : 0, image_key: 'ad_image', lat: region.latitude, long: region.longitude, description: description ? description : '' };
+        const params = { category: selectedCategory, breed: selectedBreed, age: age, price: price, gender: selectedGender == 'Male' ? 1 : 0, image_key: 'ad_image', unit: selectedUnit, lat: region.latitude, long: region.longitude, description: description ? description : '' };
         const response = await this.props.api.createAds('ads/create', uploadedImages, params);
         this.setState({ showLoader: false });
         if (response?.success) {
@@ -207,14 +215,14 @@ class Sell extends Component {
     }
 
     render = () => {
-        const { selectedCategory, selectedBreed, selectedGender, category, breed, gender, visiblePickerModal, showLoader, showRefresh, uploadedImages, region } = this.state;
+        const { selectedCategory, selectedBreed, selectedGender, selectedUnit, category, breed, gender, unit, visiblePickerModal, showLoader, showRefresh, uploadedImages, region } = this.state;
         const navigation = this.props.navigation;
 
         if (showLoader)
             return (<Loader />);
 
         return (
-            <KeyboardAvoidingView style={{ flex: 1 }} behavior="position">
+            <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS == "android" ? "" : "position"}>
                 <ScrollView style={{ flex: 1 }}
                     refreshControl={
                         <RefreshControl
@@ -298,6 +306,25 @@ class Sell extends Component {
                         <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, paddingVertical: 5, marginLeft: 10, borderColor: BaseColor.dddColor }}>
                             {Platform.OS == "android" ?
                                 <Picker
+                                    selectedValue={selectedUnit}
+                                    style={{ height: 40, flex: 1, color: BaseColor.primaryColor }}
+                                    onValueChange={(value, index) => this.setState({ selectedUnit: value })}
+                                    itemStyle={{ height: 40 }}
+                                    mode="dropdown"
+                                >
+                                    {unit.map((item, index) => (
+                                        <Picker.Item key={index} label={item.name} value={item.name} />
+                                    ))}
+                                </Picker>
+                                :
+                                <CustomModalPicker title={"Select a Unit"} data={unit} selectedValue={selectedUnit} onValueChange={(item, key) => this.setState({ selectedUnit: item.name })} />
+                            }
+                        </View>
+                    </View>
+                    <View style={{ width: "100%", marginTop: 10, flexDirection: "row", height: 50, paddingHorizontal: 10 }}>
+                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, paddingVertical: 5, borderColor: BaseColor.dddColor }}>
+                            {Platform.OS == "android" ?
+                                <Picker
                                     selectedValue={selectedGender}
                                     style={{ height: 40, flex: 1, color: BaseColor.primaryColor }}
                                     onValueChange={(value, index) => this.setState({ selectedGender: value })}
@@ -312,14 +339,11 @@ class Sell extends Component {
                                 <CustomModalPicker title={"Select a Gender"} data={gender} selectedValue={selectedGender} onValueChange={(item, key) => this.setState({ selectedGender: item.name })} />
                             }
                         </View>
-                    </View>
-                    <View style={{ width: "100%", marginTop: 10, flexDirection: "row", height: 50, paddingHorizontal: 10 }}>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor }}>
+                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, marginLeft: 10, borderColor: BaseColor.dddColor }}>
                             <TextInput
                                 onChangeText={(text) => this.setState({ price: text })}
                                 placeholder={"Price"} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10, justifyContent: "center", alignItems: "center" }} />
                         </View>
-                        <View style={{ flex: 1, marginLeft: 10 }}></View>
                     </View>
                     <View style={{ padding: 10, height: 100, marginTop: 10, borderWidth: 1, borderColor: BaseColor.dddColor, borderRadius: 10, marginHorizontal: 10 }}>
                         <TextInput
@@ -342,7 +366,7 @@ class Sell extends Component {
                     </View>
                     <TouchableOpacity
                         onPress={this.createAds}
-                        style={{ marginTop: 15, marginBottom: 20, backgroundColor: BaseColor.primaryColor, borderRadius: 5, justifyContent: "center", alignItems: "center", paddingVertical: 10, marginHorizontal: 15 }}>
+                        style={{ marginTop: 15, marginBottom: 30, backgroundColor: BaseColor.primaryColor, borderRadius: 5, justifyContent: "center", alignItems: "center", paddingVertical: 10, marginHorizontal: 15 }}>
                         <Text style={{ color: BaseColor.whiteColor, fontSize: 18 }}>Create AD</Text>
                     </TouchableOpacity>
                 </ScrollView>

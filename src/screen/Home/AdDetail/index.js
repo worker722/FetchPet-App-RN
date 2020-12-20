@@ -190,7 +190,7 @@ class AdDetail extends Component {
                                 <Text style={{ color: BaseColor.greyColor, fontSize: 13 }}>Pet</Text>
                                 <Text style={{ color: BaseColor.primaryColor, fontSize: 17, fontWeight: "bold" }}>{ads?.category?.name}</Text>
                                 <Text style={{ color: BaseColor.greyColor, marginTop: 15, fontSize: 13 }}>Age</Text>
-                                <Text style={{ fontSize: 15, fontWeight: "bold" }}>{ads?.age} Years</Text>
+                                <Text style={{ fontSize: 15, fontWeight: "bold" }}>{ads?.age} {ads?.unit}</Text>
                                 <Text style={{ color: BaseColor.greyColor, marginTop: 15, fontSize: 13 }}>Gender</Text>
                                 <Text style={{ fontSize: 15, fontWeight: "bold" }}>Male</Text>
                             </View>

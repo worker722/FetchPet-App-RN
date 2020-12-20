@@ -90,7 +90,7 @@ export default class HomeAds extends Component {
                     <Text style={{ color: "grey", fontSize: 10 }}>Breed</Text>
                     <Text>{item.breed.name}</Text>
                     <Text style={{ color: "grey", fontSize: 10 }}>Age</Text>
-                    <Text>{item.age} Years</Text>
+                    <Text>{item.age} {item.unit}</Text>
                     <Text style={{ color: "grey", fontSize: 10 }}>Location</Text>
                     <Text numberOfLines={1}>{adsLocation}</Text>
                 </View>

@@ -59,7 +59,7 @@ export default class FavouriteAds extends Component {
                             <Text style={{ color: BaseColor.greyColor, fontSize: 10 }}>Category</Text>
                             <Text style={{ color: BaseColor.primaryColor }}>{ads.category.name}</Text>
                             <Text style={{ color: BaseColor.greyColor, fontSize: 10 }}>Age</Text>
-                            <Text>{ads.age}</Text>
+                            <Text>{ads.age} {ads.unit}</Text>
                             <Text style={{ color: BaseColor.greyColor, fontSize: 10 }}>Location</Text>
                             <Text numberOfLines={1}>{adsLocation}</Text>
                         </View>
