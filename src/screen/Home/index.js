@@ -370,7 +370,7 @@ class Home extends Component {
         pets[index].is_fav = value;
         this.setState({ pets: pets });
         const param = { ad_id: item.id, is_fav: value };
-        const response = await this.props.api.post('ads/ad_favourite', param);
+        await this.props.api.post('ads/ad_favourite', param);
     }
 
     renderFilterItem = ({ item, index }) => {
