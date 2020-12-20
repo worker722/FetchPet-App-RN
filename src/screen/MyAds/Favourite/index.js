@@ -28,7 +28,7 @@ class Favourite extends Component {
     }
 
     start = async () => {
-        const response = await this.props.api.get('ads/activeAds');
+        const response = await this.props.api.get('ads/favouriteAds');
         if (response?.success) {
             this.setState({ ads: response.data.ads });
         }
