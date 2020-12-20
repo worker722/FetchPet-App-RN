@@ -89,7 +89,7 @@ const routeConfigs = {
 							alignItems: "center",
 							marginBottom: 30,
 							borderRadius: 100,
-							backgroundColor: "#fff"
+							backgroundColor: BaseColor.whiteColor
 						}}
 					>
 						<Image source={focused ? Images.ic_sell_fill : Images.ic_sell} />

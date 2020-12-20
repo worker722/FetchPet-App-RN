@@ -153,7 +153,7 @@ class AdDetail extends Component {
                         />
                     }>
                     <View style={{ height: slider_height }}>
-                        <Swiper style={{ height: slider_height }} autoplay={true} dotColor={"white"} paginationStyle={{ position: "absolute", bottom: 10 }} activeDotColor={BaseColor.primaryColor} dotStyle={{ width: 8, height: 8, borderRadius: 100 }} activeDotStyle={{ width: 11, height: 11, borderRadius: 100 }}>
+                        <Swiper style={{ height: slider_height }} autoplay={true} dotColor={BaseColor.whiteColor} paginationStyle={{ position: "absolute", bottom: 10 }} activeDotColor={BaseColor.primaryColor} dotStyle={{ width: 8, height: 8, borderRadius: 100 }} activeDotStyle={{ width: 11, height: 11, borderRadius: 100 }}>
                             {ad_images.map((item, key) => (
                                 <View key={key} style={{ flex: 1 }}>
                                     <Image source={{ uri: Api.SERVER_HOST + item }}
@@ -166,7 +166,7 @@ class AdDetail extends Component {
                         </Swiper>
                     </View>
                     <View style={{ position: "absolute", flexDirection: "row" }}>
-                        <Header icon_left={"arrow-left"} icon_right={"share-alt"} color_icon_left={"white"} color_icon_right={"white"} callback_left={this.goBack} callback_right={this.shareAds} />
+                        <Header icon_left={"arrow-left"} icon_right={"share-alt"} color_icon_left={BaseColor.whiteColor} color_icon_right={BaseColor.whiteColor} callback_left={this.goBack} callback_right={this.shareAds} />
                     </View>
                     <TouchableOpacity style={{ position: "absolute", top: (slider_height - 40), left: 10 }} onPress={this.showFullScreen}>
                         <Icon name="expand-arrows-alt" size={25} color={BaseColor.whiteColor}></Icon>
@@ -209,7 +209,7 @@ class AdDetail extends Component {
                                     <Image
                                         source={{ uri: Api.SERVER_HOST + ads?.user?.avatar }}
                                         activeOpacity={0.7}
-                                        PlaceholderStyle={{ backgroundColor: "white" }}
+                                        PlaceholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                                         PlaceholderContent={<ActivityIndicator color-={BaseColor.primaryColor} />}
                                         style={{ alignSelf: 'center', marginVertical: 20, marginHorizontal: 10, width: 60, height: 60, borderRadius: 100 }}>
                                     </Image>

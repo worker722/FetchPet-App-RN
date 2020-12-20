@@ -165,7 +165,7 @@ class Chat extends Component {
                                 <Image
                                     source={{ uri: Api.SERVER_HOST + other_user?.avatar }}
                                     activeOpacity={0.7}
-                                    PlaceholderStyle={{ backgroundColor: "white" }}
+                                    PlaceholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                                     PlaceholderContent={<ActivityIndicator color={BaseColor.whiteColor} />}
                                     style={{ alignSelf: 'center', marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 60, height: 60, borderRadius: 100 }}>
                                 </Image>
@@ -181,14 +181,14 @@ class Chat extends Component {
                             <Image
                                 source={{ uri: Api.SERVER_HOST + ad_images[0] }}
                                 activeOpacity={0.7}
-                                PlaceholderStyle={{ backgroundColor: "white" }}
+                                PlaceholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                                 PlaceholderContent={<ActivityIndicator color={BaseColor.whiteColor} />}
                                 style={{ borderWidth: 1, borderColor: BaseColor.whiteColor, width: 25, height: 25, borderRadius: 100 }}>
                             </Image>
                         </TouchableOpacity>
                     </View>
                     <View style={{ justifyContent: "center", paddingLeft: 10, flex: 1 }}>
-                        <Text style={{ color: "white" }}>{other_user?.name}</Text>
+                        <Text style={{ color: BaseColor.whiteColor }}>{other_user?.name}</Text>
                     </View>
                 </View>
                 <ScrollView
@@ -222,11 +222,11 @@ class Chat extends Component {
                     </TextInput>
                     <View style={{ position: "absolute", right: 0, top: 0, bottom: 0, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                         {is_sending ?
-                            <View style={{ padding: 8, marginRight: 25, borderRadius: 100, backgroundColor: "white", justifyContent: "center", alignItems: "center" }}>
+                            <View style={{ padding: 8, marginRight: 25, borderRadius: 100, backgroundColor: BaseColor.whiteColor, justifyContent: "center", alignItems: "center" }}>
                                 <ActivityIndicator color={BaseColor.primaryColor} />
                             </View>
                             :
-                            <TouchableOpacity onPress={() => this.sendMessage()} style={{ padding: 8, marginRight: 25, borderRadius: 100, backgroundColor: "white", justifyContent: "center", alignItems: "center" }}>
+                            <TouchableOpacity onPress={() => this.sendMessage()} style={{ padding: 8, marginRight: 25, borderRadius: 100, backgroundColor: BaseColor.whiteColor, justifyContent: "center", alignItems: "center" }}>
                                 <Icon name={"location-arrow"} size={20} color={"grey"}></Icon>
                             </TouchableOpacity>
                         }

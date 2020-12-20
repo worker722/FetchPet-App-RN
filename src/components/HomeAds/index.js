@@ -81,7 +81,7 @@ export default class HomeAds extends Component {
                     <Image
                         source={{ uri: Api.SERVER_HOST + ad_images[0] }}
                         style={{ width: 120, height: "100%", borderRadius: 5, borderWidth: 1, borderColor: BaseColor.dddColor }}
-                        PlaceholderStyle={{ backgroundColor: "white" }}
+                        PlaceholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                         PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}></Image>
                 </View>
                 <View style={{ flexDirection: "column", flex: 1, paddingLeft: 10, justifyContent: "center", alignItems: "flex-start" }}>

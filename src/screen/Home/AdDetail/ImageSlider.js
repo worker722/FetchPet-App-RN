@@ -41,14 +41,14 @@ export default class ImageSlider extends Component {
 
         return (
             <View
-                style={{ backgroundColor: "#000", flex: 1 }}
+                style={{ backgroundColor: BaseColor.blackColor, flex: 1 }}
             >
                 <View style={{ flex: 1 }}>
                     <Swiper
                         ref={ref => {
                             this.swiperRef = ref;
                         }}
-                        dotStyle={{ width: 8, height: 8, borderRadius: 100, backgroundColor: "white" }} dotColor={BaseColor.primaryColor} activeDotStyle={{ width: 11, height: 11, borderRadius: 100 }}
+                        dotStyle={{ width: 8, height: 8, borderRadius: 100, backgroundColor: BaseColor.whiteColor }} dotColor={BaseColor.primaryColor} activeDotStyle={{ width: 11, height: 11, borderRadius: 100 }}
                         paginationStyle={{ bottom: 0 }}
                         loop={false}
                         activeDotColor={BaseColor.primaryColor}
