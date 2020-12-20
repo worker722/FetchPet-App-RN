@@ -18,6 +18,7 @@ export const _SHOW_PHONE_ON_ADS = '_show_phone_on_ads';
 export const PREF_REMEMBER_ME = 'PREF_REMEMBER_ME';
 export const PREF_APPLE_EMAIL = 'PREF_APPLE_EMAIL';
 export const PREF_APPLE_NAME = 'PREF_APPLE_NAME';
+export const PREF_SHOW_APPLE_BUTTON = 'PREF_SHOW_APPLE_BUTTON';
 
 //ANDROID PACKAGE, APPLEAPP ID
 export const ANDROID_PACKAGE = 'fetch.market';
