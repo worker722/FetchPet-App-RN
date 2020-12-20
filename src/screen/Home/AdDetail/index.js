@@ -221,14 +221,14 @@ class AdDetail extends Component {
                                 <View style={{ flex: 1 }}>
                                     <Text style={{ color: BaseColor.primaryColor }}>{ads?.user?.name}</Text>
                                     <Text style={{ fontSize: 10 }}>Member since {Utils.DATE2STR(ads?.user?.created_at, 'MMM YYYY')}</Text>
-                                    <View style={{ justifyContent: "flex-start", alignItems: "flex-start" }}>
+                                    {/* <View style={{ justifyContent: "flex-start", alignItems: "flex-start" }}>
                                         <Rating
                                             readonly={true}
                                             ratingCount={5}
-                                            startingValue={0}
+                                            startingValue={5}
                                             imageSize={13}
                                         />
-                                    </View>
+                                    </View> */}
                                 </View>
                                 <Icon name={"angle-right"} color={BaseColor.primaryColor} size={25}></Icon>
                             </TouchableOpacity>

@@ -154,7 +154,7 @@ class Chat extends Component {
             return (<Loader />);
 
         return (
-            <KeyboardAvoidingView style={{ flex: 1 }} behavior="position">
+            <KeyboardAvoidingView style={{ flex: 1, marginBottom: 5 }} behavior={Platform.OS == "android" ? "" : "position"}>
                 <View style={{ width: "100%", height: 80, backgroundColor: BaseColor.primaryColor, flexDirection: "row", padding: 10 }}>
                     <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", padding: 10 }} onPress={() => navigation.navigate("Inbox")} >
                         <Icon name={"arrow-left"} size={20} color={BaseColor.whiteColor}></Icon>
@@ -213,7 +213,7 @@ class Chat extends Component {
                         />
                     </View>
                 </ScrollView>
-                <View style={{ height: 50, paddingHorizontal: 10, width: "100%", justifyContent: "center", alignItems: "center" }}>
+                <View style={{ height: 50, paddingHorizontal: 5, width: "100%", justifyContent: "center", alignItems: "center" }}>
                     <TextInput
                         style={{ flex: 1, backgroundColor: BaseColor.dddColor, width: "100%", borderRadius: 30, paddingLeft: 20, paddingRight: 100 }}
                         value={this.state.message}
