@@ -225,7 +225,7 @@ class AdDetail extends Component {
                                         <Rating
                                             readonly={true}
                                             ratingCount={5}
-                                            startingValue={5}
+                                            startingValue={0}
                                             imageSize={13}
                                         />
                                     </View>
