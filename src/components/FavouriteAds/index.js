@@ -17,32 +17,32 @@ export default class FavouriteAds extends Component {
         super(props);
 
         this.state = {
-            item: null,
+            ads: null,
             ad_images: [],
         }
     }
 
     UNSAFE_componentWillMount = () => {
         const { data } = this.props;
-        const item = data.item;
+        const ads = data.item;
         const ad_images = [];
-        item.meta.forEach((item, key) => {
+        ads.meta.forEach((item, key) => {
             if (item.meta_key == '_ad_image')
                 ad_images.push(item.meta_value);
         });
-        this.setState({ item, ad_images });
-        Utils.getAddressByCoords(item.lat, item.long, true, (adsLocation) => {
+        this.setState({ ads, ad_images });
+        Utils.getAddressByCoords(ads.lat, ads.long, true, (adsLocation) => {
             this.setState({ adsLocation });
         });
     }
 
     render = () => {
-        const { adsLocation, item, ad_images, ad_likes, ad_views } = this.state;
+        const { adsLocation, ads, ad_images } = this.state;
         const { navigation } = this.props;
 
         return (
             <TouchableOpacity style={{ flex: 1, flexDirection: "row", marginBottom: 10, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor, padding: 10 }}
-                onPress={() => navigation.navigate("AdDetail", { ad_id: item.id })}>
+                onPress={() => navigation.navigate("AdDetail", { ad_id: ads.id })}>
                 <View style={{ justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
                     <Image
                         source={{ uri: Api.SERVER_HOST + ad_images[0] }}
@@ -57,9 +57,9 @@ export default class FavouriteAds extends Component {
                     <View style={{ flexDirection: "row" }}>
                         <View style={{ flexDirection: "column", flex: 1, paddingLeft: 10, justifyContent: "center", alignItems: "flex-start" }}>
                             <Text style={{ color: BaseColor.greyColor, fontSize: 10 }}>Category</Text>
-                            <Text style={{ color: BaseColor.primaryColor }}>{item.category.name}</Text>
+                            <Text style={{ color: BaseColor.primaryColor }}>{ads.category.name}</Text>
                             <Text style={{ color: BaseColor.greyColor, fontSize: 10 }}>Age</Text>
-                            <Text>{item.age}</Text>
+                            <Text>{ads.age}</Text>
                             <Text style={{ color: BaseColor.greyColor, fontSize: 10 }}>Location</Text>
                             <Text numberOfLines={1}>{adsLocation}</Text>
                         </View>
@@ -68,20 +68,20 @@ export default class FavouriteAds extends Component {
                                 <View style={{ width: 10, height: 10, borderRadius: 100, backgroundColor: BaseColor.activeColor, marginRight: 5 }}></View>
                                 <Text style={{ color: BaseColor.activeColor, fontSize: 13, textAlign: "right" }}>Active</Text>
                             </View>
-                            <Text style={{ textAlign: "right", flex: 1, textAlignVertical: "center", fontWeight: "bold" }}>$ {item.price}</Text>
+                            <Text style={{ textAlign: "right", flex: 1, textAlignVertical: "center", fontWeight: "bold" }}>$ {ads.price}</Text>
                         </View>
                     </View>
                     <View style={{ flexDirection: "row", marginTop: 15 }}>
                         <View style={{ flex: 1, paddingLeft: 10 }}>
-                            <Text style={{ fontSize: 10, color: BaseColor.greyColor }} numberOfLines={1}>{Utils.relativeTime(item.updated_at)} posted</Text>
+                            <Text style={{ fontSize: 10, color: BaseColor.greyColor }} numberOfLines={1}>{Utils.relativeTime(ads.updated_at)} posted</Text>
                         </View>
                         <View style={{ paddingLeft: 10, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                             <Icon name={"eye"} size={13} color={BaseColor.greyColor}></Icon>
-                            <Text style={{ fontSize: 10, color: BaseColor.greyColor, marginLeft: 5 }}>View : {item.views}</Text>
+                            <Text style={{ fontSize: 10, color: BaseColor.greyColor, marginLeft: 5 }}>View : {ads.views}</Text>
                         </View>
                         <View style={{ paddingLeft: 10, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                             <Icon name={"heart"} size={13} color={BaseColor.greyColor}></Icon>
-                            <Text style={{ fontSize: 10, color: BaseColor.greyColor, marginLeft: 5 }}>Like : {item.likes}</Text>
+                            <Text style={{ fontSize: 10, color: BaseColor.greyColor, marginLeft: 5 }}>Like : {ads.likes}</Text>
                         </View>
                     </View>
                 </View>
