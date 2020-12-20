@@ -64,7 +64,7 @@ class Profile extends Component {
                         <Image
                             source={{ uri: Api.SERVER_HOST + user?.avatar }}
                             activeOpacity={0.7}
-                            PlaceholderStyle={{ backgroundColor: "white" }}
+                            PlaceholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                             PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}
                             style={{ marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 80, height: 80, borderRadius: 100 }}>
                         </Image>

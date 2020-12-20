@@ -47,7 +47,7 @@ export default class ActiveAds extends Component {
                     <Image
                         source={{ uri: Api.SERVER_HOST + ad_images[0] }}
                         activeOpacity={0.7}
-                        PlaceholderStyle={{ backgroundColor: "white" }}
+                        PlaceholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                         PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}
                         style={{ alignSelf: 'center', marginRight: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 100, height: 100, borderRadius: 100 }}>
                     </Image>

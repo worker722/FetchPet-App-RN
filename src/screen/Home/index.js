@@ -373,8 +373,8 @@ class Home extends Component {
 
     renderFilterItem = ({ item, index }) => {
         return (
-            <TouchableOpacity activeOpacity={1} onPress={() => this.filterSelected(item.type, item.id)} style={{ width: filterItem_width, justifyContent: "center", alignItems: "center", backgroundColor: item.is_selected ? BaseColor.primaryColor : "white", height: 40, borderRadius: 5 }}>
-                <Text style={{ color: !item.is_selected ? BaseColor.primaryColor : "white" }}>{item.name}</Text>
+            <TouchableOpacity activeOpacity={1} onPress={() => this.filterSelected(item.type, item.id)} style={{ width: filterItem_width, justifyContent: "center", alignItems: "center", backgroundColor: item.is_selected ? BaseColor.primaryColor : BaseColor.whiteColor, height: 40, borderRadius: 5 }}>
+                <Text style={{ color: !item.is_selected ? BaseColor.primaryColor : BaseColor.whiteColor }}>{item.name}</Text>
             </TouchableOpacity>
         )
     }
@@ -418,7 +418,7 @@ class Home extends Component {
                     <View style={{ borderRadius: 5, height: 40, flex: 1, backgroundColor: BaseColor.primaryColor }}>
                         <TextInput
                             onChangeText={(text) => this.setState({ searchText: text })}
-                            style={{ flex: 1, paddingLeft: 45, paddingRight: 20, color: "white" }}
+                            style={{ flex: 1, paddingLeft: 45, paddingRight: 20, color: BaseColor.whiteColor }}
                             placeholder={"Search"} placeholderTextColor={BaseColor.whiteColor}></TextInput>
                         <TouchableOpacity style={{ position: "absolute", padding: 10 }} onPress={() => this.searchAds()}>
                             <Icon name={"search"} size={20} color={BaseColor.whiteColor}></Icon>

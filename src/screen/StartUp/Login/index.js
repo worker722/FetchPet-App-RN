@@ -285,7 +285,7 @@ class Login extends Component {
                 <View style={{ position: "absolute", top: 0, width: "100%", height: IMAGE_HEIGHT }}>
                     <Image
                         source={Images.sign}
-                        style={{ width: "100%", height: IMAGE_HEIGHT + 30 }} placeholderStyle={{ backgroundColor: "white" }}></Image>
+                        style={{ width: "100%", height: IMAGE_HEIGHT + 30 }} placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}></Image>
                 </View>
                 <View style={{ position: "absolute", width: "100%", height: IMAGE_HEIGHT, top: 0, backgroundColor: BaseColor.blackColor, opacity: 0.3 }}></View>
                 <TouchableOpacity onPress={() => navigation.navigate("Welcome")} style={{ position: "absolute", top: 20, left: 20 }}>
@@ -293,7 +293,7 @@ class Login extends Component {
                 </TouchableOpacity>
                 <View style={{ flex: 1, borderTopLeftRadius: 20, borderTopRightRadius: 20, marginTop: IMAGE_HEIGHT - 20, backgroundColor: BaseColor.whiteColor }}>
                     <View style={{ width: "100%", height: 80, alignItems: "center", justifyContent: "center", marginTop: 20 }}>
-                        <Image placeholderStyle={{ backgroundColor: "white" }} source={Images.logo} style={{ width: 168, height: 60 }} resizeMode={"stretch"}></Image>
+                        <Image placeholderStyle={{ backgroundColor: BaseColor.whiteColor }} source={Images.logo} style={{ width: 168, height: 60 }} resizeMode={"stretch"}></Image>
                     </View>
                     <ScrollView style={{ flex: 1, marginTop: 30 }}>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center", marginBottom: 20 }}>
@@ -359,7 +359,7 @@ class Login extends Component {
                             <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 5, }} onPress={this.loginWithFacebook}>
                                 <View style={{ flex: 1, borderRadius: 7, backgroundColor: BaseColor.faceBookColor, justifyContent: "center", alignItems: "center" }}>
                                     <Text style={{ color: BaseColor.whiteColor, fontSize: 13 }}>Login With Facebook</Text>
-                                    <Icon name={"facebook-f"} size={15} color={"#fff"} style={{ position: "absolute", right: 10 }}></Icon>
+                                    <Icon name={"facebook-f"} size={15} color={BaseColor.whiteColor} style={{ position: "absolute", right: 10 }}></Icon>
                                 </View>
                             </TouchableOpacity>
                         </View>

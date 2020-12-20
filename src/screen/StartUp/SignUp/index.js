@@ -289,7 +289,7 @@ class SignUp extends Component {
                 <View style={{ position: "absolute", top: 0, width: "100%", height: image_height }}>
                     <Image
                         source={Images.sign}
-                        style={{ width: "100%", height: image_height + 30 }} placeholderStyle={{ backgroundColor: "white" }}></Image>
+                        style={{ width: "100%", height: image_height + 30 }} placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}></Image>
                 </View>
                 <View style={{ position: "absolute", width: "100%", height: image_height, top: 0, backgroundColor: BaseColor.blackColor, opacity: 0.3 }}></View>
                 <TouchableOpacity onPress={() => this.props.navigation.navigate("Welcome")} style={{ position: "absolute", top: 20, left: 20 }}>
@@ -297,7 +297,7 @@ class SignUp extends Component {
                 </TouchableOpacity>
                 <View style={{ flex: 1, borderTopLeftRadius: 20, borderTopRightRadius: 20, marginTop: image_height - 20, backgroundColor: BaseColor.whiteColor }}>
                     <View style={{ width: "100%", height: 80, alignItems: "center", justifyContent: "center", marginTop: 20 }}>
-                        <Image placeholderStyle={{ backgroundColor: "white" }} source={Images.logo} style={{ width: 168, height: 60 }} resizeMode={"stretch"}></Image>
+                        <Image placeholderStyle={{ backgroundColor: BaseColor.whiteColor }} source={Images.logo} style={{ width: 168, height: 60 }} resizeMode={"stretch"}></Image>
                     </View>
                     <ScrollView style={{ flex: 1, marginTop: 30 }}>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center", marginBottom: 20 }}>

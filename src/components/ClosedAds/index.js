@@ -45,7 +45,7 @@ export default class ClosedAds extends Component {
                         source={{ uri: Api.SERVER_HOST + ad_images[0] }}
                         activeOpacity={0.7}
                         PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}
-                        PlaceholderStyle={{ backgroundColor: "white" }}
+                        PlaceholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                         style={{ alignSelf: 'center', marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 65, height: 65, borderRadius: 100 }}>
                     </Image>
                     <Text style={{ color: BaseColor.primaryColor, textAlign: "center", marginLeft: 5, fontWeight: "bold" }}>{item.category.name}</Text>

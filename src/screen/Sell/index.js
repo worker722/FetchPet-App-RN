@@ -200,7 +200,7 @@ class Sell extends Component {
                     source={{ uri: item.path }}
                     style={{ width: image_size, height: image_size, borderColor: BaseColor.dddColor, borderWidth: 1, borderRadius: 10 }}
                     resizeMode="cover"
-                    PlaceholderStyle={{ backgroundColor: "white" }}
+                    PlaceholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                     PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}></Image>
             </TouchableOpacity>
         )

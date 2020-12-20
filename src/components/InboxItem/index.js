@@ -49,7 +49,7 @@ export default class InboxItem extends Component {
                         <Image
                             source={{ uri: Api.SERVER_HOST + avatar }}
                             PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}
-                            PlaceholderStyle={{ backgroundColor: "white" }}
+                            PlaceholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                             style={{ alignSelf: 'center', marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 80, height: 80, borderRadius: 100 }}>
                         </Image>
                         :
@@ -60,7 +60,7 @@ export default class InboxItem extends Component {
                     <TouchableOpacity style={{ position: "absolute", bottom: 0, right: 3 }}>
                         <Image
                             source={{ uri: Api.SERVER_HOST + ad_images[0] }}
-                            PlaceholderStyle={{ backgroundColor: "white" }}
+                            PlaceholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                             PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}
                             style={{ width: 30, height: 30, borderRadius: 100, borderWidth: 1, borderColor: BaseColor.dddColor }}>
                         </Image>
