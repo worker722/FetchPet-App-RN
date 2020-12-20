@@ -48,7 +48,7 @@ class Login extends Component {
             iosClientId: 'YOUR IOS CLIENT ID',
         });
 
-        let is_show_apple_button = await GetPrefrence('is_show_apple_button');
+        let is_show_apple_button = await GetPrefrence(global.PREF_SHOW_APPLE_BUTTON);
         if (is_show_apple_button == 1)
             this.setState({ is_show_apple_button: true });
     }

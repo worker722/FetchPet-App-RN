@@ -18,7 +18,6 @@ import geolocation from '@react-native-community/geolocation';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
 import { store, SetPrefrence } from "@store";
-
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Api from '@api';
@@ -251,7 +250,7 @@ class Home extends Component {
             let topCategory = response.data.category;
             let filterBreed = response.data.breed;
             let is_show_apple_button = response.data.is_show_apple_button;
-            await SetPrefrence('is_show_apple_button', is_show_apple_button);
+            await SetPrefrence(global.PREF_SHOW_APPLE_BUTTON, is_show_apple_button);
 
             topCategory.filter((item, index) => {
                 item.type = FILTER_TYPE.TOP_CATEGORY;
