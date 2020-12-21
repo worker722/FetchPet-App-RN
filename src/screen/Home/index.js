@@ -103,16 +103,16 @@ class Home extends Component {
         * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
         * */
         firebase.notifications().onNotificationOpened((notificationOpen) => {
-            try {
-                const { title, body, data } = notificationOpen.notification;
-                console.log('onNotificationOpened_notification', notificationOpen.notification);
-                console.log('onNotificationOpened_data', data);
-                const newMessage = JSON.parse(data);
-                if (newMessage?.id_ads)
-                    this.props.navigation.navigate("Chat", { ad_id: newMessage?.id_ads });
-            } catch (error) {
-                console.log(error);
-            }
+            // try {
+            //     const { title, body, data } = notificationOpen.notification;
+            //     console.log('onNotificationOpened_notification', notificationOpen.notification);
+            //     console.log('onNotificationOpened_data', data);
+            //     const newMessage = JSON.parse(data);
+            //     if (newMessage?.id_ads)
+            //         this.props.navigation.navigate("Chat", { ad_id: newMessage?.id_ads });
+            // } catch (error) {
+            //     console.log(error);
+            // }
         });
 
         /*
@@ -120,13 +120,13 @@ class Home extends Component {
         * */
         const notificationOpen = await firebase.notifications().getInitialNotification();
         if (notificationOpen) {
-            try {
-                const { title, body, data } = notificationOpen.notification;
-                const newMessage = JSON.parse(data);
-                if (newMessage?.id_ads)
-                    this.props.navigation.navigate("Chat", { ad_id: newMessage?.id_ads });
-            } catch (error) {
-            }
+            // try {
+            //     const { title, body, data } = notificationOpen.notification;
+            //     const newMessage = JSON.parse(data);
+            //     if (newMessage?.id_ads)
+            //         this.props.navigation.navigate("Chat", { ad_id: newMessage?.id_ads });
+            // } catch (error) {
+            // }
         }
     }
 
