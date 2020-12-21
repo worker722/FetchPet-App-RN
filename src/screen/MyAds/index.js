@@ -47,9 +47,9 @@ export default class MyAds extends Component {
                         </TouchableOpacity>
                     </View>
                     <View style={{ flexDirection: "row" }}>
-                        <View style={{ flex: 1, height: 5, backgroundColor: currentTabIndex == 0 ? BaseColor.primaryColor : BaseColor.whiteColor }}></View>
-                        <View style={{ flex: 1, height: 5, backgroundColor: currentTabIndex == 1 ? BaseColor.primaryColor : BaseColor.whiteColor }}></View>
-                        <View style={{ flex: 1, height: 5, backgroundColor: currentTabIndex == 2 ? BaseColor.primaryColor : BaseColor.whiteColor }}></View>
+                        <View style={{ flex: 1, height: 5, borderRadius: 100, backgroundColor: currentTabIndex == 0 ? BaseColor.primaryColor : BaseColor.whiteColor }}></View>
+                        <View style={{ flex: 1, height: 5, borderRadius: 100, backgroundColor: currentTabIndex == 1 ? BaseColor.primaryColor : BaseColor.whiteColor }}></View>
+                        <View style={{ flex: 1, height: 5, borderRadius: 100, backgroundColor: currentTabIndex == 2 ? BaseColor.primaryColor : BaseColor.whiteColor }}></View>
                     </View>
                     {currentTabIndex == 0 && <Favourite navigation={this.props.navigation} />}
                     {currentTabIndex == 1 && <Active navigation={this.props.navigation} />}

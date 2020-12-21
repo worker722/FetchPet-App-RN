@@ -20,6 +20,10 @@ class Favourite extends Component {
 
             ads: null,
         }
+        
+        props.navigation.addListener("willFocus", (event) => {
+            this.UNSAFE_componentWillMount();
+        });
     }
 
     UNSAFE_componentWillMount = () => {
@@ -33,14 +37,6 @@ class Favourite extends Component {
             this.setState({ ads: response.data.ads });
         }
         this.setState({ showLoader: false, showRefresh: false });
-    }
-
-    favouriteAds = async (index, item) => {
-        let ads = this.state.ads;
-        ads.splice(index, 1);
-        this.setState({ ads });
-        const param = { ad_id: item.id, is_fav: false };
-        await this.props.api.post('ads/ad_favourite', param);
     }
 
     _onRefresh = () => {
@@ -68,7 +64,7 @@ class Favourite extends Component {
                         keyExtractor={(item, index) => index.toString()}
                         data={ads}
                         renderItem={(item, key) => (
-                            <FavouriteAds data={item} onFavourite={this.favouriteAds} navigation={this.props.navigation} />
+                            <FavouriteAds data={item} navigation={this.props.navigation} />
                         )}
                     >
                     </FlatList>
