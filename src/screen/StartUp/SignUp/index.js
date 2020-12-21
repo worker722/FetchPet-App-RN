@@ -80,11 +80,6 @@ class SignUp extends Component {
         else if (password == '') return Toast.show("Please input password.");
         else if (password != con_password) return Toast.show("Password don't match.");
 
-        if (device_token == '') {
-            Api.showNetworkError();
-            return;
-        }
-
         this.setState({ showLoading: true });
 
         let params = {
@@ -118,11 +113,6 @@ class SignUp extends Component {
             if (userInfo.user.name == null)
                 userInfo.user.name = "Fetch Lucky";
 
-            if (this.state.device_token == '') {
-                Api.showNetworkError();
-                return;
-            }
-
             let params = { name: userInfo.user.name, email: userInfo.user.email, password: "@fetch@", is_social: 1 };
 
             if (Platform.OS == "android")
@@ -148,11 +138,6 @@ class SignUp extends Component {
         try {
             this.setState({ showLoading: true });
             const { device_token } = this.state;
-
-            if (device_token == '') {
-                Api.showNetworkError();
-                return;
-            }
 
             let params = null;
             let is_apple_exist = false;
@@ -215,12 +200,6 @@ class SignUp extends Component {
     }
 
     signUpWithFacebook = () => {
-        const { device_token } = this.state;
-        if (device_token == '') {
-            Api.showNetworkError();
-            return;
-        }
-
         try {
             LoginManager.logInWithPermissions(['public_profile', 'email']).then(
                 result => {
@@ -352,11 +331,12 @@ class SignUp extends Component {
                                     <Text style={{ color: BaseColor.whiteColor, fontSize: 15, color: BaseColor.primaryColor }}>SIGN UP</Text>
                                 </View>
                             </TouchableOpacity>
-                            <View style={{ width: "70%", height: 15, flexDirection: "row", marginTop: 5, justifyContent: "center", alignItems: "center" }}>
-                                <View style={{ flex: 1, height: 1, backgroundColor: BaseColor.dddColor }}></View>
-                                <Text style={{ marginHorizontal: 5, fontSize: 12 }}>OR</Text>
-                                <View style={{ flex: 1, height: 1, backgroundColor: BaseColor.dddColor }}></View>
-                            </View>
+                            {is_show_apple_button &&
+                                <View style={{ width: "70%", height: 15, flexDirection: "row", marginTop: 5, justifyContent: "center", alignItems: "center" }}>
+                                    <View style={{ flex: 1, height: 1, backgroundColor: BaseColor.dddColor }}></View>
+                                    <Text style={{ marginHorizontal: 5, fontSize: 12 }}>OR</Text>
+                                    <View style={{ flex: 1, height: 1, backgroundColor: BaseColor.dddColor }}></View>
+                                </View>}
                             {Platform.OS == "android" ?
                                 <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 5 }} onPress={this.signUpWithGoogle}>
                                     <View style={{ flex: 1, borderRadius: 7, backgroundColor: BaseColor.googleColor, justifyContent: "center", alignItems: "center" }}>

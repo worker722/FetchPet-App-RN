@@ -17,6 +17,7 @@ export default class index extends Component {
 
     componentDidMount = () => {
         StatusBar.setBackgroundColor(BaseColor.primaryDarkColor, true);
+        StatusBar.setBarStyle("light-content");
     }
 
     render() {

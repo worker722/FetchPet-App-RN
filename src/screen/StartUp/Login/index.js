@@ -80,10 +80,7 @@ class Login extends Component {
             Toast.show("Invalid email or password.");
             return;
         }
-        if (device_token == '') {
-            Api.showNetworkError();
-            return;
-        }
+
         this.setState({ showLoading: true });
 
         let params = { email: email, password: password };
@@ -106,10 +103,7 @@ class Login extends Component {
     loginWithGoogle = async () => {
         try {
             const { rememberMe, device_token } = this.state;
-            if (device_token == '') {
-                Api.showNetworkError();
-                return;
-            }
+
             this.setState({ showLoading: true });
 
             await GoogleSignin.hasPlayServices();
@@ -139,10 +133,6 @@ class Login extends Component {
     loginWithApple = async () => {
         try {
             const { rememberMe, device_token } = this.state;
-            if (device_token == '') {
-                Api.showNetworkError();
-                return;
-            }
 
             this.setState({ showLoading: true });
 
@@ -208,11 +198,6 @@ class Login extends Component {
     }
 
     loginWithFacebook = async () => {
-        const { device_token } = this.state;
-        if (device_token == '') {
-            Api.showNetworkError();
-            return;
-        }
         LoginManager.logInWithPermissions(['public_profile', 'email']).then(
             result => {
                 if (result.isCancelled) {
@@ -317,11 +302,12 @@ class Login extends Component {
                                     <Text style={{ color: BaseColor.whiteColor, fontSize: 15 }}>LOGIN</Text>
                                 </View>
                             </TouchableOpacity>
-                            <View style={{ width: "70%", height: 15, flexDirection: "row", marginTop: 5, justifyContent: "center", alignItems: "center" }}>
-                                <View style={{ flex: 1, height: 1, backgroundColor: BaseColor.dddColor }}></View>
-                                <Text style={{ marginHorizontal: 5, fontSize: 12 }}>OR</Text>
-                                <View style={{ flex: 1, height: 1, backgroundColor: BaseColor.dddColor }}></View>
-                            </View>
+                            {is_show_apple_button &&
+                                <View style={{ width: "70%", height: 15, flexDirection: "row", marginTop: 5, justifyContent: "center", alignItems: "center" }}>
+                                    <View style={{ flex: 1, height: 1, backgroundColor: BaseColor.dddColor }}></View>
+                                    <Text style={{ marginHorizontal: 5, fontSize: 12 }}>OR</Text>
+                                    <View style={{ flex: 1, height: 1, backgroundColor: BaseColor.dddColor }}></View>
+                                </View>}
                             {Platform.OS == "android" ?
                                 <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 5 }} onPress={() => this.loginWithGoogle()}>
                                     <View style={{ flex: 1, borderRadius: 7, backgroundColor: BaseColor.googleColor, justifyContent: "center", alignItems: "center" }}>

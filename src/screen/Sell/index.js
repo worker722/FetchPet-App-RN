@@ -11,7 +11,6 @@ import {
     ActivityIndicator,
     RefreshControl,
     Alert,
-    KeyboardAvoidingView
 } from 'react-native';
 import { Image } from 'react-native-elements';
 import { Picker } from '@react-native-community/picker';
@@ -222,7 +221,7 @@ class Sell extends Component {
             return (<Loader />);
 
         return (
-            <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS == "android" ? "" : "position"}>
+            <View style={{ flex: 1 }}>
                 <ScrollView style={{ flex: 1 }}
                     refreshControl={
                         <RefreshControl
@@ -401,7 +400,7 @@ class Sell extends Component {
                     </View>
                 </Modal>
 
-            </KeyboardAvoidingView>
+            </View>
         )
     }
 }
