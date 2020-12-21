@@ -64,10 +64,10 @@ export default class FavouriteAds extends Component {
                             <Text numberOfLines={1}>{adsLocation}</Text>
                         </View>
                         <View style={{ paddingLeft: 10, }}>
-                            <TouchableOpacity onPress={() => onFavourite(ads.index, ads, !ads.is_fav)}>
-                                <Icon name={"heart"} size={20} color={BaseColor.primaryColor} solid={ads.is_fav}></Icon>
-                            </TouchableOpacity>
                             <Text style={{ textAlign: "right", flex: 1, textAlignVertical: "center", fontWeight: "bold" }}>$ {ads.price}</Text>
+                            <TouchableOpacity onPress={() => onFavourite(ads.index, ads)}>
+                                <Icon name={"heart"} size={20} color={BaseColor.primaryColor} solid></Icon>
+                            </TouchableOpacity>
                         </View>
                     </View>
                     <View style={{ flexDirection: "row", marginTop: 15 }}>

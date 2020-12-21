@@ -10,7 +10,7 @@ import {
     ActivityIndicator,
     AppState,
     Platform,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
 } from 'react-native';
 import { BaseColor } from '@config';
 import Icon from 'react-native-vector-icons/FontAwesome5';

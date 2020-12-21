@@ -16,14 +16,14 @@ export default class index extends Component {
     }
 
     componentDidMount = () => {
-        StatusBar.setBackgroundColor(BaseColor.primaryColor, true);
+        StatusBar.setBackgroundColor(BaseColor.primaryDarkColor, true);
     }
 
     render() {
         return (
             <Provider store={store}>
                 <PersistGate loading={null} persistor={persistor}>
-                    <View style={{ height: getStatusBarHeight(true), backgroundColor: BaseColor.primaryColor }} />
+                    <View style={{ height: getStatusBarHeight(true), backgroundColor: BaseColor.primaryDarkColor }} />
                     <App />
                 </PersistGate>
             </Provider>
