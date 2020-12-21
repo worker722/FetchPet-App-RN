@@ -103,16 +103,16 @@ class Home extends Component {
         * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
         * */
         firebase.notifications().onNotificationOpened((notificationOpen) => {
-            // try {
-            //     const { title, body, data } = notificationOpen.notification;
-            //     console.log('onNotificationOpened_notification', notificationOpen.notification);
-            //     console.log('onNotificationOpened_data', data);
-            //     const newMessage = JSON.parse(data);
-            //     if (newMessage?.id_ads)
-            //         this.props.navigation.navigate("Chat", { ad_id: newMessage?.id_ads });
-            // } catch (error) {
-            //     console.log(error);
-            // }
+            try {
+                const { title, body, data } = notificationOpen.notification;
+                console.log('onNotificationOpened_notification', notificationOpen.notification);
+                console.log('onNotificationOpened_data', data);
+                const newMessage = JSON.parse(data);
+                if (newMessage?.id_ads)
+                    this.props.navigation.navigate("Chat", { ad_id: newMessage?.id_ads });
+            } catch (error) {
+                console.log(error);
+            }
         });
 
         /*
@@ -120,13 +120,15 @@ class Home extends Component {
         * */
         const notificationOpen = await firebase.notifications().getInitialNotification();
         if (notificationOpen) {
-            // try {
-            //     const { title, body, data } = notificationOpen.notification;
-            //     const newMessage = JSON.parse(data);
-            //     if (newMessage?.id_ads)
-            //         this.props.navigation.navigate("Chat", { ad_id: newMessage?.id_ads });
-            // } catch (error) {
-            // }
+            try {
+                const { title, body, data } = notificationOpen.notification;
+                console.log('onNotificationOpened_notification', notificationOpen.notification);
+                console.log('onNotificationOpened_data', data);
+                const newMessage = JSON.parse(data);
+                if (newMessage?.id_ads)
+                    this.props.navigation.navigate("Chat", { ad_id: newMessage?.id_ads });
+            } catch (error) {
+            }
         }
     }
 
@@ -234,7 +236,7 @@ class Home extends Component {
             }
             else {
                 geolocation.requestAuthorization();
-                const response = await Utils.getCurrentLocation();
+                await Utils.getCurrentLocation();
             }
         } catch (err) {
         }
@@ -471,86 +473,89 @@ class Home extends Component {
                         container: {
                             justifyContent: "center",
                             alignItems: "center",
-                            borderTopLeftRadius: 30, borderTopRightRadius: 30
+                            borderTopLeftRadius: 30,
+                            borderTopRightRadius: 30
                         }
                     }}>
 
                     <View style={{ flex: 1, paddingVertical: 20, paddingHorizontal: 10 }}>
-                        <View style={{ justifyContent: "center", alignItems: "center" }}>
-                            <View style={{ width: 120, height: 6, backgroundColor: "#9b9b9b", borderRadius: 100 }}></View>
-                        </View>
-                        <Text style={{ fontSize: 18, color: BaseColor.primaryColor, marginTop: 10 }}>Breed</Text>
-                        <View style={{ flexDirection: "row", width: "100%", marginTop: 5 }}>
-                            <FlatList
-                                keyExtractor={(item, index) => index.toString()}
-                                data={filterBreed}
-                                horizontal={true}
-                                renderItem={this.renderFilterItem}
-                            />
-                        </View>
-                        <Text style={{ fontSize: 18, color: BaseColor.primaryColor, marginTop: 10 }}>Gender</Text>
-                        <View style={{ flexDirection: "row", width: "100%", marginTop: 5 }}>
-                            <FlatList
-                                keyExtractor={(item, index) => index.toString()}
-                                data={filterGender}
-                                horizontal={true}
-                                renderItem={this.renderFilterItem}
-                            />
-                        </View>
-                        <Text style={{ fontSize: 18, color: BaseColor.primaryColor, marginTop: 10 }}>Price</Text>
-                        <View style={{ flexDirection: "row", paddingHorizontal: 5 }}>
-                            <Text style={{ flex: 1 }}>$ {filterPrice.min}</Text>
-                            <Text style={{ flex: 1, textAlign: "right" }}>$ {filterPrice.max}</Text>
-                        </View>
-                        <View style={{ paddingHorizontal: 10 }}>
-                            <MultiSlider
-                                markerStyle={{
-                                    ...Platform.select({
-                                        ios: {
-                                            height: 20,
-                                            width: 20,
-                                            shadowColor: '#000000',
-                                            shadowOffset: {
-                                                width: 0,
-                                                height: 3
+                        <ScrollView>
+                            <View style={{ justifyContent: "center", alignItems: "center" }}>
+                                <View style={{ width: 80, height: 6, backgroundColor: "#9b9b9b", borderRadius: 100 }}></View>
+                            </View>
+                            <Text style={{ fontSize: 18, color: BaseColor.primaryColor, marginTop: 10 }}>Breed</Text>
+                            <View style={{ flexDirection: "row", width: "100%", marginTop: 5 }}>
+                                <FlatList
+                                    keyExtractor={(item, index) => index.toString()}
+                                    data={filterBreed}
+                                    horizontal={true}
+                                    renderItem={this.renderFilterItem}
+                                />
+                            </View>
+                            <Text style={{ fontSize: 18, color: BaseColor.primaryColor, marginTop: 10 }}>Gender</Text>
+                            <View style={{ flexDirection: "row", width: "100%", marginTop: 5 }}>
+                                <FlatList
+                                    keyExtractor={(item, index) => index.toString()}
+                                    data={filterGender}
+                                    horizontal={true}
+                                    renderItem={this.renderFilterItem}
+                                />
+                            </View>
+                            <Text style={{ fontSize: 18, color: BaseColor.primaryColor, marginTop: 10 }}>Price</Text>
+                            <View style={{ flexDirection: "row", paddingHorizontal: 5 }}>
+                                <Text style={{ flex: 1 }}>$ {filterPrice.min}</Text>
+                                <Text style={{ flex: 1, textAlign: "right" }}>$ {filterPrice.max}</Text>
+                            </View>
+                            <View style={{ paddingHorizontal: 10 }}>
+                                <MultiSlider
+                                    markerStyle={{
+                                        ...Platform.select({
+                                            ios: {
+                                                height: 20,
+                                                width: 20,
+                                                shadowColor: '#000000',
+                                                shadowOffset: {
+                                                    width: 0,
+                                                    height: 3
+                                                },
+                                                shadowRadius: 1,
+                                                shadowOpacity: 0.1
                                             },
-                                            shadowRadius: 1,
-                                            shadowOpacity: 0.1
-                                        },
-                                        android: {
-                                            height: 20,
-                                            width: 20,
-                                            borderRadius: 10,
-                                            backgroundColor: BaseColor.primaryColor
-                                        }
-                                    })
-                                }}
-                                pressedMarkerStyle={{
-                                    ...Platform.select({
-                                        android: {
-                                            height: 16,
-                                            width: 16,
-                                            borderRadius: 8,
-                                            backgroundColor: BaseColor.primaryColor
-                                        }
-                                    })
-                                }}
-                                selectedStyle={{ backgroundColor: BaseColor.primaryColor, height: 3 }}
-                                onValuesChange={this.priceRangeChanged}
-                                values={[filterPrice.min, filterPrice.max]}
-                                min={filterPrice.basic_min}
-                                max={filterPrice.basic_max}
-                                sliderLength={Utils.SCREEN.WIDTH - 40}
-                                allowOverlap={false}
-                            />
-                        </View>
-                        <View style={{ justifyContent: "center", alignItems: "center", marginTop: 10 }}>
-                            <TouchableOpacity
-                                onPress={this.filterPet}
-                                style={{ justifyContent: "center", alignItems: "center", borderRadius: 5, paddingHorizontal: 40, height: 40, backgroundColor: BaseColor.primaryColor }}>
-                                <Text style={{ color: BaseColor.whiteColor }}>Filter</Text>
-                            </TouchableOpacity>
-                        </View>
+                                            android: {
+                                                height: 20,
+                                                width: 20,
+                                                borderRadius: 10,
+                                                backgroundColor: BaseColor.primaryColor
+                                            }
+                                        })
+                                    }}
+                                    pressedMarkerStyle={{
+                                        ...Platform.select({
+                                            android: {
+                                                height: 16,
+                                                width: 16,
+                                                borderRadius: 8,
+                                                backgroundColor: BaseColor.primaryColor
+                                            }
+                                        })
+                                    }}
+                                    selectedStyle={{ backgroundColor: BaseColor.primaryColor, height: 3 }}
+                                    onValuesChange={this.priceRangeChanged}
+                                    values={[filterPrice.min, filterPrice.max]}
+                                    min={filterPrice.basic_min}
+                                    max={filterPrice.basic_max}
+                                    sliderLength={Utils.SCREEN.WIDTH - 40}
+                                    allowOverlap={false}
+                                />
+                            </View>
+                            <View style={{ justifyContent: "center", alignItems: "center", marginTop: 10 }}>
+                                <TouchableOpacity
+                                    onPress={this.filterPet}
+                                    style={{ justifyContent: "center", alignItems: "center", borderRadius: 5, paddingHorizontal: 40, height: 40, backgroundColor: BaseColor.primaryColor }}>
+                                    <Text style={{ color: BaseColor.whiteColor }}>Filter</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </ScrollView>
                     </View>
                 </RBSheet>
             </View>
