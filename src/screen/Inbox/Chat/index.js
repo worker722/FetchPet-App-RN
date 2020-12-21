@@ -154,85 +154,90 @@ class Chat extends Component {
             return (<Loader />);
 
         return (
-            <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS == "android" ? "" : "height"}>
-                <View style={{ width: "100%", height: 80, backgroundColor: BaseColor.primaryColor, flexDirection: "row", padding: 10 }}>
-                    <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", padding: 10 }} onPress={() => navigation.navigate("Inbox")} >
-                        <Icon name={"arrow-left"} size={20} color={BaseColor.whiteColor}></Icon>
-                    </TouchableOpacity>
-                    <View style={{ justifyContent: "center", alignItems: "center", marginLeft: 10 }}>
-                        <TouchableOpacity onPress={() => navigation.navigate("ShowProfile", { user_id: other_user.id })} >
-                            {other_user?.avatar ?
+            <KeyboardAvoidingView behavior={Platform.OS == "android" ? "" : "padding"}
+                style={{ flex: 1 }}
+                keyboardVerticalOffset={40}>
+                <View style={{ flex: 1, marginBottom: 10 }}>
+                    <View style={{ width: "100%", height: 80, backgroundColor: BaseColor.primaryColor, flexDirection: "row", padding: 10 }}>
+                        <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", padding: 10 }} onPress={() => navigation.navigate("Inbox")} >
+                            <Icon name={"arrow-left"} size={20} color={BaseColor.whiteColor}></Icon>
+                        </TouchableOpacity>
+                        <View style={{ justifyContent: "center", alignItems: "center", marginLeft: 10 }}>
+                            <TouchableOpacity onPress={() => navigation.navigate("ShowProfile", { user_id: other_user.id })} >
+                                {other_user?.avatar ?
+                                    <Image
+                                        source={{ uri: Api.SERVER_HOST + other_user?.avatar }}
+                                        activeOpacity={0.7}
+                                        placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
+                                        PlaceholderContent={<ActivityIndicator color={BaseColor.whiteColor} />}
+                                        style={{ alignSelf: 'center', marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 60, height: 60, borderRadius: 100 }}>
+                                    </Image>
+                                    :
+                                    <View style={{ width: 60, height: 60, borderRadius: 100, marginHorizontal: 10, borderWidth: 2, borderColor: BaseColor.whiteColor, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
+                                        <Text style={{ color: BaseColor.whiteColor, fontSize: 25 }}>{other_user?.name.charAt(0).toUpperCase()}</Text>
+                                    </View>
+                                }
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => navigation.navigate("AdDetail", { ad_id: ads.id })}
+                                style={{ position: "absolute", bottom: 0, right: 3, width: 25, height: 25, borderRadius: 100 }}>
                                 <Image
-                                    source={{ uri: Api.SERVER_HOST + other_user?.avatar }}
+                                    source={{ uri: Api.SERVER_HOST + ad_images[0] }}
                                     activeOpacity={0.7}
                                     placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                                     PlaceholderContent={<ActivityIndicator color={BaseColor.whiteColor} />}
-                                    style={{ alignSelf: 'center', marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 60, height: 60, borderRadius: 100 }}>
+                                    style={{ borderWidth: 1, borderColor: BaseColor.dddColor, width: 25, height: 25, borderRadius: 100 }}>
                                 </Image>
-                                :
-                                <View style={{ width: 60, height: 60, borderRadius: 100, marginHorizontal: 10, borderWidth: 2, borderColor: BaseColor.whiteColor, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
-                                    <Text style={{ color: BaseColor.whiteColor, fontSize: 25 }}>{other_user?.name.charAt(0).toUpperCase()}</Text>
-                                </View>
-                            }
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => navigation.navigate("AdDetail", { ad_id: ads.id })}
-                            style={{ position: "absolute", bottom: 0, right: 3, width: 25, height: 25, borderRadius: 100 }}>
-                            <Image
-                                source={{ uri: Api.SERVER_HOST + ad_images[0] }}
-                                activeOpacity={0.7}
-                                placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
-                                PlaceholderContent={<ActivityIndicator color={BaseColor.whiteColor} />}
-                                style={{ borderWidth: 1, borderColor: BaseColor.dddColor, width: 25, height: 25, borderRadius: 100 }}>
-                            </Image>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ justifyContent: "center", paddingLeft: 10, flex: 1 }}>
-                        <Text style={{ color: BaseColor.whiteColor }}>{other_user?.name}</Text>
-                    </View>
-                </View>
-                <ScrollView
-                    ref={ref => this.scrollView = ref}
-                    onContentSizeChange={(contentWidth, contentHeight) => {
-                        this.scrollView.scrollToEnd({ animated: true });
-                    }}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={showRefresh}
-                            onRefresh={this._onRefresh}
-                        />
-                    }
-                >
-                    <View style={{ flex: 1, padding: 10 }}>
-                        <FlatList
-                            keyExtractor={(item, index) => index.toString()}
-                            data={chat}
-                            renderItem={(item, index) => (
-                                <ChatMessage data={item} />
-                            )}
-                        />
-                    </View>
-                </ScrollView>
-                <View style={{ height: 45, paddingHorizontal: 5, width: "100%", justifyContent: "center", alignItems: "center" }}>
-                    <TextInput
-                        style={{ flex: 1, backgroundColor: BaseColor.dddColor, width: "100%", borderRadius: 30, paddingLeft: 20, paddingRight: 50 }}
-                        value={this.state.message}
-                        multiline={true}
-                        onChangeText={(text) => this.setState({ message: text })}
-                    >
-                    </TextInput>
-                    <View style={{ position: "absolute", right: 0, top: 0, bottom: 0, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                        {is_sending ?
-                            <View style={{ padding: 8, marginRight: 15, borderRadius: 100, backgroundColor: BaseColor.whiteColor, justifyContent: "center", alignItems: "center" }}>
-                                <ActivityIndicator color={BaseColor.primaryColor} />
-                            </View>
-                            :
-                            <TouchableOpacity onPress={() => this.sendMessage()} style={{ padding: 8, marginRight: 15, borderRadius: 100, backgroundColor: BaseColor.whiteColor, justifyContent: "center", alignItems: "center" }}>
-                                <Icon name={"location-arrow"} size={15} color={"grey"}></Icon>
                             </TouchableOpacity>
+                        </View>
+                        <View style={{ justifyContent: "center", paddingLeft: 10, flex: 1 }}>
+                            <Text style={{ color: BaseColor.whiteColor }}>{other_user?.name}</Text>
+                        </View>
+                    </View>
+                    <ScrollView
+                        ref={ref => this.scrollView = ref}
+                        onContentSizeChange={(contentWidth, contentHeight) => {
+                            this.scrollView.scrollToEnd({ animated: true });
+                        }}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={showRefresh}
+                                onRefresh={this._onRefresh}
+                            />
                         }
+                    >
+                        <View style={{ flex: 1, padding: 10 }}>
+                            <FlatList
+                                keyExtractor={(item, index) => index.toString()}
+                                data={chat}
+                                renderItem={(item, index) => (
+                                    <ChatMessage data={item} />
+                                )}
+                            />
+                        </View>
+                    </ScrollView>
+                    <View style={{ height: 45, paddingHorizontal: 5, width: "100%", justifyContent: "center", alignItems: "center" }}>
+                        <TextInput
+                            style={{ flex: 1, backgroundColor: BaseColor.dddColor, width: "100%", borderRadius: 30, paddingLeft: 20, paddingRight: 50 }}
+                            value={this.state.message}
+                            multiline={true}
+                            onChangeText={(text) => this.setState({ message: text })}
+                        >
+                        </TextInput>
+                        <View style={{ position: "absolute", right: 0, top: 0, bottom: 0, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                            {is_sending ?
+                                <View style={{ padding: 8, marginRight: 15, borderRadius: 100, backgroundColor: BaseColor.whiteColor, justifyContent: "center", alignItems: "center" }}>
+                                    <ActivityIndicator color={BaseColor.primaryColor} />
+                                </View>
+                                :
+                                <TouchableOpacity onPress={() => this.sendMessage()} style={{ padding: 8, marginRight: 15, borderRadius: 100, backgroundColor: BaseColor.whiteColor, justifyContent: "center", alignItems: "center" }}>
+                                    <Icon name={"location-arrow"} size={15} color={"grey"}></Icon>
+                                </TouchableOpacity>
+                            }
+                        </View>
                     </View>
                 </View>
+
             </KeyboardAvoidingView>
         )
     }
