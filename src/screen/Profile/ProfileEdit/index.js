@@ -152,7 +152,7 @@ class ProfileEdit extends Component {
                                 source={{ uri: avatar?.path }}
                                 activeOpacity={0.7}
                                 placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
-                                containerStyle={{ marginHorizontal: 10, borderWidth: 1, borderColor: "#808080", width: 80, height: 80, borderRadius: 100 }}>
+                                style={{ marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 80, height: 80, borderRadius: 100 }}>
                             </Image>
                             :
                             <View style={{ width: 80, height: 80, marginHorizontal: 10, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
@@ -166,7 +166,7 @@ class ProfileEdit extends Component {
                         </TouchableOpacity>
                     </View>
                     <View style={{ flex: 1, justifyContent: "center", paddingLeft: 20 }}>
-                        <TextInput style={[Styles.textinput, { fontSize: 16, paddingVertical: 15 }]}
+                        <TextInput style={[Styles.textinput, { fontSize: 16, paddingVertical: 12 }]}
                             value={name}
                             onChangeText={(text) => this.setState({ name: text })}
                             underlineColorAndroid="transparent"
@@ -187,7 +187,7 @@ class ProfileEdit extends Component {
                         onChangePhoneNumber={(value) => this.setState({ valid_phone: this.phone.isValidNumber(), phonenumber: value })}
                         placeholderTextColor={BaseColor.greyColor}
                     />
-                    <TextInput style={[Styles.textinput, { marginTop: 20, paddingVertical: 15 }]}
+                    <TextInput style={[Styles.textinput, { marginTop: 10, paddingVertical: 12 }]}
                         value={email}
                         onChangeText={(text) => this.setState({ email: text })}
                         underlineColorAndroid="transparent"

@@ -183,7 +183,7 @@ class Chat extends Component {
                                 activeOpacity={0.7}
                                 placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                                 PlaceholderContent={<ActivityIndicator color={BaseColor.whiteColor} />}
-                                style={{ borderWidth: 1, borderColor: BaseColor.whiteColor, width: 25, height: 25, borderRadius: 100 }}>
+                                style={{ borderWidth: 1, borderColor: BaseColor.dddColor, width: 25, height: 25, borderRadius: 100 }}>
                             </Image>
                         </TouchableOpacity>
                     </View>
@@ -213,21 +213,22 @@ class Chat extends Component {
                         />
                     </View>
                 </ScrollView>
-                <View style={{ height: 50, paddingHorizontal: 5, width: "100%", justifyContent: "center", alignItems: "center" }}>
+                <View style={{ height: 45, paddingHorizontal: 5, width: "100%", justifyContent: "center", alignItems: "center" }}>
                     <TextInput
-                        style={{ flex: 1, backgroundColor: BaseColor.dddColor, width: "100%", borderRadius: 30, paddingLeft: 20, paddingRight: 100 }}
+                        style={{ flex: 1, backgroundColor: BaseColor.dddColor, width: "100%", borderRadius: 30, paddingLeft: 20, paddingRight: 50 }}
                         value={this.state.message}
+                        multiline={true}
                         onChangeText={(text) => this.setState({ message: text })}
                     >
                     </TextInput>
                     <View style={{ position: "absolute", right: 0, top: 0, bottom: 0, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                         {is_sending ?
-                            <View style={{ padding: 8, marginRight: 25, borderRadius: 100, backgroundColor: BaseColor.whiteColor, justifyContent: "center", alignItems: "center" }}>
+                            <View style={{ padding: 8, marginRight: 15, borderRadius: 100, backgroundColor: BaseColor.whiteColor, justifyContent: "center", alignItems: "center" }}>
                                 <ActivityIndicator color={BaseColor.primaryColor} />
                             </View>
                             :
-                            <TouchableOpacity onPress={() => this.sendMessage()} style={{ padding: 8, marginRight: 25, borderRadius: 100, backgroundColor: BaseColor.whiteColor, justifyContent: "center", alignItems: "center" }}>
-                                <Icon name={"location-arrow"} size={20} color={"grey"}></Icon>
+                            <TouchableOpacity onPress={() => this.sendMessage()} style={{ padding: 8, marginRight: 15, borderRadius: 100, backgroundColor: BaseColor.whiteColor, justifyContent: "center", alignItems: "center" }}>
+                                <Icon name={"location-arrow"} size={15} color={"grey"}></Icon>
                             </TouchableOpacity>
                         }
                     </View>

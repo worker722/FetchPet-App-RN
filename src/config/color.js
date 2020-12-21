@@ -2,7 +2,7 @@
 const BaseColor = {
   ...{
     primaryColor: "#002365",
-    primaryDarkColor: "#0b104d",
+    primaryDarkColor: "#080c40",
     accentColor: "#4A90A4",
     greyColor: "#808080",
     dddColor: '#DDDDDD',

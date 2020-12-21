@@ -9,16 +9,20 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native-elements';
 
 import { BaseColor } from '@config';
-import * as Api from '@api';
 import * as Utils from '@utils';
 
-export default class FavouriteAds extends Component {
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as Api from '@api';
+
+class FavouriteAds extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             ads: null,
             ad_images: [],
+            is_show: true
         }
     }
 
@@ -36,9 +40,19 @@ export default class FavouriteAds extends Component {
         });
     }
 
+    removeFavAds = async () => {
+        this.setState({ is_show: false });
+        const { ads } = this.state;
+        const param = { ad_id: ads.id, is_fav: false };
+        await this.props.api.post('ads/ad_favourite', param);
+    }
+
     render = () => {
-        const { adsLocation, ads, ad_images } = this.state;
-        const { navigation, onFavourite } = this.props;
+        const { adsLocation, ads, ad_images, is_show } = this.state;
+        const { navigation } = this.props;
+
+        if (!is_show)
+            return null;
 
         return (
             <TouchableOpacity style={{ flex: 1, flexDirection: "row", marginBottom: 10, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor, padding: 10 }}
@@ -63,9 +77,9 @@ export default class FavouriteAds extends Component {
                             <Text style={{ color: BaseColor.greyColor, fontSize: 10 }}>Location</Text>
                             <Text numberOfLines={1}>{adsLocation}</Text>
                         </View>
-                        <View style={{ paddingLeft: 10, }}>
+                        <View style={{ paddingLeft: 10 }}>
                             <Text style={{ textAlign: "right", flex: 1, textAlignVertical: "center", fontWeight: "bold" }}>$ {ads.price}</Text>
-                            <TouchableOpacity onPress={() => onFavourite(ads.index, ads)}>
+                            <TouchableOpacity onPress={this.removeFavAds} style={{ position: "absolute", right: 0 }}>
                                 <Icon name={"heart"} size={20} color={BaseColor.primaryColor} solid></Icon>
                             </TouchableOpacity>
                         </View>
@@ -88,3 +102,10 @@ export default class FavouriteAds extends Component {
         )
     }
 }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        api: bindActionCreators(Api, dispatch)
+    };
+};
+export default connect(null, mapDispatchToProps)(FavouriteAds);
