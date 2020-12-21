@@ -177,36 +177,38 @@ class Home extends Component {
     }
 
     componentDidMount = async () => {
-        try {
-            await this.requestPermission();
+        await this.requestPermission();
 
-            await this.createNotificationListeners();
-            AppState.addEventListener('change', this.handleAppStateChange);
+        await this.createNotificationListeners();
+        AppState.addEventListener('change', this.handleAppStateChange);
 
-            if (Platform.OS == "android") {
-                const channel = new firebase.notifications.Android.Channel(
-                    global.NOTIFICATION_CHANNEL_ID,
-                    global.NOTIFICATION_CHANNEL_NAME,
-                    firebase.notifications.Android.Importance.High
-                ).setDescription(global.NOTIFICATION_CHANNEL_DESCRIPTION);
-                firebase.notifications().android.createChannel(channel);
-            }
-
-            await firebase.messaging().hasPermission()
-                .then(enabled => {
-                    if (enabled) {
-                        firebase.messaging().getToken().then(token => { });
-                    } else {
-                        firebase.messaging().requestPermission()
-                            .then(() => {
-                                firebase.messaging().registerForNotifications();
-                            })
-                            .catch(error => {
-                            });
-                    }
-                });
-        } catch (error) {
+        if (Platform.OS == "android") {
+            const channel = new firebase.notifications.Android.Channel(
+                global.NOTIFICATION_CHANNEL_ID,
+                global.NOTIFICATION_CHANNEL_NAME,
+                firebase.notifications.Android.Importance.High
+            ).setDescription(global.NOTIFICATION_CHANNEL_DESCRIPTION);
+            firebase.notifications().android.createChannel(channel);
         }
+
+        await firebase.messaging().hasPermission()
+            .then(enabled => {
+                if (enabled) {
+                    firebase.messaging().getToken().then(async token => {
+                        if (token) {
+                            const params = { token, platform: Platform.OS };
+                            await this.props.api.post("profile/token", params);
+                        }
+                    });
+                } else {
+                    firebase.messaging().requestPermission()
+                        .then(() => {
+                            firebase.messaging().registerForNotifications();
+                        })
+                        .catch(error => {
+                        });
+                }
+            });
     }
 
     requestPermission = async () => {

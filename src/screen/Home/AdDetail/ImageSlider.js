@@ -62,7 +62,7 @@ export default class ImageSlider extends Component {
                                     style={{ width: "100%", height: "100%", borderRadius: 5 }}
                                     resizeMode={'contain'}
                                     source={{ uri: Api.SERVER_HOST + item }}
-                                    placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
+                                    placeholderStyle={{ backgroundColor: "transparent" }}
                                     PlaceholderContent={<ActivityIndicator color={BaseColor.whiteColor} size={"large"} />}
                                 />
                             );
@@ -104,7 +104,7 @@ export default class ImageSlider extends Component {
                                     }}
                                     source={{ uri: Api.SERVER_HOST + item }}
                                     placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
-                                    PlaceholderContent={<ActivityIndicator color={BaseColor.whiteColor} size={"small"} />}
+                                    PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} size={"small"} />}
                                 />
                             </TouchableOpacity>
                         )}

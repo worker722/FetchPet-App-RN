@@ -68,7 +68,7 @@ export default class ActiveAds extends Component {
                                 <View style={{ width: 10, height: 10, borderRadius: 100, backgroundColor: BaseColor.activeColor, marginRight: 5 }}></View>
                                 <Text style={{ color: BaseColor.activeColor, fontSize: 13, textAlign: "right" }}>Active</Text>
                             </View>
-                            <Text style={{ textAlign: "right", flex: 1, textAlignVertical: "center", fontWeight: "bold" }}>$ {item.price}</Text>
+                            <Text style={{ textAlign: "right", flex: 1, textAlignVertical: "center", fontWeight: "bold", position: "absolute", bottom: 0, right: 0 }}>$ {item.price}</Text>
                         </View>
                     </View>
                     <View style={{ flexDirection: "row", marginTop: 15 }}>

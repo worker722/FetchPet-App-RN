@@ -79,7 +79,7 @@ class FavouriteAds extends Component {
                         </View>
                         <View style={{ paddingLeft: 10 }}>
                             <Text style={{ textAlign: "right", flex: 1, textAlignVertical: "center", fontWeight: "bold" }}>$ {ads.price}</Text>
-                            <TouchableOpacity onPress={this.removeFavAds} style={{ position: "absolute", right: 0 }}>
+                            <TouchableOpacity onPress={this.removeFavAds} style={{ position: "absolute", right: 0, bottom: 0 }}>
                                 <Icon name={"heart"} size={20} color={BaseColor.primaryColor} solid></Icon>
                             </TouchableOpacity>
                         </View>

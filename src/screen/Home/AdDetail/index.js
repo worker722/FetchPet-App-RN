@@ -158,8 +158,8 @@ class AdDetail extends Component {
                                 <View key={key} style={{ flex: 1 }}>
                                     <Image source={{ uri: Api.SERVER_HOST + item }}
                                         style={{ width: "100%", height: slider_height }}
-                                        PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}
-                                        placeholderStyle={{ backgroundColor: BaseColor.dddColor }}
+                                        PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} size={"large"} />}
+                                        placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                                     />
                                 </View>
                             ))}
