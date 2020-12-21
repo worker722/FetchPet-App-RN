@@ -49,16 +49,13 @@ export default class Splash extends Component {
           granted['android.permission.ACCESS_FINE_LOCATION'] === PermissionsAndroid.RESULTS.GRANTED &&
           granted['android.permission.ACCESS_COARSE_LOCATION'] === PermissionsAndroid.RESULTS.GRANTED
         ) {
-          console.log('permission ok');
         }
       }
       else {
         geolocation.requestAuthorization();
         const response = await Utils.getCurrentLocation();
-        console.log('location', response);
       }
     } catch (err) {
-      console.log("permission eror", err)
     }
   };
 

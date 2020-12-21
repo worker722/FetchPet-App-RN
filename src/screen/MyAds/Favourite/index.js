@@ -35,6 +35,14 @@ class Favourite extends Component {
         this.setState({ showLoader: false, showRefresh: false });
     }
 
+    favouriteAds = async (index, item, value) => {
+        let ads = this.state.ads;
+        ads[index].is_fav = value;
+        this.setState({ ads });
+        const param = { ad_id: item.id, is_fav: value };
+        await this.props.api.post('ads/ad_favourite', param);
+    }
+
     _onRefresh = () => {
         this.setState({ showRefresh: true, ads: null });
         this.start();
@@ -60,7 +68,7 @@ class Favourite extends Component {
                         keyExtractor={(item, index) => index.toString()}
                         data={ads}
                         renderItem={(item, key) => (
-                            <FavouriteAds data={item} navigation={this.props.navigation} />
+                            <FavouriteAds data={item} onFavourite={this.favouriteAds} navigation={this.props.navigation} />
                         )}
                     >
                     </FlatList>
