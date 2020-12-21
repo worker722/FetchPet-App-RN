@@ -35,11 +35,11 @@ class Favourite extends Component {
         this.setState({ showLoader: false, showRefresh: false });
     }
 
-    favouriteAds = async (index, item, value) => {
+    favouriteAds = async (index, item) => {
         let ads = this.state.ads;
-        ads[index].is_fav = value;
+        ads.splice(index, 1);
         this.setState({ ads });
-        const param = { ad_id: item.id, is_fav: value };
+        const param = { ad_id: item.id, is_fav: false };
         await this.props.api.post('ads/ad_favourite', param);
     }
 
