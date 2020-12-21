@@ -49,7 +49,7 @@ export default class InboxItem extends Component {
                         <Image
                             source={{ uri: Api.SERVER_HOST + avatar }}
                             PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}
-                            PlaceholderStyle={{ backgroundColor: BaseColor.whiteColor }}
+                            placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                             style={{ alignSelf: 'center', marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 80, height: 80, borderRadius: 100 }}>
                         </Image>
                         :
@@ -62,7 +62,7 @@ export default class InboxItem extends Component {
                         onPress={() => navigation.navigate("AdDetail", { ad_id: ads.id })}>
                         <Image
                             source={{ uri: Api.SERVER_HOST + ad_images[0] }}
-                            PlaceholderStyle={{ backgroundColor: BaseColor.whiteColor }}
+                            placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                             PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}
                             style={{ width: 30, height: 30, borderRadius: 100, borderWidth: 1, borderColor: BaseColor.dddColor }}>
                         </Image>

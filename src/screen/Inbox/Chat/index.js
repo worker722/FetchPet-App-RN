@@ -165,7 +165,7 @@ class Chat extends Component {
                                 <Image
                                     source={{ uri: Api.SERVER_HOST + other_user?.avatar }}
                                     activeOpacity={0.7}
-                                    PlaceholderStyle={{ backgroundColor: BaseColor.whiteColor }}
+                                    placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                                     PlaceholderContent={<ActivityIndicator color={BaseColor.whiteColor} />}
                                     style={{ alignSelf: 'center', marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 60, height: 60, borderRadius: 100 }}>
                                 </Image>
@@ -181,7 +181,7 @@ class Chat extends Component {
                             <Image
                                 source={{ uri: Api.SERVER_HOST + ad_images[0] }}
                                 activeOpacity={0.7}
-                                PlaceholderStyle={{ backgroundColor: BaseColor.whiteColor }}
+                                placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                                 PlaceholderContent={<ActivityIndicator color={BaseColor.whiteColor} />}
                                 style={{ borderWidth: 1, borderColor: BaseColor.whiteColor, width: 25, height: 25, borderRadius: 100 }}>
                             </Image>
