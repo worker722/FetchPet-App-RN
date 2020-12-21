@@ -209,7 +209,7 @@ class AdDetail extends Component {
                                     <Image
                                         source={{ uri: Api.SERVER_HOST + ads?.user?.avatar }}
                                         activeOpacity={0.7}
-                                        PlaceholderStyle={{ backgroundColor: BaseColor.whiteColor }}
+                                        placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                                         PlaceholderContent={<ActivityIndicator color-={BaseColor.primaryColor} />}
                                         style={{ alignSelf: 'center', marginVertical: 20, marginHorizontal: 10, width: 60, height: 60, borderRadius: 100 }}>
                                     </Image>
