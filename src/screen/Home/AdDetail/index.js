@@ -174,6 +174,9 @@ class AdDetail extends Component {
                     <View style={{ position: "absolute", top: (slider_height - 40), right: 10 }}>
                         <Text style={{ fontSize: 18, color: BaseColor.whiteColor, fontWeight: "bold" }}>$ {ads?.price}</Text>
                     </View>
+                    <View style={{ justifyContent: "center", alignItems: "center", paddingTop: 5 }}>
+                        <View style={{ backgroundColor: BaseColor.primaryColor, height: 5, width: "40%", borderRadius: 100 }}></View>
+                    </View>
                     <View style={{ flex: 1, padding: 20 }}>
                         <View style={{ flexDirection: "row" }}>
                             <Text style={{ fontSize: 20, color: BaseColor.primaryColor, fontWeight: "bold" }}>Detail</Text>
