@@ -1,5 +1,4 @@
 import { Alert, Platform } from 'react-native';
-import RNRestart from 'react-native-restart';
 import Toast from 'react-native-simple-toast';
 import * as global from "./global";
 import { store } from '@store';
@@ -40,7 +39,6 @@ export const get = (route) => async dispatch => {
         .catch(err => {
             if (_TOKEN() != null) {
                 console.log('method-get-error', err);
-                showNetworkError();
             }
         });
 }
@@ -65,7 +63,6 @@ export const post = (route, params, is_store) => async dispatch => {
         .catch(err => {
             if (_TOKEN() != null) {
                 console.log('method-post-error', err);
-                showNetworkError();
             }
         });
 }
@@ -104,7 +101,6 @@ export const editProfile = (route, image, params) => async dispatch => {
         .catch(err => {
             if (_TOKEN() != null) {
                 console.log('profile-upload-error', err);
-                showNetworkError();
             }
         });
 }
@@ -144,18 +140,6 @@ export const createAds = (route, images, params) => async dispatch => {
         .catch(err => {
             if (_TOKEN() != null) {
                 console.log('ads-upload-error', err);
-                showNetworkError();
             }
         });
-}
-
-export const showNetworkError = () => {
-    // Alert.alert(
-    //     'Network Error!',
-    //     'Click Ok To Restart App.',
-    //     [
-    //         { text: 'OK', onPress: () => RNRestart.Restart() },
-    //     ],
-    //     { cancelable: false },
-    // );
 }
