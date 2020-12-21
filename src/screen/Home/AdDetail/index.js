@@ -69,7 +69,7 @@ class AdDetail extends Component {
         item.is_fav = !item.is_fav;
         this.setState({ ads: item });
         const param = { ad_id: item.id, is_fav: item.is_fav };
-        const response = await this.props.api.post('ads/ad_favourite', param);
+        await this.props.api.post('ads/ad_favourite', param);
     }
 
     goBack = () => {

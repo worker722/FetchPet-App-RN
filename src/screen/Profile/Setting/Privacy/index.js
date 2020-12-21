@@ -65,7 +65,6 @@ class Privacy extends Component {
         this.setState({ showLoader: true });
         const params = { currentPwd: currentPwd, password: reNewPwd };
         const response = await this.props.api.post("changepassword", params);
-        console.log(response);
         this.setState({ showLoader: false });
         if (response?.success) {
             this.setState({ visiblePasswordModal: false, currentPwd: '', newPwd: '', reNewPwd: '' })

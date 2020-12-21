@@ -38,7 +38,7 @@ export default class FavouriteAds extends Component {
 
     render = () => {
         const { adsLocation, ads, ad_images } = this.state;
-        const { navigation } = this.props;
+        const { navigation, onFavourite } = this.props;
 
         return (
             <TouchableOpacity style={{ flex: 1, flexDirection: "row", marginBottom: 10, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor, padding: 10 }}
@@ -63,11 +63,10 @@ export default class FavouriteAds extends Component {
                             <Text style={{ color: BaseColor.greyColor, fontSize: 10 }}>Location</Text>
                             <Text numberOfLines={1}>{adsLocation}</Text>
                         </View>
-                        <View style={{ flexDirection: "column", paddingLeft: 10, }}>
-                            <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                                <View style={{ width: 10, height: 10, borderRadius: 100, backgroundColor: BaseColor.activeColor, marginRight: 5 }}></View>
-                                <Text style={{ color: BaseColor.activeColor, fontSize: 13, textAlign: "right" }}>Active</Text>
-                            </View>
+                        <View style={{ paddingLeft: 10, }}>
+                            <TouchableOpacity onPress={() => onFavourite(ads.index, ads, !ads.is_fav)}>
+                                <Icon name={"heart"} size={20} color={BaseColor.primaryColor} solid={ads.is_fav}></Icon>
+                            </TouchableOpacity>
                             <Text style={{ textAlign: "right", flex: 1, textAlignVertical: "center", fontWeight: "bold" }}>$ {ads.price}</Text>
                         </View>
                     </View>

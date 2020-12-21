@@ -228,16 +228,13 @@ class Home extends Component {
                     granted['android.permission.ACCESS_FINE_LOCATION'] === PermissionsAndroid.RESULTS.GRANTED &&
                     granted['android.permission.ACCESS_COARSE_LOCATION'] === PermissionsAndroid.RESULTS.GRANTED
                 ) {
-                    console.log('permission ok');
                 }
             }
             else {
                 geolocation.requestAuthorization();
                 const response = await Utils.getCurrentLocation();
-                console.log('location', response);
             }
         } catch (err) {
-            console.log("permission eror", err)
         }
     };
 
@@ -356,7 +353,6 @@ class Home extends Component {
         this.setState({ showLoader: true, ads: [] });
         const { currentCategoryID, currentBreedID, currentGender, filterPrice } = this.state;
         const params = { id_category: currentCategoryID, id_breed: currentBreedID, gender: currentGender, price: filterPrice };
-        console.log(params)
         const response = await this.props.api.post("home/filter", params);
         if (response?.success) {
             const ads = await this.sortAdsByDistance(response.data.ads);
@@ -368,7 +364,7 @@ class Home extends Component {
     favouriteAds = async (index, item, value) => {
         let pets = this.state.pets;
         pets[index].is_fav = value;
-        this.setState({ pets: pets });
+        this.setState({ pets });
         const param = { ad_id: item.id, is_fav: value };
         await this.props.api.post('ads/ad_favourite', param);
     }
