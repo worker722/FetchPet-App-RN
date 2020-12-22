@@ -93,7 +93,7 @@ class ShowProfile extends Component {
                                     source={{ uri: Api.SERVER_HOST + user?.avatar }}
                                     activeOpacity={0.7}
                                     placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
-                                    containerStyle={{ marginHorizontal: 10, borderWidth: 1, borderColor: "#808080", width: 80, height: 80, borderRadius: 100 }}>
+                                    containerStyle={{ marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.greyColor, width: 80, height: 80, borderRadius: 100 }}>
                                 </Image>
                                 :
                                 <View style={{ marginHorizontal: 10, width: 80, height: 80, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
