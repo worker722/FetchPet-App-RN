@@ -1,4 +1,4 @@
-import { Alert, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import Toast from 'react-native-simple-toast';
 import * as global from "./global";
 import { store } from '@store';
