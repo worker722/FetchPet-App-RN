@@ -3,7 +3,8 @@ import {
     View,
     Text,
     TouchableOpacity,
-    ActivityIndicator
+    ActivityIndicator,
+    Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native-elements';
@@ -22,7 +23,7 @@ class FavouriteAds extends Component {
         this.state = {
             ads: null,
             ad_images: [],
-            is_show: true
+            is_removed: true
         }
     }
 
@@ -41,17 +42,34 @@ class FavouriteAds extends Component {
     }
 
     removeFavAds = async () => {
-        this.setState({ is_show: false });
-        const { ads } = this.state;
-        const param = { ad_id: ads.id, is_fav: false };
-        await this.props.api.post('ads/ad_favourite', param);
+        Alert.alert(
+            'Remove Fevourite Pet',
+            'Are you sure you want to remove this pet on your favourites?',
+            [
+                {
+                    text: 'OK',
+                    onPress: async () => {
+                        this.setState({ is_removed: false });
+                        const { ads } = this.state;
+                        const param = { ad_id: ads.id, is_fav: false };
+                        await this.props.api.post('ads/ad_favourite', param);
+                    }
+                },
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel'
+                },
+            ],
+            { cancelable: false }
+        );
     }
 
     render = () => {
-        const { adsLocation, ads, ad_images, is_show } = this.state;
+        const { adsLocation, ads, ad_images, is_removed } = this.state;
         const { navigation } = this.props;
 
-        if (!is_show)
+        if (!is_removed)
             return null;
 
         return (
