@@ -43,7 +43,13 @@ export default class ImageSlider extends Component {
             <View
                 style={{ backgroundColor: BaseColor.blackColor, flex: 1 }}
             >
-                <View style={{ flex: 1 }}>
+                <View style={{ width: "100%", flexDirection: "row", paddingLeft: 10, height: 70, position: "absolute", top: 0, justifyContent: "center", alignItems: "center" }}>
+                    <TouchableOpacity onPress={() => this.props.navigation.goBack()} >
+                        <Icon name={"arrow-left"} color={BaseColor.whiteColor} size={25}></Icon>
+                    </TouchableOpacity>
+                    <View style={{ flex: 1 }}></View>
+                </View>
+                <View style={{ flex: 1, paddingTop: 70 }}>
                     <Swiper
                         ref={ref => {
                             this.swiperRef = ref;
@@ -68,12 +74,6 @@ export default class ImageSlider extends Component {
                             );
                         })}
                     </Swiper>
-                </View>
-                <View style={{ width: "100%", flexDirection: "row", paddingLeft: 10, height: 70, position: "absolute", top: 0, justifyContent: "center", alignItems: "center" }}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()} >
-                        <Icon name={"arrow-left"} color={BaseColor.whiteColor} size={25}></Icon>
-                    </TouchableOpacity>
-                    <View style={{ flex: 1 }}></View>
                 </View>
                 <View style={{ paddingBottom: 20, paddingTop: 10 }}>
                     <FlatList
