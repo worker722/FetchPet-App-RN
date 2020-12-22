@@ -53,7 +53,7 @@ export default class Splash extends Component {
       }
       else {
         geolocation.requestAuthorization();
-        const response = await Utils.getCurrentLocation();
+        await Utils.getCurrentLocation();
       }
     } catch (err) {
     }
