@@ -75,7 +75,7 @@ class Profile extends Component {
                     }
                     <View style={{ justifyContent: "center", flex: 1, paddingLeft: 10 }}>
                         <Text style={{ color: BaseColor.primaryColor, fontSize: 20, fontWeight: "bold" }}>{user?.name}</Text>
-                        <Text style={{ color: "#808080" }}>View & edit Profile</Text>
+                        <Text style={{ color: BaseColor.greyColor }}>View & edit Profile</Text>
                     </View>
                 </TouchableOpacity>
 
