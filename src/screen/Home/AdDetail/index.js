@@ -107,16 +107,6 @@ class AdDetail extends Component {
         this.props.navigation.navigate("SellEdit", { ad_id: this.state.ads.id });
     }
 
-    _onScroll = (event) => {
-        const scrollPosition = event.nativeEvent.contentOffset.y;
-        if (scrollPosition > 150) {
-            this.setState({ animType: "fadeInRight" });
-        }
-        else if (scrollPosition < 10) {
-            this.setState({ animType: "fadeOutRight" });
-        }
-    }
-
     _onRefresh = () => {
         this.setState({ showRefresh: true });
         this.start();
@@ -145,7 +135,6 @@ class AdDetail extends Component {
         return (
             <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}>
                 <ScrollView style={{ flex: 1 }}
-                    onScroll={this._onScroll}
                     refreshControl={
                         <RefreshControl
                             refreshing={showRefresh}
