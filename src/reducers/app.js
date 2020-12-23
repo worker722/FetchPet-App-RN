@@ -14,7 +14,7 @@ export default (state = initialState, action = {}) => {
     case global.U_MESSAGE_DECREMENT:
       return {
         ...state,
-        unread_message: state.unread_message - action.data
+        unread_message: (state.unread_message - action.data) > 0 ? (state.unread_message - action.data) : 0
       };
     case global.U_MESSAGE_SET:
       return {

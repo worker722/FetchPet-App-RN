@@ -3,12 +3,15 @@ import {
     View,
     TouchableOpacity,
     Text,
-    ActivityIndicator
+    ActivityIndicator,
+    AppState
 } from 'react-native';
 import { Image } from 'react-native-elements';
 import { BaseColor } from '@config';
 import * as Api from '@api';
 import * as Utils from '@utils';
+
+import firebase from 'react-native-firebase';
 
 import { store } from '@store';
 import { connect } from "react-redux";
@@ -17,18 +20,19 @@ import * as global from "@api/global";
 class InboxItem extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            room: {},
+            unread_message: 0
+        }
     }
 
-    render = () => {
-        const { data, navigation } = this.props;
-        const { ads, buyer, seller, message } = data.item;
-
-        if (message.length == 0)
-            return null;
-
+    UNSAFE_componentWillMount = () => {
+        const { item } = this.props.data;
+        const { ads, message } = item;
         const user_id = store.getState().auth.login.user.id;
-        const other_user = user_id == buyer.id ? seller : buyer;
-        const latest_message = message[message.length - 1];
+        const unread_message = message.filter((item, key) => {
+            return item.read_status == 0 && user_id != item.id_user_snd;
+        });
 
         const ad_images = [];
         ads.meta.forEach((item, key) => {
@@ -36,16 +40,55 @@ class InboxItem extends Component {
                 ad_images.push(item.meta_value);
         });
 
-        const unread_message = message.filter((item, key) => {
-            return item.read_status == 0 && user_id != item.id_user_snd;
-        });
+        this.setState({ unread_message: unread_message.length, room: item, ad_images });
+    }
+
+    createNotificationListeners = async () => {
+        try {
+            const user_id = store.getState().auth.login.user.id;
+            const { room } = this.state;
+            this.notificationListener = firebase.notifications().onNotification((notification) => {
+                const newMessage = JSON.parse(notification.data.data);
+                if (newMessage?.room?.id == room.id && newMessage.sender.id != user_id && !this.props.is_in_chat) {
+                    let { unread_message } = this.state;
+                    unread_message++;
+                    this.setState({ unread_message });
+                }
+            });
+        } catch (error) {
+        }
+    }
+
+    handleAppStateChange = (nextAppState) => { }
+
+    componentDidMount = async () => {
+        await this.createNotificationListeners();
+        AppState.addEventListener('change', this.handleAppStateChange);
+    }
+
+    componentWillUnmount = () => {
+        this.notificationListener && this.notificationListener();
+        AppState.removeEventListener('change', this.handleAppStateChange);
+    }
+
+    render = () => {
+        const { navigation } = this.props;
+        const { unread_message, room, ad_images } = this.state;
+        const { ads, buyer, seller, message } = room;
+
+        if (!message || message.length == 0)
+            return null;
+
+        const user_id = store.getState().auth.login.user.id;
+        const other_user = user_id == buyer.id ? seller : buyer;
+        const latest_message = message[message.length - 1];
 
         return (
             <TouchableOpacity
                 onPress={() => {
-                    this.props.navigation.navigate("Chat", { ad_id: ads.id, room_id: data.item.id });
-                    if (unread_message.length > 0)
-                        this.props.setStore(global.U_MESSAGE_DECREMENT, unread_message.length);
+                    this.props.navigation.navigate("Chat", { ad_id: ads.id, room_id: room.id });
+                    if (unread_message > 0)
+                        this.props.setStore(global.U_MESSAGE_DECREMENT, unread_message);
                 }}
                 style={{ flex: 1, flexDirection: "row", paddingBottom: 20 }} >
                 <View>
@@ -79,9 +122,9 @@ class InboxItem extends Component {
                 <View style={{ justifyContent: "center", alignItems: "center" }}>
                     <Text style={{ color: BaseColor.greyColor, fontSize: 12 }}>{Utils.relativeTime(latest_message?.created_at)}</Text>
                     <View style={{ justifyContent: "center", alignItems: "center", paddingVertical: 5 }}>
-                        {unread_message.length > 0 &&
+                        {unread_message > 0 &&
                             <View style={{ width: 23, height: 23, backgroundColor: "red", justifyContent: "center", alignItems: "center", borderRadius: 100, padding: 2 }}>
-                                <Text style={{ color: BaseColor.whiteColor, fontSize: 12 }}>{unread_message.length}</Text>
+                                <Text style={{ color: BaseColor.whiteColor, fontSize: 12 }}>{unread_message}</Text>
                             </View>
                         }
                     </View>
@@ -91,10 +134,14 @@ class InboxItem extends Component {
     }
 }
 
+const mapStateToProps = ({ app: { is_in_chat } }) => {
+    return { is_in_chat };
+}
+
 const mapDispatchToProps = dispatch => {
     return {
         setStore: (type, data) => dispatch({ type, data })
     }
 }
 
-export default connect(null, mapDispatchToProps)(InboxItem);
+export default connect(mapStateToProps, mapDispatchToProps)(InboxItem);
