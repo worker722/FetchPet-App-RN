@@ -59,7 +59,7 @@ export const post = (route, params, is_store) => async dispatch => {
             return res;
         })
         .catch(err => {
-            console.log('method-post-error', err, route);
+            console.log('method-post-error', err, route, params);
         });
 }
 
