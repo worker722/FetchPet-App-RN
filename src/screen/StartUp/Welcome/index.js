@@ -17,7 +17,7 @@ export default class Welcome extends Component {
 
     render = () => {
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}>
                 <View style={{ position: "absolute", top: 0, width: "100%", height: image_height }}>
                     <Image
                         source={Images.welcome}

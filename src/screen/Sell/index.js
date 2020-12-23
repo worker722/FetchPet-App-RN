@@ -220,7 +220,7 @@ class Sell extends Component {
             return (<Loader />);
 
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}>
                 <ScrollView style={{ flex: 1 }}
                     refreshControl={
                         <RefreshControl
@@ -271,7 +271,7 @@ class Sell extends Component {
                         <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor }}>
                             <TextInput
                                 onChangeText={(text) => this.setState({ age: text })}
-                                placeholder={"Age"} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10, justifyContent: "center", alignItems: "center" }} />
+                                placeholder={"Age"} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10, textAlign: "center", justifyContent: "center", alignItems: "center" }} />
                         </View>
                         <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, paddingVertical: 5, marginLeft: 10, borderColor: BaseColor.dddColor }}>
                             <CustomModalPicker title={"Select a Unit"} data={unit} selectedValue={selectedUnit} onValueChange={(item, key) => this.setState({ selectedUnit: item.name })} />
@@ -284,7 +284,7 @@ class Sell extends Component {
                         <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, marginLeft: 10, borderColor: BaseColor.dddColor }}>
                             <TextInput
                                 onChangeText={(text) => this.setState({ price: text })}
-                                placeholder={"Price"} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10, justifyContent: "center", alignItems: "center" }} />
+                                placeholder={"Price"} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10, textAlign: "center", justifyContent: "center", alignItems: "center" }} />
                         </View>
                     </View>
                     <View style={{ padding: 10, height: 100, marginTop: 10, borderWidth: 1, borderColor: BaseColor.dddColor, borderRadius: 10, marginHorizontal: 10 }}>

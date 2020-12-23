@@ -142,7 +142,7 @@ class ProfileEdit extends Component {
             return (<Loader />);
 
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}>
                 <Header icon_left={"times"} callback_left={this.goBack} title={"Edit Profile"} text_right={"save"} callback_right={this.save} />
                 <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingHorizontal: 20 }}>Basic Infomation</Text>
                 <View style={{ marginTop: 15, marginLeft: 15, flexDirection: "row", paddingRight: 20 }}>
@@ -166,7 +166,7 @@ class ProfileEdit extends Component {
                         </TouchableOpacity>
                     </View>
                     <View style={{ flex: 1, justifyContent: "center", paddingLeft: 20 }}>
-                        <TextInput style={[Styles.textinput, { fontSize: 16, paddingVertical: 15 }]}
+                        <TextInput style={[Styles.textinput, { fontSize: 16, textAlignVertical: "center", height: 50 }]}
                             value={name}
                             onChangeText={(text) => this.setState({ name: text })}
                             underlineColorAndroid="transparent"
@@ -178,7 +178,7 @@ class ProfileEdit extends Component {
                 <View style={{ paddingHorizontal: 20, paddingTop: 30 }}>
                     <PhoneInput
                         ref={(ref) => { this.phone = ref; }}
-                        style={[Styles.textinput, { width: "100%", paddingVertical: 15 }]}
+                        style={[Styles.textinput, { width: "100%", textAlignVertical: "center", height: 50 }]}
                         initialCountry={"en"}
                         flagStyle={{ width: 35, height: 20 }}
                         textProps={{ placeholder: "Please input your phone number" }}
@@ -187,7 +187,7 @@ class ProfileEdit extends Component {
                         onChangePhoneNumber={(value) => this.setState({ valid_phone: this.phone.isValidNumber(), phonenumber: value })}
                         placeholderTextColor={BaseColor.greyColor}
                     />
-                    <TextInput style={[Styles.textinput, { marginTop: 10, paddingVertical: 15 }]}
+                    <TextInput style={[Styles.textinput, { marginTop: 10, textAlignVertical: "center", height: 50 }]}
                         value={email}
                         onChangeText={(text) => this.setState({ email: text })}
                         underlineColorAndroid="transparent"

@@ -31,7 +31,7 @@ export default class MyAds extends Component {
         const { currentTabIndex } = this.state;
 
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}>
                 <Header navigation={navigation} mainHeader={true} />
                 <Text style={{ color: BaseColor.primaryColor, fontSize: 20, fontWeight: "bold", paddingLeft: 10 }}>My Ads</Text>
                 <View style={{ flex: 1, marginTop: 10 }}>

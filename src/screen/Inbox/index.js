@@ -65,7 +65,7 @@ class Inbox extends Component {
             return (<Loader />)
 
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}>
                 <Header navigation={this.props.navigation} mainHeader={true} />
                 <Text style={{ color: BaseColor.primaryColor, fontSize: 20, fontWeight: "bold", paddingLeft: 10 }}>Chat</Text>
                 <View style={{ padding: 10, paddingTop: 0 }}>
