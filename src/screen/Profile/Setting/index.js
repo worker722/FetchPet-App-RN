@@ -3,6 +3,7 @@ import {
     View,
 } from 'react-native';
 import { Header, LinkItem } from '@components';
+import { BaseColor } from '@config';
 
 import { GoogleSignin } from 'react-native-google-signin';
 import appleAuth from '@invertase/react-native-apple-authentication';
@@ -94,7 +95,7 @@ class Setting extends Component {
         const { is_showNotification } = this.state;
 
         return (
-            <View style={{ flex: 1, paddingHorizontal: 10 }}>
+            <View style={{ flex: 1, paddingHorizontal: 10, backgroundColor: BaseColor.whiteColor }}>
                 <Header icon_left={"arrow-left"} title={"Setting"} callback_left={this.goBack} />
 
                 <LinkItem title={"Privacy"} subtitle={"Passwork, Phone number visiblity"} icon_right={"angle-right"} action={this.goPrivacy} />

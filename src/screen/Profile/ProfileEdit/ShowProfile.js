@@ -77,7 +77,7 @@ class ShowProfile extends Component {
             return (<Loader />);
 
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}>
                 <ScrollView refreshControl={
                     <RefreshControl
                         refreshing={showRefresh}

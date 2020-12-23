@@ -6,6 +6,7 @@ import {
     RefreshControl
 } from 'react-native';
 import { FavouriteAds, Loader } from '@components';
+import { BaseColor } from '@config';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -20,7 +21,7 @@ class Favourite extends Component {
 
             ads: null,
         }
-        
+
         props.navigation.addListener("willFocus", (event) => {
             this.UNSAFE_componentWillMount();
         });
@@ -51,7 +52,7 @@ class Favourite extends Component {
             return (<Loader />);
 
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}>
                 <ScrollView
                     refreshControl={
                         <RefreshControl

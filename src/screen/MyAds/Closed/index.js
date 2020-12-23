@@ -6,6 +6,7 @@ import {
     RefreshControl
 } from 'react-native';
 import { ClosedAds, Loader } from '@components';
+import { BaseColor } from '@config';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -47,7 +48,7 @@ class Closed extends Component {
             return (<Loader />);
 
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}>
                 <ScrollView
                     refreshControl={
                         <RefreshControl

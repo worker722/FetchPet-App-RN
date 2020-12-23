@@ -261,7 +261,7 @@ class Login extends Component {
             return <Loader />;
 
         return (
-            <View style={{ flex: 1, paddingBottom: 20 }}>
+            <View style={{ flex: 1, paddingBottom: 20, backgroundColor: BaseColor.whiteColor }}>
                 <View style={{ position: "absolute", top: 0, width: "100%", height: IMAGE_HEIGHT }}>
                     <Image
                         source={Images.sign}

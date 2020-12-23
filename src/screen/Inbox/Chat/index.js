@@ -156,7 +156,7 @@ class Chat extends Component {
             <KeyboardAvoidingView behavior={Platform.OS == "android" ? "" : "padding"}
                 style={{ flex: 1 }}
                 keyboardVerticalOffset={40}>
-                <View style={{ flex: 1, marginBottom: 10 }}>
+                <View style={{ flex: 1, marginBottom: 10, backgroundColor: BaseColor.whiteColor }}>
                     <View style={{ width: "100%", height: 80, backgroundColor: BaseColor.primaryColor, flexDirection: "row", padding: 10 }}>
                         <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", padding: 10 }}
                             onPress={() => {

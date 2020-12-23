@@ -5,6 +5,7 @@ import {
 import { Header, LinkItem } from '@components';
 import Rate, { AndroidMarket } from 'react-native-rate';
 import * as global from "@api/global";
+import { BaseColor } from '@config';
 
 export default class Help extends Component {
     constructor(props) {
@@ -36,7 +37,7 @@ export default class Help extends Component {
 
     render = () => {
         return (
-            <View style={{ flex: 1, paddingHorizontal: 10 }}>
+            <View style={{ flex: 1, paddingHorizontal: 10, backgroundColor: BaseColor.whiteColor }}>
                 <Header icon_left={"arrow-left"} title={"Help & Support"} callback_left={this.goBack} />
 
                 <LinkItem title={"Help Center"} subtitle={"See FAQ and contact support"} icon_right={"angle-right"} action={this.contactUs} />
