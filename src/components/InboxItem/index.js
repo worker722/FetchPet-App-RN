@@ -56,6 +56,7 @@ class InboxItem extends Component {
                     let { unread_message } = this.state;
                     unread_message++;
                     this.setState({ unread_message, latest_message: newMessage });
+                    this.props.setStore(global.U_MESSAGE_INCREMENT, 1);
                 }
             });
         } catch (error) {
