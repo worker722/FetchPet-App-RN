@@ -14,6 +14,7 @@ import { Header, Loader } from '@components';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Api from '@api';
+import * as global from '@api/global';
 import * as Utils from '@utils';
 
 class Notification extends Component {
@@ -55,6 +56,13 @@ class Notification extends Component {
 
     _onNotificationClicked = (item) => {
         if (item.type == 0) {
+            const unread_message = item.room.message.filter((item, key) => {
+                return item.read_status == 0 && user_id != item.id_user_snd;
+            });
+
+            if (unread_message.length > 0)
+                this.props.decrement_message(unread_message.length);
+
             this.props.navigation.navigate("Chat", { ad_id: item.room.id_ads, room_id: item.room.id });
         }
         else {
@@ -126,7 +134,8 @@ class Notification extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        api: bindActionCreators(Api, dispatch)
+        api: bindActionCreators(Api, dispatch),
+        decrement_message: (count) => dispatch({ type: global.U_MESSAGE_DECREMENT, data: count })
     };
 };
 export default connect(null, mapDispatchToProps)(Notification);
