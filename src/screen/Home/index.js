@@ -562,6 +562,7 @@ const mapDispatchToProps = dispatch => {
     return {
         api: bindActionCreators(Api, dispatch),
         set_message: (count) => dispatch({ type: global.U_MESSAGE_SET, data: count }),
+        increment_message: (count) => dispatch({ type: global.U_MESSAGE_INCREMENT, data: count }),
     };
 };
 export default connect(null, mapDispatchToProps)(Home);
