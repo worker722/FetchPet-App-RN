@@ -49,11 +49,12 @@ class Chat extends Component {
             const { room } = this.state;
             this.notificationListener = firebase.notifications().onNotification((notification) => {
                 const newMessage = JSON.parse(notification.data.data);
-                if (newMessage?.id_room == room.id) {
+                console.log(newMessage);
+                if (newMessage?.room?.id == room.id && newMessage.sender.id != user_id) {
                     let { chat } = this.state;
                     chat.push(newMessage);
                     this.setState({ chat });
-                    this.props.api.post("chat/read", newMessage.id_room);
+                    this.props.api.post("chat/read", { id: room.id });
                 }
             });
         } catch (error) {
@@ -63,6 +64,7 @@ class Chat extends Component {
     handleAppStateChange = (nextAppState) => { }
 
     componentDidMount = async () => {
+        this.scrollView?.scrollToEnd({ animated: true });
         await this.createNotificationListeners();
         BackHandler.addEventListener("hardwareBackPress", this.backAction);
         AppState.addEventListener('change', this.handleAppStateChange);
@@ -110,10 +112,6 @@ class Chat extends Component {
             })
         }
         this.setState({ showLoader: false, showRefresh: false });
-    }
-
-    componentDidMount = () => {
-        this.scrollView?.scrollToEnd({ animated: true });
     }
 
     _onRefresh = async () => {
