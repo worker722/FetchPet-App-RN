@@ -49,10 +49,11 @@ class Chat extends Component {
             const { room } = this.state;
             this.notificationListener = firebase.notifications().onNotification((notification) => {
                 const newMessage = JSON.parse(notification.data.data);
-                if (newMessage?.room?.id == room.id && user_id != newMessage?.sender?.id) {
+                if (newMessage?.id_room == room.id) {
                     let { chat } = this.state;
                     chat.push(newMessage);
                     this.setState({ chat });
+                    this.props.api.post("chat/read", newMessage.id_room);
                 }
             });
         } catch (error) {
