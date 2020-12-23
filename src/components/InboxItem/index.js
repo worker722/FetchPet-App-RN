@@ -95,9 +95,9 @@ class InboxItem extends Component {
                 }}
                 style={{ flex: 1, flexDirection: "row", paddingBottom: 20 }} >
                 <View>
-                    {other_user ?
+                    {other_user.avatar ?
                         <Image
-                            source={{ uri: Api.SERVER_HOST + other_user?.avatar }}
+                            source={{ uri: Api.SERVER_HOST + other_user.avatar }}
                             PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}
                             placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                             style={{ alignSelf: 'center', marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 80, height: 80, borderRadius: 100 }}>
