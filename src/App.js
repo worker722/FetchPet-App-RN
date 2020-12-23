@@ -32,7 +32,7 @@ export default class index extends Component {
                 <PersistGate loading={null} persistor={persistor}>
                     {Platform.OS != "android" &&
                         <View style={{ height: getStatusBarHeight(true), backgroundColor: BaseColor.primaryDarkColor }} />}
-                    <App />
+                    <App style={{ backgroundColor: BaseColor.whiteColor }} />
                 </PersistGate>
             </Provider>
         );
