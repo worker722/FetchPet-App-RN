@@ -374,7 +374,9 @@ class Home extends Component {
 
     renderFilterItem = ({ item, index }) => {
         return (
-            <TouchableOpacity activeOpacity={1} onPress={() => this.filterSelected(item.type, item.id)} style={{ width: filterItem_width, justifyContent: "center", alignItems: "center", backgroundColor: item.is_selected ? BaseColor.primaryColor : BaseColor.whiteColor, height: 40, borderRadius: 5 }}>
+            <TouchableOpacity activeOpacity={1}
+                onPress={() => this.filterSelected(item.type, item.id)}
+                style={{ width: filterItem_width, justifyContent: "center", alignItems: "center", backgroundColor: item.is_selected ? BaseColor.primaryColor : BaseColor.whiteColor, height: 40, borderRadius: 5, marginBottom: 5 }}>
                 <Text style={{ color: !item.is_selected ? BaseColor.primaryColor : BaseColor.whiteColor }}>{item.name}</Text>
             </TouchableOpacity>
         )
@@ -466,7 +468,7 @@ class Home extends Component {
                     ref={ref => {
                         this.RBSheetRef = ref;
                     }}
-                    height={Utils.SCREEN.HEIGHT / 2}
+                    height={Utils.SCREEN.HEIGHT * 2 / 3}
                     openDuration={10}
                     customStyles={{
                         container: {
@@ -480,19 +482,19 @@ class Home extends Component {
                     <View style={{ flex: 1, paddingVertical: 20, paddingHorizontal: 10 }}>
                         <ScrollView>
                             <View style={{ justifyContent: "center", alignItems: "center" }}>
-                                <View style={{ width: 80, height: 6, backgroundColor: "#9b9b9b", borderRadius: 100 }}></View>
+                                <View style={{ width: 80, height: 5, backgroundColor: "#9b9b9b", borderRadius: 100 }}></View>
                             </View>
-                            <Text style={{ fontSize: 18, color: BaseColor.primaryColor, marginTop: 10 }}>Breed</Text>
-                            <View style={{ flexDirection: "row", width: "100%", marginTop: 5 }}>
+                            <Text style={{ fontSize: 18, color: BaseColor.primaryColor, marginTop: 30 }}>Breed</Text>
+                            <View style={{ flexDirection: "row", width: "100%", marginTop: 20, height: 100 }}>
                                 <FlatList
                                     keyExtractor={(item, index) => index.toString()}
                                     data={filterBreed}
-                                    horizontal={true}
+                                    numColumns={4}
                                     renderItem={this.renderFilterItem}
                                 />
                             </View>
                             <Text style={{ fontSize: 18, color: BaseColor.primaryColor, marginTop: 10 }}>Gender</Text>
-                            <View style={{ flexDirection: "row", width: "100%", marginTop: 5 }}>
+                            <View style={{ flexDirection: "row", width: "100%", marginTop: 20 }}>
                                 <FlatList
                                     keyExtractor={(item, index) => index.toString()}
                                     data={filterGender}
@@ -501,7 +503,7 @@ class Home extends Component {
                                 />
                             </View>
                             <Text style={{ fontSize: 18, color: BaseColor.primaryColor, marginTop: 10 }}>Price</Text>
-                            <View style={{ flexDirection: "row", paddingHorizontal: 5 }}>
+                            <View style={{ flexDirection: "row", paddingHorizontal: 20, marginTop: 10 }}>
                                 <Text style={{ flex: 1 }}>$ {filterPrice.min}</Text>
                                 <Text style={{ flex: 1, textAlign: "right" }}>$ {filterPrice.max}</Text>
                             </View>
