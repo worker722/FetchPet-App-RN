@@ -44,7 +44,8 @@ class InboxItem extends Component {
             <TouchableOpacity
                 onPress={() => {
                     this.props.navigation.navigate("Chat", { ad_id: ads.id, room_id: data.item.id });
-                    this.props.decrement_message(unread_message.length);
+                    if (unread_message.length > 0)
+                        this.props.decrement_message(unread_message.length);
                 }}
                 style={{ flex: 1, flexDirection: "row", paddingBottom: 20 }} >
                 <View>
