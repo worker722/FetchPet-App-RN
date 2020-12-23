@@ -1,4 +1,3 @@
-import { exp } from "react-native-reanimated";
 
 //STORE VARIABLE TYPES
 export const LOGIN = "LOGIN";
