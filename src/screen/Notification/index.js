@@ -13,6 +13,7 @@ import { Header, Loader } from '@components';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { store } from '@store';
 import * as Api from '@api';
 import * as global from '@api/global';
 import * as Utils from '@utils';
@@ -55,6 +56,7 @@ class Notification extends Component {
     }
 
     _onNotificationClicked = (item) => {
+        const user_id = store.getState().auth.login.user.id;
         if (item.type == 0) {
             const unread_message = item.room.message.filter((item, key) => {
                 return item.read_status == 0 && user_id != item.id_user_snd;
