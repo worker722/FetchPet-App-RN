@@ -50,7 +50,6 @@ class Chat extends Component {
                     let chat = this.state.chat;
                     chat.push(newMessage);
                     this.setState({ chat });
-                    this.props.decrement_message(1);
                 }
             });
         } catch (error) {
@@ -232,8 +231,7 @@ class Chat extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        api: bindActionCreators(Api, dispatch),
-        decrement_message: (count) => dispatch({ type: global.U_MESSAGE_DECREMENT, data: count }),
+        api: bindActionCreators(Api, dispatch)
     };
 };
 export default connect(null, mapDispatchToProps)(Chat);

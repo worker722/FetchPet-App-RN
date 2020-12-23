@@ -242,14 +242,14 @@ class Home extends Component {
 
         const response = await this.props.api.get('home');
         if (response?.success) {
+            if (response.data.unread_message > 0)
+                this.props.set_message(response.data.unread_message);
+
             let ads = await this.sortAdsByDistance(response.data.ads);
             let topCategory = response.data.category;
             let filterBreed = response.data.breed;
             let is_show_apple_button = response.data.is_show_apple_button;
             await SetPrefrence(global.PREF_SHOW_APPLE_BUTTON, is_show_apple_button);
-
-            this.props.set_message(response.data.unread_message);
-            console.log(response.data.unread_message);
 
             topCategory.filter((item, index) => {
                 item.type = FILTER_TYPE.TOP_CATEGORY;
