@@ -41,6 +41,10 @@ class Chat extends Component {
             showRefresh: false,
             is_sending: false,
         }
+
+        props.navigation.addListener("willFocus", (event) => {
+            this.props.setStore(global.IS_IN_CHAT_PAGE, true);
+        });
     }
 
     createNotificationListeners = async () => {
@@ -49,7 +53,7 @@ class Chat extends Component {
                 const user_id = store.getState().auth.login.user.id;
                 const { room } = this.state;
                 const newMessage = JSON.parse(notification.data.data);
-                if (newMessage.id_room == room.id && newMessage.id_user_snd != user_id) {
+                if (newMessage.id_room == room.id && newMessage.id_user_snd != user_id && this.props.is_in_chat) {
                     let { chat } = this.state;
                     chat.push(newMessage);
                     this.setState({ chat });
@@ -81,8 +85,6 @@ class Chat extends Component {
     }
 
     UNSAFE_componentWillMount = async () => {
-        this.props.setStore(global.IS_IN_CHAT_PAGE, true);
-
         this.setState({ showLoader: true });
         await this.start();
     }
@@ -164,7 +166,11 @@ class Chat extends Component {
                             <Icon name={"arrow-left"} size={20} color={BaseColor.whiteColor}></Icon>
                         </TouchableOpacity>
                         <View style={{ justifyContent: "center", alignItems: "center", marginLeft: 10 }}>
-                            <TouchableOpacity onPress={() => navigation.navigate("ShowProfile", { user_id: other_user.id })} >
+                            <TouchableOpacity
+                                onPress={() => {
+                                    navigation.navigate("ShowProfile", { user_id: other_user.id });
+                                    this.props.setStore(global.IS_IN_CHAT_PAGE, false);
+                                }} >
                                 {other_user?.avatar ?
                                     <Image
                                         source={{ uri: Api.SERVER_HOST + other_user?.avatar }}
@@ -180,7 +186,10 @@ class Chat extends Component {
                                 }
                             </TouchableOpacity>
                             <TouchableOpacity
-                                onPress={() => navigation.navigate("AdDetail", { ad_id: ads.id })}
+                                onPress={() => {
+                                    navigation.navigate("AdDetail", { ad_id: ads.id });
+                                    this.props.setStore(global.IS_IN_CHAT_PAGE, false);
+                                }}
                                 style={{ position: "absolute", bottom: 0, right: 3, width: 25, height: 25, borderRadius: 100 }}>
                                 <Image
                                     source={{ uri: Api.SERVER_HOST + ad_images[0] }}
@@ -243,10 +252,14 @@ class Chat extends Component {
     }
 }
 
+const mapStateToProps = ({ app: { is_in_chat } }) => {
+    return { is_in_chat };
+}
+
 const mapDispatchToProps = dispatch => {
     return {
         api: bindActionCreators(Api, dispatch),
         setStore: (type, data) => dispatch({ type, data })
     };
 };
-export default connect(null, mapDispatchToProps)(Chat);
+export default connect(mapStateToProps, mapDispatchToProps)(Chat);
