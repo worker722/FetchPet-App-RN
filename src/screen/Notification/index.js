@@ -63,7 +63,7 @@ class Notification extends Component {
             });
 
             if (unread_message.length > 0)
-                this.props.decrement_message(unread_message.length);
+                this.props.setUnReadMessage(global.U_MESSAGE_DECREMENT, unread_message.length);
 
             this.props.navigation.navigate("Chat", { ad_id: item.room.id_ads, room_id: item.room.id });
         }
@@ -137,7 +137,7 @@ class Notification extends Component {
 const mapDispatchToProps = dispatch => {
     return {
         api: bindActionCreators(Api, dispatch),
-        decrement_message: (count) => dispatch({ type: global.U_MESSAGE_DECREMENT, data: count })
+        setUnReadMessage: (type, data) => dispatch({ type, data })
     };
 };
 export default connect(null, mapDispatchToProps)(Notification);

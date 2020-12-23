@@ -13,7 +13,7 @@ export default (state = initialState, action = {}) => {
       return {
         unread_message: state.unread_message - action.data
       };
-      case global.U_MESSAGE_SET:
+    case global.U_MESSAGE_SET:
       return {
         unread_message: action.data
       };

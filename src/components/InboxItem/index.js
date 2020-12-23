@@ -45,7 +45,7 @@ class InboxItem extends Component {
                 onPress={() => {
                     this.props.navigation.navigate("Chat", { ad_id: ads.id, room_id: data.item.id });
                     if (unread_message.length > 0)
-                        this.props.decrement_message(unread_message.length);
+                        this.props.setUnReadMessage(global.U_MESSAGE_DECREMENT, unread_message.length);
                 }}
                 style={{ flex: 1, flexDirection: "row", paddingBottom: 20 }} >
                 <View>
@@ -93,7 +93,7 @@ class InboxItem extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        decrement_message: (count) => dispatch({ type: global.U_MESSAGE_DECREMENT, data: count })
+        setUnReadMessage: (type, data) => dispatch({ type, data })
     }
 }
 

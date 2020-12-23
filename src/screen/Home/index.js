@@ -97,7 +97,7 @@ class Home extends Component {
         this.notificationListener = firebase.notifications().onNotification((notification) => {
             const { title, body } = notification;
             this.showNotification(title, body);
-            this.props.increment_message(1);
+            this.props.setUnReadMessage(global.U_MESSAGE_INCREMENT, 1);
         });
 
         /*
@@ -243,7 +243,7 @@ class Home extends Component {
         const response = await this.props.api.get('home');
         if (response?.success) {
             if (response.data.unread_message > 0)
-                this.props.set_message(response.data.unread_message);
+                this.props.setUnReadMessage(global.U_MESSAGE_SET, response.data.unread_message);
 
             let ads = await this.sortAdsByDistance(response.data.ads);
             let topCategory = response.data.category;
@@ -561,8 +561,7 @@ class Home extends Component {
 const mapDispatchToProps = dispatch => {
     return {
         api: bindActionCreators(Api, dispatch),
-        set_message: (count) => dispatch({ type: global.U_MESSAGE_SET, data: count }),
-        increment_message: (count) => dispatch({ type: global.U_MESSAGE_INCREMENT, data: count }),
+        setUnReadMessage: (type, data) => dispatch({ type, data })
     };
 };
 export default connect(null, mapDispatchToProps)(Home);
