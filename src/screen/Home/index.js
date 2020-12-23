@@ -80,6 +80,8 @@ class Home extends Component {
             showContentLoader: false
         }
 
+        this.props.setStore(global.IS_IN_CHAT_PAGE, false);
+
         props.navigation.addListener("willFocus", (event) => {
             this.UNSAFE_componentWillMount();
         });
@@ -97,7 +99,8 @@ class Home extends Component {
         this.notificationListener = firebase.notifications().onNotification((notification) => {
             const { title, body } = notification;
             this.showNotification(title, body);
-            this.props.setUnReadMessage(global.U_MESSAGE_INCREMENT, 1);
+            if (!this.props.is_in_chat)
+                this.props.setStore(global.U_MESSAGE_INCREMENT, 1);
         });
 
         /*
@@ -243,11 +246,12 @@ class Home extends Component {
         const response = await this.props.api.get('home');
         if (response?.success) {
             if (response.data.unread_message > 0)
-                this.props.setUnReadMessage(global.U_MESSAGE_SET, response.data.unread_message);
+                this.props.setStore(global.U_MESSAGE_SET, response.data.unread_message);
 
             let ads = await this.sortAdsByDistance(response.data.ads);
             let topCategory = response.data.category;
             let filterBreed = response.data.breed;
+            
             let is_show_apple_button = response.data.is_show_apple_button;
             await SetPrefrence(global.PREF_SHOW_APPLE_BUTTON, is_show_apple_button);
 
@@ -558,10 +562,14 @@ class Home extends Component {
     }
 }
 
+const mapStateToProps = ({ app: { is_in_chat } }) => {
+    return { is_in_chat };
+}
+
 const mapDispatchToProps = dispatch => {
     return {
         api: bindActionCreators(Api, dispatch),
-        setUnReadMessage: (type, data) => dispatch({ type, data })
+        setStore: (type, data) => dispatch({ type, data })
     };
 };
-export default connect(null, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

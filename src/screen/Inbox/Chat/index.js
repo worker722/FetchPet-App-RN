@@ -12,16 +12,18 @@ import {
     Platform,
     KeyboardAvoidingView,
 } from 'react-native';
+import { ChatMessage, Loader } from '@components';
 import { BaseColor } from '@config';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native-elements';
+
 import firebase from 'react-native-firebase';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { store } from "@store";
 import * as Api from '@api';
-import { ChatMessage, Loader } from '@components';
+import * as global from "@api/global";
 
 class Chat extends Component {
     constructor(props) {
@@ -69,6 +71,8 @@ class Chat extends Component {
     }
 
     UNSAFE_componentWillMount = async () => {
+        this.props.setStore(global.IS_IN_CHAT_PAGE, true);
+
         this.setState({ showLoader: true });
         await this.start();
     }
@@ -146,7 +150,11 @@ class Chat extends Component {
                 keyboardVerticalOffset={40}>
                 <View style={{ flex: 1, marginBottom: 10 }}>
                     <View style={{ width: "100%", height: 80, backgroundColor: BaseColor.primaryColor, flexDirection: "row", padding: 10 }}>
-                        <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", padding: 10 }} onPress={() => navigation.navigate("Inbox")} >
+                        <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", padding: 10 }}
+                            onPress={() => {
+                                navigation.navigate("Inbox");
+                                this.props.setStore(global.IS_IN_CHAT_PAGE, false);
+                            }} >
                             <Icon name={"arrow-left"} size={20} color={BaseColor.whiteColor}></Icon>
                         </TouchableOpacity>
                         <View style={{ justifyContent: "center", alignItems: "center", marginLeft: 10 }}>
@@ -231,7 +239,8 @@ class Chat extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        api: bindActionCreators(Api, dispatch)
+        api: bindActionCreators(Api, dispatch),
+        setStore: (type, data) => dispatch({ type, data })
     };
 };
 export default connect(null, mapDispatchToProps)(Chat);
