@@ -14,15 +14,13 @@ export default class ChatMessage extends Component {
 
     render = () => {
         const user_id = store.getState().auth.login.user.id;
-
         const { data } = this.props;
         const item = data.item;
-
         const message_date = Utils.DATE2STR(item.created_at, 'D MMM HH:mm');
 
         return (
             <View>
-                {user_id == item.receiver.id ?
+                {user_id != item.id_user_snd ?
                     <View style={{ marginTop: 20, flex: 1, justifyContent: "flex-start", alignItems: "flex-start" }}>
                         <View style={{ backgroundColor: BaseColor.primaryColor, borderTopLeftRadius: 15, borderTopRightRadius: 15, borderBottomRightRadius: 15, padding: 10, maxWidth: "70%" }}>
                             <Text style={{ color: BaseColor.whiteColor }}>{item.message}</Text>

@@ -43,7 +43,7 @@ export default class HomeAds extends Component {
     onChat = () => {
         const { navigation } = this.props;
         const { item } = this.state;
-        navigation.navigate("Chat", { ad_id: item.id });
+        navigation.navigate("Chat", { ad_id: item.id, room_id: -1 });
     }
 
     onCall = () => {

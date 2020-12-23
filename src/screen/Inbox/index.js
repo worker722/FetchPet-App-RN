@@ -35,10 +35,15 @@ class Inbox extends Component {
     start = async () => {
         const response = await this.props.api.get('inbox');
         if (response?.success) {
-            let inbox = response.data.inbox;
+            const inbox = response.data.inbox;
             inbox.sort((a, b) => {
-                let a_end = a.message[a.message.length - 1];
-                let b_end = b.message[b.message.length - 1];
+                if (a.message.length == 0)
+                    return 1;
+                if (b.message.length == 0)
+                    return -1;
+
+                const a_end = a.message[a.message.length - 1];
+                const b_end = b.message[b.message.length - 1];
                 if (b_end.created_at >= a_end.created_at)
                     return 1;
                 else if (b_end.created_at < a_end.created_at)

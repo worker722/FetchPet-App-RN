@@ -55,7 +55,7 @@ class Notification extends Component {
 
     _onNotificationClicked = (item) => {
         if (item.type == 0) {
-            this.props.navigation.navigate("Chat", { ad_id: item.id_type });
+            this.props.navigation.navigate("Chat", { ad_id: item.room.id_ads, room_id: item.room.id });
         }
         else {
             this.props.navigation.navigate("AdDetail", { ad_id: item.id_type });

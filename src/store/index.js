@@ -11,7 +11,7 @@ import rootReducer from "@reducers";
 const persistConfig = {
   key: "root",
   storage: AsyncStorage,
-  timeout: 100000
+  timeout: 10000
 };
 
 let middleware = [thunk];
