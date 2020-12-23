@@ -48,6 +48,7 @@ class InboxItem extends Component {
             const user_id = store.getState().auth.login.user.id;
             const { room } = this.state;
             this.notificationListener = firebase.notifications().onNotification((notification) => {
+                console.log('inbox message', newMessage);
                 const newMessage = JSON.parse(notification.data.data);
                 if (newMessage?.room?.id == room.id && newMessage.sender.id != user_id && !this.props.is_in_chat) {
                     let { unread_message } = this.state;
