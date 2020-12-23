@@ -11,6 +11,7 @@ import {
     AppState,
     Platform,
     KeyboardAvoidingView,
+    BackHandler
 } from 'react-native';
 import { ChatMessage, Loader } from '@components';
 import { BaseColor } from '@config';
@@ -62,12 +63,19 @@ class Chat extends Component {
 
     componentDidMount = async () => {
         await this.createNotificationListeners();
+        BackHandler.addEventListener("hardwareBackPress", this.backAction);
         AppState.addEventListener('change', this.handleAppStateChange);
+    }
+
+    backAction = () => {
+        this.props.setStore(global.IS_IN_CHAT_PAGE, false);
+        return false;
     }
 
     componentWillUnmount = () => {
         this.notificationListener && this.notificationListener();
         AppState.removeEventListener('change', this.handleAppStateChange);
+        BackHandler.removeEventListener("hardwareBackPress", this.backAction);
     }
 
     UNSAFE_componentWillMount = async () => {
