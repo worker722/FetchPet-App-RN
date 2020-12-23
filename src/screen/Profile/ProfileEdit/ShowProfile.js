@@ -10,7 +10,6 @@ import { Header, Loader, HomeAds } from '@components';
 import { Image } from 'react-native-elements';
 import { BaseColor } from '@config';
 
-
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Api from '@api';
