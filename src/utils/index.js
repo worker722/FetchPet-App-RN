@@ -27,7 +27,7 @@ export const DATE2STR = (date, format) => {
 export const relativeTime = (date) => {
     if (!date) return '';
     const now = Moment();
-    const expiration = Moment(date).add(0, 'seconds');
+    const expiration = Moment(date).add(-8, 'seconds');
     const diff = now.diff(expiration);
     const diffDuration = Moment.duration(diff);
     const days = diffDuration.days();

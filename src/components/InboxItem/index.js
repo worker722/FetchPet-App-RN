@@ -22,6 +22,7 @@ class InboxItem extends Component {
         super(props);
         this.state = {
             room: {},
+            latest_message: {},
             unread_message: 0
         }
     }
@@ -40,20 +41,21 @@ class InboxItem extends Component {
                 ad_images.push(item.meta_value);
         });
 
-        this.setState({ unread_message: unread_message.length, room: item, ad_images });
+        const latest_message = message[message.length - 1];
+
+        this.setState({ unread_message: unread_message.length, room: item, ad_images, latest_message });
     }
 
     createNotificationListeners = async () => {
         try {
-            const user_id = store.getState().auth.login.user.id;
-            const { room } = this.state;
             this.notificationListener = firebase.notifications().onNotification((notification) => {
-                console.log('inbox message', newMessage);
+                const user_id = store.getState().auth.login.user.id;
+                const { room } = this.state;
                 const newMessage = JSON.parse(notification.data.data);
-                if (newMessage?.room?.id == room.id && newMessage.sender.id != user_id && !this.props.is_in_chat) {
+                if (newMessage.id_room == room.id && newMessage.id_user_snd != user_id && !this.props.is_in_chat) {
                     let { unread_message } = this.state;
                     unread_message++;
-                    this.setState({ unread_message });
+                    this.setState({ unread_message, latest_message: newMessage });
                 }
             });
         } catch (error) {
@@ -74,7 +76,7 @@ class InboxItem extends Component {
 
     render = () => {
         const { navigation } = this.props;
-        const { unread_message, room, ad_images } = this.state;
+        const { unread_message, room, ad_images, latest_message } = this.state;
         const { ads, buyer, seller, message } = room;
 
         if (!message || message.length == 0)
@@ -82,7 +84,6 @@ class InboxItem extends Component {
 
         const user_id = store.getState().auth.login.user.id;
         const other_user = user_id == buyer.id ? seller : buyer;
-        const latest_message = message[message.length - 1];
 
         return (
             <TouchableOpacity
