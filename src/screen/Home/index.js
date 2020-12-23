@@ -97,22 +97,15 @@ class Home extends Component {
         this.notificationListener = firebase.notifications().onNotification((notification) => {
             const { title, body } = notification;
             this.showNotification(title, body);
+            this.props.increment_message(1);
         });
 
         /*
         * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
         * */
         firebase.notifications().onNotificationOpened((notificationOpen) => {
-            try {
-                const { title, body, data } = notificationOpen.notification;
-                console.log('onNotificationOpened_notification', notificationOpen.notification);
-                console.log('onNotificationOpened_data', data);
-                const newMessage = JSON.parse(data);
-                if (newMessage?.id_ads)
-                    this.props.navigation.navigate("Chat", { ad_id: newMessage?.id_ads });
-            } catch (error) {
-                console.log(error);
-            }
+            const { title, body, data } = notificationOpen.notification;
+            this.props.navigation.navigate("Inbox");
         });
 
         /*
@@ -120,15 +113,8 @@ class Home extends Component {
         * */
         const notificationOpen = await firebase.notifications().getInitialNotification();
         if (notificationOpen) {
-            try {
-                const { title, body, data } = notificationOpen.notification;
-                console.log('onNotificationOpened_notification', notificationOpen.notification);
-                console.log('onNotificationOpened_data', data);
-                const newMessage = JSON.parse(data);
-                if (newMessage?.id_ads)
-                    this.props.navigation.navigate("Chat", { ad_id: newMessage?.id_ads });
-            } catch (error) {
-            }
+            const { title, body, data } = notificationOpen.notification;
+            this.props.navigation.navigate("Inbox");
         }
     }
 
@@ -199,6 +185,9 @@ class Home extends Component {
                     firebase.messaging().getToken().then(async token => {
                         if (token) {
                             const params = { token, platform: Platform.OS };
+                            if (!Api._TOKEN())
+                                return;
+
                             await this.props.api.post("profile/token", params);
                         }
                     });
@@ -248,6 +237,9 @@ class Home extends Component {
     }
 
     start = async () => {
+        if (!Api._TOKEN())
+            return;
+
         const response = await this.props.api.get('home');
         if (response?.success) {
             let ads = await this.sortAdsByDistance(response.data.ads);
@@ -255,6 +247,9 @@ class Home extends Component {
             let filterBreed = response.data.breed;
             let is_show_apple_button = response.data.is_show_apple_button;
             await SetPrefrence(global.PREF_SHOW_APPLE_BUTTON, is_show_apple_button);
+
+            this.props.set_message(response.data.unread_message);
+            console.log(response.data.unread_message);
 
             topCategory.filter((item, index) => {
                 item.type = FILTER_TYPE.TOP_CATEGORY;
@@ -565,7 +560,8 @@ class Home extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        api: bindActionCreators(Api, dispatch)
+        api: bindActionCreators(Api, dispatch),
+        set_message: (count) => dispatch({ type: global.U_MESSAGE_SET, data: count }),
     };
 };
 export default connect(null, mapDispatchToProps)(Home);

@@ -3,7 +3,7 @@ import Toast from 'react-native-simple-toast';
 import * as global from "./global";
 import { store } from '@store';
 
-// export const SERVER_HOST = 'http://10.0.0.2:8000';
+// export const SERVER_HOST = 'http://10.0.2.2:8000';
 export const SERVER_HOST = 'http://54.177.72.41';
 
 const onLogin = data => {
@@ -37,9 +37,7 @@ export const get = (route) => async dispatch => {
             return res;
         })
         .catch(err => {
-            if (_TOKEN() != null) {
-                console.log('method-get-error', err);
-            }
+            console.log('method-get-error', err, route);
         });
 }
 
@@ -61,9 +59,7 @@ export const post = (route, params, is_store) => async dispatch => {
             return res;
         })
         .catch(err => {
-            if (_TOKEN() != null) {
-                console.log('method-post-error', err);
-            }
+            console.log('method-post-error', err, route);
         });
 }
 
@@ -99,9 +95,7 @@ export const editProfile = (route, image, params) => async dispatch => {
             return res;
         })
         .catch(err => {
-            if (_TOKEN() != null) {
-                console.log('profile-upload-error', err);
-            }
+            console.log('profile-upload-error', err);
         });
 }
 
@@ -138,8 +132,6 @@ export const createAds = (route, images, params) => async dispatch => {
             return res;
         })
         .catch(err => {
-            if (_TOKEN() != null) {
-                console.log('ads-upload-error', err);
-            }
+            console.log('ads-upload-error', err);
         });
 }

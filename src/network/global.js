@@ -1,6 +1,10 @@
+import { exp } from "react-native-reanimated";
 
 //ACTION TYPES
 export const LOGIN = "LOGIN";
+export const U_MESSAGE_INCREMENT = "U_MESSAGE_INCREMENT";
+export const U_MESSAGE_DECREMENT = "U_MESSAGE_DECREMENT";
+export const U_MESSAGE_SET = "U_MESSAGE_SET";
 
 //NOTIFICATION CHANNEL SETTING FOR ANDROID ONLY
 export const NOTIFICATION_CHANNEL_ID = "FETCH-APP";

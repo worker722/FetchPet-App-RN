@@ -89,7 +89,7 @@ class AdDetail extends Component {
     onChat = () => {
         const { navigation } = this.props;
         const { ads } = this.state;
-        navigation.navigate("Chat", { ad_id: ads.id });
+        navigation.navigate("Chat", { ad_id: ads.id, room_id: -1 });
     }
 
     onCall = () => {

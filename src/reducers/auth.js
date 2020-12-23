@@ -2,12 +2,13 @@ import * as global from "@api/global";
 const initialState = {
   login: {
     success: false
-  },
+  }
 };
 
 export default (state = initialState, action = {}) => {
   switch (action.type) {
     case global.LOGIN:
+      console.log("dsdsdsd");
       return {
         login: action.data
       };

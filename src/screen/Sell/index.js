@@ -13,7 +13,6 @@ import {
     Alert,
 } from 'react-native';
 import { Image } from 'react-native-elements';
-import { Picker } from '@react-native-community/picker';
 import { BaseColor } from '@config';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Header, Loader, CustomModalPicker } from '@components';
@@ -262,38 +261,10 @@ class Sell extends Component {
                     </View>
                     <View style={{ width: "100%", marginTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
                         <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, borderColor: BaseColor.dddColor }}>
-                            {Platform.OS == "android" ?
-                                <Picker
-                                    selectedValue={selectedCategory}
-                                    style={{ height: 40, flex: 1, color: BaseColor.primaryColor }}
-                                    onValueChange={(value, index) => this.setState({ selectedCategory: value })}
-                                    itemStyle={{ height: 40 }}
-                                    mode="dropdown"
-                                >
-                                    {category.map((item, index) => (
-                                        <Picker.Item key={index} label={item.name} value={item.name} />
-                                    ))}
-                                </Picker>
-                                :
-                                <CustomModalPicker title={"Select a Category"} data={category} selectedValue={selectedCategory} onValueChange={(item, key) => this.setState({ selectedCategory: item.name })} />
-                            }
+                            <CustomModalPicker title={"Select a Category"} data={category} selectedValue={selectedCategory} onValueChange={(item, key) => this.setState({ selectedCategory: item.name })} />
                         </View>
                         <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, marginLeft: 10, borderColor: BaseColor.dddColor }}>
-                            {Platform.OS == "android" ?
-                                <Picker
-                                    selectedValue={selectedBreed}
-                                    style={{ height: 40, flex: 1, color: BaseColor.primaryColor }}
-                                    onValueChange={(value, index) => this.setState({ selectedBreed: value })}
-                                    itemStyle={{ height: 40 }}
-                                    mode="dropdown"
-                                >
-                                    {breed.map((item, index) => (
-                                        <Picker.Item key={index} label={item.name} value={item.name} />
-                                    ))}
-                                </Picker>
-                                :
-                                <CustomModalPicker title={"Select a Breed"} data={breed} selectedValue={selectedBreed} onValueChange={(item, key) => this.setState({ selectedBreed: item.name })} />
-                            }
+                            <CustomModalPicker title={"Select a Breed"} data={breed} selectedValue={selectedBreed} onValueChange={(item, key) => this.setState({ selectedBreed: item.name })} />
                         </View>
                     </View>
                     <View style={{ width: "100%", marginTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
@@ -303,40 +274,12 @@ class Sell extends Component {
                                 placeholder={"Age"} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10, justifyContent: "center", alignItems: "center" }} />
                         </View>
                         <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, paddingVertical: 5, marginLeft: 10, borderColor: BaseColor.dddColor }}>
-                            {Platform.OS == "android" ?
-                                <Picker
-                                    selectedValue={selectedUnit}
-                                    style={{ height: 40, flex: 1, color: BaseColor.primaryColor }}
-                                    onValueChange={(value, index) => this.setState({ selectedUnit: value })}
-                                    itemStyle={{ height: 40 }}
-                                    mode="dropdown"
-                                >
-                                    {unit.map((item, index) => (
-                                        <Picker.Item key={index} label={item.name} value={item.name} />
-                                    ))}
-                                </Picker>
-                                :
-                                <CustomModalPicker title={"Select a Unit"} data={unit} selectedValue={selectedUnit} onValueChange={(item, key) => this.setState({ selectedUnit: item.name })} />
-                            }
+                            <CustomModalPicker title={"Select a Unit"} data={unit} selectedValue={selectedUnit} onValueChange={(item, key) => this.setState({ selectedUnit: item.name })} />
                         </View>
                     </View>
                     <View style={{ width: "100%", marginTop: 10, flexDirection: "row", height: 50, paddingHorizontal: 10 }}>
                         <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, paddingVertical: 5, borderColor: BaseColor.dddColor }}>
-                            {Platform.OS == "android" ?
-                                <Picker
-                                    selectedValue={selectedGender}
-                                    style={{ height: 40, flex: 1, color: BaseColor.primaryColor }}
-                                    onValueChange={(value, index) => this.setState({ selectedGender: value })}
-                                    itemStyle={{ height: 40 }}
-                                    mode="dropdown"
-                                >
-                                    {gender.map((item, index) => (
-                                        <Picker.Item key={index} label={item.name} value={item.name} />
-                                    ))}
-                                </Picker>
-                                :
-                                <CustomModalPicker title={"Select a Gender"} data={gender} selectedValue={selectedGender} onValueChange={(item, key) => this.setState({ selectedGender: item.name })} />
-                            }
+                            <CustomModalPicker title={"Select a Gender"} data={gender} selectedValue={selectedGender} onValueChange={(item, key) => this.setState({ selectedGender: item.name })} />
                         </View>
                         <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, marginLeft: 10, borderColor: BaseColor.dddColor }}>
                             <TextInput

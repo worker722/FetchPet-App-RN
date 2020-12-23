@@ -3,18 +3,23 @@ import {
     View,
     TouchableOpacity,
     Text,
-    Image
+    Image,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Images, BaseColor } from '@config';
+import * as Animatable from 'react-native-animatable';
 
-export default class Header extends Component {
+import { connect } from "react-redux";
+
+class Header extends Component {
     constructor(props) {
         super(props);
     }
 
     render = () => {
         const { navigation, mainHeader, title, color_title, icon_left, color_icon_left, color_icon_right, icon_right, text_left, text_right, callback_left, callback_right } = this.props;
+
+        const { unread_message } = this.props;
 
         return (
             <View style={{ width: "100%", height: 70, paddingHorizontal: 10, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
@@ -24,8 +29,13 @@ export default class Header extends Component {
                             <Image source={Images.logo} style={{ width: 100, height: 35 }} resizeMode={"stretch"}></Image>
                         </TouchableOpacity>
                         <View style={{ flex: 1 }}></View>
-                        <TouchableOpacity style={{ position: "absolute", right: 10 }} onPress={() => navigation.navigate("Notification")}>
+                        <TouchableOpacity style={{ position: "absolute", right: 15 }} onPress={() => navigation.navigate("Notification")}>
                             <Icon solid name="bell" size={25} color={BaseColor.primaryColor}></Icon>
+                            {unread_message > 0 &&
+                                <Animatable.View animation={"bounceIn"} iterationCount={1} duration={500} direction="normal" style={{ position: "absolute", right: -10, top: -10, width: 23, height: 23, backgroundColor: "red", justifyContent: "center", alignItems: "center", borderRadius: 100, padding: 2 }}>
+                                    <Text style={{ color: BaseColor.whiteColor, fontSize: 12 }}>{unread_message}</Text>
+                                </Animatable.View>
+                            }
                         </TouchableOpacity>
                     </>
                 }
@@ -58,3 +68,9 @@ export default class Header extends Component {
         )
     }
 }
+
+const mapStateToProps = ({ app: { unread_message } }) => {
+    return { unread_message };
+}
+
+export default connect(mapStateToProps, null)(Header);

@@ -29,6 +29,7 @@ class Chat extends Component {
         this.state = {
             chat: [],
             ad_images: [],
+            room: null,
             ads: null,
             other_user: null,
             message: '',
@@ -41,14 +42,15 @@ class Chat extends Component {
 
     createNotificationListeners = async () => {
         try {
-            const { ads } = this.state;
-            const userId = store.getState().auth.login.user.id;
+            const user_id = store.getState().auth.login.user.id;
+            const { room } = this.state;
             this.notificationListener = firebase.notifications().onNotification((notification) => {
                 const newMessage = JSON.parse(notification.data.data);
-                if (newMessage?.receiver?.id == userId && newMessage?.id_type == ads.id) {
+                if (newMessage?.room?.id == room.id && user_id != newMessage.sender.id) {
                     let chat = this.state.chat;
                     chat.push(newMessage);
-                    this.setState({ chat: chat });
+                    this.setState({ chat });
+                    this.props.decrement_message(1);
                 }
             });
         } catch (error) {
@@ -69,77 +71,62 @@ class Chat extends Component {
 
     UNSAFE_componentWillMount = async () => {
         this.setState({ showLoader: true });
-        const param = { ad_id: this.props.navigation.state.params.ad_id };
-        const response = await this.props.api.post("chat", param);
-        this.setState({ showLoader: false });
-        if (response.success) {
+        await this.start();
+    }
 
+    start = async () => {
+        const { ad_id, room_id } = this.props.navigation.state.params;
+        const param = { ad_id, room_id };
+        const response = await this.props.api.post("chat", param);
+        if (response.success) {
+            const { ads, room } = response.data;
             const user_id = store.getState().auth.login.user.id;
-            const last_message = response.data.chat[response.data.chat.length - 1];
-            let other_user;
-            if (response.data.ads.user.id != user_id)
-                other_user = response.data.ads.user;
-            else
-                other_user = (user_id == last_message?.sender.id) ? last_message?.receiver : last_message?.sender;
+            const other_user = user_id == room.seller.id ? room.buyer : room.seller;
 
             const ad_images = [];
-            response.data.ads.meta.forEach((item, key) => {
+            ads.meta.forEach((item, key) => {
                 if (item.meta_key == '_ad_image')
                     ad_images.push(item.meta_value);
             });
-            this.setState({ ad_images });
 
             this.setState({
-                chat: response.data.chat,
-                ads: response.data.ads,
+                room,
+                ads,
+                other_user,
                 ad_images,
-                other_user
+                chat: room.message,
             })
-            this.scrollView.scrollToEnd({ animated: true })
         }
+        this.setState({ showLoader: false, showRefresh: false });
+    }
+
+    componentDidMount = () => {
+        this.scrollView?.scrollToEnd({ animated: true });
     }
 
     _onRefresh = async () => {
         this.setState({ showRefresh: true });
-        const param = { ad_id: this.props.navigation.state.params.ad_id };
-        const response = await this.props.api.post("chat", param);
-        this.setState({ showRefresh: false });
-        if (response.success) {
-
-            const user_id = store.getState().auth.login.user.id;
-            const last_message = response.data.chat[response.data.chat.length - 1];
-            const other_user = user_id == last_message?.sender.id ? last_message?.receiver : last_message?.sender;
-            this.setState({
-                chat: response.data.chat,
-                ads: response.data.ads,
-                other_user: other_user,
-            });
-            this.scrollView.scrollToEnd({ animated: true })
-        }
+        await this.start();
     }
 
     sendMessage = async () => {
-        const { message, other_user, ads } = this.state;
-
+        const { message, room } = this.state;
+        const user_id = store.getState().auth.login.user.id;
         if (message == '')
             return;
 
-        let now = new Date();
-
         const param = {
-            id_ads: ads.id,
-            id_user_snd: store.getState().auth.login.user.id,
-            id_user_rcv: other_user.id,
+            id_room: room.id,
+            id_user_snd: user_id,
             message: message,
             attach_file: '',
             message_type: 0,
-            read_status: 0,
-            last_seen_time: now
+            read_status: 0
         }
         this.setState({ is_sending: true });
         const response = await this.props.api.post('chat/post', param);
         this.setState({ is_sending: false });
-        if (response.success) {
+        if (response?.success) {
             let chat = this.state.chat;
             chat.push(response.data.newMessage);
             this.setState({ chat: chat });
@@ -170,7 +157,7 @@ class Chat extends Component {
                                         source={{ uri: Api.SERVER_HOST + other_user?.avatar }}
                                         activeOpacity={0.7}
                                         placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
-                                        PlaceholderContent={<ActivityIndicator color={BaseColor.whiteColor} />}
+                                        PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}
                                         style={{ alignSelf: 'center', marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 60, height: 60, borderRadius: 100 }}>
                                     </Image>
                                     :
@@ -186,7 +173,7 @@ class Chat extends Component {
                                     source={{ uri: Api.SERVER_HOST + ad_images[0] }}
                                     activeOpacity={0.7}
                                     placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
-                                    PlaceholderContent={<ActivityIndicator color={BaseColor.whiteColor} />}
+                                    PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}
                                     style={{ borderWidth: 1, borderColor: BaseColor.dddColor, width: 25, height: 25, borderRadius: 100 }}>
                                 </Image>
                             </TouchableOpacity>
@@ -205,8 +192,7 @@ class Chat extends Component {
                                 refreshing={showRefresh}
                                 onRefresh={this._onRefresh}
                             />
-                        }
-                    >
+                        }>
                         <View style={{ flex: 1, padding: 10 }}>
                             <FlatList
                                 keyExtractor={(item, index) => index.toString()}
@@ -246,7 +232,8 @@ class Chat extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        api: bindActionCreators(Api, dispatch)
+        api: bindActionCreators(Api, dispatch),
+        decrement_message: (count) => dispatch({ type: global.U_MESSAGE_DECREMENT, data: count }),
     };
 };
 export default connect(null, mapDispatchToProps)(Chat);

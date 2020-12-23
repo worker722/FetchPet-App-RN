@@ -43,7 +43,7 @@ class FavouriteAds extends Component {
 
     removeFavAds = async () => {
         Alert.alert(
-            'Remove Fevourite Pet',
+            'Remove Favourite Pet',
             'Are you sure you want to remove this pet on your favourites?',
             [
                 {
@@ -96,7 +96,7 @@ class FavouriteAds extends Component {
                             <Text numberOfLines={1}>{adsLocation}</Text>
                         </View>
                         <View style={{ paddingLeft: 10 }}>
-                            <Text style={{ textAlign: "right", flex: 1, textAlignVertical: "center", fontWeight: "bold" }}>$ {ads.price}</Text>
+                            <Text style={{ textAlign: "right", flex: 1, textAlignVertical: "top", fontWeight: "bold" }}>$ {ads.price}</Text>
                             <TouchableOpacity onPress={this.removeFavAds} style={{ position: "absolute", right: 0, bottom: 0 }}>
                                 <Icon name={"heart"} size={20} color={BaseColor.primaryColor} solid></Icon>
                             </TouchableOpacity>
