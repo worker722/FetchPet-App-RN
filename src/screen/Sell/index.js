@@ -139,7 +139,7 @@ class Sell extends Component {
         const { selectedCategory, selectedBreed, selectedGender, selectedUnit, age, price, description, uploadedImages, region } = this.state;
         console.log(selectedUnit)
         if (uploadedImages.length < 5) {
-            Toast.show("Please choose over 5 pet images.");
+            Toast.show("Please choose at least 5 pet images.");
             return;
         }
         if (selectedCategory == '') {
