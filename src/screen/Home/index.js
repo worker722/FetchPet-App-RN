@@ -12,10 +12,7 @@ import {
     PermissionsAndroid
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import RBSheet from "react-native-raw-bottom-sheet";
 import geolocation from '@react-native-community/geolocation';
-
-import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
 import { store, SetPrefrence } from "@store";
 import { connect } from "react-redux";
@@ -32,13 +29,6 @@ import * as Utils from '@utils';
 
 const filterItem_width = (Utils.SCREEN.WIDTH - 20) / 4;
 
-const FILTER_TYPE = {
-    TOP_CATEGORY: 0,
-    CATEGORY: 1,
-    BREED: 2,
-    GENDER: 3
-};
-
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -47,33 +37,8 @@ class Home extends Component {
             pets: [],
             topCategory: [],
 
-            filterCategory: [],
-            filterBreed: [],
-            filterGender: [
-                {
-                    id: 1,
-                    type: FILTER_TYPE.GENDER,
-                    name: 'Male',
-                    is_selected: true
-                },
-                {
-                    id: 0,
-                    type: FILTER_TYPE.GENDER,
-                    name: 'Female',
-                    is_selected: false
-                }
-            ],
-            filterPrice: {
-                basic_min: 0,
-                basic_max: 10000,
-                min: 0,
-                max: 1000,
-            },
-
             searchText: '',
             currentCategoryID: -1,
-            currentBreedID: -1,
-            currentGender: 1,
 
             showRefresh: false,
             showLoader: false,
@@ -232,35 +197,18 @@ class Home extends Component {
 
             let ads = await this.sortAdsByDistance(response.data.ads);
             let topCategory = response.data.category;
-            let filterBreed = response.data.breed;
 
             let is_show_apple_button = response.data.is_show_apple_button;
             await SetPrefrence(global.PREF_SHOW_APPLE_BUTTON, is_show_apple_button);
 
             topCategory.filter((item, index) => {
-                item.type = FILTER_TYPE.TOP_CATEGORY;
                 item.is_selected = false;
             });
-            topCategory.unshift({ id: -1, name: "All", is_selected: true, type: FILTER_TYPE.TOP_CATEGORY });
+            topCategory.unshift({ id: -1, name: "All", is_selected: true });
 
-            filterBreed.filter((item, index) => {
-                if (index == 0) {
-                    item.is_selected = true;
-                    this.setState({ currentBreedID: item.id });
-                }
-                else item.is_selected = false;
-                item.type = FILTER_TYPE.BREED;
-            })
             this.setState({
-                filterPrice: {
-                    basic_min: 0,
-                    basic_max: response.data.max_price,
-                    min: 0,
-                    max: response.data.max_price,
-                },
                 pets: ads,
-                topCategory: topCategory,
-                filterBreed: filterBreed
+                topCategory: topCategory
             });
         }
         this.setState({ showLoader: false, showRefresh: false });
@@ -285,38 +233,17 @@ class Home extends Component {
         return item;
     }
 
-    filterSelected = async (type, id) => {
-        if (type == FILTER_TYPE.TOP_CATEGORY) {
+    filterSelected = async (id) => {
+        this.setState({ showContentLoader: true });
+        let topCategory = this.state.topCategory;
+        topCategory.forEach((item, key) => {
+            if (item.id == id) item.is_selected = true;
+            else item.is_selected = false;
+        });
+        this.setState({ topCategory: topCategory, currentCategoryID: id }, () => {
             this.setState({ showContentLoader: true });
-            let topCategory = this.state.topCategory;
-            topCategory.forEach((item, key) => {
-                if (item.id == id) item.is_selected = true;
-                else item.is_selected = false;
-            });
-            this.setState({ topCategory: topCategory, currentCategoryID: id }, () => {
-                this.setState({ showContentLoader: true });
-                this.getFilterData();
-            });
-        }
-        else if (type == FILTER_TYPE.BREED) {
-            let filterBreed = this.state.filterBreed;
-            filterBreed.forEach((item, key) => {
-                if (item.id == id) item.is_selected = true;
-                else item.is_selected = false;
-            });
-            this.setState({ filterBreed: filterBreed, currentBreedID: id });
-        }
-        else if (type == FILTER_TYPE.GENDER) {
-            let filterGender = this.state.filterGender;
-            filterGender.forEach((item, key) => {
-                if (item.id == id) {
-                    item.is_selected = true;
-                    this.setState({ currentGender: item.id });
-                }
-                else item.is_selected = false;
-            });
-            this.setState({ filterGender: filterGender, currentGender: id });
-        }
+            this.getFilterData();
+        });
     }
 
     getFilterData = async () => {
@@ -324,26 +251,13 @@ class Home extends Component {
 
         this.setState({ pets: [] });
         const param = { id_category: currentCategoryID, searchText: searchText };
-        const response = await this.props.api.post('home/filter_category', param);
+        const response = await this.props.api.post('home/filter', param);
         this.setState({ showContentLoader: false, showRefresh: false });
 
         if (response?.success) {
             const ads = await this.sortAdsByDistance(response.data.ads);
             this.setState({ pets: ads });
         }
-    }
-
-    filterPet = async () => {
-        this.RBSheetRef.close();
-        this.setState({ showLoader: true, ads: [] });
-        const { currentCategoryID, currentBreedID, currentGender, filterPrice } = this.state;
-        const params = { id_category: currentCategoryID, id_breed: currentBreedID, gender: currentGender, price: filterPrice };
-        const response = await this.props.api.post("home/filter", params);
-        if (response?.success) {
-            const ads = await this.sortAdsByDistance(response.data.ads);
-            this.setState({ pets: ads });
-        }
-        this.setState({ showLoader: false });
     }
 
     favouriteAds = async (index, item, value) => {
@@ -357,7 +271,7 @@ class Home extends Component {
     renderFilterItem = ({ item, index }) => {
         return (
             <TouchableOpacity activeOpacity={1}
-                onPress={() => this.filterSelected(item.type, item.id)}
+                onPress={() => this.filterSelected(item.id)}
                 style={{ width: filterItem_width, justifyContent: "center", alignItems: "center", backgroundColor: item.is_selected ? BaseColor.primaryColor : BaseColor.whiteColor, height: 40, borderRadius: 5, marginBottom: 5 }}>
                 <Text style={{ color: !item.is_selected ? BaseColor.primaryColor : BaseColor.whiteColor }}>{item.name}</Text>
             </TouchableOpacity>
@@ -372,33 +286,22 @@ class Home extends Component {
         this.getFilterData();
     }
 
-    goAdsDetail = (id) => {
-        this.props.navigation.navigate("AdDetail", { ad_id: id, view: true });
-    }
-
     _onRefresh = async () => {
         this.setState({ showRefresh: true });
         this.getFilterData();
     }
 
-    priceRangeChanged = (values) => {
-        let filterPrice = this.state.filterPrice;
-        filterPrice.min = values[0];
-        filterPrice.max = values[1];
-        this.setState({ filterPrice });
-    }
-
     render = () => {
 
-        const { pets, showLoader, showRefresh, showContentLoader, topCategory, filterBreed, filterGender, filterPrice } = this.state;
-        const navigation = this.props.navigation;
+        const { pets, showLoader, showRefresh, showContentLoader, topCategory } = this.state;
+        const { navigation } = this.props;
 
         if (showLoader)
             return (<Loader />);
 
         return (
             <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}>
-                <Header navigation={this.props.navigation} mainHeader={true} />
+                <Header navigation={navigation} mainHeader={true} />
                 <View style={{ flexDirection: "row", width: "100%", height: 40, paddingHorizontal: 10, alignItems: "center", justifyContent: "center" }}>
                     <View style={{ borderRadius: 5, height: 40, flex: 1, backgroundColor: BaseColor.primaryColor }}>
                         <TextInput
@@ -409,7 +312,7 @@ class Home extends Component {
                             <Icon name={"search"} size={20} color={BaseColor.whiteColor}></Icon>
                         </TouchableOpacity>
                     </View>
-                    <TouchableOpacity onPress={() => this.RBSheetRef.open()} style={{ backgroundColor: BaseColor.primaryColor, width: 40, height: 40, marginLeft: 10, alignItems: "center", borderRadius: 5, justifyContent: "center", padding: 5 }}>
+                    <TouchableOpacity onPress={() => navigation.navigate("AdvancedFilter")} style={{ backgroundColor: BaseColor.primaryColor, width: 40, height: 40, marginLeft: 10, alignItems: "center", borderRadius: 5, justifyContent: "center", padding: 5 }}>
                         <Icon name={"sliders-h"} size={20} color={BaseColor.whiteColor}></Icon>
                     </TouchableOpacity>
                 </View>
@@ -440,107 +343,11 @@ class Home extends Component {
                             keyExtractor={(item, index) => index.toString()}
                             data={pets}
                             renderItem={(item, key) => (
-                                <HomeAds data={item} onItemClick={this.goAdsDetail} onFavourite={this.favouriteAds} navigation={navigation} />
+                                <HomeAds data={item} onFavourite={this.favouriteAds} navigation={navigation} />
                             )}
                         />
                     </ScrollView>
                 }
-
-                <RBSheet
-                    ref={ref => {
-                        this.RBSheetRef = ref;
-                    }}
-                    height={Utils.SCREEN.HEIGHT * 2 / 3}
-                    openDuration={10}
-                    customStyles={{
-                        container: {
-                            justifyContent: "center",
-                            alignItems: "center",
-                            borderTopLeftRadius: 30,
-                            borderTopRightRadius: 30
-                        }
-                    }}>
-
-                    <View style={{ flex: 1, paddingVertical: 20, paddingHorizontal: 10 }}>
-                        <ScrollView>
-                            <View style={{ justifyContent: "center", alignItems: "center" }}>
-                                <View style={{ width: 80, height: 5, backgroundColor: "#9b9b9b", borderRadius: 100 }}></View>
-                            </View>
-                            <Text style={{ fontSize: 18, color: BaseColor.primaryColor, marginTop: 30 }}>Breed</Text>
-                            <View style={{ flexDirection: "row", width: "100%", marginTop: 20, height: 100 }}>
-                                <FlatList
-                                    keyExtractor={(item, index) => index.toString()}
-                                    data={filterBreed}
-                                    numColumns={4}
-                                    renderItem={this.renderFilterItem}
-                                />
-                            </View>
-                            <Text style={{ fontSize: 18, color: BaseColor.primaryColor, marginTop: 10 }}>Gender</Text>
-                            <View style={{ flexDirection: "row", width: "100%", marginTop: 20 }}>
-                                <FlatList
-                                    keyExtractor={(item, index) => index.toString()}
-                                    data={filterGender}
-                                    horizontal={true}
-                                    renderItem={this.renderFilterItem}
-                                />
-                            </View>
-                            <Text style={{ fontSize: 18, color: BaseColor.primaryColor, marginTop: 10 }}>Price</Text>
-                            <View style={{ flexDirection: "row", paddingHorizontal: 20, marginTop: 10 }}>
-                                <Text style={{ flex: 1 }}>$ {filterPrice.min}</Text>
-                                <Text style={{ flex: 1, textAlign: "right" }}>$ {filterPrice.max}</Text>
-                            </View>
-                            <View style={{ paddingHorizontal: 10 }}>
-                                <MultiSlider
-                                    markerStyle={{
-                                        ...Platform.select({
-                                            ios: {
-                                                height: 20,
-                                                width: 20,
-                                                shadowColor: '#000000',
-                                                shadowOffset: {
-                                                    width: 0,
-                                                    height: 3
-                                                },
-                                                shadowRadius: 1,
-                                                shadowOpacity: 0.1
-                                            },
-                                            android: {
-                                                height: 20,
-                                                width: 20,
-                                                borderRadius: 10,
-                                                backgroundColor: BaseColor.primaryColor
-                                            }
-                                        })
-                                    }}
-                                    pressedMarkerStyle={{
-                                        ...Platform.select({
-                                            android: {
-                                                height: 16,
-                                                width: 16,
-                                                borderRadius: 8,
-                                                backgroundColor: BaseColor.primaryColor
-                                            }
-                                        })
-                                    }}
-                                    selectedStyle={{ backgroundColor: BaseColor.primaryColor, height: 3 }}
-                                    onValuesChange={this.priceRangeChanged}
-                                    values={[filterPrice.min, filterPrice.max]}
-                                    min={filterPrice.basic_min}
-                                    max={filterPrice.basic_max}
-                                    sliderLength={Utils.SCREEN.WIDTH - 40}
-                                    allowOverlap={false}
-                                />
-                            </View>
-                            <View style={{ justifyContent: "center", alignItems: "center", marginTop: 10 }}>
-                                <TouchableOpacity
-                                    onPress={this.filterPet}
-                                    style={{ justifyContent: "center", alignItems: "center", borderRadius: 5, paddingHorizontal: 40, height: 40, backgroundColor: BaseColor.primaryColor }}>
-                                    <Text style={{ color: BaseColor.whiteColor }}>Filter</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </ScrollView>
-                    </View>
-                </RBSheet>
             </View>
         )
     }

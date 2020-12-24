@@ -63,10 +63,8 @@ export default class HomeAds extends Component {
 
     render = () => {
         const user_id = store.getState().auth.login.user.id;
-
         const { adsLocation, item, ad_images } = this.state;
-
-        const { onItemClick, onFavourite, data } = this.props;
+        const { navigation, onFavourite, data } = this.props;
 
         const user_meta = item.user.meta;
         let is_showPhonenumber = false;
@@ -76,7 +74,7 @@ export default class HomeAds extends Component {
         });
 
         return (
-            <TouchableOpacity style={{ flex: 1, flexDirection: "row", marginBottom: 20 }} onPress={() => onItemClick(item.id)}>
+            <TouchableOpacity style={{ flex: 1, flexDirection: "row", marginBottom: 20 }} onPress={() => navigation.navigate("AdDetail", { ad_id: item.id, view: true })}>
                 <View>
                     <Image
                         source={{ uri: Api.SERVER_HOST + ad_images[0] }}
