@@ -8,7 +8,6 @@ const initialState = {
 export default (state = initialState, action = {}) => {
   switch (action.type) {
     case global.LOGIN:
-      console.log("dsdsdsd");
       return {
         login: action.data
       };
