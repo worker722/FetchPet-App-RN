@@ -9,7 +9,6 @@ import {
 import { Header, LinkItem, Loader } from '@components';
 import Styles from './style';
 import { BaseColor } from '@config';
-import Toast from 'react-native-simple-toast';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -58,9 +57,9 @@ class Privacy extends Component {
 
     changePassword = async () => {
         const { currentPwd, newPwd, reNewPwd } = this.state;
-        if (currentPwd == '') return Toast.show("Please input old password.");
-        if (newPwd == '') return Toast.show("Please new password.");
-        if (newPwd != reNewPwd) return Toast.show("New Password don't match.");
+        if (currentPwd == '') return global.showToastMessage("Please input old password.");
+        if (newPwd == '') return global.showToastMessage("Please new password.");
+        if (newPwd != reNewPwd) return global.showToastMessage("New Password don't match.");
 
         this.setState({ showLoader: true });
         const params = { currentPwd: currentPwd, password: reNewPwd };

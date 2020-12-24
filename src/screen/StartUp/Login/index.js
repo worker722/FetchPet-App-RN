@@ -10,7 +10,7 @@ import {
     Image
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import Toast from 'react-native-simple-toast';
+
 
 import { GoogleSignin } from 'react-native-google-signin';
 import appleAuth, { AppleButton } from '@invertase/react-native-apple-authentication';
@@ -77,7 +77,7 @@ class Login extends Component {
     login = async () => {
         const { email, password, rememberMe, device_token } = this.state;
         if (!Utils.isValidEmail(email) || password == '') {
-            Toast.show("Invalid email or password.");
+            global.showToastMessage("Invalid email or password.");
             return;
         }
 
@@ -158,7 +158,7 @@ class Login extends Component {
                 const { identityToken, email, fullName } = appleAuthRequestResponse;
                 if (identityToken) {
                     if (!email) {
-                        Toast.show("Please share your email.");
+                        global.showToastMessage("Please share your email.");
                         this.setState({ showLoading: false });
                         return;
                     }

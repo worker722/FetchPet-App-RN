@@ -1,4 +1,6 @@
 
+import Toast from 'react-native-simple-toast';
+
 //STORE VARIABLE TYPES
 export const LOGIN = "LOGIN";
 export const U_MESSAGE_SET = "U_MESSAGE_SET";
@@ -27,4 +29,7 @@ export const APPLE_APP_ID = '1545467871';
 export const APPLE_APP_LINK = `https://apps.apple.com/us/app/id${APPLE_APP_ID}`;
 export const GOOGLE_APP_LINK = `https://play.google.com/store/apps/details?id=${ANDROID_PACKAGE}`;
 
+export const showToastMessage = (message, duration) => {
+    Toast.show(message, duration ? duration : Toast.LONG);
+}
 

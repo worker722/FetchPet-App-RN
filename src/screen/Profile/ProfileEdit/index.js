@@ -13,12 +13,12 @@ import { BaseColor } from '@config';
 import PhoneInput from 'react-native-phone-input';
 import ImagePicker from 'react-native-image-crop-picker';
 import Styles from './style';
-import Toast from 'react-native-simple-toast';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { store } from "@store";
 import * as Api from '@api';
+import * as global from '@api/global';
 
 import * as Utils from '@utils';
 
@@ -100,15 +100,15 @@ class ProfileEdit extends Component {
     save = async () => {
         const { name, phonenumber, email, avatar } = this.state;
         if (name == '') {
-            Toast.show("Please input name.");
+            global.showToastMessage("Please input name.");
             return;
         }
         if (!Utils.isValidEmail(email)) {
-            Toast.show("Please input valid email.");
+            global.showToastMessage("Please input valid email.");
             return;
         }
         if (!this.phone.isValidNumber()) {
-            Toast.show("Please input valid phone number.");
+            global.showToastMessage("Please input valid phone number.");
             return;
         }
         const params = {

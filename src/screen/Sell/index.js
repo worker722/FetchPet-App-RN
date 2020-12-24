@@ -4,7 +4,6 @@ import {
     Text,
     ScrollView,
     TouchableOpacity,
-    Platform,
     TextInput,
     Modal,
     FlatList,
@@ -18,12 +17,14 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Header, Loader, CustomModalPicker } from '@components';
 import MapView, { Marker } from 'react-native-maps';
 import ImagePicker from 'react-native-image-crop-picker';
-import Toast from 'react-native-simple-toast';
+
 import Styles from './style';
+
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Api from '@api';
 import * as Utils from '@utils';
+import * as global from "@api/global";
 
 const image_size = (Utils.SCREEN.WIDTH - 40) / 3;
 
@@ -105,6 +106,10 @@ class Sell extends Component {
                 includeExif: true,
                 multiple: true,
             }).then(images => {
+                if (images.length > 5) {
+                    global.showToastMessage("You can select up to 5 pet images.");
+                    return;
+                }
                 this.setState({ visiblePickerModal: false, uploadedImages: images });
             });
         }
@@ -116,12 +121,21 @@ class Sell extends Component {
                 includeExif: true,
                 multiple: true,
             }).then(images => {
+                if (images.length > 5) {
+                    global.showToastMessage("You can select up to 5 pet images.");
+                    return;
+                }
                 this.setState({ visiblePickerModal: false, uploadedImages: images });
             });
         }
     }
 
     showPickerModal = () => {
+        const { uploadedImages } = this.state;
+        if (uploadedImages.length == 5) {
+            global.showToastMessage("You can select up to 5 pet images.");
+            return;
+        }
         this.setState({ visiblePickerModal: true })
     }
 
@@ -137,28 +151,28 @@ class Sell extends Component {
 
     createAds = async () => {
         const { selectedCategory, selectedBreed, selectedGender, selectedUnit, age, price, description, uploadedImages, region } = this.state;
-        if (uploadedImages.length < 5) {
-            Toast.show("Please choose at least 5 pet images.");
+        if (uploadedImages.length < 1) {
+            global.showToastMessage("Please choose at least one pet image.");
             return;
         }
         if (selectedCategory == '') {
-            Toast.show("Please select pet category.");
+            global.showToastMessage("Please select pet category.");
             return;
         }
         if (selectedBreed == '') {
-            Toast.show("Please select pet breed.");
+            global.showToastMessage("Please select pet breed.");
             return;
         }
         if (age == 0) {
-            Toast.show("Please input pet age.");
+            global.showToastMessage("Please input pet age.");
             return;
         }
         if (price == 0) {
-            Toast.show("Please input pet price.");
+            global.showToastMessage("Please input pet price.");
             return;
         }
         if (region.latitude == 0 && region.longitude == 0) {
-            Toast.show("Please pick location.");
+            global.showToastMessage("Please pick location.");
             return;
         }
         this.setState({ showLoader: true });
