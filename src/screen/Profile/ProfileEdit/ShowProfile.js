@@ -13,6 +13,7 @@ import { BaseColor } from '@config';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Api from '@api';
+import * as Utils from '@utils';
 
 class ShowProfile extends Component {
     constructor(props) {
@@ -35,9 +36,29 @@ class ShowProfile extends Component {
         const param = { user_id: this.props.navigation.state.params.user_id, inventory: true };
         const response = await this.props.api.post('profile', param);
         if (response?.success) {
-            this.setState({ user: response.data.user, pets: response.data.ads });
+            const pets = await this.sortAdsByDistance(response.data.ads);
+            this.setState({ user: response.data.user, pets });
         }
         this.setState({ showLoader: false, showRefresh: false });
+    }
+
+    sortAdsByDistance = async (ads) => {
+        if (!ads)
+            return [];
+
+        const adsWithDistance = await Promise.all(ads.map(async item => await this.getAdsDistance(item)));
+        adsWithDistance.sort((a, b) => {
+            if (a.distance > b.distance) return 1;
+            else if (a.distance < b.distance) return -1;
+            return 0;
+        });
+        return adsWithDistance;
+    }
+
+    getAdsDistance = async (item) => {
+        const currentLocation = await Utils.getCurrentLocation();
+        item.distance = await Utils.getDistance(item.lat, item.long, currentLocation.latitude, currentLocation.longitude);
+        return item;
     }
 
     _onRefresh = async () => {

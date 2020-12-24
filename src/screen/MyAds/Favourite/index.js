@@ -11,6 +11,7 @@ import { BaseColor } from '@config';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Api from '@api';
+import * as Utils from '@utils';
 
 class Favourite extends Component {
     constructor(props) {
@@ -35,9 +36,29 @@ class Favourite extends Component {
     start = async () => {
         const response = await this.props.api.get('ads/favouriteAds');
         if (response?.success) {
-            this.setState({ ads: response.data.ads });
+            const ads = await this.sortAdsByDistance(response.data.ads);
+            this.setState({ ads });
         }
         this.setState({ showLoader: false, showRefresh: false });
+    }
+
+    sortAdsByDistance = async (ads) => {
+        if (!ads)
+            return [];
+
+        const adsWithDistance = await Promise.all(ads.map(async item => await this.getAdsDistance(item)));
+        adsWithDistance.sort((a, b) => {
+            if (a.distance > b.distance) return 1;
+            else if (a.distance < b.distance) return -1;
+            return 0;
+        });
+        return adsWithDistance;
+    }
+
+    getAdsDistance = async (item) => {
+        const currentLocation = await Utils.getCurrentLocation();
+        item.distance = await Utils.getDistance(item.lat, item.long, currentLocation.latitude, currentLocation.longitude);
+        return item;
     }
 
     _onRefresh = () => {

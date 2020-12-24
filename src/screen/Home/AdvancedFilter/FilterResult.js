@@ -4,18 +4,15 @@ import {
     Text,
     ScrollView,
     RefreshControl,
-    TextInput,
-    TouchableOpacity,
     FlatList
 } from 'react-native';
 import { BaseColor } from '@config';
 import { Header, Loader, HomeAds } from '@components';
-import * as Utils from '@utils';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Api from '@api';
-import * as global from '@api/global';
+import * as Utils from '@utils';
 
 class FilterResult extends Component {
     constructor(props) {
@@ -36,9 +33,29 @@ class FilterResult extends Component {
     start = async () => {
         const response = await this.props.api.post("filter/get", this.props.navigation.state.params);
         if (response?.success) {
-            this.setState({ pets: response.data.pets });
+            const pets = await this.sortAdsByDistance(response.data.pets);
+            this.setState({ pets });
         }
         this.setState({ showLoader: false, showRefresh: false });
+    }
+
+    sortAdsByDistance = async (ads) => {
+        if (!ads)
+            return [];
+
+        const adsWithDistance = await Promise.all(ads.map(async item => await this.getAdsDistance(item)));
+        adsWithDistance.sort((a, b) => {
+            if (a.distance > b.distance) return 1;
+            else if (a.distance < b.distance) return -1;
+            return 0;
+        });
+        return adsWithDistance;
+    }
+
+    getAdsDistance = async (item) => {
+        const currentLocation = await Utils.getCurrentLocation();
+        item.distance = await Utils.getDistance(item.lat, item.long, currentLocation.latitude, currentLocation.longitude);
+        return item;
     }
 
     _onRefresh = () => {
@@ -54,6 +71,10 @@ class FilterResult extends Component {
         await this.props.api.post('ads/ad_favourite', param);
     }
 
+    goBack = () => {
+        this.props.navigation.goBack(null);
+    }
+
     render = () => {
         const { showLoader, showRefresh, pets } = this.state;
         const { navigation } = this.props;
@@ -63,7 +84,7 @@ class FilterResult extends Component {
 
         return (
             <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}>
-                <Header navigation={navigation} mainHeader={true} />
+                <Header icon_left={"arrow-left"} title={"Filter Result"} color_icon_right={BaseColor.primaryColor} callback_left={this.goBack} />
                 <ScrollView style={{ flex: 1 }}
                     refreshControl={
                         <RefreshControl
