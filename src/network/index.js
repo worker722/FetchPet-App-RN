@@ -1,10 +1,9 @@
 import { Platform } from 'react-native';
-import Toast from 'react-native-simple-toast';
 import * as global from "./global";
 import { store } from '@store';
 
-// export const SERVER_HOST = 'http://10.0.2.2:8000';
-export const SERVER_HOST = 'http://54.177.72.41';
+export const SERVER_HOST = 'http://10.0.2.2';
+// export const SERVER_HOST = 'http://54.177.72.41';
 
 const onLogin = data => {
     return {
@@ -33,7 +32,7 @@ export const get = (route) => async dispatch => {
         .then(res => res.json())
         .then(res => {
             if (res.message != '')
-                Toast.show(res.message);
+                global.showToastMessage(res.message);
             return res;
         })
         .catch(err => {
@@ -53,7 +52,7 @@ export const post = (route, params, is_store) => async dispatch => {
         .then(res => res.json())
         .then(res => {
             if (res.message != '')
-                Toast.show(res.message);
+                global.showToastMessage(res.message);
             if (res.success && is_store)
                 dispatch(onLogin(res.data))
             return res;
@@ -90,7 +89,7 @@ export const editProfile = (route, image, params) => async dispatch => {
         .then(res => res.json())
         .then(res => {
             if (res.message != '')
-                Toast.show(res.message);
+                global.showToastMessage(res.message);
             dispatch(onLogin(res.data))
             return res;
         })
@@ -128,7 +127,7 @@ export const createAds = (route, images, params) => async dispatch => {
         .then(res => res.json())
         .then(res => {
             if (res.message != '')
-                Toast.show(res.message);
+                global.showToastMessage(res.message);
             return res;
         })
         .catch(err => {

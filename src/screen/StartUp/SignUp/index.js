@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { CheckBox } from 'react-native-elements';
-import Toast from 'react-native-simple-toast';
+
 
 import { GoogleSignin } from 'react-native-google-signin';
 import appleAuth, { AppleButton } from '@invertase/react-native-apple-authentication';
@@ -75,10 +75,10 @@ class SignUp extends Component {
 
     signUp = async () => {
         const { username, email, password, con_password, termAgree, device_token } = this.state;
-        if (username == '') return Toast.show("Please input user name.");
-        else if (!Utils.isValidEmail(email)) return Toast.show("Please input valid email.");
-        else if (password == '') return Toast.show("Please input password.");
-        else if (password != con_password) return Toast.show("Password don't match.");
+        if (username == '') return global.showToastMessage("Please input user name.");
+        else if (!Utils.isValidEmail(email)) return global.showToastMessage("Please input valid email.");
+        else if (password == '') return global.showToastMessage("Please input password.");
+        else if (password != con_password) return global.showToastMessage("Password don't match.");
 
         this.setState({ showLoading: true });
 
@@ -161,7 +161,7 @@ class SignUp extends Component {
                 const { identityToken, email, fullName } = appleAuthRequestResponse;
                 if (identityToken) {
                     if (!email) {
-                        Toast.show("Please share your email.");
+                        global.showToastMessage("Please share your email.");
                         this.setState({ showLoading: false });
                         return;
                     }
