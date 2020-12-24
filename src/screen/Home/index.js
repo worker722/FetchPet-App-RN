@@ -261,7 +261,7 @@ class Home extends Component {
     }
 
     favouriteAds = async (index, item, value) => {
-        let pets = this.state.pets;
+        let { pets } = this.state;
         pets[index].is_fav = value;
         this.setState({ pets });
         const param = { ad_id: item.id, is_fav: value };
