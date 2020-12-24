@@ -87,33 +87,18 @@ class Home extends Component {
         });
     }
 
-    async createNotificationListeners() {
-        firebase.notifications().onNotificationDisplayed((notification) => {
-            // Process your notification as required
-            // ANDROID: Remote notifications do not contain the channel ID. You will have to specify this manually if you'd like to re-display the notification.
-        });
-
-        /*
-        * Triggered when a particular notification has been received in foreground
-        * */
+    createNotificationListeners = async () => {
+        firebase.notifications().onNotificationDisplayed((notification) => { });
         this.notificationListener = firebase.notifications().onNotification((notification) => {
             const { title, body } = notification;
             this.showNotification(title, body);
             if (!this.props.is_in_chat)
                 this.props.setStore(global.U_MESSAGE_INCREMENT, 1);
         });
-
-        /*
-        * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
-        * */
         firebase.notifications().onNotificationOpened((notificationOpen) => {
             const { title, body, data } = notificationOpen.notification;
             this.props.navigation.navigate("Inbox");
         });
-
-        /*
-        * If your app is closed, you can check if it was opened by a notification being clicked / tapped / opened as follows:
-        * */
         const notificationOpen = await firebase.notifications().getInitialNotification();
         if (notificationOpen) {
             const { title, body, data } = notificationOpen.notification;
@@ -131,8 +116,9 @@ class Home extends Component {
         if (!is_showNotification)
             return;
 
+        let localNotification = null;
         if (Platform.OS === "android") {
-            const localNotification = new firebase.notifications.Notification({
+            localNotification = new firebase.notifications.Notification({
                 sound: 'default',
                 show_in_foreground: true,
             })
@@ -143,21 +129,17 @@ class Home extends Component {
                 .android.setColor(BaseColor.primaryColor)
                 .android.setSmallIcon('ic_notification')
                 .android.setPriority(firebase.notifications.Android.Priority.High);
-
-            firebase.notifications()
-                .displayNotification(localNotification)
-                .catch(err => console.error(err));
         }
         else {
-            const localNotification = new firebase.notifications.Notification()
+            localNotification = new firebase.notifications.Notification()
                 .setNotificationId(new Date().toLocaleString())
                 .setTitle(title)
                 .setBody(body)
-
-            firebase.notifications()
-                .displayNotification(localNotification)
-                .catch(err => console.error(err));
         }
+
+        firebase.notifications()
+            .displayNotification(localNotification)
+            .catch(err => console.error(err));
     }
 
     handleAppStateChange = (nextAppState) => { }
