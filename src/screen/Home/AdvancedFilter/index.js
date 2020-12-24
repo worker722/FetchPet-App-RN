@@ -16,7 +16,6 @@ import MapView, { Marker } from 'react-native-maps';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Api from '@api';
-import * as global from '@api/global';
 
 class AdvancedFilter extends Component {
     constructor(props) {
@@ -131,6 +130,10 @@ class AdvancedFilter extends Component {
         this.props.navigation.navigate("FilterResult", this.state);
     }
 
+    goBack = () => {
+        this.props.navigation.goBack(null);
+    }
+
     render = () => {
         const { showLoader, showRefresh, user_data, category_data, breed_data, gender_data, unit_data, sort_type_data, sort_asc_data, user, category, breed, map, price, age, gender, sortBy } = this.state;
         const { navigation } = this.props;
@@ -139,8 +142,8 @@ class AdvancedFilter extends Component {
             return (<Loader />);
 
         return (
-            <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor, marginBottom: 20 }}>
-                <Header navigation={navigation} mainHeader={true} />
+            <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}>
+                <Header icon_left={"arrow-left"} title={"Advanced Filter"} color_icon_right={BaseColor.primaryColor} callback_left={this.goBack} />
                 <View></View>
                 <ScrollView style={{ flex: 1 }}
                     refreshControl={
@@ -199,121 +202,103 @@ class AdvancedFilter extends Component {
                         <Text>  KM</Text>
                     </View>
                     <View style={{ flex: 1, paddingTop: 10, paddingHorizontal: 10, flexDirection: "row" }}>
-                        <View style={{ flex: 1 }}>
-                            <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, borderColor: BaseColor.dddColor }}>
-                                <TextInput
-                                    onChangeText={(text) => {
-                                        if (Utils.isValidNumber(text)) {
-                                            this.setState({
-                                                price: {
-                                                    ...price,
-                                                    min: text
-                                                }
-                                            })
-                                        }
-                                    }}
-                                    placeholder={"Min Price"} value={price.min} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
-                            </View>
-                            <Text style={{ flex: 1, textAlign: "center", fontSize: 10, color: BaseColor.greyColor }}>Default 0</Text>
+                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, borderColor: BaseColor.dddColor }}>
+                            <TextInput
+                                onChangeText={(text) => {
+                                    if (Utils.isValidNumber(text)) {
+                                        this.setState({
+                                            price: {
+                                                ...price,
+                                                min: text
+                                            }
+                                        })
+                                    }
+                                }}
+                                placeholder={"Min Price"} value={price.min} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
                         </View>
-                        <View style={{ flex: 1 }}>
-                            <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, marginLeft: 10, borderColor: BaseColor.dddColor }}>
-                                <TextInput
-                                    onChangeText={(text) => {
-                                        if (Utils.isValidNumber(text)) {
-                                            this.setState({
-                                                price: {
-                                                    ...price,
-                                                    max: text
-                                                }
-                                            })
-                                        }
-                                    }}
-                                    placeholder={"Max Price"} value={price.max} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
-                            </View>
-                            <Text style={{ flex: 1, textAlign: "center", fontSize: 10, color: BaseColor.primaryColor }}>No Limit</Text>
+                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, marginLeft: 10, borderColor: BaseColor.dddColor }}>
+                            <TextInput
+                                onChangeText={(text) => {
+                                    if (Utils.isValidNumber(text)) {
+                                        this.setState({
+                                            price: {
+                                                ...price,
+                                                max: text
+                                            }
+                                        })
+                                    }
+                                }}
+                                placeholder={"Max Price"} value={price.max} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
                         </View>
                     </View>
                     <View style={{ paddingTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
-                        <View style={{ flex: 1 }}>
-                            <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor }}>
-                                <TextInput
-                                    onChangeText={(text) => {
-                                        if (Utils.isValidNumber(text)) {
-                                            const { min } = this.state.age;
-                                            this.setState({
-                                                age: {
-                                                    ...age,
-                                                    min: {
-                                                        ...min,
-                                                        num: text
-                                                    }
-                                                }
-                                            })
-                                        }
-                                    }}
-                                    placeholder={"Min Age"} value={age.min.num} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
-                            </View>
-                            <Text style={{ flex: 1, textAlign: "center", fontSize: 10, color: BaseColor.greyColor }}>Default 1</Text>
-                        </View>
-                        <View style={{ flex: 1 }}>
-                            <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, paddingVertical: 5, marginLeft: 10, borderColor: BaseColor.dddColor }}>
-                                <CustomModalPicker title={"Select a Unit"} data={unit_data} selectedValue={age.min.unit}
-                                    onValueChange={(item, key) => {
+                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor }}>
+                            <TextInput
+                                onChangeText={(text) => {
+                                    if (Utils.isValidNumber(text)) {
                                         const { min } = this.state.age;
                                         this.setState({
                                             age: {
                                                 ...age,
                                                 min: {
                                                     ...min,
-                                                    unit: item.name
+                                                    num: text
                                                 }
                                             }
                                         })
-                                    }} />
-                            </View>
-                            <Text style={{ flex: 1, textAlign: "center", fontSize: 10, color: BaseColor.greyColor }}></Text>
+                                    }
+                                }}
+                                placeholder={"Min Age"} value={age.min.num} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
+                        </View>
+                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, paddingVertical: 5, marginLeft: 10, borderColor: BaseColor.dddColor }}>
+                            <CustomModalPicker title={"Select a Unit"} data={unit_data} selectedValue={age.min.unit}
+                                onValueChange={(item, key) => {
+                                    const { min } = this.state.age;
+                                    this.setState({
+                                        age: {
+                                            ...age,
+                                            min: {
+                                                ...min,
+                                                unit: item.name
+                                            }
+                                        }
+                                    })
+                                }} />
                         </View>
                     </View>
                     <View style={{ paddingTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
-                        <View style={{ flex: 1 }}>
-                            <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor }}>
-                                <TextInput
-                                    onChangeText={(text) => {
-                                        if (Utils.isValidNumber(text)) {
-                                            const { max } = this.state.age;
-                                            this.setState({
-                                                age: {
-                                                    ...age,
-                                                    max: {
-                                                        ...max,
-                                                        num: text
-                                                    }
-                                                }
-                                            })
-                                        }
-                                    }}
-                                    placeholder={"Max Age"} value={age.max.num} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
-                            </View>
-                            <Text style={{ flex: 1, textAlign: "center", fontSize: 10, color: BaseColor.greyColor }}>No Limit</Text>
-                        </View>
-                        <View style={{ flex: 1 }}>
-                            <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, paddingVertical: 5, marginLeft: 10, borderColor: BaseColor.dddColor }}>
-                                <CustomModalPicker title={"Select a Unit"} data={unit_data} selectedValue={age.max.unit}
-                                    onValueChange={(item, key) => {
+                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor }}>
+                            <TextInput
+                                onChangeText={(text) => {
+                                    if (Utils.isValidNumber(text)) {
                                         const { max } = this.state.age;
                                         this.setState({
                                             age: {
                                                 ...age,
                                                 max: {
                                                     ...max,
-                                                    unit: item.name
+                                                    num: text
                                                 }
                                             }
                                         })
-                                    }} />
-                            </View>
-                            <Text style={{ flex: 1, textAlign: "center", fontSize: 10, color: BaseColor.greyColor }}></Text>
+                                    }
+                                }}
+                                placeholder={"Max Age"} value={age.max.num} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
+                        </View>
+                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, paddingVertical: 5, marginLeft: 10, borderColor: BaseColor.dddColor }}>
+                            <CustomModalPicker title={"Select a Unit"} data={unit_data} selectedValue={age.max.unit}
+                                onValueChange={(item, key) => {
+                                    const { max } = this.state.age;
+                                    this.setState({
+                                        age: {
+                                            ...age,
+                                            max: {
+                                                ...max,
+                                                unit: item.name
+                                            }
+                                        }
+                                    })
+                                }} />
                         </View>
                     </View>
                     <View style={{ flexDirection: "row", paddingTop: 10, paddingHorizontal: 10 }}>
@@ -340,7 +325,7 @@ class AdvancedFilter extends Component {
                                 }} />
                         </View>
                     </View>
-                    <View style={{ paddingTop: 20, paddingHorizontal: 10, justifyContent: "center", alignItems: "center" }}>
+                    <View style={{ paddingVertical: 20, paddingHorizontal: 10, justifyContent: "center", alignItems: "center" }}>
                         <TouchableOpacity
                             onPress={this.filterPet}
                             style={{ backgroundColor: BaseColor.primaryColor, borderRadius: 5, width: "60%", height: 50, justifyContent: "center", alignItems: "center" }}>
