@@ -65,7 +65,7 @@ export default class ImageSlider extends Component {
                             return (
                                 <Image
                                     key={`${key}`}
-                                    style={{ width: "100%", height: "100%", borderRadius: 5 }}
+                                    style={{ width: "100%", height: "100%", borderRadius: 3 }}
                                     resizeMode={'contain'}
                                     source={{ uri: Api.SERVER_HOST + item }}
                                     placeholderStyle={{ backgroundColor: "transparent" }}
