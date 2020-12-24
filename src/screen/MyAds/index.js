@@ -27,7 +27,7 @@ export default class MyAds extends Component {
     }
 
     render = () => {
-        const navigation = this.props.navigation;
+        const { navigation } = this.props;
         const { currentTabIndex } = this.state;
 
         return (
@@ -46,7 +46,7 @@ export default class MyAds extends Component {
                             <Text style={{ color: currentTabIndex == 2 ? BaseColor.primaryColor : BaseColor.greyColor }}>Closed</Text>
                         </TouchableOpacity>
                     </View>
-                    <View style={{ flexDirection: "row" }}>
+                    <View style={{ flexDirection: "row", paddingHorizontal: 5 }}>
                         <View style={{ flex: 1, height: 5, borderRadius: 100, backgroundColor: currentTabIndex == 0 ? BaseColor.primaryColor : BaseColor.whiteColor }}></View>
                         <View style={{ flex: 1, height: 5, borderRadius: 100, backgroundColor: currentTabIndex == 1 ? BaseColor.primaryColor : BaseColor.whiteColor }}></View>
                         <View style={{ flex: 1, height: 5, borderRadius: 100, backgroundColor: currentTabIndex == 2 ? BaseColor.primaryColor : BaseColor.whiteColor }}></View>
