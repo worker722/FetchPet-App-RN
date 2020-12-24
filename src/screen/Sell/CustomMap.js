@@ -97,7 +97,7 @@ export default class CustomMap extends Component {
                         <Marker
                             coordinate={region} />}
                 </MapView>
-                <View style={{ position: "absolute", top: Platform.OS == "android" ? 30 : 60, left: 15, right: 15 }}>
+                <View style={{ position: "absolute", top: 10, left: 15, right: 60 }}>
                     <GooglePlacesAutocomplete
                         placeholder='Search'
                         autoFocus={false}

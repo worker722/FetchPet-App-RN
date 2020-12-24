@@ -2,7 +2,6 @@ import React from "react";
 import { Image, View } from 'react-native';
 import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import { BaseColor, BaseStyle, Images } from '@config';
 
 // START UP PAGE
@@ -14,6 +13,7 @@ import SignUp from "@screen/StartUp/SignUp";
 import Home from "@screen/Home";
 import AdDetail from "@screen/Home/AdDetail";
 import AdvancedFilter from "@screen/Home/AdvancedFilter";
+import FilterResult from "@screen/Home/AdvancedFilter/FilterResult";
 import ImageSlider from "@screen/Home/AdDetail/ImageSlider";
 
 // OTHER PAGE
@@ -63,7 +63,7 @@ const routeConfigs = {
 		navigationOptions: ({ navigation }) => ({
 			title: "Home",
 			tabBarIcon: ({ focused, tintColor }) => {
-				return <Icon color={tintColor} name="home" size={20} solid={focused ? true : false} />;
+				return <Image source={focused ? Images.ic_home_fill : Images.ic_home} style={{ width: 18, height: 19 }} />;
 			}
 		})
 	},
@@ -72,7 +72,7 @@ const routeConfigs = {
 		navigationOptions: ({ navigation }) => ({
 			title: "Inbox",
 			tabBarIcon: ({ focused, tintColor }) => {
-				return <Icon color={tintColor} name="comment-dots" size={20} solid={focused ? true : false} />;
+				return <Image source={focused ? Images.ic_chat_fill : Images.ic_chat} style={{ width: 20, height: 19 }} />;
 			}
 		})
 	},
@@ -84,16 +84,16 @@ const routeConfigs = {
 				return (
 					<View
 						style={{
-							width: 40,
-							height: 40,
+							width: 50,
+							height: 50,
 							justifyContent: "center",
 							alignItems: "center",
 							marginBottom: 30,
 							borderRadius: 100,
-							backgroundColor: "#fff"
+							backgroundColor: BaseColor.whiteColor
 						}}
 					>
-						<Image source={focused ? Images.ic_sell_fill : Images.ic_sell} />
+						<Image source={Images.ic_sell} />
 					</View>
 				)
 			}
@@ -104,7 +104,7 @@ const routeConfigs = {
 		navigationOptions: ({ navigation }) => ({
 			title: "MyAds",
 			tabBarIcon: ({ focused, tintColor }) => {
-				return <Icon color={tintColor} name="heart" size={20} solid={focused ? true : false} />
+				return <Image source={focused ? Images.ic_myads_fill : Images.ic_myads} style={{ width: 20, height: 19 }} />;
 			}
 		})
 	},
@@ -113,7 +113,7 @@ const routeConfigs = {
 		navigationOptions: ({ navigation }) => ({
 			title: "Profile",
 			tabBarIcon: ({ focused, tintColor }) => {
-				return <Icon color={tintColor} name="user-circle" size={20} solid={focused ? true : false} />
+				return <Image source={focused ? Images.ic_profile_fill : Images.ic_profile} style={{ width: 20, height: 20 }} />;
 			}
 		})
 	}
@@ -145,6 +145,9 @@ const StackNavigator = createStackNavigator(
 		},
 		AdvancedFilter: {
 			screen: AdvancedFilter
+		},
+		FilterResult: {
+			screen: FilterResult
 		},
 		AdDetail: {
 			screen: AdDetail

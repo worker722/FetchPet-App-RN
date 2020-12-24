@@ -16,6 +16,7 @@ import MapView, { Marker } from 'react-native-maps';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Api from '@api';
+import * as global from '@api/global';
 
 class AdvancedFilter extends Component {
     constructor(props) {
@@ -29,9 +30,11 @@ class AdvancedFilter extends Component {
             breed_data: [],
             gender_data: [
                 {
+                    id: 1,
                     name: "Male"
                 },
                 {
+                    id: 0,
                     name: "Female"
                 }
             ],
@@ -54,9 +57,9 @@ class AdvancedFilter extends Component {
                 { "name": "DESC" },
             ],
 
-            user: "",
-            category: "",
-            breed: "",
+            user: { id: -1, name: "All" },
+            category: { id: -1, name: "All" },
+            breed: { id: -1, name: "All" },
             map: {
                 region: {
                     latitude: 0,
@@ -80,7 +83,7 @@ class AdvancedFilter extends Component {
                     unit: "Day(s)"
                 }
             },
-            gender: "Male",
+            gender: { id: 1, name: "Male" },
             sortBy: {
                 type: "Post Date",
                 direction: "ASC"
@@ -96,10 +99,15 @@ class AdvancedFilter extends Component {
     start = async () => {
         const response = await this.props.api.get("filter");
         if (response?.success) {
-            const { user_data, category_data, breed_data } = response.data;
-            this.setState({ user_data, category_data, breed_data, user: user_data[0].name, category: category_data[0].name, breed: breed_data[0].name });
+            const { user, category, breed } = this.state;
+            let { user_data, category_data, breed_data } = response.data;
+            user_data.unshift(user);
+            category_data.unshift(category);
+            breed_data.unshift(breed);
+
+            this.setState({ user_data, category_data, breed_data });
         }
-        this.setState({ showLoader: false });
+        this.setState({ showLoader: false, showRefresh: false });
     }
 
     _onRefresh = () => {
@@ -119,6 +127,10 @@ class AdvancedFilter extends Component {
         this.setState({ map });
     }
 
+    filterPet = async () => {
+        this.props.navigation.navigate("FilterResult", this.state);
+    }
+
     render = () => {
         const { showLoader, showRefresh, user_data, category_data, breed_data, gender_data, unit_data, sort_type_data, sort_asc_data, user, category, breed, map, price, age, gender, sortBy } = this.state;
         const { navigation } = this.props;
@@ -129,6 +141,7 @@ class AdvancedFilter extends Component {
         return (
             <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor, marginBottom: 20 }}>
                 <Header navigation={navigation} mainHeader={true} />
+                <View></View>
                 <ScrollView style={{ flex: 1 }}
                     refreshControl={
                         <RefreshControl
@@ -138,19 +151,19 @@ class AdvancedFilter extends Component {
                     }>
                     <View style={{ flex: 1, paddingTop: 10, paddingHorizontal: 10, flexDirection: "row" }}>
                         <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, borderColor: BaseColor.dddColor }}>
-                            <CustomModalPicker title={"Select a User"} data={user_data} selectedValue={user} onValueChange={(item, key) => this.setState({ user: item.name })} />
+                            <CustomModalPicker title={"Select a User"} data={user_data} selectedValue={user.name} onValueChange={(user, key) => this.setState({ user })} />
                         </View>
                         <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, marginLeft: 10, height: 50, borderColor: BaseColor.dddColor }}>
-                            <CustomModalPicker title={"Select a Gender"} data={gender_data} selectedValue={gender} onValueChange={(item, key) => this.setState({ gender: item.name })} />
+                            <CustomModalPicker title={"Select a Gender"} data={gender_data} selectedValue={gender.name} onValueChange={(gender, key) => this.setState({ gender })} />
                         </View>
                     </View>
                     <View style={{ flex: 1, paddingTop: 10, paddingHorizontal: 10 }}>
                         <View style={{ flexDirection: "row" }}>
                             <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, borderColor: BaseColor.dddColor }}>
-                                <CustomModalPicker title={"Select a Category"} data={category_data} selectedValue={category} onValueChange={(item, key) => this.setState({ category: item.name })} />
+                                <CustomModalPicker title={"Select a Category"} data={category_data} selectedValue={category.name} onValueChange={(category, key) => this.setState({ category })} />
                             </View>
                             <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, marginLeft: 10, borderColor: BaseColor.dddColor }}>
-                                <CustomModalPicker title={"Select a Breed"} data={breed_data} selectedValue={breed} onValueChange={(item, key) => this.setState({ breed: item.name })} />
+                                <CustomModalPicker title={"Select a Breed"} data={breed_data} selectedValue={breed.name} onValueChange={(breed, key) => this.setState({ breed })} />
                             </View>
                         </View>
                     </View>
@@ -186,108 +199,126 @@ class AdvancedFilter extends Component {
                         <Text>  KM</Text>
                     </View>
                     <View style={{ flex: 1, paddingTop: 10, paddingHorizontal: 10, flexDirection: "row" }}>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, borderColor: BaseColor.dddColor }}>
-                            <TextInput
-                                onChangeText={(text) => {
-                                    if (Utils.isValidNumber(text)) {
-                                        this.setState({
-                                            price: {
-                                                ...price,
-                                                min: text
-                                            }
-                                        })
-                                    }
-                                }}
-                                placeholder={"Min Price"} value={price.min} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
+                        <View style={{ flex: 1 }}>
+                            <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, borderColor: BaseColor.dddColor }}>
+                                <TextInput
+                                    onChangeText={(text) => {
+                                        if (Utils.isValidNumber(text)) {
+                                            this.setState({
+                                                price: {
+                                                    ...price,
+                                                    min: text
+                                                }
+                                            })
+                                        }
+                                    }}
+                                    placeholder={"Min Price"} value={price.min} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
+                            </View>
+                            <Text style={{ flex: 1, textAlign: "center", fontSize: 10, color: BaseColor.greyColor }}>Default 0</Text>
                         </View>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, marginLeft: 10, borderColor: BaseColor.dddColor }}>
-                            <TextInput
-                                onChangeText={(text) => {
-                                    if (Utils.isValidNumber(text)) {
-                                        this.setState({
-                                            price: {
-                                                ...price,
-                                                max: text
-                                            }
-                                        })
-                                    }
-                                }}
-                                placeholder={"Max Price"} value={price.max} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
+                        <View style={{ flex: 1 }}>
+                            <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, marginLeft: 10, borderColor: BaseColor.dddColor }}>
+                                <TextInput
+                                    onChangeText={(text) => {
+                                        if (Utils.isValidNumber(text)) {
+                                            this.setState({
+                                                price: {
+                                                    ...price,
+                                                    max: text
+                                                }
+                                            })
+                                        }
+                                    }}
+                                    placeholder={"Max Price"} value={price.max} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
+                            </View>
+                            <Text style={{ flex: 1, textAlign: "center", fontSize: 10, color: BaseColor.primaryColor }}>No Limit</Text>
                         </View>
                     </View>
                     <View style={{ paddingTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor }}>
-                            <TextInput
-                                onChangeText={(text) => {
-                                    if (Utils.isValidNumber(text)) {
+                        <View style={{ flex: 1 }}>
+                            <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor }}>
+                                <TextInput
+                                    onChangeText={(text) => {
+                                        if (Utils.isValidNumber(text)) {
+                                            const { min } = this.state.age;
+                                            this.setState({
+                                                age: {
+                                                    ...age,
+                                                    min: {
+                                                        ...min,
+                                                        num: text
+                                                    }
+                                                }
+                                            })
+                                        }
+                                    }}
+                                    placeholder={"Min Age"} value={age.min.num} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
+                            </View>
+                            <Text style={{ flex: 1, textAlign: "center", fontSize: 10, color: BaseColor.greyColor }}>Default 1</Text>
+                        </View>
+                        <View style={{ flex: 1 }}>
+                            <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, paddingVertical: 5, marginLeft: 10, borderColor: BaseColor.dddColor }}>
+                                <CustomModalPicker title={"Select a Unit"} data={unit_data} selectedValue={age.min.unit}
+                                    onValueChange={(item, key) => {
                                         const { min } = this.state.age;
                                         this.setState({
                                             age: {
                                                 ...age,
                                                 min: {
                                                     ...min,
-                                                    num: text
+                                                    unit: item.name
                                                 }
                                             }
                                         })
-                                    }
-                                }}
-                                placeholder={"Min Age"} value={age.min.num} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
-                        </View>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, paddingVertical: 5, marginLeft: 10, borderColor: BaseColor.dddColor }}>
-                            <CustomModalPicker title={"Select a Unit"} data={unit_data} selectedValue={age.min.unit}
-                                onValueChange={(item, key) => {
-                                    const { min } = this.state.age;
-                                    this.setState({
-                                        age: {
-                                            ...age,
-                                            min: {
-                                                ...min,
-                                                unit: item.name
-                                            }
-                                        }
-                                    })
-                                }} />
+                                    }} />
+                            </View>
+                            <Text style={{ flex: 1, textAlign: "center", fontSize: 10, color: BaseColor.greyColor }}></Text>
                         </View>
                     </View>
                     <View style={{ paddingTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor }}>
-                            <TextInput
-                                onChangeText={(text) => {
-                                    if (Utils.isValidNumber(text)) {
+                        <View style={{ flex: 1 }}>
+                            <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor }}>
+                                <TextInput
+                                    onChangeText={(text) => {
+                                        if (Utils.isValidNumber(text)) {
+                                            const { max } = this.state.age;
+                                            this.setState({
+                                                age: {
+                                                    ...age,
+                                                    max: {
+                                                        ...max,
+                                                        num: text
+                                                    }
+                                                }
+                                            })
+                                        }
+                                    }}
+                                    placeholder={"Max Age"} value={age.max.num} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
+                            </View>
+                            <Text style={{ flex: 1, textAlign: "center", fontSize: 10, color: BaseColor.greyColor }}>No Limit</Text>
+                        </View>
+                        <View style={{ flex: 1 }}>
+                            <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, paddingVertical: 5, marginLeft: 10, borderColor: BaseColor.dddColor }}>
+                                <CustomModalPicker title={"Select a Unit"} data={unit_data} selectedValue={age.max.unit}
+                                    onValueChange={(item, key) => {
                                         const { max } = this.state.age;
                                         this.setState({
                                             age: {
                                                 ...age,
                                                 max: {
                                                     ...max,
-                                                    num: text
+                                                    unit: item.name
                                                 }
                                             }
                                         })
-                                    }
-                                }}
-                                placeholder={"Max Age"} value={age.max.num} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
-                        </View>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, paddingVertical: 5, marginLeft: 10, borderColor: BaseColor.dddColor }}>
-                            <CustomModalPicker title={"Select a Unit"} data={unit_data} selectedValue={age.max.unit}
-                                onValueChange={(item, key) => {
-                                    const { max } = this.state.age;
-                                    this.setState({
-                                        age: {
-                                            ...age,
-                                            max: {
-                                                ...max,
-                                                unit: item.name
-                                            }
-                                        }
-                                    })
-                                }} />
+                                    }} />
+                            </View>
+                            <Text style={{ flex: 1, textAlign: "center", fontSize: 10, color: BaseColor.greyColor }}></Text>
                         </View>
                     </View>
                     <View style={{ flexDirection: "row", paddingTop: 10, paddingHorizontal: 10 }}>
                         <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, borderColor: BaseColor.dddColor }}>
-                            <CustomModalPicker title={"What do you want to sort?"} data={sort_type_data} selectedValue={sortBy.type}
+                            <CustomModalPicker title={"What do you want to sort by?"} data={sort_type_data} selectedValue={sortBy.type}
                                 onValueChange={(item, key) => {
                                     this.setState({
                                         sortBy: {
@@ -298,7 +329,7 @@ class AdvancedFilter extends Component {
                                 }} />
                         </View>
                         <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, marginLeft: 10, borderColor: BaseColor.dddColor }}>
-                            <CustomModalPicker title={"Which direction do you want to sort?"} data={sort_asc_data} selectedValue={sortBy.direction}
+                            <CustomModalPicker title={"Which direction do you want to sort by?"} data={sort_asc_data} selectedValue={sortBy.direction}
                                 onValueChange={(item, key) => {
                                     this.setState({
                                         sortBy: {
@@ -310,7 +341,9 @@ class AdvancedFilter extends Component {
                         </View>
                     </View>
                     <View style={{ paddingTop: 20, paddingHorizontal: 10, justifyContent: "center", alignItems: "center" }}>
-                        <TouchableOpacity style={{ backgroundColor: BaseColor.primaryColor, borderRadius: 5, width: "60%", height: 50, justifyContent: "center", alignItems: "center" }}>
+                        <TouchableOpacity
+                            onPress={this.filterPet}
+                            style={{ backgroundColor: BaseColor.primaryColor, borderRadius: 5, width: "60%", height: 50, justifyContent: "center", alignItems: "center" }}>
                             <Text style={{ color: BaseColor.whiteColor, fontSize: 18 }}>Filter</Text>
                         </TouchableOpacity>
                     </View>
