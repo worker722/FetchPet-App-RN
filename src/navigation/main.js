@@ -13,6 +13,7 @@ import SignUp from "@screen/StartUp/SignUp";
 // HOME PAGE
 import Home from "@screen/Home";
 import AdDetail from "@screen/Home/AdDetail";
+import AdvancedFilter from "@screen/Home/AdvancedFilter";
 import ImageSlider from "@screen/Home/AdDetail/ImageSlider";
 
 // OTHER PAGE
@@ -133,23 +134,26 @@ const StackNavigator = createStackNavigator(
 		Welcome: {
 			screen: Welcome
 		},
-		Home: {
-			screen: Home
-		},
 		Login: {
 			screen: Login
 		},
 		SignUp: {
 			screen: SignUp
 		},
-		Notification: {
-			screen: Notification
+		Home: {
+			screen: Home
+		},
+		AdvancedFilter: {
+			screen: AdvancedFilter
 		},
 		AdDetail: {
 			screen: AdDetail
 		},
 		ImageSlider: {
 			screen: ImageSlider
+		},
+		Notification: {
+			screen: Notification
 		},
 		Chat: {
 			screen: Chat
