@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import {
     View,
     Text,
+    Image
 } from 'react-native';
 import { Images, BaseColor } from '@config';
 import { Header } from '@components';
-import { Image } from 'react-native-elements';
 
 export default class Version extends Component {
     constructor(props) {
