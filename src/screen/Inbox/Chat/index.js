@@ -11,12 +11,15 @@ import {
     AppState,
     Platform,
     KeyboardAvoidingView,
-    BackHandler
+    BackHandler,
+    Modal
 } from 'react-native';
 import { ChatMessage, Loader } from '@components';
 import { BaseColor } from '@config';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native-elements';
+import ImagePicker from 'react-native-image-crop-picker';
+import Styles from './style';
 
 import firebase from 'react-native-firebase';
 
@@ -35,10 +38,13 @@ class Chat extends Component {
             room: null,
             ads: null,
             other_user: null,
+
             message: '',
+            attach_file: null,
 
             showLoader: false,
             showRefresh: false,
+            visiblePickerModal: false,
             is_sending: false,
         }
 
@@ -67,7 +73,6 @@ class Chat extends Component {
     handleAppStateChange = (nextAppState) => { }
 
     componentDidMount = async () => {
-        this.scrollView?.scrollToEnd({ animated: true });
         await this.createNotificationListeners();
         BackHandler.addEventListener("hardwareBackPress", this.backAction);
         AppState.addEventListener('change', this.handleAppStateChange);
@@ -113,6 +118,7 @@ class Chat extends Component {
             })
         }
         this.setState({ showLoader: false, showRefresh: false });
+        this.scrollView?.scrollToEnd({ animated: true });
     }
 
     _onRefresh = async () => {
@@ -120,34 +126,72 @@ class Chat extends Component {
         await this.start();
     }
 
+    openPhotoPicker = (index) => {
+        if (index == 0) {
+            ImagePicker.openCamera({
+                multiple: false,
+                mediaType: 'photo',
+                width: 500,
+                height: 500,
+                includeExif: true,
+            }).then(images => {
+                this.setState({ visiblePickerModal: false, attach_file: images });
+            });
+        }
+        else if (index == 1) {
+            ImagePicker.openPicker({
+                multiple: false,
+                mediaType: 'photo',
+                width: 500,
+                height: 500,
+                includeExif: true,
+            }).then(images => {
+                this.setState({ visiblePickerModal: false, attach_file: images });
+            });
+        }
+    }
+
+    showPickerModal = () => {
+        this.setState({ visiblePickerModal: true })
+    }
+
     sendMessage = async () => {
-        const { message, room } = this.state;
+        const { message, room, attach_file } = this.state;
         const user_id = store.getState().auth.login.user.id;
-        if (message == '')
+        if (message == '' && !attach_file)
             return;
 
         const param = {
             id_room: room.id,
             id_user_snd: user_id,
             message: message,
-            attach_file: '',
-            message_type: 0,
             read_status: 0
         }
         this.setState({ is_sending: true });
-        const response = await this.props.api.post('chat/post', param);
+        let response = null;
+        if (attach_file)
+            response = await this.props.api.postMessage('chat/post', attach_file, param);
+        else
+            response = await this.props.api.post('chat/post', param);
+
         this.setState({ is_sending: false });
         if (response?.success) {
             let chat = this.state.chat;
             chat.push(response.data.newMessage);
             this.setState({ chat: chat });
         }
-        this.setState({ message: '' });
+        this.setState({ message: '', attach_file: null });
     }
 
     render = () => {
-        const { chat, ads, showLoader, showRefresh, other_user, is_sending, ad_images } = this.state;
+        const { chat, ads, showLoader, showRefresh, other_user, is_sending, ad_images, visiblePickerModal, attach_file } = this.state;
         const navigation = this.props.navigation;
+
+        let image_name = '';
+        if (attach_file) {
+            const splite = attach_file.path.split("/");
+            image_name = splite[splite.length - 1];
+        }
 
         if (showLoader)
             return (<Loader />);
@@ -225,27 +269,72 @@ class Chat extends Component {
                             />
                         </View>
                     </ScrollView>
+                    {attach_file &&
+                        <View style={{ height: 80, marginBottom: 1, backgroundColor: BaseColor.dddColor, paddingHorizontal: 15, borderRadius: 15, marginHorizontal: 10, padding: 3, borderWidth: 1, borderColor: BaseColor.dddColor, flexDirection: "row" }}>
+                            <TouchableOpacity style={{ position: "absolute", top: 0, right: 3, padding: 6 }} onPress={() => this.setState({ attach_file: null })}>
+                                <Icon name={"times"} size={22} color={BaseColor.primaryColor}></Icon>
+                            </TouchableOpacity>
+                            <Image source={{ uri: attach_file.path }} style={{ width: 75, height: 75, borderRadius: 5 }}></Image>
+                            <View style={{ justifyContent: "center", alignItems: "center", paddingRight: 10 }}>
+                                <Text style={{ paddingHorizontal: 10, width: 200 }} numberOfLines={1}>{image_name}</Text>
+                            </View>
+                        </View>
+                    }
                     <View style={{ height: 45, paddingHorizontal: 5, width: "100%", justifyContent: "center", alignItems: "center" }}>
                         <TextInput
-                            style={{ flex: 1, backgroundColor: BaseColor.dddColor, width: "100%", borderRadius: 30, paddingLeft: 20, paddingRight: 50 }}
+                            style={{ flex: 1, backgroundColor: BaseColor.dddColor, width: "100%", borderRadius: 30, paddingLeft: 20, paddingRight: 90 }}
                             value={this.state.message}
                             multiline={true}
+                            placeholder="Type Message..."
                             onChangeText={(text) => this.setState({ message: text })}
                         >
                         </TextInput>
                         <View style={{ position: "absolute", right: 0, top: 0, bottom: 0, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                            <TouchableOpacity style={{ paddingHorizontal: 15 }} onPress={this.showPickerModal}>
+                                <Icon name={"paperclip"} size={20} color={BaseColor.greyColor}></Icon>
+                            </TouchableOpacity>
                             {is_sending ?
                                 <View style={{ padding: 8, marginRight: 15, borderRadius: 100, backgroundColor: BaseColor.whiteColor, justifyContent: "center", alignItems: "center" }}>
                                     <ActivityIndicator color={BaseColor.primaryColor} />
                                 </View>
                                 :
                                 <TouchableOpacity onPress={() => this.sendMessage()} style={{ padding: 8, marginRight: 15, borderRadius: 100, backgroundColor: BaseColor.whiteColor, justifyContent: "center", alignItems: "center" }}>
-                                    <Icon name={"location-arrow"} size={15} color={"grey"}></Icon>
+                                    <Icon name={"location-arrow"} size={15} color={BaseColor.greyColor}></Icon>
                                 </TouchableOpacity>
                             }
                         </View>
                     </View>
                 </View>
+
+                <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={visiblePickerModal}>
+                    <View style={Styles.modalContainer}>
+                        <View style={Styles.modalContentContainer}>
+                            <Text style={{ fontSize: 20, }}>Select attach image</Text>
+                            <TouchableOpacity style={{ position: "absolute", top: 0, right: 0, padding: 10 }} onPress={() => this.setState({ visiblePickerModal: false })}>
+                                <Icon name={"times"} size={22} color={BaseColor.primaryColor}></Icon>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => this.openPhotoPicker(0)}
+                                style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
+                                <View style={{ width: 50, height: 50, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
+                                    <Icon name={"camera"} size={20} color={BaseColor.whiteColor}></Icon>
+                                </View>
+                                <Text style={{ flex: 1, fontSize: 17, marginLeft: 20 }}>Camera</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => this.openPhotoPicker(1)}
+                                style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 20 }}>
+                                <View style={{ width: 50, height: 50, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
+                                    <Icon name={"image"} size={20} color={BaseColor.whiteColor}></Icon>
+                                </View>
+                                <Text style={{ flex: 1, fontSize: 17, marginLeft: 20 }}>Gallery</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
 
             </KeyboardAvoidingView>
         )

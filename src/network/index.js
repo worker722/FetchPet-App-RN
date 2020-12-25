@@ -2,8 +2,8 @@ import { Platform } from 'react-native';
 import * as global from "./global";
 import { store } from '@store';
 
-// export const SERVER_HOST = 'http://10.0.2.2';
-export const SERVER_HOST = 'http://54.177.72.41';
+export const SERVER_HOST = 'http://10.0.2.2';
+// export const SERVER_HOST = 'http://54.177.72.41';
 
 const onLogin = data => {
     return {
@@ -95,6 +95,41 @@ export const editProfile = (route, image, params) => async dispatch => {
         })
         .catch(err => {
             console.log('profile-upload-error', err);
+        });
+}
+
+export const postMessage = (route, image, params) => async dispatch => {
+    const formData = new FormData();
+
+    const keys = Object.keys(params);
+    keys.forEach(item => {
+        formData.append(item, params[item]);
+    });
+
+    const extension = image.mime.substring(image.mime.indexOf("/") + 1, image.mime.length);
+    const photo = {
+        uri: Platform.OS == "android" ? image.path : `file://${image.path}`,
+        type: image.mime,
+        name: `chat_image.${extension}`,
+    };
+    formData.append('chat_image', photo);
+
+    return fetch(`${SERVER_HOST}/api/${route}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${_TOKEN()}`
+        },
+        body: formData
+    })
+        .then(res => res.json())
+        .then(res => {
+            if (res.message != '')
+                global.showToastMessage(res.message);
+            return res;
+        })
+        .catch(err => {
+            console.log('chat-upload-error', err);
         });
 }
 

@@ -10,6 +10,7 @@ import { Image } from 'react-native-elements';
 import { BaseColor } from '@config';
 import * as Api from '@api';
 import * as Utils from '@utils';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import firebase from 'react-native-firebase';
 
@@ -119,7 +120,11 @@ class InboxItem extends Component {
                 </View>
                 <View style={{ marginLeft: 10, justifyContent: "center", flex: 1 }}>
                     <Text>{other_user?.name}</Text>
-                    <Text style={{ color: BaseColor.greyColor, fontSize: 12, marginTop: 10 }} numberOfLines={1}>{latest_message?.message}</Text>
+                    {latest_message?.attach_file ?
+                        <Icon name="image" size={25} color={BaseColor.greyColor}></Icon>
+                        :
+                        <Text style={{ color: BaseColor.greyColor, fontSize: 12, marginTop: 10 }} numberOfLines={1}>{latest_message?.message}</Text>
+                    }
                 </View>
                 <View style={{ justifyContent: "center", alignItems: "center" }}>
                     <Text style={{ color: BaseColor.greyColor, fontSize: 12 }}>{Utils.relativeTime(latest_message?.created_at)}</Text>
