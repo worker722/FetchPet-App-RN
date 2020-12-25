@@ -184,13 +184,24 @@ class Chat extends Component {
     }
 
     render = () => {
-        const { chat, ads, showLoader, showRefresh, other_user, is_sending, ad_images, visiblePickerModal, attach_file } = this.state;
+        const { chat, ads, showLoader, showRefresh, other_user, is_sending, ad_images, visiblePickerModal, attach_file, room } = this.state;
         const navigation = this.props.navigation;
 
         let image_name = '';
         if (attach_file) {
             const splite = attach_file.path.split("/");
             image_name = splite[splite.length - 1];
+        }
+
+        let is_blocked = false;
+        if (room) {
+            const { seller, buyer, sell_by_buy, buy_by_sell } = room;
+            if (other_user == buyer && sell_by_buy > 0) {
+                is_blocked = true;
+            }
+            else if (other_user == seller && buy_by_sell > 0) {
+                is_blocked = true;
+            }
         }
 
         if (showLoader)
@@ -281,28 +292,37 @@ class Chat extends Component {
                         </View>
                     }
                     <View style={{ height: 45, paddingHorizontal: 5, width: "100%", justifyContent: "center", alignItems: "center" }}>
-                        <TextInput
-                            style={{ flex: 1, backgroundColor: BaseColor.dddColor, width: "100%", borderRadius: 30, paddingLeft: 20, paddingRight: 90 }}
-                            value={this.state.message}
-                            multiline={true}
-                            placeholder="Type Message..."
-                            onChangeText={(text) => this.setState({ message: text })}
-                        >
-                        </TextInput>
-                        <View style={{ position: "absolute", right: 0, top: 0, bottom: 0, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                            <TouchableOpacity style={{ paddingHorizontal: 15 }} onPress={this.showPickerModal}>
-                                <Icon name={"paperclip"} size={20} color={BaseColor.greyColor}></Icon>
-                            </TouchableOpacity>
-                            {is_sending ?
-                                <View style={{ padding: 8, marginRight: 15, borderRadius: 100, backgroundColor: BaseColor.whiteColor, justifyContent: "center", alignItems: "center" }}>
-                                    <ActivityIndicator color={BaseColor.primaryColor} />
+                        {!is_blocked ?
+                            <>
+                                <TextInput
+                                    style={{ flex: 1, backgroundColor: BaseColor.dddColor, width: "100%", borderRadius: 30, paddingLeft: 20, paddingRight: 90 }}
+                                    value={this.state.message}
+                                    multiline={true}
+                                    placeholder="Type Message..."
+                                    onChangeText={(text) => this.setState({ message: text })}
+                                >
+                                </TextInput>
+                                <View style={{ position: "absolute", right: 0, top: 0, bottom: 0, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                                    <TouchableOpacity style={{ paddingHorizontal: 15 }} onPress={this.showPickerModal}>
+                                        <Icon name={"paperclip"} size={20} color={BaseColor.greyColor}></Icon>
+                                    </TouchableOpacity>
+                                    {is_sending ?
+                                        <View style={{ padding: 8, marginRight: 15, borderRadius: 100, backgroundColor: BaseColor.whiteColor, justifyContent: "center", alignItems: "center" }}>
+                                            <ActivityIndicator color={BaseColor.primaryColor} />
+                                        </View>
+                                        :
+                                        <TouchableOpacity onPress={() => this.sendMessage()} style={{ padding: 8, marginRight: 15, borderRadius: 100, backgroundColor: BaseColor.whiteColor, justifyContent: "center", alignItems: "center" }}>
+                                            <Icon name={"location-arrow"} size={15} color={BaseColor.greyColor}></Icon>
+                                        </TouchableOpacity>
+                                    }
                                 </View>
-                                :
-                                <TouchableOpacity onPress={() => this.sendMessage()} style={{ padding: 8, marginRight: 15, borderRadius: 100, backgroundColor: BaseColor.whiteColor, justifyContent: "center", alignItems: "center" }}>
-                                    <Icon name={"location-arrow"} size={15} color={BaseColor.greyColor}></Icon>
-                                </TouchableOpacity>
-                            }
-                        </View>
+                            </>
+                            :
+                            <TextInput
+                                style={{ flex: 1, backgroundColor: BaseColor.dddColor, color: "red", width: "100%", borderRadius: 30, paddingLeft: 20, paddingRight: 90 }}
+                                editable={false}
+                                value={"You can't chat with this user anymore."} />
+                        }
                     </View>
                 </View>
 

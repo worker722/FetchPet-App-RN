@@ -78,13 +78,20 @@ class InboxItem extends Component {
     render = () => {
         const { navigation } = this.props;
         const { unread_message, room, ad_images, latest_message } = this.state;
-        const { ads, buyer, seller, message } = room;
+        const { ads, buyer, seller, message, sell_by_buy, buy_by_sell } = room;
 
         if (!message || message.length == 0)
             return null;
 
         const user_id = store.getState().auth.login.user.id;
         const other_user = user_id == buyer.id ? seller : buyer;
+        let is_blocked = false;
+        if (other_user == buyer && sell_by_buy > 0) {
+            is_blocked = true;
+        }
+        else if (other_user == seller && buy_by_sell > 0) {
+            is_blocked = true;
+        }
 
         return (
             <TouchableOpacity
@@ -105,6 +112,11 @@ class InboxItem extends Component {
                         :
                         <View style={{ width: 80, height: 80, marginHorizontal: 10, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
                             <Text style={{ color: BaseColor.whiteColor, fontSize: 30 }}>{other_user?.name?.charAt(0).toUpperCase()}</Text>
+                        </View>
+                    }
+                    {is_blocked &&
+                        <View style={{ position: "absolute", left: 15, bottom: 0 }}>
+                            <Icon name={"ban"} size={20} color={"red"}></Icon>
                         </View>
                     }
                     <TouchableOpacity
