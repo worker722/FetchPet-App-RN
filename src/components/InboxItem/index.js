@@ -85,6 +85,7 @@ class InboxItem extends Component {
 
         const user_id = store.getState().auth.login.user.id;
         const other_user = user_id == buyer.id ? seller : buyer;
+
         let is_blocked = false;
         if (other_user == buyer && sell_by_buy > 0) {
             is_blocked = true;
@@ -140,12 +141,17 @@ class InboxItem extends Component {
                 </View>
                 <View style={{ justifyContent: "center", alignItems: "center" }}>
                     <Text style={{ color: BaseColor.greyColor, fontSize: 12 }}>{Utils.relativeTime(latest_message?.created_at)}</Text>
-                    <View style={{ justifyContent: "center", alignItems: "center", paddingVertical: 5 }}>
-                        {unread_message > 0 &&
-                            <View style={{ width: 23, height: 23, backgroundColor: "red", justifyContent: "center", alignItems: "center", borderRadius: 100, padding: 2 }}>
-                                <Text style={{ color: BaseColor.whiteColor, fontSize: 12 }}>{unread_message}</Text>
-                            </View>
-                        }
+                    <View style={{ flexDirection: "row" }}>
+                        <View style={{ justifyContent: "center", flex: 1, alignItems: "center", paddingVertical: 5 }}>
+                            {unread_message > 0 &&
+                                <View style={{ width: 23, height: 23, backgroundColor: "red", justifyContent: "center", alignItems: "center", borderRadius: 100, padding: 2 }}>
+                                    <Text style={{ color: BaseColor.whiteColor, fontSize: 12 }}>{unread_message}</Text>
+                                </View>
+                            }
+                        </View>
+                        <TouchableOpacity style={{ alignSelf: "flex-end", paddingVertical: 5, paddingRight: 5, paddingLeft: 15 }}>
+                            <Icon name={"ellipsis-v"} color={BaseColor.greyColor} size={20}></Icon>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </TouchableOpacity>
