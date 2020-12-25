@@ -184,7 +184,7 @@ class AdvancedFilter extends Component {
                             }
                         </MapView>
                     </View>
-                    <View style={{ paddingTop: 10, paddingHorizontal: 10, flexDirection: "row", justifyContent: "center", alignItems: "center", marginLeft: "50%" }}>
+                    {/* <View style={{ paddingTop: 10, paddingHorizontal: 10, flexDirection: "row", justifyContent: "center", alignItems: "center", marginLeft: "50%" }}>
                         <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor, height: 50 }}>
                             <TextInput
                                 onChangeText={(text) => {
@@ -200,7 +200,7 @@ class AdvancedFilter extends Component {
                                 placeholder={"Radius"} value={map.radius} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
                         </View>
                         <Text>  KM</Text>
-                    </View>
+                    </View> */}
                     <View style={{ flex: 1, paddingTop: 10, paddingHorizontal: 10, flexDirection: "row" }}>
                         <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, borderColor: BaseColor.dddColor }}>
                             <TextInput
