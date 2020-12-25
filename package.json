@@ -30,6 +30,7 @@
     "react-native-indicators": "^0.17.0",
     "react-native-list-view-select": "^1.0.4",
     "react-native-maps": "^0.27.1",
+    "react-native-material-menu": "^1.2.0",
     "react-native-phone-input": "^0.2.4",
     "react-native-rate": "^1.2.4",
     "react-native-ratings": "^7.3.0",

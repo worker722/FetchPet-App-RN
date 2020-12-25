@@ -12,7 +12,8 @@ import {
     Platform,
     KeyboardAvoidingView,
     BackHandler,
-    Modal
+    Modal,
+    Alert
 } from 'react-native';
 import { ChatMessage, Loader } from '@components';
 import { BaseColor } from '@config';
@@ -20,6 +21,8 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native-elements';
 import ImagePicker from 'react-native-image-crop-picker';
 import Styles from './style';
+
+import Menu, { MenuItem } from 'react-native-material-menu';
 
 import firebase from 'react-native-firebase';
 
@@ -47,6 +50,8 @@ class Chat extends Component {
             visiblePickerModal: false,
             is_sending: false,
         }
+
+        this.menuRef = null;
 
         props.navigation.addListener("willFocus", (event) => {
             this.props.setStore(global.IS_IN_CHAT_PAGE, true);
@@ -183,6 +188,37 @@ class Chat extends Component {
         this.setState({ message: '', attach_file: null });
     }
 
+    setMenuRef = ref => {
+        this.menuRef = ref;
+    };
+
+    block = () => {
+        Alert.alert(
+            'Block this User?',
+            "If you block this user, all contact will be blocked with this user." + "\n" + "Are you sure you want to block this user?",
+            [
+                {
+                    text: 'Block',
+                    onPress: async () => {
+                        this.menuRef.hide();
+                        await this.props.api.post("inbox/block", { room_id: this.state.room.id });
+                        this.props.navigation.goBack(null);
+                    }
+                },
+                {
+                    text: 'Cancel',
+                    onPress: () => this.menuRef.hide(),
+                    style: 'cancel'
+                },
+            ],
+            { cancelable: false }
+        );
+    };
+
+    showMenu = () => {
+        this.menuRef.show();
+    };
+
     render = () => {
         const { chat, ads, showLoader, showRefresh, other_user, is_sending, ad_images, visiblePickerModal, attach_file, room } = this.state;
         const navigation = this.props.navigation;
@@ -195,11 +231,11 @@ class Chat extends Component {
 
         let is_blocked = false;
         if (room) {
-            const { seller, buyer, sell_by_buy, buy_by_sell } = room;
-            if (other_user == buyer && sell_by_buy > 0) {
+            const { seller, buyer, s_block_b, b_block_s } = room;
+            if (other_user == buyer && b_block_s > 0) {
                 is_blocked = true;
             }
-            else if (other_user == seller && buy_by_sell > 0) {
+            else if (other_user == seller && s_block_b > 0) {
                 is_blocked = true;
             }
         }
@@ -258,6 +294,15 @@ class Chat extends Component {
                         <View style={{ justifyContent: "center", paddingLeft: 10, flex: 1 }}>
                             <Text style={{ color: BaseColor.whiteColor }}>{other_user?.name}</Text>
                         </View>
+                        <TouchableOpacity
+                            onPress={this.showMenu}
+                            style={{ justifyContent: "center", alignItems: "center", paddingLeft: 30 }}>
+                            <Icon name={"ellipsis-v"} size={18} color={"white"}></Icon>
+                        </TouchableOpacity>
+                        <Menu
+                            ref={this.setMenuRef}>
+                            <MenuItem onPress={this.block}>Block</MenuItem>
+                        </Menu>
                     </View>
                     <ScrollView
                         ref={ref => this.scrollView = ref}

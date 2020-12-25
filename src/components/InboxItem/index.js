@@ -4,7 +4,8 @@ import {
     TouchableOpacity,
     Text,
     ActivityIndicator,
-    AppState
+    AppState,
+    Alert
 } from 'react-native';
 import { Image } from 'react-native-elements';
 import { BaseColor } from '@config';
@@ -12,10 +13,13 @@ import * as Api from '@api';
 import * as Utils from '@utils';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
+import Menu, { MenuItem } from 'react-native-material-menu';
+
 import firebase from 'react-native-firebase';
 
 import { store } from '@store';
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import * as global from "@api/global";
 
 class InboxItem extends Component {
@@ -24,8 +28,10 @@ class InboxItem extends Component {
         this.state = {
             room: {},
             latest_message: {},
-            unread_message: 0
+            unread_message: 0,
         }
+
+        this.menuRef = null;
     }
 
     UNSAFE_componentWillMount = () => {
@@ -75,10 +81,44 @@ class InboxItem extends Component {
         AppState.removeEventListener('change', this.handleAppStateChange);
     }
 
+    setMenuRef = ref => {
+        this.menuRef = ref;
+    };
+
+    block = () => {
+        Alert.alert(
+            'Block this User?',
+            "If you block this user, all contact will be blocked with this user." + "\n" + "Are you sure you want to block this user?",
+            [
+                {
+                    text: 'Block',
+                    onPress: async () => {
+                        this.menuRef.hide();
+                        await this.props.api.post("inbox/block", { room_id: this.state.room.id });
+                        const { refresh } = this.props;
+                        refresh();
+                    }
+                },
+                {
+                    text: 'Cancel',
+                    onPress: () => this.menuRef.hide(),
+                    style: 'cancel'
+                },
+            ],
+            { cancelable: false }
+        );
+    };
+
+    showMenu = () => {
+        this.menuRef.show();
+    };
+
     render = () => {
-        const { navigation } = this.props;
         const { unread_message, room, ad_images, latest_message } = this.state;
-        const { ads, buyer, seller, message, sell_by_buy, buy_by_sell } = room;
+
+        const { navigation } = this.props;
+
+        const { ads, buyer, seller, message, s_block_b, b_block_s } = room;
 
         if (!message || message.length == 0)
             return null;
@@ -87,10 +127,10 @@ class InboxItem extends Component {
         const other_user = user_id == buyer.id ? seller : buyer;
 
         let is_blocked = false;
-        if (other_user == buyer && sell_by_buy > 0) {
+        if (other_user == buyer && b_block_s > 0) {
             is_blocked = true;
         }
-        else if (other_user == seller && buy_by_sell > 0) {
+        else if (other_user == seller && s_block_b > 0) {
             is_blocked = true;
         }
 
@@ -149,9 +189,17 @@ class InboxItem extends Component {
                                 </View>
                             }
                         </View>
-                        <TouchableOpacity style={{ alignSelf: "flex-end", paddingVertical: 5, paddingRight: 5, paddingLeft: 15 }}>
-                            <Icon name={"ellipsis-v"} color={BaseColor.greyColor} size={20}></Icon>
-                        </TouchableOpacity>
+                        <Menu
+                            ref={this.setMenuRef}
+                            button={
+                                <TouchableOpacity
+                                    onPress={this.showMenu}
+                                    style={{ alignSelf: "flex-end", paddingVertical: 5, paddingRight: 5, paddingLeft: 15 }}>
+                                    <Icon name={"ellipsis-v"} color={BaseColor.greyColor} size={20}></Icon>
+                                </TouchableOpacity>
+                            }>
+                            <MenuItem onPress={this.block}>Block</MenuItem>
+                        </Menu>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -165,6 +213,7 @@ const mapStateToProps = ({ app: { is_in_chat } }) => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        api: bindActionCreators(Api, dispatch),
         setStore: (type, data) => dispatch({ type, data })
     }
 }
