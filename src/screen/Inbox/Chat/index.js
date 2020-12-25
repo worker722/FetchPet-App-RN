@@ -319,7 +319,7 @@ class Chat extends Component {
                             </>
                             :
                             <TextInput
-                                style={{ flex: 1, backgroundColor: BaseColor.dddColor, color: "red", width: "100%", borderRadius: 30, paddingLeft: 20, paddingRight: 90 }}
+                                style={{ flex: 1, textAlign: "center", backgroundColor: BaseColor.dddColor, color: "red", width: "100%", borderRadius: 30 }}
                                 editable={false}
                                 value={"You can't chat with this user anymore."} />
                         }
