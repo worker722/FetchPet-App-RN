@@ -54,7 +54,13 @@ class Inbox extends Component {
         this.setState({ showLoader: false, showRefresh: false });
     }
 
+    refreshList = () => {
+        this.setState({ showLoader: true });
+        this.start();
+    }
+
     _onRefresh = () => {
+        this.setState({ showRefresh: true });
         this.start();
     }
 
@@ -82,7 +88,7 @@ class Inbox extends Component {
                             keyExtractor={(item, index) => index.toString()}
                             data={chatInbox}
                             renderItem={(item, index) => (
-                                <InboxItem data={item} navigation={this.props.navigation} />
+                                <InboxItem data={item} refresh={this.refreshList} navigation={this.props.navigation} />
                             )}
                         />
                     </ScrollView>

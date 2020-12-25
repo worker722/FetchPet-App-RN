@@ -45,6 +45,10 @@ class Setting extends Component {
         this.props.navigation.navigate("Privacy")
     }
 
+    goBlockContact = () => {
+        this.props.navigation.navigate("BlockContact")
+    }
+
     setNotificationStatus = async () => {
         const params = { key: global._SHOW_NOTIFICATION, value: this.state.is_showNotification ? 0 : 1 };
         this.setState({ is_showNotification: !this.state.is_showNotification });
@@ -99,6 +103,7 @@ class Setting extends Component {
                 <Header icon_left={"arrow-left"} title={"Setting"} callback_left={this.goBack} />
 
                 <LinkItem title={"Privacy"} subtitle={"Passwork, Phone number visiblity"} icon_right={"angle-right"} action={this.goPrivacy} />
+                <LinkItem title={"Block Contact"} subtitle={"Show block contact list"} icon_right={"angle-right"} action={this.goBlockContact} />
                 <LinkItem title={"Notification"} subtitle={""} icon_right={"angle-right"} action={this.setNotificationStatus} is_switch={true} switch_val={is_showNotification} />
                 <LinkItem title={"Logout"} subtitle={""} icon_right={"angle-right"} action={this.logOut} />
                 <LinkItem title={"Logout from all devices"} subtitle={""} icon_right={"angle-right"} action={this.logOutAll} />
