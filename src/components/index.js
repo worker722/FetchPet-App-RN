@@ -8,6 +8,7 @@ import FavouriteAds from './FavouriteAds';
 import ActiveAds from './ActiveAds';
 import ClosedAds from './ClosedAds';
 import CustomModalPicker from './CustomModalPicker';
+import BlockedUser from './BlockedUser';
 
 export {
     Header,
@@ -19,5 +20,6 @@ export {
     ActiveAds,
     ClosedAds,
     CustomModalPicker,
-    FavouriteAds
+    FavouriteAds,
+    BlockedUser
 }
