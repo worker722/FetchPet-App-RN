@@ -30,7 +30,8 @@ export default class ChatMessage extends Component {
                                 <Image
                                     source={{ uri: Api.SERVER_HOST + item.attach_file }}
                                     style={{ marginVertical: 10, borderRadius: 20, width: 200, height: 150 }}
-                                    PlaceholderContent={<ActivityIndicator color={BaseColor.white} />}
+                                    placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
+                                    PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}
                                 />
                             }
                             {item.message &&
@@ -46,7 +47,8 @@ export default class ChatMessage extends Component {
                                 <Image
                                     source={{ uri: Api.SERVER_HOST + item.attach_file }}
                                     style={{ marginVertical: 10, borderRadius: 20, width: 200, height: 150 }}
-                                    PlaceholderContent={<ActivityIndicator color={BaseColor.white} />}
+                                    placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
+                                    PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}
                                 />
                             }
                             {item.message &&
