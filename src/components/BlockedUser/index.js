@@ -51,7 +51,7 @@ class BlockedUser extends Component {
                 <View style={{ flex: 1 }}></View>
                 <TouchableOpacity
                     onPress={this.unblock}
-                    style={{ paddingHorizontal: 10, paddingVertical: 10, backgroundColor: BaseColor.primaryColor, borderRadius: 20 }}>
+                    style={{ paddingHorizontal: 15, paddingVertical: 10, backgroundColor: BaseColor.primaryColor, borderRadius: 5 }}>
                     <Text style={{ color: BaseColor.whiteColor, fontSize: 12 }}>UnBlock</Text>
                 </TouchableOpacity>
             </View>
