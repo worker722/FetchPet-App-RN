@@ -34,6 +34,7 @@ class Inbox extends Component {
 
     start = async () => {
         const response = await this.props.api.get('inbox');
+        console.log(response)
         if (response?.success) {
             const inbox = response.data.inbox;
             inbox.sort((a, b) => {

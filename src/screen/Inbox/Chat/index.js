@@ -103,7 +103,7 @@ class Chat extends Component {
         const { ad_id, room_id } = this.props.navigation.state.params;
         const param = { ad_id, room_id };
         const response = await this.props.api.post("chat", param);
-        if (response.success) {
+        if (response?.success) {
             const { ads, room } = response.data;
             const user_id = store.getState().auth.login.user.id;
             const other_user = user_id == room.seller.id ? room.buyer : room.seller;
@@ -121,6 +121,9 @@ class Chat extends Component {
                 ad_images,
                 chat: room.message,
             })
+        }
+        else {
+            this.props.navigation.goBack(null);
         }
         this.setState({ showLoader: false, showRefresh: false });
         this.scrollView?.scrollToEnd({ animated: true });
