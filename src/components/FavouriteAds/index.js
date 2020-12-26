@@ -66,7 +66,7 @@ class FavouriteAds extends Component {
             'Are you sure you want to remove this pet on your favourites?',
             [
                 {
-                    text: 'OK',
+                    text: 'Remove',
                     onPress: async () => {
                         this.setState({ is_removed: true });
                         const { item } = this.state;
