@@ -33,14 +33,14 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Fetch - Your Local Pet Marketplace is need to access your camera for user profile and pet image.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Fetch - Your Local Pet Marketplace is need to access your location to fetch pets near by you and to pick pet location.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-  <string>Fetch - Your Local Pet Marketplace is need to access your location to fetch pets near by you and to pick pet location.</string>
+	<string>Fetch - Your Local Pet Marketplace is need to access your location to fetch pets near by you and to pick pet location.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Fetch - Your Local Pet Marketplace is need to access your location to fetch pets near by you and to pick pet location.</string>
-  <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-  <string>Fetch - Your Local Pet Marketplace is need to access your location to fetch pets near by you and to pick pet location.</string>
-  <key>NSCameraUsageDescription</key>
-  <string>Fetch - Your Local Pet Marketplace is need to access your camera for user profile and pet image.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Fetch - Your Local Pet Marketplace is need to access your microphone for user profile and pet image.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
