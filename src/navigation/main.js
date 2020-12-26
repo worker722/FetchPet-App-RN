@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, View } from 'react-native';
+import { Image } from 'react-native';
 import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import { BaseColor, BaseStyle, Images } from '@config';
@@ -83,19 +83,7 @@ const routeConfigs = {
 			title: "Sell",
 			tabBarIcon: ({ focused, tintColor }) => {
 				return (
-					<View
-						style={{
-							width: 50,
-							height: 50,
-							justifyContent: "center",
-							alignItems: "center",
-							marginBottom: 30,
-							borderRadius: 100,
-							backgroundColor: BaseColor.whiteColor
-						}}
-					>
-						<Image source={Images.ic_sell} />
-					</View>
+					<Image source={Images.ic_sell} style={{ marginBottom: 30 }} />
 				)
 			}
 		})
