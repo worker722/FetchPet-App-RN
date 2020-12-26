@@ -12,8 +12,8 @@ target 'Fetch' do
 
   pod 'react-native-geolocation', :path => '../node_modules/@react-native-community/geolocation'
 
-  pod 'Firebase/Core', '~> 7.3.0'
-  pod 'Firebase/Messaging', '~> 7.3.0'
+  pod 'Firebase/Core', '~> 6.3.0'
+  pod 'Firebase/Messaging', '~> 6.3.0'
 
   target 'FetchTests' do
     inherit! :complete
