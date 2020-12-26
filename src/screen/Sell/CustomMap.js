@@ -3,7 +3,6 @@ import {
     View,
     Text,
     TouchableOpacity,
-    Platform
 } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
