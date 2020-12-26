@@ -3,7 +3,7 @@ import * as global from "./global";
 import { store } from '@store';
 
 // export const SERVER_HOST = 'http://10.0.2.2';
-export const SERVER_HOST = 'http://54.177.72.41';
+export const SERVER_HOST = 'http://fetch.market';
 
 const onLogin = data => {
     return {
@@ -14,7 +14,7 @@ const onLogin = data => {
 
 export const _TOKEN = () => {
     try {
-        const token = store.getState().auth.login.user.token;
+        const token = store?.getState()?.auth?.login?.user?.token;
         return token;
     } catch (error) {
         return null;
