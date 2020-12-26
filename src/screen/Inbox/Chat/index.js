@@ -142,6 +142,7 @@ class Chat extends Component {
                 width: 500,
                 height: 500,
                 includeExif: true,
+                cropping: true
             }).then(images => {
                 this.setState({ visiblePickerModal: false, attach_file: images });
             });
@@ -153,6 +154,7 @@ class Chat extends Component {
                 width: 500,
                 height: 500,
                 includeExif: true,
+                cropping: true
             }).then(images => {
                 this.setState({ visiblePickerModal: false, attach_file: images });
             });

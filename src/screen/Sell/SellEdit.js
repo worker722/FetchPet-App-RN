@@ -225,7 +225,7 @@ class SellEdit extends Component {
                 'Are you sure you want to delete this image?',
                 [
                     {
-                        text: 'OK',
+                        text: 'Remove',
                         onPress: async () => {
                             if (!item.id) {
                                 uploadedImages.splice(index, 1);

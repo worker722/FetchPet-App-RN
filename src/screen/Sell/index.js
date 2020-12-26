@@ -198,7 +198,7 @@ class Sell extends Component {
                 'Are you sure you want to delete this image?',
                 [
                     {
-                        text: 'OK',
+                        text: 'Remove',
                         onPress: () => { uploadedImages.splice(index, 1); this.setState({ uploadedImages }) }
                     },
                     {
