@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 import { Images, BaseColor } from '@config';
 import { Header } from '@components';
+import * as global from "@api/global";
 
 export default class Version extends Component {
     constructor(props) {
@@ -25,7 +26,7 @@ export default class Version extends Component {
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 30 }}>
                     <Text>Current Version : </Text>
-                    <Text>1.0.1</Text>
+                    <Text>{global.APP_VERSION}</Text>
                 </View>
             </View>
         )
