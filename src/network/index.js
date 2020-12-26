@@ -3,7 +3,7 @@ import * as global from "./global";
 import { store } from '@store';
 
 // export const SERVER_HOST = 'http://10.0.2.2';
-export const SERVER_HOST = 'http://fetch.market';
+export const SERVER_HOST = 'https://fetch.market';
 // export const SERVER_HOST = 'http://54.177.72.41';
 
 const onLogin = data => {
