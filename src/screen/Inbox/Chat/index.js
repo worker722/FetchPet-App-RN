@@ -345,7 +345,7 @@ class Chat extends Component {
                         {!is_blocked ?
                             <>
                                 <TextInput
-                                    style={{ flex: 1, backgroundColor: BaseColor.dddColor, width: "100%", borderRadius: 30, paddingLeft: 20, paddingRight: 90 }}
+                                    style={{ flex: 1, textAlignVertical: "center", backgroundColor: BaseColor.dddColor, width: "100%", borderRadius: 30, paddingLeft: 20, paddingRight: 90 }}
                                     value={this.state.message}
                                     multiline={true}
                                     placeholder="Type Message..."
