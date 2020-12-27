@@ -64,7 +64,7 @@ const routeConfigs = {
 		navigationOptions: ({ navigation }) => ({
 			title: "Home",
 			tabBarIcon: ({ focused, tintColor }) => {
-				return <Image source={focused ? Images.ic_home_fill : Images.ic_home} style={{ width: 18, height: 19 }} />;
+				return <Image source={focused ? Images.ic_home_fill : Images.ic_home} />;
 			}
 		})
 	},
@@ -73,7 +73,7 @@ const routeConfigs = {
 		navigationOptions: ({ navigation }) => ({
 			title: "Inbox",
 			tabBarIcon: ({ focused, tintColor }) => {
-				return <Image source={focused ? Images.ic_chat_fill : Images.ic_chat} style={{ width: 20, height: 19 }} />;
+				return <Image source={focused ? Images.ic_chat_fill : Images.ic_chat} />;
 			}
 		})
 	},
@@ -83,7 +83,7 @@ const routeConfigs = {
 			title: "Sell",
 			tabBarIcon: ({ focused, tintColor }) => {
 				return (
-					<Image source={Images.ic_sell} style={{ width: 48, height: 48, marginBottom: 30 }} />
+					<Image source={Images.ic_sell} style={{ marginBottom: 30 }} />
 				)
 			}
 		})
@@ -93,7 +93,7 @@ const routeConfigs = {
 		navigationOptions: ({ navigation }) => ({
 			title: "MyAds",
 			tabBarIcon: ({ focused, tintColor }) => {
-				return <Image source={focused ? Images.ic_myads_fill : Images.ic_myads} style={{ width: 20, height: 19 }} />;
+				return <Image source={focused ? Images.ic_myads_fill : Images.ic_myads} />;
 			}
 		})
 	},
@@ -102,7 +102,7 @@ const routeConfigs = {
 		navigationOptions: ({ navigation }) => ({
 			title: "Profile",
 			tabBarIcon: ({ focused, tintColor }) => {
-				return <Image source={focused ? Images.ic_profile_fill : Images.ic_profile} style={{ width: 20, height: 20 }} />;
+				return <Image source={focused ? Images.ic_profile_fill : Images.ic_profile} />;
 			}
 		})
 	}
