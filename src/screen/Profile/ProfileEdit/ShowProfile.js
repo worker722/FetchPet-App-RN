@@ -128,7 +128,7 @@ class ShowProfile extends Component {
                     <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingHorizontal: 20, paddingTop: 20 }}>Contact Infomation</Text>
                     <View style={{ flexDirection: "row", paddingHorizontal: 20, paddingVertical: 20 }}>
                         <Text style={{ fontSize: 17, color: BaseColor.greyColor }}>Email : </Text>
-                        <Text style={{ fontSize: 17 }}>{user?.email}</Text>
+                        <Text style={{ fontSize: 17, paddingRight: 20 }}>{user?.email}</Text>
                     </View>
                     {is_showPhonenumber && user?.phonenumber &&
                         <View style={{ flexDirection: "row", paddingHorizontal: 20, paddingBottom: 20 }}>
