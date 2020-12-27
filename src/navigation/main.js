@@ -83,7 +83,7 @@ const routeConfigs = {
 			title: "Sell",
 			tabBarIcon: ({ focused, tintColor }) => {
 				return (
-					<Image source={Images.ic_sell} resizeMode={"stretch"} style={{ width: 48, height: 48, marginBottom: 30 }} />
+					<Image source={Images.ic_sell} style={{ width: 48, height: 48, marginBottom: 30 }} />
 				)
 			}
 		})
