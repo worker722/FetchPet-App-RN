@@ -5,7 +5,8 @@ import {
     Text,
     ActivityIndicator,
     AppState,
-    Alert
+    Alert,
+    Platform
 } from 'react-native';
 import { Image } from 'react-native-elements';
 import { BaseColor } from '@config';
@@ -55,17 +56,28 @@ class InboxItem extends Component {
 
     createNotificationListeners = async () => {
         try {
-            this.notificationListener = firebase.notifications().onNotification((notification) => {
-                const user_id = store.getState().auth.login.user.id;
-                const { room } = this.state;
-                const newMessage = JSON.parse(notification.data.data);
-                if (newMessage.id_room == room.id && newMessage.id_user_snd != user_id && !this.props.is_in_chat) {
-                    let { unread_message } = this.state;
-                    unread_message++;
-                    this.setState({ unread_message, latest_message: newMessage });
-                }
-            });
+            if (Platform.OS == "android") {
+                this.notificationListener_ANDROID = firebase.notifications().onNotification((notification) => {
+                    this._onMessageReceived(notification);
+                });
+            }
+            else {
+                this.notificationListener_IOS = firebase.messaging().onMessage((notification) => {
+                    this._onMessageReceived(notification);
+                });
+            }
         } catch (error) {
+        }
+    }
+
+    _onMessageReceived = (notification) => {
+        const user_id = store.getState().auth.login.user.id;
+        const { room } = this.state;
+        const newMessage = JSON.parse(notification.data.data);
+        if (newMessage.id_room == room.id && newMessage.id_user_snd != user_id && !this.props.is_in_chat) {
+            let { unread_message } = this.state;
+            unread_message++;
+            this.setState({ unread_message, latest_message: newMessage });
         }
     }
 
@@ -77,7 +89,11 @@ class InboxItem extends Component {
     }
 
     componentWillUnmount = () => {
-        this.notificationListener && this.notificationListener();
+        if (Platform.OS == "android")
+            this.notificationListener_ANDROID && this.notificationListener_ANDROID();
+        else
+            this.notificationListener_IOS && this.notificationListener_IOS();
+
         AppState.removeEventListener('change', this.handleAppStateChange);
     }
 

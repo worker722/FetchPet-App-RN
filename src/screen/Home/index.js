@@ -53,22 +53,32 @@ class Home extends Component {
     }
 
     createNotificationListeners = async () => {
-        firebase.notifications().onNotificationDisplayed((notification) => { });
-        this.notificationListener = firebase.notifications().onNotification((notification) => {
-            const { title, body } = notification;
-            this.showNotification(title, body);
-            if (!this.props.is_in_chat)
-                this.props.setStore(global.U_MESSAGE_INCREMENT, 1);
-        });
+        if (Platform.OS == "android") {
+            this.notificationListener_ANDROID = firebase.notifications().onNotification((notification) => {
+                this._onMessageReceived(notification);
+            });
+        }
+        else {
+            this.notificationListener_IOS = firebase.messaging().onMessage((notification) => {
+                this._onMessageReceived(notification);
+            });
+        }
+
         firebase.notifications().onNotificationOpened((notificationOpen) => {
-            const { title, body, data } = notificationOpen.notification;
             this.props.navigation.navigate("Inbox");
         });
+
         const notificationOpen = await firebase.notifications().getInitialNotification();
         if (notificationOpen) {
-            const { title, body, data } = notificationOpen.notification;
             this.props.navigation.navigate("Inbox");
         }
+    }
+
+    _onMessageReceived = (notification) => {
+        const { title, body } = notification;
+        this.showNotification(title, body);
+        if (!this.props.is_in_chat)
+            this.props.setStore(global.U_MESSAGE_INCREMENT, 1);
     }
 
     showNotification(title, body) {
@@ -111,7 +121,10 @@ class Home extends Component {
 
     componentWillUnmount = async () => {
         AppState.removeEventListener('change', this.handleAppStateChange);
-        this.notificationListener && this.notificationListener();
+        if (Platform.OS == "android")
+            this.notificationListener_ANDROID && this.notificationListener_ANDROID();
+        else
+            this.notificationListener_IOS && this.notificationListener_IOS();
     }
 
     componentDidMount = async () => {
@@ -144,7 +157,8 @@ class Home extends Component {
                 } else {
                     firebase.messaging().requestPermission()
                         .then(() => {
-                            firebase.messaging().registerForNotifications();
+                            if (Platform.OS == "ios")
+                                firebase.messaging().registerForRemoteNotifications();
                         })
                         .catch(error => {
                         });

@@ -62,7 +62,13 @@ class Login extends Component {
                     })
                 }
                 else {
-                    firebase.messaging().requestPermission();
+                    firebase.messaging().requestPermission()
+                        .then(() => {
+                            if (Platform.OS == "ios")
+                                firebase.messaging().registerForRemoteNotifications();
+                        })
+                        .catch(error => {
+                        });
                 }
             }).catch(error => {
 

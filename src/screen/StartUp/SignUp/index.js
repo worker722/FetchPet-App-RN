@@ -12,7 +12,6 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { CheckBox } from 'react-native-elements';
 
-
 import { GoogleSignin } from 'react-native-google-signin';
 import appleAuth, { AppleButton } from '@invertase/react-native-apple-authentication';
 import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
@@ -67,7 +66,13 @@ class SignUp extends Component {
                     })
                 }
                 else {
-                    firebase.messaging().requestPermission();
+                    firebase.messaging().requestPermission()
+                        .then(() => {
+                            if (Platform.OS == "ios")
+                                firebase.messaging().registerForRemoteNotifications();
+                        })
+                        .catch(error => {
+                        });
                 }
             }).catch(error => {
             })

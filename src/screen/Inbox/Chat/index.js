@@ -60,18 +60,29 @@ class Chat extends Component {
 
     createNotificationListeners = async () => {
         try {
-            this.notificationListener = firebase.notifications().onNotification((notification) => {
-                const user_id = store.getState().auth.login.user.id;
-                const { room } = this.state;
-                const newMessage = JSON.parse(notification.data.data);
-                if (newMessage.id_room == room.id && newMessage.id_user_snd != user_id && this.props.is_in_chat) {
-                    let { chat } = this.state;
-                    chat.push(newMessage);
-                    this.setState({ chat });
-                    this.props.api.post("chat/read", { id: room.id });
-                }
-            });
+            if (Platform.OS == "android") {
+                this.notificationListener_ANDROID = firebase.notifications().onNotification((notification) => {
+                    this._onMessageReceived(notification);
+                });
+            }
+            else {
+                this.notificationListener_IOS = firebase.messaging().onMessage((notification) => {
+                    this._onMessageReceived(notification);
+                });
+            }
         } catch (error) {
+        }
+    }
+
+    _onMessageReceived = (notification) => {
+        const user_id = store.getState().auth.login.user.id;
+        const { room } = this.state;
+        const newMessage = JSON.parse(notification.data.data);
+        if (newMessage.id_room == room.id && newMessage.id_user_snd != user_id && this.props.is_in_chat) {
+            let { chat } = this.state;
+            chat.push(newMessage);
+            this.setState({ chat });
+            this.props.api.post("chat/read", { id: room.id });
         }
     }
 
@@ -89,7 +100,11 @@ class Chat extends Component {
     }
 
     componentWillUnmount = () => {
-        this.notificationListener && this.notificationListener();
+        if (Platform.OS == "android")
+            this.notificationListener_ANDROID && this.notificationListener_ANDROID();
+        else
+            this.notificationListener_IOS && this.notificationListener_IOS();
+
         AppState.removeEventListener('change', this.handleAppStateChange);
         BackHandler.removeEventListener("hardwareBackPress", this.backAction);
     }
