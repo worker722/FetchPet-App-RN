@@ -2,21 +2,16 @@ import React, { Component } from 'react';
 import {
     View,
     Text,
-    TouchableOpacity,
     FlatList,
     ScrollView,
     RefreshControl
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import { BaseColor } from '@config';
-import { Header, Loader } from '@components';
+import { Header, Loader, NotificationItem } from '@components';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { store } from '@store';
 import * as Api from '@api';
-import * as global from '@api/global';
-import * as Utils from '@utils';
 
 class Notification extends Component {
     constructor(props) {
@@ -55,57 +50,6 @@ class Notification extends Component {
         this.start();
     }
 
-    _onNotificationClicked = (item) => {
-        const user_id = store.getState().auth.login.user.id;
-        if (item.type == 0) {
-            const unread_message = item.room.message.filter((item, key) => {
-                return item.read_status == 0 && user_id != item.id_user_snd;
-            });
-
-            if (unread_message.length > 0)
-                this.props.setStore(global.U_MESSAGE_DECREMENT, unread_message.length);
-
-            this.props.navigation.navigate("Chat", { ad_id: item.room.id_ads, room_id: item.room.id });
-        }
-        else {
-            this.props.navigation.navigate("AdDetail", { ad_id: item.id_type });
-        }
-
-        if (item.read_status == 0) {
-            const params = { id: item.id };
-            this.props.api.post('notification/read', params);
-        }
-    }
-
-    delete = async (index, key) => {
-        const params = { id: index };
-        const response = await this.props.api.post("notification/delete", params);
-        if (response?.success) {
-            let notification = this.state.notification;
-            notification.splice(key, 1);
-            this.setState({ notification });
-        }
-    }
-
-    renderItem = ({ item, key }) => {
-        return (
-            <TouchableOpacity onPress={() => this._onNotificationClicked(item)} style={{ marginTop: 6, marginBottom: 1, flexDirection: "row", borderWidth: 1, borderColor: BaseColor.dddColor, borderRadius: 10 }}>
-                <View style={{ flex: 1, flexDirection: "row" }}>
-                    {item.read_status == 0 &&
-                        <View style={{ width: 2, marginVertical: 15, backgroundColor: BaseColor.primaryColor }}></View>
-                    }
-                    <View style={{ margin: 15 }}>
-                        <Text style={{ color: BaseColor.primaryColor, fontSize: 16 }}>{item.title}</Text>
-                        <Text style={{ color: BaseColor.greyColor, marginTop: 5, fontSize: 12 }}>{Utils.relativeTime(item.created_at)}</Text>
-                    </View>
-                </View>
-                <TouchableOpacity onPress={() => this.delete(item.id, key)} style={{ justifyContent: "center", alignItems: "center", paddingRight: 10 }}>
-                    <Icon name={"trash-alt"} size={20} color={BaseColor.primaryColor} />
-                </TouchableOpacity>
-            </TouchableOpacity>
-        )
-    }
-
     render = () => {
         const { showLoader, showRefresh, notification } = this.state;
 
@@ -125,7 +69,9 @@ class Notification extends Component {
                         style={{ paddingHorizontal: 10, marginTop: 10 }}
                         keyExtractor={(item, index) => index.toString()}
                         data={notification}
-                        renderItem={this.renderItem}
+                        renderItem={(item, key) => (
+                            <NotificationItem data={item} navigation={this.props.navigation} />
+                        )}
                     >
                     </FlatList>
                 </ScrollView>
