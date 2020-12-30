@@ -42,7 +42,7 @@ export default class Help extends Component {
 
                 <LinkItem title={"Help Center"} subtitle={"See FAQ and contact support"} icon_right={"angle-right"} action={this.contactUs} />
                 <LinkItem title={"Rate us"} subtitle={"If you love our app, please rake a moment to rate it"} icon_right={"angle-right"} action={this.rateApp} />
-                <LinkItem title={"Version"} subtitle={global.APP_VERSION} icon_right={"angle-right"} action={this.version} />
+                <LinkItem title={"Version"} subtitle={global.getAppVersion()} icon_right={"angle-right"} action={this.version} />
             </View>
         )
     }

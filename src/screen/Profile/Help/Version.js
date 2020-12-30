@@ -26,7 +26,7 @@ export default class Version extends Component {
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 30 }}>
                     <Text>Current Version : </Text>
-                    <Text>{global.APP_VERSION}</Text>
+                    <Text>{global.getAppVersion()}</Text>
                 </View>
             </View>
         )

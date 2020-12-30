@@ -1,4 +1,5 @@
 
+import { Platform } from 'react-native';
 import Toast from 'react-native-simple-toast';
 
 //STORE VARIABLE TYPES
@@ -26,10 +27,21 @@ export const PREF_SHOW_APPLE_BUTTON = 'PREF_SHOW_APPLE_BUTTON';
 //ANDROID PACKAGE, APPLEAPP ID
 export const ANDROID_PACKAGE = 'com.darryl.fetch';
 export const APPLE_APP_ID = '1545467871';
-export const APPLE_APP_LINK = `https://apps.apple.com/us/app/id${APPLE_APP_ID}`;
-export const GOOGLE_APP_LINK = `https://play.google.com/store/apps/details?id=${ANDROID_PACKAGE}`;
-export const APP_VERSION = '2.0.1';
 
 export const showToastMessage = (message, duration) => {
     Toast.show(message, duration ? duration : Toast.LONG);
+}
+
+export const getAppShareLink = () => {
+    return Platform.select(({
+        android: `https://play.google.com/store/apps/details?id=${ANDROID_PACKAGE}`,
+        ios: `https://apps.apple.com/us/app/id${APPLE_APP_ID}`
+    }));
+}
+
+export const getAppVersion = () => {
+    return Platform.select(({
+        android: "1.0.3",
+        ios: "2.0.1"
+    }));
 }
