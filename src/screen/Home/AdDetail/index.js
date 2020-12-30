@@ -79,10 +79,7 @@ class AdDetail extends Component {
     shareAds = async () => {
         Share.share({
             message:
-                "Fetch - Your Local Pet Marketplace App!" + "\n" + "Online Location Based Pet MarketPlace App." + "\n" + Platform.select(({
-                    ios: global.APPLE_APP_LINK,
-                    android: global.GOOGLE_APP_LINK
-                }))
+                "Fetch - Your Local Pet Marketplace App!" + "\n" + "Online Location Based Pet MarketPlace App." + "\n" + global.getAppShareLink()
         });
     }
 
