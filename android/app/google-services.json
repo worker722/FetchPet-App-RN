@@ -8,6 +8,42 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:1007858365668:android:52b61579f7e5d79727a8f1",
+        "android_client_info": {
+          "package_name": "com.darryl.fetch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1007858365668-c8e7pmt0htjmd33ua386rmib3fhe9qt4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmn7GDLY18bKttFN71VLWkBtczBVBMjRM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1007858365668-c8e7pmt0htjmd33ua386rmib3fhe9qt4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1007858365668-0asgvlu7lqort57n5ip25420acj5ni92.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "fetch.market"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:1007858365668:android:ff224b3162f9b4b027a8f1",
         "android_client_info": {
           "package_name": "fetch.market"
@@ -48,11 +84,10 @@
               "client_type": 3
             },
             {
-              "client_id": "1007858365668-dr9tuqa7sftfvckjm3qthnuhahh0hk80.apps.googleusercontent.com",
+              "client_id": "1007858365668-0asgvlu7lqort57n5ip25420acj5ni92.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.fetch.market",
-                "app_store_id": "1544704957"
+                "bundle_id": "fetch.market"
               }
             }
           ]
