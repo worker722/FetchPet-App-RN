@@ -1,4 +1,4 @@
-package fetch.market;
+package com.darryl.fetch;
 
 import com.facebook.react.ReactActivity;
 

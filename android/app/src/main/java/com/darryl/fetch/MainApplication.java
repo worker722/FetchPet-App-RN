@@ -1,4 +1,4 @@
-package fetch.market;
+package com.darryl.fetch;
 
 import android.app.Application;
 import android.content.Context;
