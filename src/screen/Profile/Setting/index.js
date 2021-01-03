@@ -5,7 +5,7 @@ import {
 import { Header, LinkItem } from '@components';
 import { BaseColor } from '@config';
 
-import { GoogleSignin } from 'react-native-google-signin';
+import { GoogleSignin } from '@react-native-community/google-signin';
 import appleAuth from '@invertase/react-native-apple-authentication';
 import { LoginManager } from 'react-native-fbsdk';
 
