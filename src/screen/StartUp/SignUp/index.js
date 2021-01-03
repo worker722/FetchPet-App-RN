@@ -70,7 +70,7 @@ class SignUp extends Component {
                     firebase.messaging().requestPermission()
                         .then(() => {
                             if (Platform.OS == "ios")
-                                firebase.messaging().registerForRemoteNotifications();
+                                firebase.messaging().ios.registerForRemoteNotifications();
                         })
                         .catch(error => {
                         });
