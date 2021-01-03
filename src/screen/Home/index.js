@@ -63,15 +63,6 @@ class Home extends Component {
                 this._onMessageReceived(notification);
             });
         }
-
-        firebase.notifications().onNotificationOpened((notificationOpen) => {
-            this.props.navigation.navigate("Inbox");
-        });
-
-        const notificationOpen = await firebase.notifications().getInitialNotification();
-        if (notificationOpen) {
-            this.props.navigation.navigate("Inbox");
-        }
     }
 
     _onMessageReceived = (notification) => {
