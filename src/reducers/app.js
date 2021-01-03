@@ -1,4 +1,5 @@
 import * as global from "@api/global";
+
 const initialState = {
   unread_message: 0,
   is_in_chat: false
