@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-import { GoogleSignin } from 'react-native-google-signin';
+import { GoogleSignin } from '@react-native-community/google-signin';
 import appleAuth, { AppleButton } from '@invertase/react-native-apple-authentication';
 import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
 
@@ -45,6 +45,7 @@ class Login extends Component {
     UNSAFE_componentWillMount = async () => {
         GoogleSignin.configure({
             iosClientId: 'YOUR IOS CLIENT ID',
+            offlineAccess: false
         });
 
         let is_show_apple_button = await GetPrefrence(global.PREF_SHOW_APPLE_BUTTON);

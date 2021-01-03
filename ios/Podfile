@@ -8,10 +8,6 @@ target 'Fetch' do
 
   use_react_native!(:path => config["reactNativePath"])
 
-  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
-
-  pod 'react-native-geolocation', :path => '../node_modules/@react-native-community/geolocation'
-
   pod 'Firebase/Core', '~> 6.3.0'
   pod 'Firebase/Messaging', '~> 6.3.0'
 
