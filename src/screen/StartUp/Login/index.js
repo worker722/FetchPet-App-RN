@@ -149,7 +149,7 @@ class Login extends Component {
 
             const name = await GetPrefrence(global.PREF_APPLE_NAME);
             const email = await GetPrefrence(global.PREF_APPLE_EMAIL);
-            if (name != '' && email != '') {
+            if (name && email) {
                 params = { name: name, email: email, password: "@fetch@", is_social: 3 };
                 is_apple_exist = true;
             }
@@ -198,8 +198,8 @@ class Login extends Component {
                 this.props.navigation.navigate("Home");
             }
         } catch (error) {
+            global.showToastMessage(error);
             this.setState({ showLoading: false });
-            console.log(error);
         }
     }
 
