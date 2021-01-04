@@ -71,13 +71,16 @@ class InboxItem extends Component {
     }
 
     _onMessageReceived = (notification) => {
-        const user_id = store.getState().auth.login.user.id;
-        const { room } = this.state;
-        const newMessage = JSON.parse(notification.data.data);
-        if (newMessage.id_room == room.id && newMessage.id_user_snd != user_id && !this.props.is_in_chat) {
-            let { unread_message } = this.state;
-            unread_message++;
-            this.setState({ unread_message, latest_message: newMessage });
+        const { data, type } = notification;
+        if (type == global.CHAT_MESSAGE_NOTIFICATION) {
+            const user_id = store.getState().auth.login.user.id;
+            const { room } = this.state;
+            const newMessage = JSON.parse(data.data);
+            if (newMessage.id_room == room.id && newMessage.id_user_snd != user_id && !this.props.is_in_chat) {
+                let { unread_message } = this.state;
+                unread_message++;
+                this.setState({ unread_message, latest_message: newMessage });
+            }
         }
     }
 

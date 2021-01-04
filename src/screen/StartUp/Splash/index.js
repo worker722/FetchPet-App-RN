@@ -12,22 +12,35 @@ import * as Utils from '@utils';
 import { store, GetPrefrence } from '@store';
 import * as global from "@api/global";
 
-export default class Splash extends Component {
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as Api from '@api';
+
+class Splash extends Component {
   constructor(props) {
     super(props);
   }
 
+  componentWillMount = async () => {
+    const navigation = this.props.navigation;
+
+    const response = await this.props.api.post("accountStatus");
+    if (response?.success && response?.data?.status == 1) {
+      setTimeout(async () => {
+        const rememberMe = await GetPrefrence(global.PREF_REMEMBER_ME);
+        if (rememberMe == '1' && store.getState().auth.login?.user?.token)
+          navigation.navigate("Home");
+        else
+          navigation.navigate("Welcome");
+      }, 1000);
+    }
+    else {
+      navigation.navigate("Welcome");
+    }
+  }
+
   componentDidMount = async () => {
     await this.requestPermission();
-    setTimeout(async () => {
-      const navigation = this.props.navigation;
-
-      const rememberMe = await GetPrefrence(global.PREF_REMEMBER_ME);
-      if (rememberMe == '1' && store.getState().auth.login?.user?.token)
-        navigation.navigate("Home");
-      else
-        navigation.navigate("Welcome");
-    }, 2000);
   }
 
   requestPermission = async () => {
@@ -67,3 +80,10 @@ export default class Splash extends Component {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    api: bindActionCreators(Api, dispatch)
+  };
+};
+export default connect(null, mapDispatchToProps)(Splash);
