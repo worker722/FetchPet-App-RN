@@ -66,7 +66,7 @@ class Login extends Component {
                     firebase.messaging().requestPermission()
                         .then(() => {
                             if (Platform.OS == "ios")
-                                firebase.messaging().registerForRemoteNotifications();
+                                firebase.messaging().ios.registerForRemoteNotifications();
                         })
                         .catch(error => {
                         });
@@ -284,7 +284,7 @@ class Login extends Component {
                     <ScrollView style={{ flex: 1, marginTop: 30 }}>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center", marginBottom: 20 }}>
                             <View style={{ width: "80%", height: 50 }}>
-                                <TextInput value={email} onChangeText={(text) => this.setState({ email: text })} placeholder={"Email"} placeholderTextColor={BaseColor.whiteColor} style={{ fontSize: 15, paddingHorizontal: 20, color: BaseColor.whiteColor, flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
+                                <TextInput value={email} onChangeText={(text) => this.setState({ email: text.toLowerCase() })} placeholder={"Email"} placeholderTextColor={BaseColor.whiteColor} style={{ fontSize: 15, paddingHorizontal: 20, color: BaseColor.whiteColor, flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
                                 </TextInput>
                             </View>
                             <View style={{ width: "80%", height: 50, marginTop: 20, justifyContent: "center", }}>

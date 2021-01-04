@@ -70,7 +70,7 @@ class SignUp extends Component {
                     firebase.messaging().requestPermission()
                         .then(() => {
                             if (Platform.OS == "ios")
-                                firebase.messaging().registerForRemoteNotifications();
+                                firebase.messaging().ios.registerForRemoteNotifications();
                         })
                         .catch(error => {
                         });
@@ -295,8 +295,8 @@ class SignUp extends Component {
                             <View style={{ width: "80%", height: 50, marginTop: 20, justifyContent: "center", }}>
                                 <TextInput
                                     value={email}
-                                    onChangeText={(text) => this.setState({ email: text })}
-                                    placeholder={"Email  "} textContentType={"password"} placeholderTextColor={BaseColor.whiteColor} style={{ fontSize: 15, paddingHorizontal: 20, color: BaseColor.whiteColor, flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }} />
+                                    onChangeText={(text) => this.setState({ email: text.toLowerCase() })}
+                                    placeholder={"Email"} placeholderTextColor={BaseColor.whiteColor} style={{ fontSize: 15, paddingHorizontal: 20, color: BaseColor.whiteColor, flex: 1, borderRadius: 10, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }} />
                             </View>
                             <View style={{ width: "80%", height: 50, marginTop: 20, justifyContent: "center", }}>
                                 <TextInput

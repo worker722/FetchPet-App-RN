@@ -212,6 +212,34 @@ class SellEdit extends Component {
         }
     }
 
+    deleteAds = () => {
+        Alert.alert(
+            'Delete Ads',
+            'Are you sure you want to delete this ads?',
+            [
+                {
+                    text: 'Delete',
+                    onPress: async () => {
+                        this.setState({ showLoader: true });
+                        const { ads } = this.state;
+                        const params = { ad_id: ads.id };
+                        const response = await this.props.api.post('ads/delete', params);
+                        if (response?.success) {
+                            this.props.navigation.navigate("MyAds");
+                        }
+                        this.setState({ showLoader: false });
+                    }
+                },
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel'
+                },
+            ],
+            { cancelable: false }
+        );
+    }
+
     _onRefresh = () => {
         this.setState({ showRefresh: true });
         this.start();
@@ -371,11 +399,19 @@ class SellEdit extends Component {
                             }
                         </MapView>
                     </View>
-                    <TouchableOpacity
-                        onPress={this.editAds}
-                        style={{ marginTop: 15, marginBottom: 20, backgroundColor: BaseColor.primaryColor, borderRadius: 5, justifyContent: "center", alignItems: "center", paddingVertical: 10, marginHorizontal: 15 }}>
-                        <Text style={{ color: BaseColor.whiteColor, fontSize: 18 }}>Edit Ads</Text>
-                    </TouchableOpacity>
+                    <View style={{ flexDirection: "row", marginTop: 15, marginBottom: 20, paddingHorizontal: 15, paddingVertical: 10 }}>
+                        <TouchableOpacity
+                            onPress={this.editAds}
+                            style={{ flex: 1, height: 45, backgroundColor: BaseColor.primaryColor, borderRadius: 5, justifyContent: "center", alignItems: "center" }}>
+                            <Text style={{ color: BaseColor.whiteColor, fontSize: 18 }}>Edit Ads</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={this.deleteAds}
+                            style={{ flex: 1, height: 45, marginLeft: 10, backgroundColor: BaseColor.whiteColor, borderRadius: 5, justifyContent: "center", alignItems: "center", borderWidth: 1, borderColor: BaseColor.dddColor }}>
+                            <Text style={{ color: BaseColor.primaryColor, fontSize: 18 }}>Delete Ads</Text>
+                        </TouchableOpacity>
+                    </View>
+
                 </ScrollView>
 
                 <Modal

@@ -189,7 +189,7 @@ class ProfileEdit extends Component {
                     />
                     <TextInput style={[Styles.textinput, { marginTop: 10, textAlignVertical: "center", height: 50 }]}
                         value={email}
-                        onChangeText={(text) => this.setState({ email: text })}
+                        onChangeText={(text) => this.setState({ email: text.toLowerCase() })}
                         underlineColorAndroid="transparent"
                         placeholder="Email"
                         placeholderTextColor={BaseColor.greyColor} />

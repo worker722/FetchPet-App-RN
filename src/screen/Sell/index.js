@@ -25,6 +25,7 @@ import { bindActionCreators } from "redux";
 import * as Api from '@api';
 import * as Utils from '@utils';
 import * as global from "@api/global";
+import { store } from "@store";
 
 const image_size = (Utils.SCREEN.WIDTH - 40) / 3;
 
@@ -71,6 +72,11 @@ class Sell extends Component {
     }
 
     start = async () => {
+        const is_social = store.getState().auth.login.user.is_social;
+        if (is_social == -1) {
+            global.showGuestMessage();
+        }
+
         const response = await this.props.api.get('ads/sell');
         if (response?.success) {
             const { category, breed } = response.data;
@@ -150,44 +156,56 @@ class Sell extends Component {
     }
 
     createAds = async () => {
-        const { selectedCategory, selectedBreed, selectedGender, selectedUnit, age, price, description, uploadedImages, region } = this.state;
-        if (uploadedImages.length < 1) {
-            global.showToastMessage("Please choose at least one pet image.");
-            return;
+        const is_social = store.getState().auth.login.user.is_social;
+        if (is_social == -1) {
+            global.showGuestMessage();
         }
-        if (selectedCategory == '') {
-            global.showToastMessage("Please select pet category.");
-            return;
-        }
-        if (selectedBreed == '') {
-            global.showToastMessage("Please select pet breed.");
-            return;
-        }
-        if (age == 0) {
-            global.showToastMessage("Please input pet age.");
-            return;
-        }
-        if (price == 0) {
-            global.showToastMessage("Please input pet price.");
-            return;
-        }
-        if (region.latitude == 0 && region.longitude == 0) {
-            global.showToastMessage("Please pick location.");
-            return;
-        }
-        this.setState({ showLoader: true });
-        const params = { category: selectedCategory, breed: selectedBreed, age: age, price: price, gender: selectedGender == 'Male' ? 1 : 0, image_key: 'ad_image', unit: selectedUnit, lat: region.latitude, long: region.longitude, description: description ? description : '' };
-        const response = await this.props.api.createAds('ads/create', uploadedImages, params);
-        this.setState({ showLoader: false });
-        if (response?.success) {
-            this.props.navigation.navigate("Home");
-            this.setState({ uploadedImages: [], age: 0, price: 0, description: '' });
+        else {
+            const { selectedCategory, selectedBreed, selectedGender, selectedUnit, age, price, description, uploadedImages, region } = this.state;
+            if (uploadedImages.length < 1) {
+                global.showToastMessage("Please choose at least one pet image.");
+                return;
+            }
+            if (selectedCategory == '') {
+                global.showToastMessage("Please select pet category.");
+                return;
+            }
+            if (selectedBreed == '') {
+                global.showToastMessage("Please select pet breed.");
+                return;
+            }
+            if (age == 0) {
+                global.showToastMessage("Please input pet age.");
+                return;
+            }
+            if (price == 0) {
+                global.showToastMessage("Please input pet price.");
+                return;
+            }
+            if (region.latitude == 0 && region.longitude == 0) {
+                global.showToastMessage("Please pick location.");
+                return;
+            }
+            this.setState({ showLoader: true });
+            const params = { category: selectedCategory, breed: selectedBreed, age: age, price: price, gender: selectedGender == 'Male' ? 1 : 0, image_key: 'ad_image', unit: selectedUnit, lat: region.latitude, long: region.longitude, description: description ? description : '' };
+            const response = await this.props.api.createAds('ads/create', uploadedImages, params);
+            this.setState({ showLoader: false });
+            if (response?.success) {
+                this.props.navigation.navigate("Home");
+                this.setState({ uploadedImages: [], age: 0, price: 0, description: '' });
+            }
         }
     }
 
     _onRefresh = () => {
-        this.setState({ showRefresh: true });
-        this.start();
+        const is_social = store.getState().auth.login.user.is_social;
+        if (is_social == -1) {
+            global.showGuestMessage();
+        }
+        else {
+            this.setState({ showRefresh: true });
+            this.start();
+        }
     }
 
     deleteImage = (index) => {

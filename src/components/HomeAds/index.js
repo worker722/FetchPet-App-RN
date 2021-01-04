@@ -63,6 +63,7 @@ export default class HomeAds extends Component {
 
     render = () => {
         const user_id = store.getState().auth.login.user.id;
+        const is_social = store.getState().auth.login.user.is_social;
         const { adsLocation, item, ad_images } = this.state;
         const { navigation, onFavourite, data } = this.props;
 
@@ -78,7 +79,7 @@ export default class HomeAds extends Component {
                 <View>
                     <Image
                         source={{ uri: Api.SERVER_HOST + ad_images[0] }}
-                        style={{ width: 120, height: "100%", borderRadius: 5, borderWidth: 1, borderColor: BaseColor.dddColor }}
+                        style={{ width: 130, height: "100%", borderRadius: 5, borderWidth: 1, borderColor: BaseColor.dddColor }}
                         placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                         PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}></Image>
                 </View>
@@ -96,31 +97,33 @@ export default class HomeAds extends Component {
                     <Text style={{ color: "grey", fontSize: 12, textAlign: "right" }}>{Utils.relativeTime(item.updated_at)} posted</Text>
                     <Text style={{ fontSize: 20, textAlign: "right" }}>$ {item.price}</Text>
                     <View style={{ flex: 1 }}></View>
-                    <View style={{ flexDirection: "row" }}>
-                        {user_id != item.user.id ?
-                            <>
-                                <TouchableOpacity onPress={this.onChat} style={{ flex: 1 }}>
-                                    <Icon name={"comment-dots"} size={20} color={BaseColor.primaryColor}></Icon>
-                                </TouchableOpacity>
-                                {is_showPhonenumber && item.user.phonenumber &&
-                                    <TouchableOpacity onPress={this.onCall} style={{ flex: 1 }}>
-                                        <Icon name={"phone"} size={20} color={BaseColor.primaryColor} ></Icon>
+                    {is_social != -1 &&
+                        <View style={{ flexDirection: "row" }}>
+                            {user_id != item.user.id ?
+                                <>
+                                    <TouchableOpacity onPress={this.onChat} style={{ flex: 1 }}>
+                                        <Icon name={"comment-dots"} size={20} color={BaseColor.primaryColor}></Icon>
                                     </TouchableOpacity>
-                                }
-                                <View style={{ flex: 1 }} />
-                                <TouchableOpacity onPress={() => onFavourite(data.index, item, !item.is_fav)} style={{ position: "absolute", bottom: 0, right: 0 }}>
-                                    <Icon name={"heart"} size={20} color={BaseColor.primaryColor} solid={item.is_fav}></Icon>
-                                </TouchableOpacity>
-                            </>
-                            :
-                            <>
-                                <View style={{ flex: 1 }}></View>
-                                <TouchableOpacity onPress={this.onEdit} style={{ position: "absolute", bottom: 0, right: 0 }}>
-                                    <Icon name={"edit"} size={20} color={BaseColor.primaryColor} solid></Icon>
-                                </TouchableOpacity>
-                            </>
-                        }
-                    </View>
+                                    {is_showPhonenumber && item.user.phonenumber &&
+                                        <TouchableOpacity onPress={this.onCall} style={{ flex: 1 }}>
+                                            <Icon name={"phone"} size={20} color={BaseColor.primaryColor} ></Icon>
+                                        </TouchableOpacity>
+                                    }
+                                    <View style={{ flex: 1 }} />
+                                    <TouchableOpacity onPress={() => onFavourite(data.index, item, !item.is_fav)} style={{ position: "absolute", bottom: 0, right: 0 }}>
+                                        <Icon name={"heart"} size={20} color={BaseColor.primaryColor} solid={item.is_fav}></Icon>
+                                    </TouchableOpacity>
+                                </>
+                                :
+                                <>
+                                    <View style={{ flex: 1 }}></View>
+                                    <TouchableOpacity onPress={this.onEdit} style={{ position: "absolute", bottom: 0, right: 0 }}>
+                                        <Icon name={"edit"} size={20} color={BaseColor.primaryColor} solid></Icon>
+                                    </TouchableOpacity>
+                                </>
+                            }
+                        </View>
+                    }
                 </View>
             </TouchableOpacity>
         )
