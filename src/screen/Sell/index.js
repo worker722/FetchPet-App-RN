@@ -25,6 +25,7 @@ import { bindActionCreators } from "redux";
 import * as Api from '@api';
 import * as Utils from '@utils';
 import * as global from "@api/global";
+import { store } from "@store";
 
 const image_size = (Utils.SCREEN.WIDTH - 40) / 3;
 
@@ -66,8 +67,14 @@ class Sell extends Component {
     }
 
     UNSAFE_componentWillMount = () => {
-        this.setState({ showLoader: true });
-        this.start();
+        const is_social = store.getState().auth.login.user.is_social;
+        if (is_social == -1) {
+            global.showGuestMessage();
+        }
+        else {
+            this.setState({ showLoader: true });
+            this.start();
+        }
     }
 
     start = async () => {
@@ -186,8 +193,14 @@ class Sell extends Component {
     }
 
     _onRefresh = () => {
-        this.setState({ showRefresh: true });
-        this.start();
+        const is_social = store.getState().auth.login.user.is_social;
+        if (is_social == -1) {
+            global.showGuestMessage();
+        }
+        else {
+            this.setState({ showRefresh: true });
+            this.start();
+        }
     }
 
     deleteImage = (index) => {
@@ -229,6 +242,8 @@ class Sell extends Component {
         const { selectedCategory, selectedBreed, selectedGender, selectedUnit, category, breed, gender, unit, visiblePickerModal, showLoader, showRefresh, uploadedImages, region } = this.state;
         const navigation = this.props.navigation;
 
+        const is_social = store.getState().auth.login.user.is_social;
+
         if (showLoader)
             return (<Loader />);
 
@@ -251,79 +266,83 @@ class Sell extends Component {
                             </TouchableOpacity>
                         }
                     </View>
-                    <View style={{ height: image_size + 40, marginHorizontal: 5, borderRadius: 10, borderColor: BaseColor.dddColor, borderWidth: 1, marginTop: 10, justifyContent: "center", alignItems: "center", paddingRight: 10 }}>
+                    {is_social != -1 &&
                         <>
-                            {uploadedImages.length == 0 ?
+                            <View style={{ height: image_size + 40, marginHorizontal: 5, borderRadius: 10, borderColor: BaseColor.dddColor, borderWidth: 1, marginTop: 10, justifyContent: "center", alignItems: "center", paddingRight: 10 }}>
                                 <>
-                                    <Icon name={"image"} size={35} color={BaseColor.primaryColor}></Icon>
-                                    <TouchableOpacity
-                                        onPress={this.showPickerModal}
-                                        style={{ backgroundColor: BaseColor.primaryColor, paddingVertical: 7, borderWidth: 1, borderColor: BaseColor.dddColor, borderRadius: 10, paddingHorizontal: 10, borderRadius: 5, marginTop: 5 }}>
-                                        <Text style={{ color: BaseColor.whiteColor }}>Choose from gallery</Text>
-                                    </TouchableOpacity>
+                                    {uploadedImages.length == 0 ?
+                                        <>
+                                            <Icon name={"image"} size={35} color={BaseColor.primaryColor}></Icon>
+                                            <TouchableOpacity
+                                                onPress={this.showPickerModal}
+                                                style={{ backgroundColor: BaseColor.primaryColor, paddingVertical: 7, borderWidth: 1, borderColor: BaseColor.dddColor, borderRadius: 10, paddingHorizontal: 10, borderRadius: 5, marginTop: 5 }}>
+                                                <Text style={{ color: BaseColor.whiteColor }}>Choose from gallery</Text>
+                                            </TouchableOpacity>
+                                        </>
+                                        :
+                                        <FlatList
+                                            keyExtractor={(item, index) => index.toString()}
+                                            data={uploadedImages}
+                                            horizontal={true}
+                                            renderItem={this.renderImage}
+                                        />
+                                    }
                                 </>
-                                :
-                                <FlatList
-                                    keyExtractor={(item, index) => index.toString()}
-                                    data={uploadedImages}
-                                    horizontal={true}
-                                    renderItem={this.renderImage}
-                                />
-                            }
+                            </View>
+                            <View style={{ width: "100%", marginTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
+                                <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, borderColor: BaseColor.dddColor }}>
+                                    <CustomModalPicker title={"Select a Category"} data={category} selectedValue={selectedCategory} onValueChange={(item, key) => this.setState({ selectedCategory: item.name })} />
+                                </View>
+                                <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, marginLeft: 10, borderColor: BaseColor.dddColor }}>
+                                    <CustomModalPicker title={"Select a Breed"} data={breed} selectedValue={selectedBreed} onValueChange={(item, key) => this.setState({ selectedBreed: item.name })} />
+                                </View>
+                            </View>
+                            <View style={{ width: "100%", marginTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
+                                <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor }}>
+                                    <TextInput
+                                        onChangeText={(text) => this.setState({ age: text })}
+                                        placeholder={"Age"} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10, textAlign: "center", justifyContent: "center", alignItems: "center" }} />
+                                </View>
+                                <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, paddingVertical: 5, marginLeft: 10, borderColor: BaseColor.dddColor }}>
+                                    <CustomModalPicker title={"Select a Unit"} data={unit} selectedValue={selectedUnit} onValueChange={(item, key) => this.setState({ selectedUnit: item.name })} />
+                                </View>
+                            </View>
+                            <View style={{ width: "100%", marginTop: 10, flexDirection: "row", height: 50, paddingHorizontal: 10 }}>
+                                <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, paddingVertical: 5, borderColor: BaseColor.dddColor }}>
+                                    <CustomModalPicker title={"Select a Gender"} data={gender} selectedValue={selectedGender} onValueChange={(item, key) => this.setState({ selectedGender: item.name })} />
+                                </View>
+                                <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, marginLeft: 10, borderColor: BaseColor.dddColor }}>
+                                    <TextInput
+                                        onChangeText={(text) => this.setState({ price: text })}
+                                        placeholder={"Price"} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10, textAlign: "center", justifyContent: "center", alignItems: "center" }} />
+                                </View>
+                            </View>
+                            <View style={{ padding: 10, height: 100, marginTop: 10, borderWidth: 1, borderColor: BaseColor.dddColor, borderRadius: 10, marginHorizontal: 10 }}>
+                                <TextInput
+                                    onChangeText={(text) => this.setState({ description: text })}
+                                    style={{ flex: 1, textAlign: "left" }} placeholder={"Let them know about your pet."} multiline={true}></TextInput>
+                            </View>
+                            <View style={{ padding: 10, marginTop: 10 }}>
+                                <Text style={{ color: BaseColor.primaryColor, fontSize: 18 }}>Location</Text>
+                                <MapView
+                                    style={{ flex: 1, height: 160, marginTop: 10 }}
+                                    scrollEnabled={false}
+                                    zoomEnabled={false}
+                                    onPress={() => navigation.navigate("CustomMap", { selectLocation: this.selectLocation, currentRegion: region })}
+                                    region={region}
+                                >
+                                    {region.latitude != 0 && region.longitude != 0 &&
+                                        <Marker coordinate={region} />
+                                    }
+                                </MapView>
+                            </View>
+                            <TouchableOpacity
+                                onPress={this.createAds}
+                                style={{ marginTop: 15, marginBottom: 30, backgroundColor: BaseColor.primaryColor, borderRadius: 5, justifyContent: "center", alignItems: "center", paddingVertical: 10, marginHorizontal: 15 }}>
+                                <Text style={{ color: BaseColor.whiteColor, fontSize: 18 }}>Create AD</Text>
+                            </TouchableOpacity>
                         </>
-                    </View>
-                    <View style={{ width: "100%", marginTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, borderColor: BaseColor.dddColor }}>
-                            <CustomModalPicker title={"Select a Category"} data={category} selectedValue={selectedCategory} onValueChange={(item, key) => this.setState({ selectedCategory: item.name })} />
-                        </View>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, marginLeft: 10, borderColor: BaseColor.dddColor }}>
-                            <CustomModalPicker title={"Select a Breed"} data={breed} selectedValue={selectedBreed} onValueChange={(item, key) => this.setState({ selectedBreed: item.name })} />
-                        </View>
-                    </View>
-                    <View style={{ width: "100%", marginTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor }}>
-                            <TextInput
-                                onChangeText={(text) => this.setState({ age: text })}
-                                placeholder={"Age"} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10, textAlign: "center", justifyContent: "center", alignItems: "center" }} />
-                        </View>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, paddingVertical: 5, marginLeft: 10, borderColor: BaseColor.dddColor }}>
-                            <CustomModalPicker title={"Select a Unit"} data={unit} selectedValue={selectedUnit} onValueChange={(item, key) => this.setState({ selectedUnit: item.name })} />
-                        </View>
-                    </View>
-                    <View style={{ width: "100%", marginTop: 10, flexDirection: "row", height: 50, paddingHorizontal: 10 }}>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, paddingVertical: 5, borderColor: BaseColor.dddColor }}>
-                            <CustomModalPicker title={"Select a Gender"} data={gender} selectedValue={selectedGender} onValueChange={(item, key) => this.setState({ selectedGender: item.name })} />
-                        </View>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, marginLeft: 10, borderColor: BaseColor.dddColor }}>
-                            <TextInput
-                                onChangeText={(text) => this.setState({ price: text })}
-                                placeholder={"Price"} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10, textAlign: "center", justifyContent: "center", alignItems: "center" }} />
-                        </View>
-                    </View>
-                    <View style={{ padding: 10, height: 100, marginTop: 10, borderWidth: 1, borderColor: BaseColor.dddColor, borderRadius: 10, marginHorizontal: 10 }}>
-                        <TextInput
-                            onChangeText={(text) => this.setState({ description: text })}
-                            style={{ flex: 1, textAlign: "left" }} placeholder={"Let them know about your pet."} multiline={true}></TextInput>
-                    </View>
-                    <View style={{ padding: 10, marginTop: 10 }}>
-                        <Text style={{ color: BaseColor.primaryColor, fontSize: 18 }}>Location</Text>
-                        <MapView
-                            style={{ flex: 1, height: 160, marginTop: 10 }}
-                            scrollEnabled={false}
-                            zoomEnabled={false}
-                            onPress={() => navigation.navigate("CustomMap", { selectLocation: this.selectLocation, currentRegion: region })}
-                            region={region}
-                        >
-                            {region.latitude != 0 && region.longitude != 0 &&
-                                <Marker coordinate={region} />
-                            }
-                        </MapView>
-                    </View>
-                    <TouchableOpacity
-                        onPress={this.createAds}
-                        style={{ marginTop: 15, marginBottom: 30, backgroundColor: BaseColor.primaryColor, borderRadius: 5, justifyContent: "center", alignItems: "center", paddingVertical: 10, marginHorizontal: 15 }}>
-                        <Text style={{ color: BaseColor.whiteColor, fontSize: 18 }}>Create AD</Text>
-                    </TouchableOpacity>
+                    }
                 </ScrollView>
 
                 <Modal

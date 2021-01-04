@@ -11,8 +11,9 @@ import { Header, LinkItem, Loader } from '@components';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { store } from "@store";
+import { store, SetPrefrence } from "@store";
 import * as Api from '@api';
+import * as global from '@api/global';
 
 class Profile extends Component {
     constructor(props) {
@@ -41,16 +42,35 @@ class Profile extends Component {
     goSetting = () => {
         this.props.navigation.navigate("Setting");
     }
+
     goOthers = () => {
         this.props.navigation.navigate("Other");
     }
+
     goHelp = () => {
         this.props.navigation.navigate("Help");
+    }
+
+    editProfile = () => {
+        const is_social = store.getState().auth.login.user.is_social;
+        if (is_social == -1) {
+            global.showGuestMessage();
+        }
+        else {
+            this.props.navigation.navigate("ProfileEdit");
+        }
+    }
+
+    logOut = async () => {
+        await SetPrefrence(global.PREF_REMEMBER_ME, 0);
+        await SetPrefrence('user', null);
+        this.props.navigation.navigate('Welcome');
     }
 
     render = () => {
         const navigation = this.props.navigation;
         const { user, showLoader } = this.state;
+        const is_social = store.getState().auth.login.user.is_social;
 
         if (showLoader)
             return (<Loader />);
@@ -59,7 +79,7 @@ class Profile extends Component {
             <View style={{ flex: 1, paddingHorizontal: 10, backgroundColor: BaseColor.whiteColor }}>
                 <Header navigation={navigation} mainHeader={true} />
                 <Text style={{ color: BaseColor.primaryColor, fontSize: 20, fontWeight: "bold", paddingLeft: 10 }}>Profile</Text>
-                <TouchableOpacity onPress={() => navigation.navigate("ProfileEdit")} style={{ flexDirection: "row", width: "100%", marginBottom: 15, justifyContent: "center", marginTop: 10 }}>
+                <TouchableOpacity onPress={this.editProfile} style={{ flexDirection: "row", width: "100%", marginBottom: 15, justifyContent: "center", marginTop: 10 }}>
                     {user?.avatar ?
                         <Image
                             source={{ uri: Api.SERVER_HOST + user?.avatar }}
@@ -79,8 +99,12 @@ class Profile extends Component {
                     </View>
                 </TouchableOpacity>
 
-                <LinkItem title={"Setting"} subtitle={"Privacy & Logout"} icon_left={"cog"} icon_right={"angle-right"} action={this.goSetting} />
-                <LinkItem title={"Help & Support"} subtitle={"Help center and legal terms"} icon_left={"cog"} icon_right={"angle-right"} action={this.goHelp} />
+                {is_social == -1 ?
+                    <LinkItem title={"Logout"} subtitle={""} icon_left={"sign-out-alt"} icon_right={"angle-right"} action={this.logOut} />
+                    :
+                    <LinkItem title={"Setting"} subtitle={"Privacy & Logout"} icon_left={"cog"} icon_right={"angle-right"} action={this.goSetting} />
+                }
+                <LinkItem title={"Help & Support"} subtitle={"Help center and legal terms"} icon_left={"info"} icon_right={"angle-right"} action={this.goHelp} />
             </View>
         )
     }
