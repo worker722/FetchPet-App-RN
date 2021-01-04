@@ -82,8 +82,7 @@ class Notification extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        api: bindActionCreators(Api, dispatch),
-        setStore: (type, data) => dispatch({ type, data })
+        api: bindActionCreators(Api, dispatch)
     };
 };
 export default connect(null, mapDispatchToProps)(Notification);
