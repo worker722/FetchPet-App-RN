@@ -10,6 +10,7 @@ import Swiper from "react-native-swiper";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { BaseColor } from "@config";
 import * as Api from '@api';
+import { BallIndicator } from 'react-native-indicators';
 
 export default class ImageSlider extends Component {
     constructor(props) {
@@ -43,12 +44,6 @@ export default class ImageSlider extends Component {
             <View
                 style={{ backgroundColor: BaseColor.blackColor, flex: 1 }}
             >
-                <View style={{ width: "100%", flexDirection: "row", paddingLeft: 10, height: 70, position: "absolute", top: 0, justifyContent: "center", alignItems: "center" }}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()} >
-                        <Icon name={"arrow-left"} color={BaseColor.whiteColor} size={25}></Icon>
-                    </TouchableOpacity>
-                    <View style={{ flex: 1 }}></View>
-                </View>
                 <View style={{ flex: 1, paddingTop: 70 }}>
                     <Swiper
                         ref={ref => {
@@ -69,7 +64,7 @@ export default class ImageSlider extends Component {
                                     resizeMode={'contain'}
                                     source={{ uri: Api.SERVER_HOST + item }}
                                     placeholderStyle={{ backgroundColor: "transparent" }}
-                                    PlaceholderContent={<ActivityIndicator color={BaseColor.whiteColor} size={"large"} />}
+                                    PlaceholderContent={<BallIndicator color={BaseColor.whiteColor} size={35} />}
                                 />
                             );
                         })}
@@ -109,6 +104,12 @@ export default class ImageSlider extends Component {
                             </TouchableOpacity>
                         )}
                     />
+                </View>
+                <View style={{ width: "100%", flexDirection: "row", paddingLeft: 10, height: 70, position: "absolute", top: 0, justifyContent: "center", alignItems: "center" }}>
+                    <TouchableOpacity onPress={() => this.props.navigation.goBack()} >
+                        <Icon name={"arrow-left"} color={BaseColor.whiteColor} size={25}></Icon>
+                    </TouchableOpacity>
+                    <View style={{ flex: 1 }}></View>
                 </View>
             </View>
         );

@@ -149,7 +149,7 @@ class Login extends Component {
 
             const name = await GetPrefrence(global.PREF_APPLE_NAME);
             const email = await GetPrefrence(global.PREF_APPLE_EMAIL);
-            if (name != '' && email != '') {
+            if (name && email) {
                 params = { name: name, email: email, password: "@fetch@", is_social: 3 };
                 is_apple_exist = true;
             }
@@ -323,7 +323,7 @@ class Login extends Component {
                                 </TouchableOpacity>
                                 :
                                 <>
-                                    {is_show_apple_button && appleAuth.isSupported && appleAuth.isSignUpButtonSupported &&
+                                    {appleAuth.isSupported && appleAuth.isSignUpButtonSupported &&
                                         <AppleButton
                                             buttonStyle={AppleButton.Style.BLACK}
                                             buttonType={AppleButton.Type.SIGN_IN}

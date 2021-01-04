@@ -17,6 +17,7 @@ import Swiper from 'react-native-swiper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native-elements';
 import { Rating } from 'react-native-ratings';
+import { BallIndicator } from 'react-native-indicators';
 
 import MapView, { Marker } from 'react-native-maps';
 
@@ -145,7 +146,7 @@ class AdDetail extends Component {
                                 <View key={key} style={{ flex: 1 }}>
                                     <Image source={{ uri: Api.SERVER_HOST + item }}
                                         style={{ width: "100%", height: slider_height }}
-                                        PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} size={"large"} />}
+                                        PlaceholderContent={<BallIndicator color={BaseColor.primaryColor} size={30} />}
                                         placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                                     />
                                 </View>
