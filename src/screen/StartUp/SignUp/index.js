@@ -201,6 +201,7 @@ class SignUp extends Component {
                 this.props.navigation.navigate("Home");
             }
         } catch (error) {
+            global.showToastMessage(error);
             this.setState({ showLoading: false });
         }
     }
@@ -352,7 +353,7 @@ class SignUp extends Component {
                                 </TouchableOpacity>
                                 :
                                 <>
-                                    {appleAuth.isSupported && appleAuth.isSignUpButtonSupported &&
+                                    {is_show_apple_button && appleAuth.isSupported && appleAuth.isSignUpButtonSupported &&
                                         <AppleButton
                                             buttonStyle={AppleButton.Style.BLACK}
                                             buttonType={AppleButton.Type.SIGN_UP}
