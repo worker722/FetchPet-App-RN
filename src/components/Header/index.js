@@ -8,6 +8,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Images, BaseColor } from '@config';
 import * as Animatable from 'react-native-animatable';
+import { store } from '@store';
 
 import { connect } from "react-redux";
 
@@ -21,6 +22,8 @@ class Header extends Component {
 
         const { unread_message } = this.props;
 
+        const is_social = store.getState().auth.login.user.is_social;
+
         return (
             <View style={{ width: "100%", height: 70, paddingHorizontal: 10, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                 {mainHeader &&
@@ -29,14 +32,16 @@ class Header extends Component {
                             <Image source={Images.logo} style={{ width: 100, height: 35 }} resizeMode={"stretch"}></Image>
                         </TouchableOpacity>
                         <View style={{ flex: 1 }}></View>
-                        <TouchableOpacity style={{ position: "absolute", right: 15 }} onPress={() => navigation.navigate("Notification")}>
-                            <Icon solid name="bell" size={25} color={BaseColor.primaryColor}></Icon>
-                            {unread_message > 0 &&
-                                <Animatable.View animation={"bounceIn"} iterationCount={1} duration={500} direction="normal" style={{ position: "absolute", right: -10, top: -10, width: 23, height: 23, backgroundColor: "red", justifyContent: "center", alignItems: "center", borderRadius: 100, padding: 2 }}>
-                                    <Text style={{ color: BaseColor.whiteColor, fontSize: 12 }}>{unread_message}</Text>
-                                </Animatable.View>
-                            }
-                        </TouchableOpacity>
+                        {is_social != -1 &&
+                            <TouchableOpacity style={{ position: "absolute", right: 15 }} onPress={() => navigation.navigate("Notification")}>
+                                <Icon solid name="bell" size={25} color={BaseColor.primaryColor}></Icon>
+                                {unread_message > 0 &&
+                                    <Animatable.View animation={"bounceIn"} iterationCount={1} duration={500} direction="normal" style={{ position: "absolute", right: -10, top: -10, width: 23, height: 23, backgroundColor: "red", justifyContent: "center", alignItems: "center", borderRadius: 100, padding: 2 }}>
+                                        <Text style={{ color: BaseColor.whiteColor, fontSize: 12 }}>{unread_message}</Text>
+                                    </Animatable.View>
+                                }
+                            </TouchableOpacity>
+                        }
                     </>
                 }
                 <TouchableOpacity onPress={() => callback_left()}>
