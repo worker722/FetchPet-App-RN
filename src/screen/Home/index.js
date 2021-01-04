@@ -312,7 +312,7 @@ class Home extends Component {
                         <TextInput
                             onChangeText={(text) => this.setState({ searchText: text })}
                             onSubmitEditing={this.searchAds}
-                            returnKeyType="next"
+                            returnKeyType="search"
                             style={{ flex: 1, paddingLeft: 45, paddingRight: 20, color: BaseColor.whiteColor }}
                             placeholder={"Search"} placeholderTextColor={BaseColor.whiteColor}></TextInput>
                         <TouchableOpacity style={{ position: "absolute", padding: 10 }} onPress={this.searchAds}>
