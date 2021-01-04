@@ -31,6 +31,7 @@ class Favourite extends Component {
     }
 
     UNSAFE_componentWillMount = () => {
+        this.setState({ ads: [] });
         const is_social = store.getState().auth.login.user.is_social;
         if (is_social == -1) {
             global.showGuestMessage();
