@@ -53,10 +53,7 @@ class Profile extends Component {
 
     editProfile = () => {
         const is_social = store.getState().auth.login.user.is_social;
-        if (is_social == -1) {
-            global.showGuestMessage();
-        }
-        else {
+        if (is_social != -1) {
             this.props.navigation.navigate("ProfileEdit");
         }
     }
