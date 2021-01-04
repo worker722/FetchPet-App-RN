@@ -220,8 +220,7 @@ class Home extends Component {
     }
 
     sortAdsByDistance = async (ads) => {
-        if (!ads)
-            return [];
+        if (!ads) return [];
 
         const adsWithDistance = await Promise.all(ads.map(async item => await this.getAdsDistance(item)));
         adsWithDistance.sort((a, b) => {
