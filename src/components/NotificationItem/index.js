@@ -86,7 +86,8 @@ class NotificationItem extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        api: bindActionCreators(Api, dispatch)
+        api: bindActionCreators(Api, dispatch),
+        setStore: (type, data) => dispatch({ type, data })
     }
 }
 
