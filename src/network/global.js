@@ -32,6 +32,10 @@ export const showToastMessage = (message, duration) => {
     Toast.show(message, duration ? duration : Toast.LONG);
 }
 
+export const showGuestMessage = () => {
+    showToastMessage("Please login to use this feature.");
+}
+
 export const getAppShareLink = () => {
     return Platform.select(({
         android: `https://play.google.com/store/apps/details?id=${ANDROID_PACKAGE}`,
@@ -41,7 +45,7 @@ export const getAppShareLink = () => {
 
 export const getAppVersion = () => {
     return Platform.select(({
-        android: "1.0.3",
-        ios: "2.0.1"
+        android: "1.0.4",
+        ios: "2.0.2"
     }));
 }

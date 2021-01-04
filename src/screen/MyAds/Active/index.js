@@ -11,6 +11,8 @@ import { BaseColor } from '@config';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Api from '@api';
+import * as global from '@api/global';
+import { store } from "@store";
 
 class Active extends Component {
     constructor(props) {
@@ -24,8 +26,15 @@ class Active extends Component {
     }
 
     UNSAFE_componentWillMount = () => {
-        this.setState({ showLoader: true });
-        this.start();
+        this.setState({ ads: [] });
+        const is_social = store.getState().auth.login.user.is_social;
+        if (is_social == -1) {
+            global.showGuestMessage();
+        }
+        else {
+            this.setState({ showLoader: true });
+            this.start();
+        }
     }
 
     start = async () => {
@@ -37,8 +46,14 @@ class Active extends Component {
     }
 
     _onRefresh = () => {
-        this.setState({ showRefresh: true, ads: null });
-        this.start();
+        const is_social = store.getState().auth.login.user.is_social;
+        if (is_social == -1) {
+            global.showGuestMessage();
+        }
+        else {
+            this.setState({ showRefresh: true, ads: null });
+            this.start();
+        }
     }
 
     render = () => {

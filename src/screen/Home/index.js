@@ -26,6 +26,7 @@ import { Loader, Header, HomeAds } from '@components';
 
 import { BaseColor } from '@config';
 import * as Utils from '@utils';
+import { event } from 'react-native-reanimated';
 
 const filterItem_width = (Utils.SCREEN.WIDTH - 20) / 4;
 
@@ -149,7 +150,7 @@ class Home extends Component {
                     firebase.messaging().requestPermission()
                         .then(() => {
                             if (Platform.OS == "ios")
-                                firebase.messaging().registerForRemoteNotifications();
+                                firebase.messaging().ios.registerForRemoteNotifications();
                         })
                         .catch(error => {
                         });
@@ -220,8 +221,7 @@ class Home extends Component {
     }
 
     sortAdsByDistance = async (ads) => {
-        if (!ads)
-            return [];
+        if (!ads) return [];
 
         const adsWithDistance = await Promise.all(ads.map(async item => await this.getAdsDistance(item)));
         adsWithDistance.sort((a, b) => {
@@ -311,9 +311,11 @@ class Home extends Component {
                     <View style={{ borderRadius: 5, height: 40, flex: 1, backgroundColor: BaseColor.primaryColor }}>
                         <TextInput
                             onChangeText={(text) => this.setState({ searchText: text })}
+                            onSubmitEditing={this.searchAds}
+                            returnKeyType="search"
                             style={{ flex: 1, paddingLeft: 45, paddingRight: 20, color: BaseColor.whiteColor }}
                             placeholder={"Search"} placeholderTextColor={BaseColor.whiteColor}></TextInput>
-                        <TouchableOpacity style={{ position: "absolute", padding: 10 }} onPress={() => this.searchAds()}>
+                        <TouchableOpacity style={{ position: "absolute", padding: 10 }} onPress={this.searchAds}>
                             <Icon name={"search"} size={20} color={BaseColor.whiteColor}></Icon>
                         </TouchableOpacity>
                     </View>

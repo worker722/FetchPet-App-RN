@@ -116,6 +116,7 @@ class AdDetail extends Component {
 
     render = () => {
         const user_id = store.getState().auth.login.user.id;
+        const is_social = store.getState().auth.login.user.is_social;
         const { ads, ad_images, showLoader, showRefresh, adsLocation } = this.state;
         const navigation = this.props.navigation;
 
@@ -166,7 +167,7 @@ class AdDetail extends Component {
                     <View style={{ flex: 1, padding: 20 }}>
                         <View style={{ flexDirection: "row" }}>
                             <Text style={{ fontSize: 20, color: BaseColor.primaryColor, fontWeight: "bold" }}>Detail</Text>
-                            {user_id != ads?.user?.id &&
+                            {user_id != ads?.user?.id && is_social != -1 &&
                                 <View style={{ flex: 1, alignItems: "flex-end", justifyContent: "flex-end" }}>
                                     <TouchableOpacity onPress={() => this.favouriteAds()} >
                                         <Icon name={"heart"} size={20} color={BaseColor.primaryColor} solid={ads?.is_fav}></Icon>
@@ -244,41 +245,45 @@ class AdDetail extends Component {
                         </View>
                     </View>
                 </ScrollView>
-                {user_id != ads?.user?.id ?
-                    <View style={{ padding: 10, flexDirection: "row", height: 60, justifyContent: "center", alignItems: "center" }}>
-                        {is_showPhonenumber && ads.user.phonenumber ?
-                            <>
-                                <TouchableOpacity
-                                    onPress={this.onChat}
-                                    style={{ borderWidth: 1, borderColor: BaseColor.greyColor, marginRight: "10%", borderRadius: 5, height: 40, width: "45%", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
-                                    <Icon name={"comment"} color={BaseColor.primaryColor} size={20}></Icon>
-                                    <Text style={{ color: BaseColor.primaryColor, fontSize: 18, marginLeft: 10 }}>Chat</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    onPress={this.onCall}
-                                    style={{ backgroundColor: BaseColor.primaryColor, borderRadius: 5, height: 40, width: "45%", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
-                                    <Icon name={"phone"} color={BaseColor.whiteColor} size={20}></Icon>
-                                    <Text style={{ color: BaseColor.whiteColor, fontSize: 18, marginLeft: 10 }}>Call</Text>
-                                </TouchableOpacity>
-                            </>
+                {is_social != -1 &&
+                    <>
+                        {user_id != ads?.user?.id ?
+                            <View style={{ padding: 10, flexDirection: "row", height: 60, justifyContent: "center", alignItems: "center" }}>
+                                {is_showPhonenumber && ads.user.phonenumber ?
+                                    <>
+                                        <TouchableOpacity
+                                            onPress={this.onChat}
+                                            style={{ borderWidth: 1, borderColor: BaseColor.greyColor, marginRight: "10%", borderRadius: 5, height: 40, width: "45%", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
+                                            <Icon name={"comment"} color={BaseColor.primaryColor} size={20}></Icon>
+                                            <Text style={{ color: BaseColor.primaryColor, fontSize: 18, marginLeft: 10 }}>Chat</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={this.onCall}
+                                            style={{ backgroundColor: BaseColor.primaryColor, borderRadius: 5, height: 40, width: "45%", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
+                                            <Icon name={"phone"} color={BaseColor.whiteColor} size={20}></Icon>
+                                            <Text style={{ color: BaseColor.whiteColor, fontSize: 18, marginLeft: 10 }}>Call</Text>
+                                        </TouchableOpacity>
+                                    </>
+                                    :
+                                    <TouchableOpacity
+                                        onPress={this.onChat}
+                                        style={{ borderWidth: 1, backgroundColor: BaseColor.primaryColor, borderColor: BaseColor.greyColor, borderRadius: 5, height: 40, flex: 1, justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
+                                        <Icon name={"comment-dots"} color={BaseColor.whiteColor} size={20}></Icon>
+                                        <Text style={{ color: BaseColor.whiteColor, fontSize: 18, marginLeft: 10 }}>Chat</Text>
+                                    </TouchableOpacity>
+                                }
+                            </View>
                             :
-                            <TouchableOpacity
-                                onPress={this.onChat}
-                                style={{ borderWidth: 1, backgroundColor: BaseColor.primaryColor, borderColor: BaseColor.greyColor, borderRadius: 5, height: 40, flex: 1, justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
-                                <Icon name={"comment-dots"} color={BaseColor.whiteColor} size={20}></Icon>
-                                <Text style={{ color: BaseColor.whiteColor, fontSize: 18, marginLeft: 10 }}>Chat</Text>
-                            </TouchableOpacity>
+                            <View style={{ padding: 10, flexDirection: "row", height: 60 }}>
+                                <TouchableOpacity
+                                    onPress={this.onEdit}
+                                    style={{ borderWidth: 1, borderColor: BaseColor.greyColor, backgroundColor: BaseColor.primaryColor, borderRadius: 5, height: 45, width: "100%", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
+                                    <Icon name={"edit"} color={BaseColor.whiteColor} size={20}></Icon>
+                                    <Text style={{ color: BaseColor.whiteColor, fontSize: 18, marginLeft: 10 }}>Edit Ads</Text>
+                                </TouchableOpacity>
+                            </View>
                         }
-                    </View>
-                    :
-                    <View style={{ padding: 10, flexDirection: "row", height: 60 }}>
-                        <TouchableOpacity
-                            onPress={this.onEdit}
-                            style={{ borderWidth: 1, borderColor: BaseColor.greyColor, backgroundColor: BaseColor.primaryColor, borderRadius: 5, height: 45, width: "100%", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
-                            <Icon name={"edit"} color={BaseColor.whiteColor} size={20}></Icon>
-                            <Text style={{ color: BaseColor.whiteColor, fontSize: 18, marginLeft: 10 }}>Edit Ads</Text>
-                        </TouchableOpacity>
-                    </View>
+                    </>
                 }
             </View>
         )

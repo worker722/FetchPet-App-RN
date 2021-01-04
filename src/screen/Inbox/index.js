@@ -12,6 +12,8 @@ import { Header, Loader, InboxItem } from '@components';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Api from '@api';
+import * as global from '@api/global';
+import { store } from "@store";
 
 class Inbox extends Component {
     constructor(props) {
@@ -27,9 +29,16 @@ class Inbox extends Component {
         });
     }
 
-    UNSAFE_componentWillMount = async () => {
-        this.setState({ showLoader: true });
-        this.start();
+    UNSAFE_componentWillMount = () => {
+        this.setState({ chatInbox: [] });
+        const is_social = store.getState().auth.login.user.is_social;
+        if (is_social == -1) {
+            global.showGuestMessage();
+        }
+        else {
+            this.setState({ showLoader: true });
+            this.start();
+        }
     }
 
     start = async () => {
@@ -60,8 +69,14 @@ class Inbox extends Component {
     }
 
     _onRefresh = () => {
-        this.setState({ showRefresh: true });
-        this.start();
+        const is_social = store.getState().auth.login.user.is_social;
+        if (is_social == -1) {
+            global.showGuestMessage();
+        }
+        else {
+            this.setState({ showRefresh: true });
+            this.start();
+        }
     }
 
     render = () => {
