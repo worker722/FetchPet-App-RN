@@ -14,6 +14,10 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import geolocation from '@react-native-community/geolocation';
 
+import { GoogleSignin } from '@react-native-community/google-signin';
+import appleAuth from '@invertase/react-native-apple-authentication';
+import { LoginManager } from 'react-native-fbsdk';
+
 import { store, SetPrefrence } from "@store";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -66,11 +70,38 @@ class Home extends Component {
         }
     }
 
+    logout = async () => {
+        await SetPrefrence(global.PREF_REMEMBER_ME, 0);
+        await SetPrefrence('user', null);
+        const is_social = store.getState().auth.login.user.is_social;
+        if (is_social == 1) {
+            await GoogleSignin.signOut();
+        }
+        else if (is_social == 2) {
+            await LoginManager.logOut();
+        }
+        else if (is_social == 3) {
+            await appleAuth.performRequest({
+                requestedOperation: appleAuth.Operation.LOGOUT,
+            });
+        }
+        this.props.navigation.navigate('Welcome');
+    }
+
     _onMessageReceived = (notification) => {
-        const { title, body } = notification;
-        this.showNotification(title, body);
-        if (!this.props.is_in_chat)
-            this.props.setStore(global.U_MESSAGE_INCREMENT, 1);
+        const { title, body, type } = notification;
+        if (type == global.CHAT_MESSAGE_NOTIFICATION) {
+            this.showNotification(title, body);
+            if (!this.props.is_in_chat)
+                this.props.setStore(global.U_MESSAGE_INCREMENT, 1);
+        }
+        else if (type == global.ACCOUNT_STATUS_NOTIFICATION) {
+            const user = JSON.parse(notification.data.data);
+            if (user.active == 0) {
+                global.showToastMessage("Your account has been deactivated by administrator.");
+                this.logout();
+            }
+        }
     }
 
     showNotification(title, body) {
