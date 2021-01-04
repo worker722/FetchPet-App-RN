@@ -198,6 +198,7 @@ class Home extends Component {
 
         const response = await this.props.api.get('home');
         if (response?.success) {
+            this.props.setStore(global.U_MESSAGE_SET, 0);
             if (response.data.unread_message > 0)
                 this.props.setStore(global.U_MESSAGE_SET, response.data.unread_message);
 
