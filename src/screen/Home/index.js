@@ -88,16 +88,20 @@ class Home extends Component {
     }
 
     _onMessageReceived = (notification) => {
-        const { title, body, type, data } = notification;
-        this.showNotification(title, body);
-        if (type == global.CHAT_MESSAGE_NOTIFICATION) {
-            if (!this.props.is_in_chat)
-                this.props.setStore(global.U_MESSAGE_INCREMENT, 1);
-        }
-        else if (type == global.ACCOUNT_STATUS_NOTIFICATION) {
-            const user = JSON.parse(data.data);
-            if (user?.active == 0)
-                this.logout();
+        try {
+            const { title, body, data } = notification;
+            this.showNotification(title, body);
+            const notificationData = JSON.parse(data.data);
+            console.log(notificationData);
+            if (notificationData.notification_type == global.CHAT_MESSAGE_NOTIFICATION) {
+                if (!this.props.is_in_chat)
+                    this.props.setStore(global.U_MESSAGE_INCREMENT, 1);
+            }
+            else if (notificationData.notification_type == global.ACCOUNT_STATUS_NOTIFICATION) {
+                if (notificationData?.active == 0)
+                    this.logout();
+            }
+        } catch (error) {
         }
     }
 
