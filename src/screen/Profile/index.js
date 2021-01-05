@@ -60,7 +60,7 @@ class Profile extends Component {
 
     logOut = async () => {
         await SetPrefrence(global.PREF_REMEMBER_ME, 0);
-        await SetPrefrence('user', null);
+        this.props.setStore(global.LOGIN, null);
         this.props.navigation.navigate('Welcome');
     }
 
@@ -109,7 +109,8 @@ class Profile extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        api: bindActionCreators(Api, dispatch)
+        api: bindActionCreators(Api, dispatch),
+        setStore: (type, data) => dispatch({ type, data })
     };
 };
 export default connect(null, mapDispatchToProps)(Profile);
