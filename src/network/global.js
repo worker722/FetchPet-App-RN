@@ -50,6 +50,6 @@ export const getAppShareLink = () => {
 export const getAppVersion = () => {
     return Platform.select(({
         android: "1.0.4",
-        ios: "2.0.2"
+        ios: "2.0.3"
     }));
 }
