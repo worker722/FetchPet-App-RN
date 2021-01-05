@@ -9,7 +9,7 @@ import geolocation from '@react-native-community/geolocation';
 
 import { BaseColor, Images } from '@config';
 import * as Utils from '@utils';
-import { store, GetPrefrence } from '@store';
+import { GetPrefrence } from '@store';
 import * as global from "@api/global";
 
 import { connect } from "react-redux";
@@ -23,19 +23,25 @@ class Splash extends Component {
 
   componentWillMount = async () => {
     const navigation = this.props.navigation;
-
-    const response = await this.props.api.post("accountStatus");
-    if (response?.success && response?.data?.status == 1) {
-      setTimeout(async () => {
-        const rememberMe = await GetPrefrence(global.PREF_REMEMBER_ME);
-        if (rememberMe == '1' && store.getState().auth.login?.user?.token)
-          navigation.navigate("Home");
-        else
-          navigation.navigate("Welcome");
-      }, 1000);
+    if (Api._TOKEN()) {
+      const response = await this.props.api.post("accountStatus");
+      if (response?.success) {
+        setTimeout(async () => {
+          const rememberMe = await GetPrefrence(global.PREF_REMEMBER_ME);
+          if (rememberMe == 1)
+            navigation.navigate("Home");
+          else
+            navigation.navigate("Welcome");
+        }, 1000);
+      }
+      else {
+        navigation.navigate("Welcome");
+      }
     }
     else {
-      navigation.navigate("Welcome");
+      setTimeout(() => {
+        navigation.navigate("Welcome");
+      }, 2000);
     }
   }
 
