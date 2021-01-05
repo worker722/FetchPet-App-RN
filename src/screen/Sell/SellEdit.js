@@ -225,7 +225,7 @@ class SellEdit extends Component {
                         const params = { ad_id: ads.id };
                         const response = await this.props.api.post('ads/delete', params);
                         if (response?.success) {
-                            this.props.navigation.navigate("MyAds");
+                            this.props.navigation.navigate("Home");
                         }
                         this.setState({ showLoader: false });
                     }

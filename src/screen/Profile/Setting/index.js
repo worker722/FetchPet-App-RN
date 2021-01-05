@@ -57,7 +57,6 @@ class Setting extends Component {
 
     logOut = async () => {
         await SetPrefrence(global.PREF_REMEMBER_ME, 0);
-        await SetPrefrence('user', null);
         const is_social = store.getState().auth.login.user.is_social;
         if (is_social == 1) {
             await GoogleSignin.signOut();
@@ -70,12 +69,12 @@ class Setting extends Component {
                 requestedOperation: appleAuth.Operation.LOGOUT,
             });
         }
+        this.props.setStore(global.LOGIN, null);
         this.props.navigation.navigate('Welcome');
     }
 
     logOutAll = async () => {
         await SetPrefrence(global.PREF_REMEMBER_ME, 0);
-        await SetPrefrence('user', null);
         const is_social = store.getState().auth.login.user.is_social;
         if (is_social == 1) {
             await GoogleSignin.signOut();
@@ -88,6 +87,7 @@ class Setting extends Component {
                 requestedOperation: appleAuth.Operation.LOGOUT,
             });
         }
+        this.props.setStore(global.LOGIN, null);
         this.props.navigation.navigate('Welcome');
     }
 
@@ -114,7 +114,8 @@ class Setting extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        api: bindActionCreators(Api, dispatch)
+        api: bindActionCreators(Api, dispatch),
+        setStore: (type, data) => dispatch({ type, data })
     };
 };
 export default connect(null, mapDispatchToProps)(Setting);
