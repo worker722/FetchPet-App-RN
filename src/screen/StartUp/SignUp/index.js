@@ -7,7 +7,8 @@ import {
     TextInput,
     ScrollView,
     Platform,
-    Switch
+    Switch,
+    Linking
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { CheckBox } from 'react-native-elements';
@@ -264,6 +265,13 @@ class SignUp extends Component {
         }
     }
 
+    openTerms = () => {
+        try {
+            Linking.openURL(`${Api.SERVER_HOST}/terms-conditions-service`);
+        } catch (error) {
+        }
+    }
+
     render = () => {
         const { passwordSec, termAgree, con_passwordSec, showLoading, username, email, password, con_password, is_show_apple_button } = this.state;
 
@@ -331,7 +339,9 @@ class SignUp extends Component {
                                         thumbColor={Platform.OS == "android" ? BaseColor.primaryColor : BaseColor.whiteColor}
                                         trackColor={{ true: BaseColor.primaryColor, false: BaseColor.dddColor }}
                                     />}
-                                <Text style={{ marginLeft: 10, textAlign: "left", flex: 1 }}>I agree with the terms & conditions</Text>
+                                <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", height: "100%", paddingLeft: 10 }} onPress={this.openTerms}>
+                                    <Text>I agree with the terms & conditions</Text>
+                                </TouchableOpacity>
                             </View>
                             <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 20 }} onPress={() => this.signUp()}>
                                 <View style={{ flex: 1, borderRadius: 7, backgroundColor: BaseColor.whiteColor, borderColor: BaseColor.dddColor, borderWidth: 1, justifyContent: "center", alignItems: "center" }}>
