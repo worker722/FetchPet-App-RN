@@ -75,17 +75,20 @@ class Chat extends Component {
     }
 
     _onMessageReceived = (notification) => {
-        const { data, type } = notification;
-        if (type == global.CHAT_MESSAGE_NOTIFICATION) {
-            const user_id = store.getState().auth.login.user.id;
-            const { room } = this.state;
-            const newMessage = JSON.parse(data.data);
-            if (newMessage.id_room == room.id && newMessage.id_user_snd != user_id && this.props.is_in_chat) {
-                let { chat } = this.state;
-                chat.push(newMessage);
-                this.setState({ chat });
-                this.props.api.post("chat/read", { id: room.id });
+        try {
+            const { data } = notification;
+            const notificationData = JSON.parse(data.data);
+            if (notificationData.notification_type == global.CHAT_MESSAGE_NOTIFICATION) {
+                const user_id = store.getState().auth.login.user.id;
+                const { room } = this.state;
+                if (notificationData.id_room == room.id && notificationData.id_user_snd != user_id && this.props.is_in_chat) {
+                    let { chat } = this.state;
+                    chat.push(notificationData);
+                    this.setState({ chat });
+                    this.props.api.post("chat/read", { id: room.id });
+                }
             }
+        } catch (error) {
         }
     }
 
