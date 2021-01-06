@@ -180,9 +180,9 @@ class Home extends Component {
                     });
                 } else {
                     firebase.messaging().requestPermission()
-                        .then(() => {
+                        .then(async () => {
                             if (Platform.OS == "ios")
-                                firebase.messaging().ios.registerForRemoteNotifications();
+                                await firebase.messaging().ios.registerForRemoteNotifications();
                         })
                         .catch(error => {
                         });
