@@ -21,7 +21,11 @@ class Splash extends Component {
     super(props);
   }
 
-  componentWillMount = async () => {
+  UNSAFE_componentWillMount = async () => {
+    await this.requestPermission();
+  }
+
+  componentDidMount = async () => {
     const navigation = this.props.navigation;
     if (Api._TOKEN()) {
       const response = await this.props.api.post("accountStatus");
@@ -43,10 +47,6 @@ class Splash extends Component {
         navigation.navigate("Welcome");
       }, 2000);
     }
-  }
-
-  componentDidMount = async () => {
-    await this.requestPermission();
   }
 
   requestPermission = async () => {
