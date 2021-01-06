@@ -53,11 +53,16 @@ class FilterResult extends Component {
     }
 
     getAdsDistance = async (item) => {
-        let currentLocation = this.props.navigation.state.params.map.region;
-        if (currentLocation.latitude == 0 && currentLocation.longitude == 0)
-            currentLocation = await Utils.getCurrentLocation();
-        item.distance = await Utils.getDistance(item.lat, item.long, currentLocation.latitude, currentLocation.longitude);
-        return item;
+        try {
+            let currentLocation = this.props.navigation.state.params.map.region;
+            if (currentLocation.latitude == 0 && currentLocation.longitude == 0)
+                currentLocation = await Utils.getCurrentLocation();
+            item.distance = await Utils.getDistance(item.lat, item.long, currentLocation.latitude, currentLocation.longitude);
+            return item;
+        } catch (error) {
+            item.distance = 0;
+            return item;
+        }
     }
 
     _onRefresh = () => {
