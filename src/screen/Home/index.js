@@ -266,9 +266,14 @@ class Home extends Component {
     }
 
     getAdsDistance = async (item) => {
-        const currentLocation = await Utils.getCurrentLocation();
-        item.distance = await Utils.getDistance(item.lat, item.long, currentLocation.latitude, currentLocation.longitude);
-        return item;
+        try {
+            const currentLocation = await Utils.getCurrentLocation();
+            item.distance = await Utils.getDistance(item.lat, item.long, currentLocation.latitude, currentLocation.longitude);
+            return item;
+        } catch (error) {
+            item.distance = 0;
+            return item;
+        }
     }
 
     filterSelected = async (id) => {
