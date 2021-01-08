@@ -89,6 +89,7 @@ class Chat extends Component {
                 }
             }
         } catch (error) {
+            console.log('chat notification received error', error);
         }
     }
 

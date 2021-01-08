@@ -84,6 +84,7 @@ class InboxItem extends Component {
                 }
             }
         } catch (error) {
+            console.log('inbox item notification received error', error);
         }
     }
 
