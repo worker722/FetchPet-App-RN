@@ -52,10 +52,6 @@ class ProfileEdit extends Component {
                 avatar = '';
             this.setState({ user: response.data.user, name: response.data.user.name, phonenumber: response.data.user.phonenumber, email: response.data.user.email, avatar: { path: avatar } });
         }
-
-        ImagePicker.clean().then(() => {
-        }).catch(e => {
-        });
     }
 
     goBack = () => {
