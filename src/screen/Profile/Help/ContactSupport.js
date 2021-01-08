@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 import { Images, BaseColor } from '@config';
 import { Header } from '@components';
+import * as global from "@api/global";
 
 export default class ContactSupport extends Component {
     constructor(props) {
@@ -25,7 +26,7 @@ export default class ContactSupport extends Component {
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 30 }}>
                     <Text>Contact Support : </Text>
-                    <Text>darryl@buybitcoins.site</Text>
+                    <Text>{global.APP_SUPPORT_EMAIL}</Text>
                 </View>
             </View>
         )

@@ -32,6 +32,8 @@ export const PREF_SHOW_APPLE_BUTTON = 'PREF_SHOW_APPLE_BUTTON';
 export const ANDROID_PACKAGE = 'com.darryl.fetch';
 export const APPLE_APP_ID = '1545467871';
 
+export const APP_SUPPORT_EMAIL = 'fetchpetmarket@gmail.com';
+
 export const showToastMessage = (message, duration) => {
     Toast.show(message, duration ? duration : Toast.LONG);
 }
