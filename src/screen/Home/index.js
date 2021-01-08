@@ -91,8 +91,8 @@ class Home extends Component {
         try {
             const { title, body, data } = notification;
             this.showNotification(title, body);
+
             const notificationData = JSON.parse(data.data);
-            console.log(notificationData);
             if (notificationData.notification_type == global.CHAT_MESSAGE_NOTIFICATION) {
                 if (!this.props.is_in_chat)
                     this.props.setStore(global.U_MESSAGE_INCREMENT, 1);
@@ -102,6 +102,7 @@ class Home extends Component {
                     this.logout();
             }
         } catch (error) {
+            console.log('home notification received error', error);
         }
     }
 
