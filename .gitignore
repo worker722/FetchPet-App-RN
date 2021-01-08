@@ -57,8 +57,6 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
-/android/app/src/main/assets/fonts/*.ttf
-/android/app/release/app-release.apk
-/android/app/release/output.json
-/android/app/release/*.aab
+/android/app/src/main/assets/fonts
+/android/app/release
 /package-lock.json
