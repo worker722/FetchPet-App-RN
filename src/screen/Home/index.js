@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import geolocation from '@react-native-community/geolocation';
+import { Image } from 'react-native-elements';
 
 import { GoogleSignin } from '@react-native-community/google-signin';
 import appleAuth from '@invertase/react-native-apple-authentication';
@@ -235,7 +236,7 @@ class Home extends Component {
             if (response.data.unread_message > 0)
                 this.props.setStore(global.U_MESSAGE_SET, response.data.unread_message);
 
-            let ads = await this.sortAdsByDistance(response.data.ads);
+            let pets = await this.sortAdsByDistance(response.data.ads);
             let topCategory = response.data.category;
 
             let is_show_apple_button = response.data.is_show_apple_button;
@@ -246,10 +247,7 @@ class Home extends Component {
             });
             topCategory.unshift({ id: -1, name: "All", is_selected: true });
 
-            this.setState({
-                pets: ads,
-                topCategory: topCategory
-            });
+            this.setState({ pets, topCategory });
         }
         this.setState({ showLoader: false, showRefresh: false });
     }
@@ -277,14 +275,14 @@ class Home extends Component {
         }
     }
 
-    filterSelected = async (id) => {
+    filterSelected = async (currentCategoryID) => {
         this.setState({ showContentLoader: true });
         let topCategory = this.state.topCategory;
         topCategory.forEach((item, key) => {
-            if (item.id == id) item.is_selected = true;
+            if (item.id == currentCategoryID) item.is_selected = true;
             else item.is_selected = false;
         });
-        this.setState({ topCategory: topCategory, currentCategoryID: id }, () => {
+        this.setState({ topCategory, currentCategoryID }, () => {
             this.setState({ showContentLoader: true });
             this.getFilterData();
         });
@@ -294,7 +292,7 @@ class Home extends Component {
         const { currentCategoryID, searchText } = this.state;
 
         this.setState({ pets: [] });
-        const param = { id_category: currentCategoryID, searchText: searchText };
+        const param = { id_category: currentCategoryID, searchText };
         const response = await this.props.api.post('home/filter', param);
         this.setState({ showContentLoader: false, showRefresh: false });
 
@@ -314,11 +312,14 @@ class Home extends Component {
 
     renderFilterItem = ({ item, index }) => {
         return (
-            <TouchableOpacity activeOpacity={1}
-                onPress={() => this.filterSelected(item.id)}
-                style={{ width: filterItem_width, justifyContent: "center", alignItems: "center", backgroundColor: item.is_selected ? BaseColor.primaryColor : BaseColor.whiteColor, height: 40, borderRadius: 5, marginBottom: 5 }}>
-                <Text style={{ color: !item.is_selected ? BaseColor.primaryColor : BaseColor.whiteColor }}>{item.name}</Text>
-            </TouchableOpacity>
+            <View style={{ alignItems: "center", justifyContent: "center", width: 60, marginRight: 25 }}>
+                <TouchableOpacity activeOpacity={1}
+                    onPress={() => this.filterSelected(item.id)}
+                    style={{ width: 60, height: 60, borderWidth: 7, justifyContent: "center", alignItems: "center", borderColor: item.is_selected ? BaseColor.primaryColor : BaseColor.whiteColor, borderRadius: 100, marginBottom: 5 }}>
+                    <Image source={{ uri: Api.SERVER_HOST + item.icon }} resizeMode={"cover"} style={{ width: 45, height: 45, borderRadius: 100 }}></Image>
+                </TouchableOpacity>
+                <Text style={{ color: item.is_selected ? BaseColor.primaryColor : BaseColor.greyColor }} numberOfLines={1}>{item.name}</Text>
+            </View>
         )
     }
 
@@ -365,7 +366,7 @@ class Home extends Component {
                 <View style={{ flexDirection: "row", marginHorizontal: 10, marginTop: 10, justifyContent: "center", alignItems: "center" }}>
                     <Text style={{ color: BaseColor.primaryColor, fontSize: 20, flex: 1, fontWeight: "600" }}>Category of Pets</Text>
                 </View>
-                <View style={{ width: "100%", height: 50, paddingHorizontal: 10, flexDirection: "row", marginTop: 10 }}>
+                <View style={{ width: "100%", paddingHorizontal: 10, flexDirection: "row", marginTop: 10 }}>
                     <FlatList
                         keyExtractor={(item, index) => index.toString()}
                         data={topCategory}

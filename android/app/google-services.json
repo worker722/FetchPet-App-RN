@@ -15,19 +15,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "1007858365668-516apeqv45qildki6d70fb4j5sd5detr.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.darryl.fetch",
-            "certificate_hash": "14bcbbbf95e751aa5f84da66142a3b8004c3fc18"
-          }
-        },
-        {
-          "client_id": "1007858365668-64oar8rql43ve7nre6jop5hcb0m6rkr9.apps.googleusercontent.com",
+          "client_id": "1007858365668-99f7p7cmvfm2b6b24e46c1ju53tf5eeb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.darryl.fetch",
             "certificate_hash": "7f5172389c2d3bd4c054ddfd486e6c6ccecb95fd"
+          }
+        },
+        {
+          "client_id": "1007858365668-qtkaedpqeqlurshufiallgg7hl6tvjqk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.darryl.fetch",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
           }
         },
         {
@@ -51,59 +51,8 @@
               "client_id": "1007858365668-0asgvlu7lqort57n5ip25420acj5ni92.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "fetch.market"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1007858365668:android:ff224b3162f9b4b027a8f1",
-        "android_client_info": {
-          "package_name": "fetch.market"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1007858365668-07p862b2ka8uros25o3no2iv0ksnpoq5.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "fetch.market",
-            "certificate_hash": "14bcbbbf95e751aa5f84da66142a3b8004c3fc18"
-          }
-        },
-        {
-          "client_id": "1007858365668-1unndctp5ai54q38bd28rauob502tnt4.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "fetch.market",
-            "certificate_hash": "7f5172389c2d3bd4c054ddfd486e6c6ccecb95fd"
-          }
-        },
-        {
-          "client_id": "1007858365668-c8e7pmt0htjmd33ua386rmib3fhe9qt4.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAmn7GDLY18bKttFN71VLWkBtczBVBMjRM"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1007858365668-c8e7pmt0htjmd33ua386rmib3fhe9qt4.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "1007858365668-0asgvlu7lqort57n5ip25420acj5ni92.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "fetch.market"
+                "bundle_id": "fetch.market",
+                "app_store_id": "1545467871"
               }
             }
           ]
