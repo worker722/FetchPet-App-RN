@@ -54,15 +54,18 @@ class AdDetail extends Component {
     start = async () => {
         const param = { ad_id: this.props.navigation.state.params.ad_id, view: this.state.view };
         const response = await this.props.api.post('ads', param);
-        await Utils.getAddressByCoords(response.data.ads.lat, response.data.ads.long, false, (adsLocation) => {
-            this.setState({ adsLocation });
-        });
-        const ad_images = [];
-        response.data.ads.meta.forEach((item, key) => {
-            if (item.meta_key == '_ad_image')
-                ad_images.push(item.meta_value);
-        });
-        this.setState({ showLoader: false, showRefresh: false, view: false, ads: response.data.ads, ad_images });
+        if (response?.success) {
+            await Utils.getAddressByCoords(response.data.ads.lat, response.data.ads.long, false, (adsLocation) => {
+                this.setState({ adsLocation });
+            });
+            const ad_images = [];
+            response.data.ads.meta.forEach((item, key) => {
+                if (item.meta_key == '_ad_image')
+                    ad_images.push(item.meta_value);
+            });
+            this.setState({ ads: response.data.ads, ad_images });
+        }
+        this.setState({ showLoader: false, showRefresh: false, view: false });
     }
 
     favouriteAds = async () => {

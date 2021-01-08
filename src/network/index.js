@@ -39,6 +39,7 @@ export const get = (route) => async dispatch => {
         })
         .catch(err => {
             console.log('method-get-error', err, route);
+            return null;
         });
 }
 
@@ -61,6 +62,7 @@ export const post = (route, params, is_store) => async dispatch => {
         })
         .catch(err => {
             console.log('method-post-error', err, route, params);
+            return null;
         });
 }
 
@@ -97,6 +99,7 @@ export const editProfile = (route, image, params) => async dispatch => {
         })
         .catch(err => {
             console.log('profile-upload-error', err);
+            return null;
         });
 }
 
@@ -132,6 +135,7 @@ export const postMessage = (route, image, params) => async dispatch => {
         })
         .catch(err => {
             console.log('chat-upload-error', err);
+            return null;
         });
 }
 
@@ -169,5 +173,6 @@ export const createAds = (route, images, params) => async dispatch => {
         })
         .catch(err => {
             console.log('ads-upload-error', err);
+            return null;
         });
 }

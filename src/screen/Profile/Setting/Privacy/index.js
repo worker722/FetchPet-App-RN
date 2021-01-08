@@ -48,7 +48,7 @@ class Privacy extends Component {
     setPhonenumberStatus = async () => {
         const params = { key: global._SHOW_PHONE_ON_ADS, value: this.state.is_showPhonenumber ? 0 : 1 };
         this.setState({ is_showPhonenumber: !this.state.is_showPhonenumber });
-        const response = await this.props.api.post("profile/setting", params, true);
+        await this.props.api.post("profile/setting", params, true);
     }
 
     showPasswordModal = () => {
