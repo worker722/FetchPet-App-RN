@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import App from "@navigation";
+import { AppSeller, AppBuyer } from "@navigation";
 import { store, persistor } from "@store";
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { BaseColor } from '@config';
@@ -27,12 +27,17 @@ export default class index extends Component {
     }
 
     render() {
+        const IS_BUYER_MODE = store.getState().app.IS_BUYER_MODE;
+
         return (
             <Provider store={store}>
                 <PersistGate loading={null} persistor={persistor}>
                     {Platform.OS != "android" &&
                         <View style={{ height: getStatusBarHeight(true), backgroundColor: BaseColor.primaryDarkColor }} />}
-                    <App />
+                    {IS_BUYER_MODE ?
+                        <AppBuyer /> :
+                        <AppSeller />
+                    }
                 </PersistGate>
             </Provider>
         );

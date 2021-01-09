@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import {
-  View,
-  PermissionsAndroid,
-  Platform,
-  Image
+	View,
+	PermissionsAndroid,
+	Platform,
+	Image
 } from "react-native";
 import geolocation from '@react-native-community/geolocation';
 
@@ -17,79 +17,79 @@ import { bindActionCreators } from "redux";
 import * as Api from '@api';
 
 class Splash extends Component {
-  constructor(props) {
-    super(props);
-  }
+	constructor(props) {
+		super(props);
+	}
 
-  UNSAFE_componentWillMount = async () => {
-    await this.requestPermission();
-  }
+	UNSAFE_componentWillMount = async () => {
+		await this.requestPermission();
+	}
 
-  componentDidMount = async () => {
-    const navigation = this.props.navigation;
-    if (Api._TOKEN()) {
-      const response = await this.props.api.post("accountStatus");
-      if (response?.success) {
-        setTimeout(async () => {
-          const rememberMe = await GetPrefrence(global.PREF_REMEMBER_ME);
-          if (rememberMe == 1)
-            navigation.navigate("Home");
-          else
-            navigation.navigate("Welcome");
-        }, 1000);
-      }
-      else {
-        navigation.navigate("Welcome");
-      }
-    }
-    else {
-      setTimeout(() => {
-        navigation.navigate("Welcome");
-      }, 2000);
-    }
-  }
+	componentDidMount = async () => {
+		const navigation = this.props.navigation;
+		if (Api._TOKEN()) {
+			const response = await this.props.api.post("accountStatus");
+			if (response?.success) {
+				setTimeout(async () => {
+					const rememberMe = await GetPrefrence(global.PREF_REMEMBER_ME);
+					if (rememberMe == 1)
+						navigation.navigate("Home");
+					else
+						navigation.navigate("Welcome");
+				}, 1000);
+			}
+			else {
+				navigation.navigate("Welcome");
+			}
+		}
+		else {
+			setTimeout(() => {
+				navigation.navigate("Welcome");
+			}, 2000);
+		}
+	}
 
-  requestPermission = async () => {
-    try {
-      if (Platform.OS == "android") {
-        const granted = await PermissionsAndroid.requestMultiple(
-          [
-            PermissionsAndroid.PERMISSIONS.CAMERA,
-            PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-            PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION
-          ],
-        );
-        if (
-          granted['android.permission.CAMERA'] === PermissionsAndroid.RESULTS.GRANTED &&
-          granted['android.permission.READ_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
-          granted['android.permission.WRITE_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
-          granted['android.permission.ACCESS_FINE_LOCATION'] === PermissionsAndroid.RESULTS.GRANTED &&
-          granted['android.permission.ACCESS_COARSE_LOCATION'] === PermissionsAndroid.RESULTS.GRANTED
-        ) {
-        }
-      }
-      else {
-        geolocation.requestAuthorization();
-        await Utils.getCurrentLocation();
-      }
-    } catch (err) {
-    }
-  };
+	requestPermission = async () => {
+		try {
+			if (Platform.OS == "android") {
+				const granted = await PermissionsAndroid.requestMultiple(
+					[
+						PermissionsAndroid.PERMISSIONS.CAMERA,
+						PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+						PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+						PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+						PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION
+					],
+				);
+				if (
+					granted['android.permission.CAMERA'] === PermissionsAndroid.RESULTS.GRANTED &&
+					granted['android.permission.READ_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
+					granted['android.permission.WRITE_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
+					granted['android.permission.ACCESS_FINE_LOCATION'] === PermissionsAndroid.RESULTS.GRANTED &&
+					granted['android.permission.ACCESS_COARSE_LOCATION'] === PermissionsAndroid.RESULTS.GRANTED
+				) {
+				}
+			}
+			else {
+				geolocation.requestAuthorization();
+				await Utils.getCurrentLocation();
+			}
+		} catch (err) {
+		}
+	};
 
-  render() {
-    return (
-      <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor, alignItems: "center", justifyContent: "center" }}>
-        <Image source={Images.logo} style={{ width: 225, height: 80 }} resizeMode={"stretch"}></Image>
-      </View>
-    );
-  }
+	render() {
+		return (
+			<View style={{ flex: 1, backgroundColor: BaseColor.whiteColor, alignItems: "center", justifyContent: "center" }}>
+				<Image source={Images.logo} style={{ width: 225, height: 80 }} resizeMode={"stretch"}></Image>
+			</View>
+		);
+	}
 }
 
 const mapDispatchToProps = dispatch => {
-  return {
-    api: bindActionCreators(Api, dispatch)
-  };
+	return {
+		api: bindActionCreators(Api, dispatch)
+	};
 };
 export default connect(null, mapDispatchToProps)(Splash);

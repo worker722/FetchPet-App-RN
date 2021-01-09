@@ -77,7 +77,7 @@ class InboxItem extends Component {
             if (notificationData.notification_type == global.CHAT_MESSAGE_NOTIFICATION) {
                 const user_id = store.getState().auth.login.user.id;
                 const { room } = this.state;
-                if (notificationData.id_room == room.id && notificationData.id_user_snd != user_id && !this.props.is_in_chat) {
+                if (notificationData.id_room == room.id && notificationData.id_user_snd != user_id && !this.props.IS_IN_CHAT) {
                     let { unread_message } = this.state;
                     unread_message++;
                     this.setState({ unread_message, latest_message: notificationData });
@@ -230,8 +230,8 @@ class InboxItem extends Component {
     }
 }
 
-const mapStateToProps = ({ app: { is_in_chat } }) => {
-    return { is_in_chat };
+const mapStateToProps = ({ app: { IS_IN_CHAT } }) => {
+    return { IS_IN_CHAT };
 }
 
 const mapDispatchToProps = dispatch => {

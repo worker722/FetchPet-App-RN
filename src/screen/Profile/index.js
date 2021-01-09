@@ -9,6 +9,8 @@ import { Image } from 'react-native-elements';
 import { BaseColor } from '@config';
 import { Header, LinkItem, Loader } from '@components';
 
+import RNRestart from 'react-native-restart';
+
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { store, SetPrefrence } from "@store";
@@ -49,6 +51,12 @@ class Profile extends Component {
 
     goHelp = () => {
         this.props.navigation.navigate("Help");
+    }
+
+    switchUserMode = () => {
+        const { IS_BUYER_MODE } = this.props;
+        this.props.setStore(global.IS_BUYER_MODE, !IS_BUYER_MODE);
+        RNRestart.Restart();
     }
 
     editProfile = () => {
@@ -92,7 +100,7 @@ class Profile extends Component {
                     }
                     <View style={{ justifyContent: "center", flex: 1, paddingLeft: 10 }}>
                         <Text style={{ color: BaseColor.primaryColor, fontSize: 20, fontWeight: "bold" }}>{user?.name}</Text>
-                        <Text style={{ color: BaseColor.greyColor }}>View & edit Profile</Text>
+                        <Text style={{ color: BaseColor.greyColor }}>View & Edit Profile</Text>
                     </View>
                 </TouchableOpacity>
 
@@ -102,9 +110,14 @@ class Profile extends Component {
                     <LinkItem title={"Setting"} subtitle={"Privacy & Logout"} icon_left={"cog"} icon_right={"angle-right"} action={this.goSetting} />
                 }
                 <LinkItem title={"Help & Support"} subtitle={"Help center and legal terms"} icon_left={"info"} icon_right={"angle-right"} action={this.goHelp} />
+                <LinkItem title={"Switch as Buyer"} subtitle={""} icon_left={"info"} icon_right={"angle-right"} action={this.switchUserMode} />
             </View>
         )
     }
+}
+
+const mapStateToProps = ({ app: { IS_BUYER_MODE } }) => {
+    return { IS_BUYER_MODE };
 }
 
 const mapDispatchToProps = dispatch => {
@@ -113,4 +126,4 @@ const mapDispatchToProps = dispatch => {
         setStore: (type, data) => dispatch({ type, data })
     };
 };
-export default connect(null, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

@@ -1,15 +1,7 @@
-import { createSwitchNavigator, createAppContainer } from "react-navigation";
-import Main from "./main";
-import Splash from "@screen/StartUp/Splash";
+import AppSeller from './navseller';
+import AppBuyer from './navbuyer';
 
-const AppNavigator = createSwitchNavigator(
-	{
-		Splash: Splash,
-		Main: Main
-	},
-	{
-		initialRouteName: "Splash"
-	}
-);
-
-export default createAppContainer(AppNavigator);
+export {
+	AppBuyer,
+	AppSeller
+}

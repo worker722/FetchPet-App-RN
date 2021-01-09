@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { CheckBox } from 'react-native-elements';
+import { Loader } from '@components';
+import { Images, BaseColor } from '@config';
 
 import { GoogleSignin } from '@react-native-community/google-signin';
 import appleAuth, { AppleButton } from '@invertase/react-native-apple-authentication';
@@ -24,10 +26,7 @@ import { bindActionCreators } from "redux";
 import { SetPrefrence, GetPrefrence } from "@store";
 import * as Api from '@api';
 import * as global from "@api/global";
-
-import { Images, BaseColor } from '@config';
 import * as Utils from '@utils';
-import { Loader } from '@components';
 
 const image_height = Utils.SCREEN.HEIGHT / 4;
 
@@ -49,7 +48,7 @@ class SignUp extends Component {
 
     UNSAFE_componentWillMount = async () => {
         GoogleSignin.configure({
-            webClientId: '1007858365668-c8e7pmt0htjmd33ua386rmib3fhe9qt4.apps.googleusercontent.com',
+            webClientId: Utils.GOOGLE_AUTH_WEB_CLIENT_ID
         });
 
         let is_show_apple_button = await GetPrefrence(global.PREF_SHOW_APPLE_BUTTON);
@@ -136,7 +135,9 @@ class SignUp extends Component {
             }
 
         } catch (error) {
+            console.log(error)
             this.setState({ showLoading: false });
+            global.showToastMessage(error);
         }
     }
 

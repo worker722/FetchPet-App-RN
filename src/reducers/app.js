@@ -1,33 +1,39 @@
 import * as global from "@api/global";
 
 const initialState = {
-  unread_message: 0,
-  is_in_chat: false
+	UNREAD_MESSAGE: 0,
+	IS_IN_CHAT: false,
+	IS_BUYER_MODE: true,
 };
 
 export default (state = initialState, action = {}) => {
-  switch (action.type) {
-    case global.U_MESSAGE_INCREMENT:
-      return {
-        ...state,
-        unread_message: state.unread_message + action.data,
-      };
-    case global.U_MESSAGE_DECREMENT:
-      return {
-        ...state,
-        unread_message: (state.unread_message - action.data) > 0 ? (state.unread_message - action.data) : 0
-      };
-    case global.U_MESSAGE_SET:
-      return {
-        ...state,
-        unread_message: action.data
-      };
-    case global.IS_IN_CHAT_PAGE:
-      return {
-        ...state,
-        is_in_chat: action.data
-      }
-    default:
-      return state;
-  }
+	switch (action.type) {
+		case global.U_MESSAGE_INCREMENT:
+			return {
+				...state,
+				UNREAD_MESSAGE: state.UNREAD_MESSAGE + action.data,
+			};
+		case global.U_MESSAGE_DECREMENT:
+			return {
+				...state,
+				UNREAD_MESSAGE: (state.UNREAD_MESSAGE - action.data) > 0 ? (state.UNREAD_MESSAGE - action.data) : 0
+			};
+		case global.U_MESSAGE_SET:
+			return {
+				...state,
+				UNREAD_MESSAGE: action.data
+			};
+		case global.IS_IN_CHAT_PAGE:
+			return {
+				...state,
+				IS_IN_CHAT: action.data
+			};
+		case global.IS_BUYER_MODE:
+			return {
+				...state,
+				IS_BUYER_MODE: action.data
+			};
+		default:
+			return state;
+	}
 };
