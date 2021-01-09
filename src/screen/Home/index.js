@@ -9,7 +9,8 @@ import {
     Platform,
     ScrollView,
     RefreshControl,
-    PermissionsAndroid
+    PermissionsAndroid,
+    ActivityIndicator
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import geolocation from '@react-native-community/geolocation';
@@ -31,8 +32,6 @@ import { Loader, Header, HomeAds } from '@components';
 
 import { BaseColor } from '@config';
 import * as Utils from '@utils';
-
-const filterItem_width = (Utils.SCREEN.WIDTH - 20) / 4;
 
 class Home extends Component {
     constructor(props) {
@@ -315,8 +314,8 @@ class Home extends Component {
             <View style={{ alignItems: "center", justifyContent: "center", width: 60, marginRight: 25 }}>
                 <TouchableOpacity activeOpacity={1}
                     onPress={() => this.filterSelected(item.id)}
-                    style={{ width: 60, height: 60, borderWidth: 7, justifyContent: "center", alignItems: "center", borderColor: item.is_selected ? BaseColor.primaryColor : BaseColor.whiteColor, borderRadius: 100, marginBottom: 5 }}>
-                    <Image source={{ uri: Api.SERVER_HOST + item.icon }} resizeMode={"cover"} style={{ width: 45, height: 45, borderRadius: 100 }}></Image>
+                    style={{ width: 60, height: 60, borderWidth: 6, justifyContent: "center", alignItems: "center", borderColor: item.is_selected ? BaseColor.primaryColor : BaseColor.whiteColor, borderRadius: 100, marginBottom: 5 }}>
+                    <Image source={{ uri: Api.SERVER_HOST + item.icon }} PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />} placeholderStyle={{ backgroundColor: BaseColor.whiteColor }} resizeMode={"cover"} style={{ width: 45, height: 45, borderRadius: 100 }}></Image>
                 </TouchableOpacity>
                 <Text style={{ color: item.is_selected ? BaseColor.primaryColor : BaseColor.greyColor }} numberOfLines={1}>{item.name}</Text>
             </View>
