@@ -94,7 +94,7 @@ class Home extends Component {
 
             const notificationData = JSON.parse(data.data);
             if (notificationData.notification_type == global.CHAT_MESSAGE_NOTIFICATION) {
-                if (!this.props.is_in_chat)
+                if (!this.props.IS_IN_CHAT)
                     this.props.setStore(global.U_MESSAGE_INCREMENT, 1);
             }
             else if (notificationData.notification_type == global.ACCOUNT_STATUS_NOTIFICATION) {
@@ -244,7 +244,7 @@ class Home extends Component {
             topCategory.filter((item, index) => {
                 item.is_selected = false;
             });
-            topCategory.unshift({ id: -1, name: "All", is_selected: true });
+            topCategory.unshift({ id: -1, name: "All", is_selected: true, icon: "/material/img/normal.png" });
 
             this.setState({ pets, topCategory });
         }
@@ -399,8 +399,8 @@ class Home extends Component {
     }
 }
 
-const mapStateToProps = ({ app: { is_in_chat } }) => {
-    return { is_in_chat };
+const mapStateToProps = ({ app: { IS_IN_CHAT } }) => {
+    return { IS_IN_CHAT };
 }
 
 const mapDispatchToProps = dispatch => {

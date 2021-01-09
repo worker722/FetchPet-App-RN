@@ -3,6 +3,6 @@ import AuthReducer from "./auth";
 import AppReducer from "./app";
 
 export default combineReducers({
-  auth: AuthReducer,
-  app: AppReducer
+	auth: AuthReducer,
+	app: AppReducer
 });

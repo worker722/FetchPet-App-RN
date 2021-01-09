@@ -9,6 +9,7 @@ const EMAIL_REGEX = /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:
 const NUMBER_REGEX = /^\d+$/;
 
 export const GOOGLE_API_KEY = 'AIzaSyDjLHfb1SLxXyuDBrzgrlwroA7LMRJ8EKQ';
+export const GOOGLE_AUTH_WEB_CLIENT_ID = '1007858365668-c8e7pmt0htjmd33ua386rmib3fhe9qt4.apps.googleusercontent.com';
 export const GOOGLE_MAP_API_URL = 'https://maps.googleapis.com/maps/api/';
 
 export const SCREEN = {

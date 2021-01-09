@@ -18,9 +18,7 @@ class Header extends Component {
     }
 
     render = () => {
-        const { navigation, mainHeader, title, color_title, icon_left, color_icon_left, color_icon_right, icon_right, text_left, text_right, callback_left, callback_right } = this.props;
-
-        const { unread_message } = this.props;
+        const { UNREAD_MESSAGE, navigation, mainHeader, title, color_title, icon_left, color_icon_left, color_icon_right, icon_right, text_left, text_right, callback_left, callback_right } = this.props;
 
         const is_social = store.getState().auth.login.user.is_social;
 
@@ -35,9 +33,9 @@ class Header extends Component {
                         {is_social != -1 &&
                             <TouchableOpacity style={{ position: "absolute", right: 15 }} onPress={() => navigation.navigate("Notification")}>
                                 <Icon solid name="bell" size={25} color={BaseColor.primaryColor}></Icon>
-                                {unread_message > 0 &&
+                                {UNREAD_MESSAGE > 0 &&
                                     <Animatable.View animation={"bounceIn"} iterationCount={1} duration={500} direction="normal" style={{ position: "absolute", right: -10, top: -10, width: 23, height: 23, backgroundColor: "red", justifyContent: "center", alignItems: "center", borderRadius: 100, padding: 2 }}>
-                                        <Text style={{ color: BaseColor.whiteColor, fontSize: 12 }}>{unread_message}</Text>
+                                        <Text style={{ color: BaseColor.whiteColor, fontSize: 12 }}>{UNREAD_MESSAGE}</Text>
                                     </Animatable.View>
                                 }
                             </TouchableOpacity>
@@ -74,8 +72,8 @@ class Header extends Component {
     }
 }
 
-const mapStateToProps = ({ app: { unread_message } }) => {
-    return { unread_message };
+const mapStateToProps = ({ app: { UNREAD_MESSAGE } }) => {
+    return { UNREAD_MESSAGE };
 }
 
 export default connect(mapStateToProps, null)(Header);

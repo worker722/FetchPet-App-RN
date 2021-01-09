@@ -44,7 +44,7 @@ class Login extends Component {
 
     UNSAFE_componentWillMount = async () => {
         GoogleSignin.configure({
-            webClientId: '1007858365668-c8e7pmt0htjmd33ua386rmib3fhe9qt4.apps.googleusercontent.com'
+            webClientId: Utils.GOOGLE_AUTH_WEB_CLIENT_ID
         });
 
         let is_show_apple_button = await GetPrefrence(global.PREF_SHOW_APPLE_BUTTON);
@@ -132,6 +132,7 @@ class Login extends Component {
         } catch (error) {
             console.log(error)
             this.setState({ showLoading: false });
+            global.showToastMessage(error);
         }
     }
 
