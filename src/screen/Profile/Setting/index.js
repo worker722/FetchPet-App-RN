@@ -62,7 +62,7 @@ class Setting extends Component {
             await GoogleSignin.signOut();
         }
         else if (is_social == 2) {
-            await LoginManager.logOut();
+            LoginManager.logOut();
         }
         else if (is_social == 3) {
             await appleAuth.performRequest({
@@ -80,7 +80,7 @@ class Setting extends Component {
             await GoogleSignin.signOut();
         }
         else if (is_social == 2) {
-            await LoginManager.logOut();
+            LoginManager.logOut();
         }
         else if (is_social == 3) {
             await appleAuth.performRequest({

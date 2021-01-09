@@ -4,6 +4,7 @@ const initialState = {
 	UNREAD_MESSAGE: 0,
 	IS_IN_CHAT: false,
 	IS_BUYER_MODE: true,
+	PUSH_ALERT: null
 };
 
 export default (state = initialState, action = {}) => {
@@ -32,6 +33,11 @@ export default (state = initialState, action = {}) => {
 			return {
 				...state,
 				IS_BUYER_MODE: !state.IS_BUYER_MODE
+			};
+		case global.PUSH_ALERT:
+			return {
+				...state,
+				PUSH_ALERT: action.data
 			};
 		default:
 			return state;

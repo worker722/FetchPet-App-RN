@@ -10,7 +10,8 @@ const BaseColor = {
     blackColor: "#000000",
     googleColor: "#E3411F",
     faceBookColor: "#3C5B9A",
-    modalBackDropColor: 'rgba(0, 0, 0, 0.5)'
+    modalBackDropColor: 'rgba(0, 0, 0, 0.5)',
+    pushAlertColor: '#52ab56cf'
   }
 };
 

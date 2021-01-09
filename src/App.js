@@ -12,6 +12,7 @@ import App from "@navigation";
 import { store, persistor } from "@store";
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { BaseColor } from '@config';
+import { CustomPushAlert } from '@components';
 
 LogBox.ignoreAllLogs(true);
 
@@ -26,6 +27,14 @@ export default class index extends Component {
         StatusBar.setBarStyle("light-content");
     }
 
+    onAlertShow = () => {
+        console.log("‘Alert is visible’");
+    }
+
+    onAlertHide = () => {
+        console.log("‘Alert is hidden’");
+    }
+
     render() {
         return (
             <Provider store={store}>
@@ -33,6 +42,7 @@ export default class index extends Component {
                     {Platform.OS != "android" &&
                         <View style={{ height: getStatusBarHeight(true), backgroundColor: BaseColor.primaryDarkColor }} />}
                     <App />
+                    <CustomPushAlert />
                 </PersistGate>
             </Provider>
         );

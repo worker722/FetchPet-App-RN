@@ -10,6 +10,7 @@ import ClosedAds from './ClosedAds';
 import CustomModalPicker from './CustomModalPicker';
 import BlockedUser from './BlockedUser';
 import NotificationItem from './NotificationItem';
+import CustomPushAlert from './CustomPushAlert';
 
 export {
     Header,
@@ -23,5 +24,6 @@ export {
     CustomModalPicker,
     FavouriteAds,
     BlockedUser,
-    NotificationItem
+    NotificationItem,
+    CustomPushAlert
 }

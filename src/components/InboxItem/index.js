@@ -56,26 +56,19 @@ class InboxItem extends Component {
 
     createNotificationListeners = async () => {
         try {
-            this.notificationListener = messaging().onMessage((notification) => {
-                this._onMessageReceived(notification);
-            });
-        } catch (error) {
-        }
-    }
-
-    _onMessageReceived = (notification) => {
-        try {
-            const { data } = notification;
-            const notificationData = JSON.parse(data.data);
-            if (notificationData.notification_type == global.CHAT_MESSAGE_NOTIFICATION) {
-                const user_id = store.getState().auth.login.user.id;
-                const { room } = this.state;
-                if (notificationData.id_room == room.id && notificationData.id_user_snd != user_id && !this.props.IS_IN_CHAT) {
-                    let { unread_message } = this.state;
-                    unread_message++;
-                    this.setState({ unread_message, latest_message: notificationData });
+            this.notificationListener = messaging().onMessage((remoteMessage) => {
+                const { data } = remoteMessage;
+                const notificationData = JSON.parse(data.data);
+                if (notificationData.notification_type == global.CHAT_MESSAGE_NOTIFICATION) {
+                    const user_id = store.getState().auth.login.user.id;
+                    const { room } = this.state;
+                    if (notificationData.id_room == room.id && notificationData.id_user_snd != user_id && !this.props.IS_IN_CHAT) {
+                        let { unread_message } = this.state;
+                        unread_message++;
+                        this.setState({ unread_message, latest_message: notificationData });
+                    }
                 }
-            }
+            });
         } catch (error) {
             console.log('inbox item notification received error', error);
         }
