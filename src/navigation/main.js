@@ -3,6 +3,7 @@ import { Image } from 'react-native';
 import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import { BaseColor, BaseStyle, Images } from '@config';
+import { connect } from "react-redux";
 
 // START UP PAGE
 import Welcome from "@screen/StartUp/Welcome";
@@ -58,7 +59,46 @@ const bottomTabNavigatorConfig = {
 };
 
 // TAB BAR NAVIGATION
-const routeConfigs = {
+const routeConfigsBuyer = {
+	Home: {
+		screen: Home,
+		navigationOptions: ({ navigation }) => ({
+			title: "Home",
+			tabBarIcon: ({ focused, tintColor }) => {
+				return <Image source={focused ? Images.ic_home_fill : Images.ic_home} />;
+			}
+		})
+	},
+	Inbox: {
+		screen: Inbox,
+		navigationOptions: ({ navigation }) => ({
+			title: "Inbox",
+			tabBarIcon: ({ focused, tintColor }) => {
+				return <Image source={focused ? Images.ic_chat_fill : Images.ic_chat} />;
+			}
+		})
+	},
+	MyAds: {
+		screen: MyAds,
+		navigationOptions: ({ navigation }) => ({
+			title: "MyAds",
+			tabBarIcon: ({ focused, tintColor }) => {
+				return <Image source={focused ? Images.ic_myads_fill : Images.ic_myads} />;
+			}
+		})
+	},
+	Profile: {
+		screen: Profile,
+		navigationOptions: ({ navigation }) => ({
+			title: "Profile",
+			tabBarIcon: ({ focused, tintColor }) => {
+				return <Image source={focused ? Images.ic_profile_fill : Images.ic_profile} />;
+			}
+		})
+	}
+};
+
+const routeConfigsSeller = {
 	Home: {
 		screen: Home,
 		navigationOptions: ({ navigation }) => ({
@@ -109,16 +149,93 @@ const routeConfigs = {
 };
 
 // DEFINE BOTTOM NAVIGATOR AS A SCREEN IN STACK
-const BottomTabNavigator = createBottomTabNavigator(
-	routeConfigs,
+const BuyerBottomTabNavigator = createBottomTabNavigator(
+	routeConfigsBuyer,
+	bottomTabNavigatorConfig
+);
+
+const SellerBottomTabNavigator = createBottomTabNavigator(
+	routeConfigsSeller,
 	bottomTabNavigatorConfig
 );
 
 // MAIN STACK VIEW APP
-const StackNavigator = createStackNavigator(
+const BuyerStackNavigator = createStackNavigator(
 	{
 		BottomTabNavigator: {
-			screen: BottomTabNavigator
+			screen: BuyerBottomTabNavigator
+		},
+		Welcome: {
+			screen: Welcome
+		},
+		Login: {
+			screen: Login
+		},
+		SignUp: {
+			screen: SignUp
+		},
+		Home: {
+			screen: Home
+		},
+		AdvancedFilter: {
+			screen: AdvancedFilter
+		},
+		FilterResult: {
+			screen: FilterResult
+		},
+		AdDetail: {
+			screen: AdDetail
+		},
+		ImageSlider: {
+			screen: ImageSlider
+		},
+		Notification: {
+			screen: Notification
+		},
+		Chat: {
+			screen: Chat
+		},
+		ProfileEdit: {
+			screen: ProfileEdit
+		},
+		ShowProfile: {
+			screen: ShowProfile
+		},
+		Help: {
+			screen: Help
+		},
+		Version: {
+			screen: Version
+		},
+		ContactSupport: {
+			screen: ContactSupport
+		},
+		Setting: {
+			screen: Setting
+		},
+		Privacy: {
+			screen: Privacy
+		},
+		BlockContact: {
+			screen: BlockContact
+		},
+		CustomMap: {
+			screen: CustomMap
+		},
+		SellEdit: {
+			screen: SellEdit
+		}
+	},
+	{
+		headerMode: "none",
+		initialRouteName: "BottomTabNavigator"
+	}
+);
+
+const SellerStackNavigator = createStackNavigator(
+	{
+		BottomTabNavigator: {
+			screen: SellerBottomTabNavigator
 		},
 		Welcome: {
 			screen: Welcome
@@ -188,17 +305,23 @@ const StackNavigator = createStackNavigator(
 );
 
 // DEFINE ROOT STACK SUPPORT MODAL SCREEN
-const RootStack = createStackNavigator(
-	{
-		StackNavigator: {
-			screen: StackNavigator
+const RootStack = () => {
+	return createStackNavigator(
+		{
+			StackNavigator: {
+				screen: BuyerBottomTabNavigator
+			}
+		},
+		{
+			mode: "modal",
+			headerMode: "none",
+			initialRouteName: "StackNavigator",
 		}
-	},
-	{
-		mode: "modal",
-		headerMode: "none",
-		initialRouteName: "StackNavigator",
-	}
-);
+	);
+}
 
-export default RootStack;
+const mapStateToProps = ({ app: { IS_BUYER_MODE } }) => {
+	return { IS_BUYER_MODE };
+}
+
+export default connect(mapStateToProps)(RootStack());

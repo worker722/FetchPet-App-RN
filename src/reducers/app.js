@@ -31,7 +31,7 @@ export default (state = initialState, action = {}) => {
 		case global.IS_BUYER_MODE:
 			return {
 				...state,
-				IS_BUYER_MODE: action.data
+				IS_BUYER_MODE: !state.IS_BUYER_MODE
 			};
 		default:
 			return state;

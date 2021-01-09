@@ -54,8 +54,7 @@ class Profile extends Component {
     }
 
     switchUserMode = () => {
-        const { IS_BUYER_MODE } = this.props;
-        this.props.setStore(global.IS_BUYER_MODE, !IS_BUYER_MODE);
+        this.props.setStore(global.IS_BUYER_MODE);
         RNRestart.Restart();
     }
 
@@ -116,14 +115,10 @@ class Profile extends Component {
     }
 }
 
-const mapStateToProps = ({ app: { IS_BUYER_MODE } }) => {
-    return { IS_BUYER_MODE };
-}
-
 const mapDispatchToProps = dispatch => {
     return {
         api: bindActionCreators(Api, dispatch),
         setStore: (type, data) => dispatch({ type, data })
     };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(null, mapDispatchToProps)(Profile);

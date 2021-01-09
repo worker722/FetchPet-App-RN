@@ -16,7 +16,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import Menu, { MenuItem } from 'react-native-material-menu';
 
-import firebase from 'react-native-firebase';
+import messaging from '@react-native-firebase/messaging';
 
 import { store } from '@store';
 import { connect } from "react-redux";
@@ -56,16 +56,9 @@ class InboxItem extends Component {
 
     createNotificationListeners = async () => {
         try {
-            if (Platform.OS == "android") {
-                this.notificationListener_ANDROID = firebase.notifications().onNotification((notification) => {
-                    this._onMessageReceived(notification);
-                });
-            }
-            else {
-                this.notificationListener_IOS = firebase.messaging().onMessage((notification) => {
-                    this._onMessageReceived(notification);
-                });
-            }
+            this.notificationListener = messaging().onMessage((notification) => {
+                this._onMessageReceived(notification);
+            });
         } catch (error) {
         }
     }
@@ -96,10 +89,7 @@ class InboxItem extends Component {
     }
 
     componentWillUnmount = () => {
-        if (Platform.OS == "android")
-            this.notificationListener_ANDROID && this.notificationListener_ANDROID();
-        else
-            this.notificationListener_IOS && this.notificationListener_IOS();
+        this.notificationListener && this.notificationListener();
 
         AppState.removeEventListener('change', this.handleAppStateChange);
     }
