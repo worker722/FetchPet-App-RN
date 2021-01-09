@@ -15,7 +15,7 @@ import { GoogleSignin } from '@react-native-community/google-signin';
 import appleAuth, { AppleButton } from '@invertase/react-native-apple-authentication';
 import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
 
-import firebase from 'react-native-firebase';
+import messaging from '@react-native-firebase/messaging';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -53,26 +53,29 @@ class Login extends Component {
     }
 
     componentDidMount = async () => {
-        firebase.messaging().hasPermission()
-            .then(enabled => {
+        await messaging().hasPermission()
+            .then(async enabled => {
                 if (enabled) {
-                    firebase.messaging().getToken().then(token => {
-                        console.log('fcmToken', token)
-                        this.setState({ device_token: token });
-                    })
+                    this.getFcmToken();
                 }
                 else {
-                    firebase.messaging().requestPermission()
+                    await messaging().requestPermission()
                         .then(async () => {
-                            if (Platform.OS == "ios")
-                                await firebase.messaging().ios.registerForRemoteNotifications();
+                            if (!messaging().isDeviceRegisteredForRemoteMessages)
+                                await messaging().registerDeviceForRemoteMessages();
+                            this.getFcmToken();
                         })
                         .catch(error => {
                         });
                 }
             }).catch(error => {
-
             })
+    }
+
+    getFcmToken = async () => {
+        const device_token = await messaging().getToken();
+        console.log('fcmToken', device_token)
+        this.setState({ device_token });
     }
 
     toggleRememberMe = async (value) => {

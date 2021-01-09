@@ -26,7 +26,8 @@ import { bindActionCreators } from "redux";
 import * as Api from '@api';
 import * as global from "@api/global";
 
-import firebase from 'react-native-firebase';
+import messaging from '@react-native-firebase/messaging';
+import Alert from '@logisticinfotech/react-native-animated-alert';
 
 import { Loader, Header, HomeAds } from '@components';
 
@@ -57,16 +58,9 @@ class Home extends Component {
     }
 
     createNotificationListeners = async () => {
-        if (Platform.OS == "android") {
-            this.notificationListener_ANDROID = firebase.notifications().onNotification((notification) => {
-                this._onMessageReceived(notification);
-            });
-        }
-        else {
-            this.notificationListener_IOS = firebase.messaging().onMessage((notification) => {
-                this._onMessageReceived(notification);
-            });
-        }
+        this.notificationListener = messaging().onMessage((notification) => {
+            this._onMessageReceived(notification);
+        });
     }
 
     logout = async () => {
@@ -116,40 +110,22 @@ class Home extends Component {
         if (!is_showNotification)
             return;
 
-        let localNotification = null;
-        if (Platform.OS === "android") {
-            localNotification = new firebase.notifications.Notification({
-                sound: 'default',
-                show_in_foreground: true,
-            })
-                .setNotificationId(new Date().toLocaleString())
-                .setTitle(title)
-                .setBody(body)
-                .android.setChannelId(global.NOTIFICATION_CHANNEL_ID)
-                .android.setColor(BaseColor.primaryColor)
-                .android.setSmallIcon('ic_notification')
-                .android.setPriority(firebase.notifications.Android.Priority.High);
-        }
-        else {
-            localNotification = new firebase.notifications.Notification()
-                .setNotificationId(new Date().toLocaleString())
-                .setTitle(title)
-                .setBody(body)
-        }
+        Alert.showAlert();
+    }
 
-        firebase.notifications()
-            .displayNotification(localNotification)
-            .catch(err => console.error(err));
+    onAlertShow = () => {
+        console.log("‘Alert is visible’");
+    }
+
+    onAlertHide = () => {
+        console.log("‘Alert is hidden’");
     }
 
     handleAppStateChange = (nextAppState) => { }
 
     componentWillUnmount = async () => {
         AppState.removeEventListener('change', this.handleAppStateChange);
-        if (Platform.OS == "android")
-            this.notificationListener_ANDROID && this.notificationListener_ANDROID();
-        else
-            this.notificationListener_IOS && this.notificationListener_IOS();
+        this.notificationListener && this.notificationListener();
     }
 
     componentDidMount = async () => {
@@ -158,37 +134,32 @@ class Home extends Component {
         await this.createNotificationListeners();
         AppState.addEventListener('change', this.handleAppStateChange);
 
-        if (Platform.OS == "android") {
-            const channel = new firebase.notifications.Android.Channel(
-                global.NOTIFICATION_CHANNEL_ID,
-                global.NOTIFICATION_CHANNEL_NAME,
-                firebase.notifications.Android.Importance.High
-            ).setDescription(global.NOTIFICATION_CHANNEL_DESCRIPTION);
-            firebase.notifications().android.createChannel(channel);
-        }
-
-        await firebase.messaging().hasPermission()
-            .then(enabled => {
+        await messaging().hasPermission()
+            .then(async enabled => {
                 if (enabled) {
-                    firebase.messaging().getToken().then(async token => {
-                        if (token) {
-                            const params = { token, platform: Platform.OS };
-                            if (!Api._TOKEN())
-                                return;
-
-                            await this.props.api.post("profile/token", params);
-                        }
-                    });
+                    this.getFcmToken();
                 } else {
-                    firebase.messaging().requestPermission()
+                    await messaging().requestPermission()
                         .then(async () => {
-                            if (Platform.OS == "ios")
-                                await firebase.messaging().ios.registerForRemoteNotifications();
+                            if (!messaging().isDeviceRegisteredForRemoteMessages)
+                                await messaging().registerDeviceForRemoteMessages();
+                            this.getFcmToken();
                         })
                         .catch(error => {
                         });
                 }
             });
+    }
+
+    getFcmToken = async () => {
+        const token = await messaging().getToken();
+        if (token) {
+            const params = { token, platform: Platform.OS };
+            if (!Api._TOKEN())
+                return;
+
+            await this.props.api.post("profile/token", params);
+        }
     }
 
     requestPermission = async () => {
@@ -394,6 +365,14 @@ class Home extends Component {
                         />
                     </ScrollView>
                 }
+
+                <Alert
+                    alertTitle="Title"
+                    alertMessage="Message"
+                    onAlertShow={this.onAlertShow}
+                    onAlertHide={this.onAlertHide}
+                />
+
             </View>
         )
     }

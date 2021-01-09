@@ -1,38 +1,16 @@
-
-import { Platform } from 'react-native';
-import firebase from 'react-native-firebase';
 import * as global from "@api/global";
-import { BaseColor } from '@config';
 
-export default async (message) => {
-  console.log("background message")
-  if (Platform.OS === "android") {
-    const localNotification = new firebase.notifications.Notification({
-      sound: 'default',
-      show_in_foreground: true,
-    })
-      .setNotificationId(new Date().toLocaleString())
-      .setTitle(message.data.title)
-      .setBody(message.data.body)
-      .android.setChannelId(global.NOTIFICATION_CHANNEL_ID)
-      .android.setColor(BaseColor.primaryColor)
-      .android.setSmallIcon('ic_notification')
-      .android.setPriority(firebase.notifications.Android.Priority.High);
-
-    firebase.notifications()
-      .displayNotification(localNotification)
-      .catch(err => console.error(err));
-  }
-  else {
-    const localNotification = new firebase.notifications.Notification()
-      .setNotificationId(new Date().toLocaleString())
-      .setTitle(message.data.title)
-      .setBody(message.data.body)
-
-    firebase.notifications()
-      .displayNotification(localNotification)
-      .catch(err => console.error(err));
+export default async (notification) => {
+  try {
+    const { data } = notification;
+    const notificationData = JSON.parse(data.data);
+    if (notificationData.notification_type == global.CHAT_MESSAGE_NOTIFICATION) {
+      if (!this.props.IS_IN_CHAT)
+        this.props.setStore(global.U_MESSAGE_INCREMENT, 1);
+    }
+  } catch (error) {
+    console.log('index notification received error', error);
   }
 
-  return Promise.resolve(message);
+  return Promise.resolve(notification);
 }
