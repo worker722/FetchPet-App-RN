@@ -149,21 +149,21 @@ const routeConfigsSeller = {
 };
 
 // DEFINE BOTTOM NAVIGATOR AS A SCREEN IN STACK
-const BuyerBottomTabNavigator = createBottomTabNavigator(
+const BottomTabNavigatorBuyer = createBottomTabNavigator(
 	routeConfigsBuyer,
 	bottomTabNavigatorConfig
 );
 
-const SellerBottomTabNavigator = createBottomTabNavigator(
+const BottomTabNavigatorSeller = createBottomTabNavigator(
 	routeConfigsSeller,
 	bottomTabNavigatorConfig
 );
 
 // MAIN STACK VIEW APP
-const BuyerStackNavigator = createStackNavigator(
+const StackNavigatorBuyer = createStackNavigator(
 	{
 		BottomTabNavigator: {
-			screen: BuyerBottomTabNavigator
+			screen: BottomTabNavigatorBuyer
 		},
 		Welcome: {
 			screen: Welcome
@@ -232,10 +232,10 @@ const BuyerStackNavigator = createStackNavigator(
 	}
 );
 
-const SellerStackNavigator = createStackNavigator(
+const StackNavigatorSeller = createStackNavigator(
 	{
 		BottomTabNavigator: {
-			screen: SellerBottomTabNavigator
+			screen: BottomTabNavigatorSeller
 		},
 		Welcome: {
 			screen: Welcome
@@ -309,7 +309,7 @@ const RootStack = () => {
 	return createStackNavigator(
 		{
 			StackNavigator: {
-				screen: BuyerBottomTabNavigator
+				screen: StackNavigatorBuyer
 			}
 		},
 		{
