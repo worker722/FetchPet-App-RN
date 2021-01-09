@@ -60,27 +60,20 @@ class Chat extends Component {
 
     createNotificationListeners = async () => {
         try {
-            this.notificationListener = messaging().onMessage((notification) => {
-                this._onMessageReceived(notification);
-            });
-        } catch (error) {
-        }
-    }
-
-    _onMessageReceived = (notification) => {
-        try {
-            const { data } = notification;
-            const notificationData = JSON.parse(data.data);
-            if (notificationData.notification_type == global.CHAT_MESSAGE_NOTIFICATION) {
-                const user_id = store.getState().auth.login.user.id;
-                const { room } = this.state;
-                if (notificationData.id_room == room.id && notificationData.id_user_snd != user_id && this.props.IS_IN_CHAT) {
-                    let { chat } = this.state;
-                    chat.push(notificationData);
-                    this.setState({ chat });
-                    this.props.api.post("chat/read", { id: room.id });
+            this.notificationListener = messaging().onMessage((remoteMessage) => {
+                const { data } = remoteMessage;
+                const notificationData = JSON.parse(data.data);
+                if (notificationData.notification_type == global.CHAT_MESSAGE_NOTIFICATION) {
+                    const user_id = store.getState().auth.login.user.id;
+                    const { room } = this.state;
+                    if (notificationData.id_room == room.id && notificationData.id_user_snd != user_id && this.props.IS_IN_CHAT) {
+                        let { chat } = this.state;
+                        chat.push(notificationData);
+                        this.setState({ chat });
+                        this.props.api.post("chat/read", { id: room.id });
+                    }
                 }
-            }
+            });
         } catch (error) {
             console.log('chat notification received error', error);
         }

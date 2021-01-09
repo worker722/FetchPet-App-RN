@@ -27,7 +27,6 @@ import * as Api from '@api';
 import * as global from "@api/global";
 
 import messaging from '@react-native-firebase/messaging';
-import Alert from '@logisticinfotech/react-native-animated-alert';
 
 import { Loader, Header, HomeAds } from '@components';
 
@@ -58,8 +57,8 @@ class Home extends Component {
     }
 
     createNotificationListeners = async () => {
-        this.notificationListener = messaging().onMessage((notification) => {
-            this._onMessageReceived(notification);
+        this.notificationListener = messaging().onMessage((remoteMessage) => {
+            this._onMessageReceived(remoteMessage);
         });
     }
 
@@ -70,7 +69,7 @@ class Home extends Component {
             await GoogleSignin.signOut();
         }
         else if (is_social == 2) {
-            await LoginManager.logOut();
+            LoginManager.logOut();
         }
         else if (is_social == 3) {
             await appleAuth.performRequest({
@@ -81,10 +80,10 @@ class Home extends Component {
         this.props.navigation.navigate('Welcome');
     }
 
-    _onMessageReceived = (notification) => {
+    _onMessageReceived = (remoteMessage) => {
         try {
-            const { title, body, data } = notification;
-            this.showNotification(title, body);
+            const { notification, data } = remoteMessage;
+            this.showNotification(notification);
 
             const notificationData = JSON.parse(data.data);
             if (notificationData.notification_type == global.CHAT_MESSAGE_NOTIFICATION) {
@@ -100,7 +99,7 @@ class Home extends Component {
         }
     }
 
-    showNotification(title, body) {
+    showNotification(notification) {
         const user_meta = store.getState().auth.login.user.meta;
         let is_showNotification = false;
         user_meta?.forEach((item, key) => {
@@ -110,15 +109,7 @@ class Home extends Component {
         if (!is_showNotification)
             return;
 
-        Alert.showAlert();
-    }
-
-    onAlertShow = () => {
-        console.log("‘Alert is visible’");
-    }
-
-    onAlertHide = () => {
-        console.log("‘Alert is hidden’");
+        this.props.setStore(global.PUSH_ALERT, notification);
     }
 
     handleAppStateChange = (nextAppState) => { }
@@ -308,7 +299,7 @@ class Home extends Component {
 
     render = () => {
 
-        const { pets, showLoader, showRefresh, showContentLoader, topCategory } = this.state;
+        const { pets, showLoader, showRefresh, showContentLoader, topCategory, notification } = this.state;
         const { navigation } = this.props;
 
         if (showLoader)
@@ -365,14 +356,6 @@ class Home extends Component {
                         />
                     </ScrollView>
                 }
-
-                <Alert
-                    alertTitle="Title"
-                    alertMessage="Message"
-                    onAlertShow={this.onAlertShow}
-                    onAlertHide={this.onAlertHide}
-                />
-
             </View>
         )
     }
