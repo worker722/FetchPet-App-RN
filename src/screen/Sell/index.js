@@ -252,7 +252,7 @@ class Sell extends Component {
 
         return (
             <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}>
-                <ScrollView style={{ flex: 1 }}
+                <ScrollView keyboardShouldPersistTaps='always' style={{ flex: 1 }}
                     refreshControl={
                         <RefreshControl
                             refreshing={showRefresh}

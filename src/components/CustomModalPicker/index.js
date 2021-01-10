@@ -42,7 +42,7 @@ export default class CustomModalPicker extends Component {
                             <View style={{ justifyContent: "center", alignItems: "center", width: "100%", marginBottom: 20 }}>
                                 <Text style={{ fontSize: 20 }}>{title}</Text>
                             </View>
-                            <ScrollView>
+                            <ScrollView keyboardShouldPersistTaps='always'>
                                 {data.map((item, key) => (
                                     <TouchableOpacity
                                         onPress={() => {

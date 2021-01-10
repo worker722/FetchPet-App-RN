@@ -64,7 +64,7 @@ class Active extends Component {
 
         return (
             <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}>
-                <ScrollView
+                <ScrollView keyboardShouldPersistTaps='always'
                     refreshControl={
                         <RefreshControl
                             refreshing={showRefresh}

@@ -314,7 +314,7 @@ class Chat extends Component {
                             <MenuItem onPress={this.block}>Block</MenuItem>
                         </Menu>
                     </View>
-                    <ScrollView
+                    <ScrollView keyboardShouldPersistTaps='always'
                         ref={ref => this.scrollView = ref}
                         onContentSizeChange={(contentWidth, contentHeight) => {
                             this.scrollView.scrollToEnd({ animated: true });

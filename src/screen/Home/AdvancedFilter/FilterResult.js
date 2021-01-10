@@ -92,7 +92,7 @@ class FilterResult extends Component {
         return (
             <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}>
                 <Header icon_left={"arrow-left"} title={"Filter Result"} color_icon_right={BaseColor.primaryColor} callback_left={this.goBack} />
-                <ScrollView style={{ flex: 1 }}
+                <ScrollView keyboardShouldPersistTaps='always' style={{ flex: 1 }}
                     refreshControl={
                         <RefreshControl
                             refreshing={showRefresh}

@@ -91,7 +91,7 @@ class Inbox extends Component {
                 <Text style={{ color: BaseColor.primaryColor, fontSize: 20, fontWeight: "bold", paddingLeft: 10 }}>Chat</Text>
                 <View style={{ padding: 10, paddingTop: 0 }}>
                     <Text style={{ fontSize: 18, marginTop: 10 }}>Active Chat</Text>
-                    <ScrollView
+                    <ScrollView keyboardShouldPersistTaps='always'
                         refreshControl={
                             <RefreshControl
                                 refreshing={showRefresh}

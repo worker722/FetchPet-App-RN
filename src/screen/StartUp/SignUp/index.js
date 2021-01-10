@@ -297,7 +297,7 @@ class SignUp extends Component {
                     <View style={{ width: "100%", height: 80, alignItems: "center", justifyContent: "center", marginTop: 20 }}>
                         <Image placeholderStyle={{ backgroundColor: BaseColor.whiteColor }} source={Images.logo} style={{ width: 168, height: 60 }} resizeMode={"stretch"}></Image>
                     </View>
-                    <ScrollView style={{ flex: 1, marginTop: 30 }}>
+                    <ScrollView keyboardShouldPersistTaps='always' style={{ flex: 1, marginTop: 30 }}>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center", marginBottom: 20 }}>
                             <View style={{ width: "80%", height: 50 }}>
                                 <TextInput

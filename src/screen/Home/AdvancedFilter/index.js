@@ -145,7 +145,7 @@ class AdvancedFilter extends Component {
             <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}>
                 <Header icon_left={"arrow-left"} title={"Advanced Filter"} color_icon_right={BaseColor.primaryColor} callback_left={this.goBack} />
                 <View></View>
-                <ScrollView style={{ flex: 1 }}
+                <ScrollView keyboardShouldPersistTaps='always' style={{ flex: 1 }}
                     refreshControl={
                         <RefreshControl
                             refreshing={showRefresh}

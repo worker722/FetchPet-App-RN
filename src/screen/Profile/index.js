@@ -54,7 +54,7 @@ class Profile extends Component {
     }
 
     switchUserMode = () => {
-        this.props.setStore(global.IS_BUYER_MODE);
+        this.props.setStore(global.IS_BUYER_MODE, null);
         RNRestart.Restart();
     }
 

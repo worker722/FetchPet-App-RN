@@ -54,7 +54,7 @@ class BlockContact extends Component {
         return (
             <View style={{ flex: 1, paddingHorizontal: 10, backgroundColor: BaseColor.whiteColor }}>
                 <Header icon_left={"arrow-left"} callback_left={this.goBack} title={"Blocked Contact"} />
-                <ScrollView
+                <ScrollView keyboardShouldPersistTaps='always'
                     refreshControl={
                         <RefreshControl refreshing={showRefresh}
                             onRefresh={this._onRefresh} />}
