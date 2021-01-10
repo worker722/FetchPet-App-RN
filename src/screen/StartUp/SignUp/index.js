@@ -17,7 +17,7 @@ import { Images, BaseColor } from '@config';
 
 import { GoogleSignin } from '@react-native-community/google-signin';
 import appleAuth, { AppleButton } from '@invertase/react-native-apple-authentication';
-import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
+// import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
 
 import messaging from '@react-native-firebase/messaging';
 

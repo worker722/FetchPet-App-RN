@@ -18,7 +18,7 @@ import { Image } from 'react-native-elements';
 
 import { GoogleSignin } from '@react-native-community/google-signin';
 import appleAuth from '@invertase/react-native-apple-authentication';
-import { LoginManager } from 'react-native-fbsdk';
+// import { LoginManager } from 'react-native-fbsdk';
 
 import { store, SetPrefrence } from "@store";
 import { connect } from "react-redux";
