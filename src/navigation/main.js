@@ -3,7 +3,7 @@ import { Image } from 'react-native';
 import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import { BaseColor, BaseStyle, Images } from '@config';
-import { connect } from "react-redux";
+import { store } from '@store';
 
 // START UP PAGE
 import Welcome from "@screen/StartUp/Welcome";
@@ -42,21 +42,6 @@ import ContactSupport from "@screen/Profile/Help/ContactSupport";
 import Setting from "@screen/Profile/Setting";
 import Privacy from "@screen/Profile/Setting/Privacy";
 import BlockContact from "@screen/Profile/Setting/BlockContact";
-
-// CONFIG FOR BOTTOM NAVIGATOR
-const bottomTabNavigatorConfig = {
-	initialRouteName: "Home",
-	tabBarOptions: {
-		showIcon: true,
-		showLabel: true,
-		activeTintColor: BaseColor.primaryColor,
-		inactiveTintColor: BaseColor.greyColor,
-		style: BaseStyle.tabBar,
-		labelStyle: {
-			fontSize: 12
-		}
-	}
-};
 
 // TAB BAR NAVIGATION
 const routeConfigsBuyer = {
@@ -148,94 +133,35 @@ const routeConfigsSeller = {
 	}
 };
 
-// DEFINE BOTTOM NAVIGATOR AS A SCREEN IN STACK
-const BottomTabNavigatorBuyer = createBottomTabNavigator(
-	routeConfigsBuyer,
-	bottomTabNavigatorConfig
-);
 
-const BottomTabNavigatorSeller = createBottomTabNavigator(
-	routeConfigsSeller,
+// DEFINE BOTTOM NAVIGATOR AS A SCREEN IN STACK
+const { IS_BUYER_MODE } = store.getState().app;
+const routeConfig = IS_BUYER_MODE ? routeConfigsBuyer : routeConfigsSeller;
+
+// CONFIG FOR BOTTOM NAVIGATOR
+const bottomTabNavigatorConfig = {
+	initialRouteName: IS_BUYER_MODE ? "Home" : "Profile",
+	tabBarOptions: {
+		showIcon: true,
+		showLabel: true,
+		activeTintColor: BaseColor.primaryColor,
+		inactiveTintColor: BaseColor.greyColor,
+		style: BaseStyle.tabBar,
+		labelStyle: {
+			fontSize: 12
+		}
+	}
+};
+const BottomTabNavigator = createBottomTabNavigator(
+	routeConfig,
 	bottomTabNavigatorConfig
 );
 
 // MAIN STACK VIEW APP
-const StackNavigatorBuyer = createStackNavigator(
+const StackNavigator = createStackNavigator(
 	{
 		BottomTabNavigator: {
-			screen: BottomTabNavigatorBuyer
-		},
-		Welcome: {
-			screen: Welcome
-		},
-		Login: {
-			screen: Login
-		},
-		SignUp: {
-			screen: SignUp
-		},
-		Home: {
-			screen: Home
-		},
-		AdvancedFilter: {
-			screen: AdvancedFilter
-		},
-		FilterResult: {
-			screen: FilterResult
-		},
-		AdDetail: {
-			screen: AdDetail
-		},
-		ImageSlider: {
-			screen: ImageSlider
-		},
-		Notification: {
-			screen: Notification
-		},
-		Chat: {
-			screen: Chat
-		},
-		ProfileEdit: {
-			screen: ProfileEdit
-		},
-		ShowProfile: {
-			screen: ShowProfile
-		},
-		Help: {
-			screen: Help
-		},
-		Version: {
-			screen: Version
-		},
-		ContactSupport: {
-			screen: ContactSupport
-		},
-		Setting: {
-			screen: Setting
-		},
-		Privacy: {
-			screen: Privacy
-		},
-		BlockContact: {
-			screen: BlockContact
-		},
-		CustomMap: {
-			screen: CustomMap
-		},
-		SellEdit: {
-			screen: SellEdit
-		}
-	},
-	{
-		headerMode: "none",
-		initialRouteName: "BottomTabNavigator"
-	}
-);
-
-const StackNavigatorSeller = createStackNavigator(
-	{
-		BottomTabNavigator: {
-			screen: BottomTabNavigatorSeller
+			screen: BottomTabNavigator
 		},
 		Welcome: {
 			screen: Welcome
@@ -305,23 +231,17 @@ const StackNavigatorSeller = createStackNavigator(
 );
 
 // DEFINE ROOT STACK SUPPORT MODAL SCREEN
-const RootStack = () => {
-	return createStackNavigator(
-		{
-			StackNavigator: {
-				screen: StackNavigatorBuyer
-			}
-		},
-		{
-			mode: "modal",
-			headerMode: "none",
-			initialRouteName: "StackNavigator",
+const RootStack = createStackNavigator(
+	{
+		StackNavigator: {
+			screen: StackNavigator
 		}
-	);
-}
+	},
+	{
+		mode: "modal",
+		headerMode: "none",
+		initialRouteName: "StackNavigator",
+	}
+);
 
-const mapStateToProps = ({ app: { IS_BUYER_MODE } }) => {
-	return { IS_BUYER_MODE };
-}
-
-export default connect(mapStateToProps)(RootStack());
+export default RootStack;

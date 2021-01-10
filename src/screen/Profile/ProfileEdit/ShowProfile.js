@@ -103,7 +103,7 @@ class ShowProfile extends Component {
 
         return (
             <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}>
-                <ScrollView refreshControl={
+                <ScrollView keyboardShouldPersistTaps='always' refreshControl={
                     <RefreshControl
                         refreshing={showRefresh}
                         onRefresh={this._onRefresh}

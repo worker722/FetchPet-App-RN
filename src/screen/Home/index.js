@@ -339,7 +339,7 @@ class Home extends Component {
                 {showContentLoader ?
                     <Loader />
                     :
-                    <ScrollView
+                    <ScrollView keyboardShouldPersistTaps='always'
                         refreshControl={
                             <RefreshControl
                                 refreshing={showRefresh}

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import {
-    View,
-} from 'react-native';
+import { View } from 'react-native';
 import { Header, LinkItem } from '@components';
 import { BaseColor } from '@config';
 
 import { GoogleSignin } from '@react-native-community/google-signin';
 import appleAuth from '@invertase/react-native-apple-authentication';
 import { LoginManager } from 'react-native-fbsdk';
+
+import messaging from '@react-native-firebase/messaging';
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -50,9 +50,16 @@ class Setting extends Component {
     }
 
     setNotificationStatus = async () => {
-        const params = { key: global._SHOW_NOTIFICATION, value: this.state.is_showNotification ? 0 : 1 };
-        this.setState({ is_showNotification: !this.state.is_showNotification });
+        const { is_showNotification } = this.state;
+        const params = { key: global._SHOW_NOTIFICATION, value: is_showNotification ? 0 : 1 };
         await this.props.api.post("profile/setting", params, true);
+
+        if (!is_showNotification && messaging().isDeviceRegisteredForRemoteMessages)
+            await messaging().unregisterDeviceForRemoteMessages();
+        else if (is_showNotification && !messaging().isDeviceRegisteredForRemoteMessages)
+            await messaging().registerDeviceForRemoteMessages();
+
+        this.setState({ is_showNotification: !is_showNotification });
     }
 
     logOut = async () => {
