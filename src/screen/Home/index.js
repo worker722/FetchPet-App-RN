@@ -132,8 +132,6 @@ class Home extends Component {
                 } else {
                     await messaging().requestPermission()
                         .then(async () => {
-                            if (!messaging().isDeviceRegisteredForRemoteMessages)
-                                await messaging().registerDeviceForRemoteMessages();
                             this.getFcmToken();
                         })
                         .catch(error => {
@@ -143,6 +141,18 @@ class Home extends Component {
     }
 
     getFcmToken = async () => {
+        const user_meta = store.getState().auth.login.user?.meta;
+        let is_showNotification = true;
+        user_meta?.forEach((item, key) => {
+            if (item.meta_key == global._SHOW_NOTIFICATION)
+                is_showNotification = item.meta_value == 1 ? true : false;
+        });
+
+        if (!is_showNotification)
+            return;
+
+        if (!messaging().isDeviceRegisteredForRemoteMessages)
+            await messaging().registerDeviceForRemoteMessages();
         const token = await messaging().getToken();
         if (token) {
             const params = { token, platform: Platform.OS };

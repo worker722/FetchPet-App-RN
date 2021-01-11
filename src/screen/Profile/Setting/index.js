@@ -54,9 +54,9 @@ class Setting extends Component {
         const params = { key: global._SHOW_NOTIFICATION, value: is_showNotification ? 0 : 1 };
         await this.props.api.post("profile/setting", params, true);
 
-        if (!is_showNotification && messaging().isDeviceRegisteredForRemoteMessages)
+        if (is_showNotification && messaging().isDeviceRegisteredForRemoteMessages)
             await messaging().unregisterDeviceForRemoteMessages();
-        else if (is_showNotification && !messaging().isDeviceRegisteredForRemoteMessages)
+        else if (!is_showNotification && !messaging().isDeviceRegisteredForRemoteMessages)
             await messaging().registerDeviceForRemoteMessages();
 
         this.setState({ is_showNotification: !is_showNotification });
