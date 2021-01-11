@@ -28,14 +28,6 @@ export default class index extends Component {
         StatusBar.setBarStyle("light-content");
     }
 
-    onAlertShow = () => {
-        console.log("‘Alert is visible’");
-    }
-
-    onAlertHide = () => {
-        console.log("‘Alert is hidden’");
-    }
-
     render() {
         return (
             <Provider store={store}>
