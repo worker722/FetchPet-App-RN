@@ -135,7 +135,7 @@ class AdDetail extends Component {
             return (<Loader />);
 
         return (
-            <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}>
+            <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor, paddingBottom: Platform.OS == "android" ? 0 : 10 }}>
                 <ScrollView keyboardShouldPersistTaps='always' style={{ flex: 1 }}
                     refreshControl={
                         <RefreshControl
