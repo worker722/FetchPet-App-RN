@@ -214,7 +214,7 @@ class AdvancedFilter extends Component {
                                         })
                                     }
                                 }}
-                                placeholder={"Min Price"} value={price.min} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
+                                placeholder={"Min Price"} value={price.min.toString()} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
                         </View>
                         <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, marginLeft: 10, borderColor: BaseColor.dddColor }}>
                             <TextInput
@@ -228,7 +228,7 @@ class AdvancedFilter extends Component {
                                         })
                                     }
                                 }}
-                                placeholder={"Max Price"} value={price.max} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
+                                placeholder={"Max Price"} value={price.max.toString()} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
                         </View>
                     </View>
                     <View style={{ paddingTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
@@ -248,7 +248,7 @@ class AdvancedFilter extends Component {
                                         })
                                     }
                                 }}
-                                placeholder={"Min Age"} value={age.min.num} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
+                                placeholder={"Min Age"} value={age.min.num.toString()} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
                         </View>
                         <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, paddingVertical: 5, marginLeft: 10, borderColor: BaseColor.dddColor }}>
                             <CustomModalPicker title={"Select a Unit"} data={unit_data} selectedValue={age.min.unit}
@@ -283,7 +283,7 @@ class AdvancedFilter extends Component {
                                         })
                                     }
                                 }}
-                                placeholder={"Max Age"} value={age.max.num} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
+                                placeholder={"Max Age"} value={age.max.num.toString()} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
                         </View>
                         <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, paddingVertical: 5, marginLeft: 10, borderColor: BaseColor.dddColor }}>
                             <CustomModalPicker title={"Select a Unit"} data={unit_data} selectedValue={age.max.unit}
