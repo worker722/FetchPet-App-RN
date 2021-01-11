@@ -135,12 +135,12 @@ const routeConfigsSeller = {
 
 
 // DEFINE BOTTOM NAVIGATOR AS A SCREEN IN STACK
-const { IS_BUYER_MODE } = store.getState().app;
+// const { IS_BUYER_MODE } = store.getState().app;
 const routeConfig = routeConfigsSeller;
 
 // CONFIG FOR BOTTOM NAVIGATOR
 const bottomTabNavigatorConfig = {
-	initialRouteName: IS_BUYER_MODE ? "Home" : "Profile",
+	initialRouteName: "Home",
 	tabBarOptions: {
 		showIcon: true,
 		showLabel: true,

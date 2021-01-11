@@ -109,7 +109,7 @@ class Profile extends Component {
                     <LinkItem title={"Setting"} subtitle={"Privacy & Logout"} icon_left={"cog"} icon_right={"angle-right"} action={this.goSetting} />
                 }
                 <LinkItem title={"Help & Support"} subtitle={"Help center and legal terms"} icon_left={"info"} icon_right={"angle-right"} action={this.goHelp} />
-                <LinkItem title={"Switch as Buyer"} subtitle={""} icon_left={"info"} icon_right={"angle-right"} action={this.switchUserMode} />
+                {/* <LinkItem title={"Switch as Buyer"} subtitle={""} icon_left={"info"} icon_right={"angle-right"} action={this.switchUserMode} /> */}
             </View>
         )
     }
