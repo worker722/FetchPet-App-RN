@@ -20,7 +20,7 @@ class Header extends Component {
     render = () => {
         const { UNREAD_MESSAGE, navigation, mainHeader, title, color_title, icon_left, color_icon_left, color_icon_right, icon_right, text_left, text_right, callback_left, callback_right } = this.props;
 
-        const is_social = store.getState().auth.login.user.is_social;
+        const is_social = store.getState().auth.login?.user?.is_social;
 
         return (
             <View style={{ width: "100%", height: 70, paddingHorizontal: 10, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>

@@ -119,8 +119,8 @@ class AdDetail extends Component {
     }
 
     render = () => {
-        const user_id = store.getState().auth.login.user.id;
-        const is_social = store.getState().auth.login.user.is_social;
+        const user_id = store.getState().auth.login?.user?.id;
+        const is_social = store.getState().auth.login?.user?.is_social;
         const { ads, ad_images, showLoader, showRefresh, adsLocation } = this.state;
         const navigation = this.props.navigation;
 

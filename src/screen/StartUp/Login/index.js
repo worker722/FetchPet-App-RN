@@ -202,7 +202,7 @@ class Login extends Component {
                 this.props.navigation.navigate("Home");
             }
         } catch (error) {
-            global.showToastMessage(error);
+            console.log(error);
             this.setState({ showLoading: false });
         }
     }

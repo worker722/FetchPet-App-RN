@@ -62,8 +62,8 @@ export default class HomeAds extends Component {
     }
 
     render = () => {
-        const user_id = store.getState().auth.login.user.id;
-        const is_social = store.getState().auth.login.user.is_social;
+        const user_id = store.getState().auth.login?.user?.id;
+        const is_social = store.getState().auth.login?.user?.is_social;
         const { adsLocation, item, ad_images } = this.state;
         const { navigation, onFavourite, data } = this.props;
 
