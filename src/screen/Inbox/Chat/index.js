@@ -257,7 +257,7 @@ class Chat extends Component {
             <KeyboardAvoidingView behavior={Platform.OS == "android" ? "" : "padding"}
                 style={{ flex: 1 }}
                 keyboardVerticalOffset={40}>
-                <View style={{ flex: 1, marginBottom: 10, backgroundColor: BaseColor.whiteColor }}>
+                <View style={{ flex: 1, marginBottom: Platform.OS == "android" ? 10 : 20, backgroundColor: BaseColor.whiteColor }}>
                     <View style={{ width: "100%", height: 80, backgroundColor: BaseColor.primaryColor, flexDirection: "row", padding: 10 }}>
                         <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", padding: 10 }}
                             onPress={() => {
@@ -353,7 +353,6 @@ class Chat extends Component {
                                     style={{ flex: 1, textAlignVertical: "center", backgroundColor: BaseColor.dddColor, width: "100%", borderRadius: 30, paddingLeft: 20, paddingRight: 90 }}
                                     value={this.state.message}
                                     multiline={true}
-                                    placeholder="Type Message..."
                                     onChangeText={(text) => this.setState({ message: text })}
                                 >
                                 </TextInput>
