@@ -43,7 +43,7 @@ class ProfileEdit extends Component {
 
     UNSAFE_componentWillMount = async () => {
         this.setState({ showLoader: true });
-        const param = { user_id: store.getState().auth.login.user.id };
+        const param = { user_id: store.getState().auth.login?.user?.id };
         const response = await this.props.api.post('profile', param);
         this.setState({ showLoader: false });
         if (response?.success) {

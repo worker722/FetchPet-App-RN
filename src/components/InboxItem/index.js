@@ -38,7 +38,7 @@ class InboxItem extends Component {
     UNSAFE_componentWillMount = () => {
         const { item } = this.props.data;
         const { ads, message } = item;
-        const user_id = store.getState().auth.login.user.id;
+        const user_id = store.getState().auth.login?.user?.id;
         const unread_message = message.filter((item, key) => {
             return item.read_status == 0 && user_id != item.id_user_snd;
         });
@@ -60,7 +60,7 @@ class InboxItem extends Component {
                 const { data } = remoteMessage;
                 const notificationData = JSON.parse(data.data);
                 if (notificationData.notification_type == global.CHAT_MESSAGE_NOTIFICATION) {
-                    const user_id = store.getState().auth.login.user.id;
+                    const user_id = store.getState().auth.login?.user?.id;
                     const { room } = this.state;
                     if (notificationData.id_room == room.id && notificationData.id_user_snd != user_id && !this.props.IS_IN_CHAT) {
                         let { unread_message } = this.state;
@@ -129,7 +129,7 @@ class InboxItem extends Component {
         if (!message || message.length == 0)
             return null;
 
-        const user_id = store.getState().auth.login.user.id;
+        const user_id = store.getState().auth.login?.user?.id;
         const other_user = user_id == buyer.id ? seller : buyer;
 
         let is_blocked = false;

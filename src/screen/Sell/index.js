@@ -72,7 +72,7 @@ class Sell extends Component {
     }
 
     start = async () => {
-        const is_social = store.getState().auth.login.user.is_social;
+        const is_social = store.getState().auth.login?.user?.is_social;
         if (is_social == -1) {
             global.showGuestMessage();
         }
@@ -156,7 +156,7 @@ class Sell extends Component {
     }
 
     createAds = async () => {
-        const is_social = store.getState().auth.login.user.is_social;
+        const is_social = store.getState().auth.login?.user?.is_social;
         if (is_social == -1) {
             global.showGuestMessage();
         }
@@ -198,7 +198,7 @@ class Sell extends Component {
     }
 
     _onRefresh = () => {
-        const is_social = store.getState().auth.login.user.is_social;
+        const is_social = store.getState().auth.login?.user?.is_social;
         if (is_social == -1) {
             global.showGuestMessage();
         }

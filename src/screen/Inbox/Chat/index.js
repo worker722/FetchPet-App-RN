@@ -64,7 +64,7 @@ class Chat extends Component {
                 const { data } = remoteMessage;
                 const notificationData = JSON.parse(data.data);
                 if (notificationData.notification_type == global.CHAT_MESSAGE_NOTIFICATION) {
-                    const user_id = store.getState().auth.login.user.id;
+                    const user_id = store.getState().auth.login?.user?.id;
                     const { room } = this.state;
                     if (notificationData.id_room == room.id && notificationData.id_user_snd != user_id && this.props.IS_IN_CHAT) {
                         let { chat } = this.state;
@@ -110,7 +110,7 @@ class Chat extends Component {
         const response = await this.props.api.post("chat", param);
         if (response?.success) {
             const { ads, room } = response.data;
-            const user_id = store.getState().auth.login.user.id;
+            const user_id = store.getState().auth.login?.user?.id;
             const other_user = user_id == room.seller.id ? room.buyer : room.seller;
 
             const ad_images = [];
@@ -172,7 +172,7 @@ class Chat extends Component {
 
     sendMessage = async () => {
         const { message, room, attach_file } = this.state;
-        const user_id = store.getState().auth.login.user.id;
+        const user_id = store.getState().auth.login?.user?.id;
         if (message == '' && !attach_file)
             return;
 

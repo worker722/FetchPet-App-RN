@@ -31,7 +31,7 @@ class NotificationItem extends Component {
 
     _onClick = () => {
         const { item } = this.state;
-        const user_id = store.getState().auth.login.user.id;
+        const user_id = store.getState().auth.login?.user?.id;
         if (item.type == 0) {
             const unread_message = item.room.message.filter((item, key) => {
                 return item.read_status == 0 && user_id != item.id_user_snd;

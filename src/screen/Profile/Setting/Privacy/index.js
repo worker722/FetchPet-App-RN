@@ -32,7 +32,7 @@ class Privacy extends Component {
     }
 
     UNSAFE_componentWillMount = async () => {
-        const user_meta = store.getState().auth.login.user.meta;
+        const user_meta = store.getState().auth.login?.user?.meta;
         let is_showPhonenumber = false;
         user_meta?.forEach((item, key) => {
             if (item.meta_key == global._SHOW_PHONE_ON_ADS)
@@ -72,7 +72,7 @@ class Privacy extends Component {
 
     render = () => {
         const { is_showPhonenumber, visiblePasswordModal, showLoader, currentPwd, newPwd, reNewPwd } = this.state;
-        const is_social = store.getState().auth.login.user.is_social;
+        const is_social = store.getState().auth.login?.user?.is_social;
 
         if (showLoader)
             return (<Loader />);

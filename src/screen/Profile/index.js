@@ -33,7 +33,7 @@ class Profile extends Component {
 
     UNSAFE_componentWillMount = async () => {
         this.setState({ showLoader: true });
-        const param = { user_id: store.getState().auth.login.user.id };
+        const param = { user_id: store.getState().auth.login?.user?.id };
         const response = await this.props.api.post('profile', param);
         if (response?.success) {
             this.setState({ user: response.data.user });
@@ -59,7 +59,7 @@ class Profile extends Component {
     }
 
     editProfile = () => {
-        const is_social = store.getState().auth.login.user.is_social;
+        const is_social = store.getState().auth.login?.user?.is_social;
         if (is_social != -1) {
             this.props.navigation.navigate("ProfileEdit");
         }
@@ -74,7 +74,7 @@ class Profile extends Component {
     render = () => {
         const navigation = this.props.navigation;
         const { user, showLoader } = this.state;
-        const is_social = store.getState().auth.login.user.is_social;
+        const is_social = store.getState().auth.login?.user?.is_social;
 
         if (showLoader)
             return (<Loader />);

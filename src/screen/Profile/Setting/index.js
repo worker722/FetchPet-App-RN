@@ -28,7 +28,7 @@ class Setting extends Component {
             iosClientId: 'YOUR IOS CLIENT ID',
         });
 
-        const user_meta = store.getState().auth.login.user.meta;
+        const user_meta = store.getState().auth.login?.user?.meta;
         let is_showNotification = false;
         user_meta?.forEach((item, key) => {
             if (item.meta_key == global._SHOW_NOTIFICATION)
@@ -64,7 +64,7 @@ class Setting extends Component {
 
     logOut = async () => {
         await SetPrefrence(global.PREF_REMEMBER_ME, 0);
-        const is_social = store.getState().auth.login.user.is_social;
+        const is_social = store.getState().auth.login?.user?.is_social;
         if (is_social == 1) {
             await GoogleSignin.signOut();
         }
@@ -82,7 +82,7 @@ class Setting extends Component {
 
     logOutAll = async () => {
         await SetPrefrence(global.PREF_REMEMBER_ME, 0);
-        const is_social = store.getState().auth.login.user.is_social;
+        const is_social = store.getState().auth.login?.user?.is_social;
         if (is_social == 1) {
             await GoogleSignin.signOut();
         }
