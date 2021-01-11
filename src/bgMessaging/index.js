@@ -1,6 +1,6 @@
 import * as global from "@api/global";
 
-export default async (notification) => {
+export default (notification) => {
   try {
     const { data } = notification;
     const notificationData = JSON.parse(data.data);
@@ -9,7 +9,7 @@ export default async (notification) => {
         this.props.setStore(global.U_MESSAGE_INCREMENT, 1);
     }
   } catch (error) {
-    console.log('index notification received error', error);
+    console.log('remote notification received error', error);
   }
 
   return Promise.resolve(notification);
