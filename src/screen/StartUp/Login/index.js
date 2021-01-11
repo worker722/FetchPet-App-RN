@@ -61,18 +61,19 @@ class Login extends Component {
                 else {
                     await messaging().requestPermission()
                         .then(async () => {
-                            if (!messaging().isDeviceRegisteredForRemoteMessages)
-                                await messaging().registerDeviceForRemoteMessages();
                             this.getFcmToken();
                         })
                         .catch(error => {
                         });
                 }
             }).catch(error => {
+                console.log(error)
             })
     }
 
     getFcmToken = async () => {
+        if (!messaging().isDeviceRegisteredForRemoteMessages)
+            await messaging().registerDeviceForRemoteMessages();
         const device_token = await messaging().getToken();
         console.log('fcmToken', device_token)
         this.setState({ device_token });

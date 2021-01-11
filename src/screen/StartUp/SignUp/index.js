@@ -65,8 +65,6 @@ class SignUp extends Component {
                 else {
                     await messaging().requestPermission()
                         .then(async () => {
-                            if (!messaging().isDeviceRegisteredForRemoteMessages)
-                                await messaging().registerDeviceForRemoteMessages();
                             this.getFcmToken();
                         })
                         .catch(error => {
@@ -77,6 +75,8 @@ class SignUp extends Component {
     }
 
     getFcmToken = async () => {
+        if (!messaging().isDeviceRegisteredForRemoteMessages)
+            await messaging().registerDeviceForRemoteMessages();
         const device_token = await messaging().getToken();
         console.log('fcmToken', device_token)
         this.setState({ device_token });
