@@ -52,7 +52,7 @@ class Splash extends Component {
 	requestPermission = async () => {
 		try {
 			if (Platform.OS == "android") {
-				const granted = await PermissionsAndroid.requestMultiple(
+				await PermissionsAndroid.requestMultiple(
 					[
 						PermissionsAndroid.PERMISSIONS.CAMERA,
 						PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
@@ -61,14 +61,6 @@ class Splash extends Component {
 						PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION
 					],
 				);
-				if (
-					granted['android.permission.CAMERA'] === PermissionsAndroid.RESULTS.GRANTED &&
-					granted['android.permission.READ_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
-					granted['android.permission.WRITE_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED &&
-					granted['android.permission.ACCESS_FINE_LOCATION'] === PermissionsAndroid.RESULTS.GRANTED &&
-					granted['android.permission.ACCESS_COARSE_LOCATION'] === PermissionsAndroid.RESULTS.GRANTED
-				) {
-				}
 			}
 			else {
 				geolocation.requestAuthorization();
