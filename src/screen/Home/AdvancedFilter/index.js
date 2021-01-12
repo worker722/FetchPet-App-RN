@@ -8,16 +8,20 @@ import {
     TouchableOpacity,
     Image as RNImage,
     ActivityIndicator,
-    FlatList
+    FlatList,
+    Platform
 } from 'react-native';
 import { BaseColor, Images } from '@config';
 import { Header, Loader, CustomModalPicker } from '@components';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
+import MultiSlider from '@ptomasroos/react-native-multi-slider';
+
 import { Image } from 'react-native-elements';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Api from '@api';
+import * as Utils from '@utils';
 import * as global from '@api/global';
 
 const default_icon = "/material/img/category-all.png";
@@ -47,8 +51,8 @@ class AdvancedFilter extends Component {
             category: { id: -1, name: "All" },
             breed: { id: -2, name: "Pet's Breed" },
             price: {
-                min: "",
-                max: ""
+                min: 0,
+                max: 100
             },
             age: 0,
             gender: { id: -1, name: "Gender" },
@@ -63,7 +67,7 @@ class AdvancedFilter extends Component {
     start = async () => {
         const response = await this.props.api.get("filter");
         if (response?.success) {
-            const { category, breed } = this.state;
+            const { category } = this.state;
             let { category_data, breed_data } = response.data;
             category_data.unshift(category);
             breed_data.unshift({ id: -1, name: "All" });
@@ -73,7 +77,7 @@ class AdvancedFilter extends Component {
                 else item.is_select = false;
             })
 
-            this.setState({ category_data, breed_data });
+            this.setState({ category_data, breed_data, price: { min: 0, max: response.data.max_price } });
         }
         this.setState({ showLoader: false, showRefresh: false });
     }
@@ -108,6 +112,10 @@ class AdvancedFilter extends Component {
         this.props.navigation.goBack(null);
     }
 
+    priceRangeChanged = (values) => {
+        this.setState({ price: { min: values[0], max: values[1] } });
+    }
+
     renderFilterItem = ({ item, index }) => {
         const icon = item.icon ? item.icon : default_icon;
 
@@ -124,7 +132,7 @@ class AdvancedFilter extends Component {
     }
 
     render = () => {
-        const { showLoader, showRefresh, category_data, breed_data, gender_data, breed, age, gender } = this.state;
+        const { showLoader, showRefresh, category_data, breed_data, gender_data, breed, age, gender, price } = this.state;
 
         if (showLoader)
             return (<Loader />);
@@ -168,10 +176,52 @@ class AdvancedFilter extends Component {
                     </View>
                     <TextInput keyboardType={"number-pad"} value={age} onChangeText={(age) => this.setState({ age })} placeholder={"Age"} placeholderTextColor={BaseColor.greyColor} style={{ marginTop: 10, marginHorizontal: 10, fontSize: 15, textAlign: "center", color: BaseColor.blackColor, flex: 1, borderRadius: 100, borderColor: BaseColor.primaryColor, borderWidth: 1, justifyContent: "center", alignItems: "center" }}>
                     </TextInput>
+                    <View style={{ flexDirection: "row", paddingHorizontal: 20, marginTop: 20 }}>
+                        <Text style={{ flex: 1 }}>$ {price.min}</Text>
+                        <Text style={{ flex: 1, textAlign: "right" }}>$ {price.max}</Text>
+                    </View>
+                    <View style={{ marginHorizontal: 20 }}>
+                        <MultiSlider
+                            markerStyle={{
+                                ...Platform.select({
+                                    ios: {
+                                        height: 22,
+                                        width: 22,
+                                        shadowColor: '#000000',
+                                        shadowOffset: {
+                                            width: 0,
+                                            height: 3
+                                        },
+                                        shadowRadius: 1,
+                                        shadowOpacity: 0.1,
+                                        marginTop: 9,
+                                        borderRadius: 100
+                                    },
+                                    android: {
+                                        height: 22,
+                                        width: 22,
+                                        borderRadius: 100,
+                                        marginTop: 9,
+                                        borderWidth: 1,
+                                        borderColor: BaseColor.whiteColor,
+                                        backgroundColor: BaseColor.primaryColor
+                                    }
+                                })
+                            }}
+                            selectedStyle={{ backgroundColor: BaseColor.primaryColor, height: 10 }}
+                            unselectedStyle={{ height: 10 }}
+                            onValuesChange={this.priceRangeChanged}
+                            values={[price.min, price.max]}
+                            min={price.min}
+                            max={price.max}
+                            sliderLength={Utils.SCREEN.WIDTH - 40}
+                            allowOverlap={false}
+                        />
+                    </View>
                     <View style={{ paddingVertical: 20, paddingHorizontal: 10, justifyContent: "center", alignItems: "center" }}>
                         <TouchableOpacity
                             onPress={this.filterPet}
-                            style={{ backgroundColor: BaseColor.primaryColor, borderRadius: 5, width: "60%", height: 50, justifyContent: "center", alignItems: "center" }}>
+                            style={{ backgroundColor: BaseColor.primaryColor, borderRadius: 5, width: "100%", height: 50, justifyContent: "center", alignItems: "center" }}>
                             <Text style={{ color: BaseColor.whiteColor, fontSize: 18 }}>Filter</Text>
                         </TouchableOpacity>
                     </View>
