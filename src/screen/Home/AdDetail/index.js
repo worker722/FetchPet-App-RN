@@ -106,7 +106,10 @@ class AdDetail extends Component {
         else
             phoneNumber = `tel://${ads.user.phonenumber}`;
 
-        Linking.openURL(phoneNumber);
+        try {
+            Linking.openURL(phoneNumber);
+        } catch (error) {
+        }
     }
 
     onEdit = () => {
