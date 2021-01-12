@@ -5,17 +5,22 @@ import {
     ScrollView,
     RefreshControl,
     TextInput,
-    TouchableOpacity
+    TouchableOpacity,
+    Image as RNImage,
+    ActivityIndicator,
+    FlatList
 } from 'react-native';
-import { BaseColor } from '@config';
+import { BaseColor, Images } from '@config';
 import { Header, Loader, CustomModalPicker } from '@components';
-import * as Utils from '@utils';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
-import MapView, { Marker } from 'react-native-maps';
-
+import { Image } from 'react-native-elements';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Api from '@api';
+import * as global from '@api/global';
+
+const default_icon = "/material/img/category-all.png";
 
 class AdvancedFilter extends Component {
     constructor(props) {
@@ -24,7 +29,8 @@ class AdvancedFilter extends Component {
             showLoader: false,
             showRefresh: false,
 
-            user_data: [],
+            searchText: '',
+
             category_data: [],
             breed_data: [],
             gender_data: [
@@ -37,56 +43,15 @@ class AdvancedFilter extends Component {
                     name: "Female"
                 }
             ],
-            unit_data: [
-                { id: 0, name: "Day(s)" },
-                { id: 1, name: "Week(s)" },
-                { id: 2, name: "Month(s)" },
-                { id: 3, name: "Year(s)" },
-            ],
-            sort_type_data: [
-                {
-                    name: "Post Date",
-                },
-                {
-                    name: "Price",
-                }
-            ],
-            sort_asc_data: [
-                { "name": "ASC" },
-                { "name": "DESC" },
-            ],
 
-            user: { id: -1, name: "All" },
             category: { id: -1, name: "All" },
-            breed: { id: -1, name: "All" },
-            map: {
-                region: {
-                    latitude: 0,
-                    longitude: 0,
-                    latitudeDelta: 0.001,
-                    longitudeDelta: 0.0001
-                },
-                radius: 0
-            },
+            breed: { id: -2, name: "Pet's Breed" },
             price: {
                 min: "",
                 max: ""
             },
-            age: {
-                min: {
-                    num: 0,
-                    unit: "Day(s)"
-                },
-                max: {
-                    num: 0,
-                    unit: "Day(s)"
-                }
-            },
-            gender: { id: 1, name: "Male" },
-            sortBy: {
-                type: "Post Date",
-                direction: "ASC"
-            }
+            age: 0,
+            gender: { id: -1, name: "Gender" },
         }
     }
 
@@ -98,13 +63,17 @@ class AdvancedFilter extends Component {
     start = async () => {
         const response = await this.props.api.get("filter");
         if (response?.success) {
-            const { user, category, breed } = this.state;
-            let { user_data, category_data, breed_data } = response.data;
-            user_data.unshift(user);
+            const { category, breed } = this.state;
+            let { category_data, breed_data } = response.data;
             category_data.unshift(category);
-            breed_data.unshift(breed);
+            breed_data.unshift({ id: -1, name: "All" });
 
-            this.setState({ user_data, category_data, breed_data });
+            category_data.forEach((item, index) => {
+                if (item.id == -1) item.is_select = true;
+                else item.is_select = false;
+            })
+
+            this.setState({ category_data, breed_data });
         }
         this.setState({ showLoader: false, showRefresh: false });
     }
@@ -114,19 +83,24 @@ class AdvancedFilter extends Component {
         this.start();
     }
 
-    selectLocation = (region) => {
-        let currentRegion = {
-            latitude: region.latitude,
-            longitude: region.longitude,
-            latitudeDelta: 0.0005,
-            longitudeDelta: 0.0005,
-        }
-        let { map } = this.state;
-        map.region = currentRegion;
-        this.setState({ map });
+    filterSelected = (id) => {
+        let { category_data } = this.state;
+        category_data.forEach((item, key) => {
+            if (item.id == id) {
+                item.is_select = true;
+                this.setState({ category: item });
+            }
+            else item.is_select = false;
+        });
+        this.setState({ category_data });
     }
 
-    filterPet = async () => {
+    filterPet = () => {
+        const { breed } = this.state;
+        if (breed.id == -2) {
+            global.showToastMessage("Please select pet's breed.");
+            return;
+        }
         this.props.navigation.navigate("FilterResult", this.state);
     }
 
@@ -134,17 +108,43 @@ class AdvancedFilter extends Component {
         this.props.navigation.goBack(null);
     }
 
+    renderFilterItem = ({ item, index }) => {
+        const icon = item.icon ? item.icon : default_icon;
+
+        return (
+            <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+                <TouchableOpacity activeOpacity={1}
+                    onPress={() => this.filterSelected(item.id)}
+                    style={{ width: 55, height: 55, borderWidth: 5, justifyContent: "center", alignItems: "center", borderColor: item.is_select ? BaseColor.primaryColor : BaseColor.whiteColor, borderRadius: 100, marginBottom: 5 }}>
+                    <Image source={{ uri: Api.SERVER_HOST + icon }} PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />} placeholderStyle={{ backgroundColor: BaseColor.whiteColor }} resizeMode={"stretch"} style={{ width: 45, height: 45, borderRadius: 100 }}></Image>
+                </TouchableOpacity>
+                <Text style={{ color: item.is_select ? BaseColor.primaryColor : BaseColor.greyColor }} numberOfLines={1}>{item.name}</Text>
+            </View>
+        )
+    }
+
     render = () => {
-        const { showLoader, showRefresh, user_data, category_data, breed_data, gender_data, unit_data, sort_type_data, sort_asc_data, user, category, breed, map, price, age, gender, sortBy } = this.state;
-        const { navigation } = this.props;
+        const { showLoader, showRefresh, category_data, breed_data, gender_data, breed, age, gender } = this.state;
 
         if (showLoader)
             return (<Loader />);
 
         return (
             <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}>
-                <Header icon_left={"arrow-left"} title={"Advanced Filter"} color_icon_right={BaseColor.primaryColor} callback_left={this.goBack} />
-                <View></View>
+                <Header icon_left={"arrow-left"} title={"Filter Your Pets"} color_icon_right={BaseColor.primaryColor} callback_left={this.goBack} />
+                <View style={{ borderRadius: 100, marginHorizontal: 10, height: 40, backgroundColor: BaseColor.placeholderColor }}>
+                    <TextInput
+                        onChangeText={(text) => this.setState({ searchText: text })}
+                        returnKeyType="search"
+                        style={{ flex: 1, paddingLeft: 100, paddingRight: 20, color: BaseColor.whiteColor }}
+                        placeholder={"Search"} placeholderTextColor={BaseColor.greyColor}></TextInput>
+                    <View style={{ position: "absolute", left: 15, justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
+                        <RNImage source={Images.logo} style={{ width: 50, height: 17 }} resizeMode={"stretch"}></RNImage>
+                        <View style={{ padding: 10 }}>
+                            <Icon name={"search"} size={18} color={BaseColor.primaryColor}></Icon>
+                        </View>
+                    </View>
+                </View>
                 <ScrollView keyboardShouldPersistTaps='always' style={{ flex: 1 }}
                     refreshControl={
                         <RefreshControl
@@ -152,179 +152,22 @@ class AdvancedFilter extends Component {
                             onRefresh={this._onRefresh}
                         />
                     }>
-                    <View style={{ flex: 1, paddingTop: 10, paddingHorizontal: 10, flexDirection: "row" }}>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, borderColor: BaseColor.dddColor }}>
-                            <CustomModalPicker title={"Select a User"} data={user_data} selectedValue={user.name} onValueChange={(user, key) => this.setState({ user })} />
-                        </View>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, marginLeft: 10, height: 50, borderColor: BaseColor.dddColor }}>
-                            <CustomModalPicker title={"Select a Gender"} data={gender_data} selectedValue={gender.name} onValueChange={(gender, key) => this.setState({ gender })} />
-                        </View>
+                    <View style={{ flex: 1, paddingVertical: 10, maxHeight: 260 }}>
+                        <FlatList
+                            keyExtractor={(item, index) => index.toString()}
+                            data={category_data}
+                            numColumns={4}
+                            renderItem={this.renderFilterItem}
+                        />
                     </View>
-                    <View style={{ flex: 1, paddingTop: 10, paddingHorizontal: 10 }}>
-                        <View style={{ flexDirection: "row" }}>
-                            <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, borderColor: BaseColor.dddColor }}>
-                                <CustomModalPicker title={"Select a Category"} data={category_data} selectedValue={category.name} onValueChange={(category, key) => this.setState({ category })} />
-                            </View>
-                            <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, marginLeft: 10, borderColor: BaseColor.dddColor }}>
-                                <CustomModalPicker title={"Select a Breed"} data={breed_data} selectedValue={breed.name} onValueChange={(breed, key) => this.setState({ breed })} />
-                            </View>
-                        </View>
+                    <View style={{ flex: 1, marginHorizontal: 10, paddingHorizontal: 10, borderWidth: 1, borderRadius: 100, height: 50, borderColor: BaseColor.primaryColor }}>
+                        <CustomModalPicker title={"Select a Breed"} data={breed_data} selectedValue={breed.name} onValueChange={(breed, key) => this.setState({ breed })} />
                     </View>
-                    <View style={{ paddingTop: 10, paddingHorizontal: 10 }}>
-                        <Text style={{ color: BaseColor.primaryColor, fontSize: 18 }}>Location</Text>
-                        <MapView
-                            style={{ flex: 1, height: 160, marginTop: 10 }}
-                            scrollEnabled={false}
-                            zoomEnabled={false}
-                            onPress={() => navigation.navigate("CustomMap", { selectLocation: this.selectLocation, currentRegion: map.region })}
-                            region={map.region}
-                        >
-                            {map.region.latitude != 0 && map.region.longitude != 0 &&
-                                <Marker coordinate={map.region} />
-                            }
-                        </MapView>
+                    <View style={{ flex: 1, marginHorizontal: 10, paddingHorizontal: 10, marginTop: 10, borderWidth: 1, borderRadius: 100, height: 50, marginLeft: 10, borderColor: BaseColor.primaryColor }}>
+                        <CustomModalPicker title={"Select a Gender"} data={gender_data} selectedValue={gender.name} onValueChange={(gender, key) => this.setState({ gender })} />
                     </View>
-                    {/* <View style={{ paddingTop: 10, paddingHorizontal: 10, flexDirection: "row", justifyContent: "center", alignItems: "center", marginLeft: "50%" }}>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor, height: 50 }}>
-                            <TextInput
-                                onChangeText={(text) => {
-                                    if (Utils.isValidNumber(text)) {
-                                        this.setState({
-                                            map: {
-                                                ...map,
-                                                radius: text
-                                            }
-                                        })
-                                    }
-                                }}
-                                placeholder={"Radius"} value={map.radius} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
-                        </View>
-                        <Text>  KM</Text>
-                    </View> */}
-                    <View style={{ flex: 1, paddingTop: 10, paddingHorizontal: 10, flexDirection: "row" }}>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, borderColor: BaseColor.dddColor }}>
-                            <TextInput
-                                onChangeText={(text) => {
-                                    if (Utils.isValidNumber(text)) {
-                                        this.setState({
-                                            price: {
-                                                ...price,
-                                                min: text
-                                            }
-                                        })
-                                    }
-                                }}
-                                placeholder={"Min Price"} value={price.min.toString()} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
-                        </View>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, marginLeft: 10, borderColor: BaseColor.dddColor }}>
-                            <TextInput
-                                onChangeText={(text) => {
-                                    if (Utils.isValidNumber(text)) {
-                                        this.setState({
-                                            price: {
-                                                ...price,
-                                                max: text
-                                            }
-                                        })
-                                    }
-                                }}
-                                placeholder={"Max Price"} value={price.max.toString()} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
-                        </View>
-                    </View>
-                    <View style={{ paddingTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor }}>
-                            <TextInput
-                                onChangeText={(text) => {
-                                    if (Utils.isValidNumber(text)) {
-                                        const { min } = this.state.age;
-                                        this.setState({
-                                            age: {
-                                                ...age,
-                                                min: {
-                                                    ...min,
-                                                    num: text
-                                                }
-                                            }
-                                        })
-                                    }
-                                }}
-                                placeholder={"Min Age"} value={age.min.num.toString()} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
-                        </View>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, paddingVertical: 5, marginLeft: 10, borderColor: BaseColor.dddColor }}>
-                            <CustomModalPicker title={"Select a Unit"} data={unit_data} selectedValue={age.min.unit}
-                                onValueChange={(item, key) => {
-                                    const { min } = this.state.age;
-                                    this.setState({
-                                        age: {
-                                            ...age,
-                                            min: {
-                                                ...min,
-                                                unit: item.name
-                                            }
-                                        }
-                                    })
-                                }} />
-                        </View>
-                    </View>
-                    <View style={{ paddingTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor }}>
-                            <TextInput
-                                onChangeText={(text) => {
-                                    if (Utils.isValidNumber(text)) {
-                                        const { max } = this.state.age;
-                                        this.setState({
-                                            age: {
-                                                ...age,
-                                                max: {
-                                                    ...max,
-                                                    num: text
-                                                }
-                                            }
-                                        })
-                                    }
-                                }}
-                                placeholder={"Max Age"} value={age.max.num.toString()} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10 }} />
-                        </View>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, paddingVertical: 5, marginLeft: 10, borderColor: BaseColor.dddColor }}>
-                            <CustomModalPicker title={"Select a Unit"} data={unit_data} selectedValue={age.max.unit}
-                                onValueChange={(item, key) => {
-                                    const { max } = this.state.age;
-                                    this.setState({
-                                        age: {
-                                            ...age,
-                                            max: {
-                                                ...max,
-                                                unit: item.name
-                                            }
-                                        }
-                                    })
-                                }} />
-                        </View>
-                    </View>
-                    <View style={{ flexDirection: "row", paddingTop: 10, paddingHorizontal: 10 }}>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, borderColor: BaseColor.dddColor }}>
-                            <CustomModalPicker title={"What do you want to sort by?"} data={sort_type_data} selectedValue={sortBy.type}
-                                onValueChange={(item, key) => {
-                                    this.setState({
-                                        sortBy: {
-                                            ...sortBy,
-                                            type: item.name
-                                        }
-                                    })
-                                }} />
-                        </View>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, marginLeft: 10, borderColor: BaseColor.dddColor }}>
-                            <CustomModalPicker title={"Which direction do you want to sort by?"} data={sort_asc_data} selectedValue={sortBy.direction}
-                                onValueChange={(item, key) => {
-                                    this.setState({
-                                        sortBy: {
-                                            ...sortBy,
-                                            direction: item.name
-                                        }
-                                    })
-                                }} />
-                        </View>
-                    </View>
+                    <TextInput keyboardType={"number-pad"} value={age} onChangeText={(age) => this.setState({ age })} placeholder={"Age"} placeholderTextColor={BaseColor.greyColor} style={{ marginTop: 10, marginHorizontal: 10, fontSize: 15, textAlign: "center", color: BaseColor.blackColor, flex: 1, borderRadius: 100, borderColor: BaseColor.primaryColor, borderWidth: 1, justifyContent: "center", alignItems: "center" }}>
+                    </TextInput>
                     <View style={{ paddingVertical: 20, paddingHorizontal: 10, justifyContent: "center", alignItems: "center" }}>
                         <TouchableOpacity
                             onPress={this.filterPet}

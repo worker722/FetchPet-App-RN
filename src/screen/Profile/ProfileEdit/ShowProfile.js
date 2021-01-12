@@ -24,7 +24,9 @@ class ShowProfile extends Component {
             showLoader: false,
             showRefresh: false,
             user: null,
-            pets: null
+            pets: null,
+            is_follow: false,
+            followers: 0,
         }
     }
 
@@ -38,7 +40,7 @@ class ShowProfile extends Component {
         const response = await this.props.api.post('profile', param);
         if (response?.success) {
             const pets = await this.sortAdsByDistance(response.data.ads);
-            this.setState({ user: response.data.user, pets });
+            this.setState({ user: response.data.user, pets, is_follow: response.data.is_follow, followers: response.data.user.follower?.length });
         }
         this.setState({ showLoader: false, showRefresh: false });
     }
@@ -85,11 +87,24 @@ class ShowProfile extends Component {
         pets[index].is_fav = value;
         this.setState({ pets: pets });
         const param = { ad_id: item.id, is_fav: value };
-        const response = await this.props.api.post('ads/ad_favourite', param);
+        await this.props.api.post('ads/ad_favourite', param);
+    }
+
+    followUser = async () => {
+        const { is_follow, user, followers } = this.state;
+        if (is_follow) {
+            this.setState({ followers: followers - 1 });
+        }
+        else {
+            this.setState({ followers: followers + 1 });
+        }
+        this.setState({ is_follow: !is_follow });
+        const param = { id: user.id };
+        await this.props.api.post("profile/follow", param);
     }
 
     render = () => {
-        const { user, showLoader, showRefresh, pets } = this.state;
+        const { user, showLoader, showRefresh, pets, is_follow, followers } = this.state;
         const navigation = this.props.navigation;
 
         const user_meta = user?.meta;
@@ -128,23 +143,23 @@ class ShowProfile extends Component {
                     <View style={{ justifyContent: "center", alignItems: "center", paddingHorizontal: 10, marginTop: 10 }}>
                         <Text style={{ fontSize: 22, color: BaseColor.primaryColor }}>{user?.name}</Text>
                         <Text style={{ fontSize: 15 }}>Member since {Utils.DATE2STR(user?.created_at, 'MMM YYYY')}</Text>
-                        <TouchableOpacity style={{ marginTop: 10, justifyContent: "center", alignItems: "center", borderColor: BaseColor.dddColor, borderWidth: 1, borderRadius: 5, paddingVertical: 5, paddingHorizontal: 45 }}>
-                            <Text style={{ color: BaseColor.primaryColor }}>Follow</Text>
+                        <TouchableOpacity onPress={this.followUser} style={{ marginTop: 10, justifyContent: "center", alignItems: "center", borderColor: BaseColor.dddColor, backgroundColor: is_follow ? BaseColor.primaryColor : BaseColor.whiteColor, borderWidth: 1, borderRadius: 5, paddingVertical: 10, paddingHorizontal: 45 }}>
+                            <Text style={{ color: is_follow ? BaseColor.whiteColor : BaseColor.primaryColor }}>{is_follow ? "UnFollow" : "Follow"}</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{ marginHorizontal: 20, flexDirection: "row", marginTop: 20, borderRadius: 10, borderColor: BaseColor.dddColor, borderWidth: 1, justifyContent: "center", alignItems: "center", paddingVertical: 20 }}>
                         <View style={{ justifyContent: "center", alignItems: "center" }}>
-                            <Text style={{ color: BaseColor.primaryColor, fontSize: 20 }}>21</Text>
+                            <Text style={{ color: BaseColor.primaryColor, fontSize: 20 }}>{followers}</Text>
                             <Text>Followers</Text>
                         </View>
                         <View style={{ backgroundColor: BaseColor.dddColor, marginHorizontal: 10, width: 1, height: "100%" }}></View>
                         <View style={{ justifyContent: "center", alignItems: "center" }}>
-                            <Text style={{ color: BaseColor.primaryColor, fontSize: 20 }}>21</Text>
+                            <Text style={{ color: BaseColor.primaryColor, fontSize: 20 }}>{user?.review?.length}</Text>
                             <Text>Reviews</Text>
                         </View>
                         <View style={{ backgroundColor: BaseColor.dddColor, marginHorizontal: 10, width: 1, height: "100%" }}></View>
                         <View style={{ justifyContent: "center", alignItems: "center" }}>
-                            <Text style={{ color: BaseColor.primaryColor, fontSize: 20 }}>21</Text>
+                            <Text style={{ color: BaseColor.primaryColor, fontSize: 20 }}>{pets?.length}</Text>
                             <Text>Total ads</Text>
                         </View>
                     </View>
