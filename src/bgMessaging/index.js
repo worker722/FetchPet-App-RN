@@ -1,6 +1,7 @@
 import * as global from "@api/global";
 
 export default (notification) => {
+  console.log('remote notification when background');
   try {
     const { data } = notification;
     const notificationData = JSON.parse(data.data);

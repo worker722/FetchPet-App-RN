@@ -7,11 +7,9 @@ import { name as appName } from './src/app.json';
 
 messaging().setBackgroundMessageHandler(bgMessaging);
 
-function HeadlessCheck({ isHeadless }) {
-    if (isHeadless) {
+const HeadlessCheck = ({ isHeadless }) => {
+    if (isHeadless)
         return null;
-    }
-
     return <App />;
 }
 
