@@ -60,3 +60,4 @@ buck-out/
 /android/app/src/main/assets/fonts
 /android/app/release
 /package-lock.json
+/ios/Podfile.lock
