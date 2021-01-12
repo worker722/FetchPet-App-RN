@@ -5,6 +5,7 @@ import {
     RefreshControl,
     ScrollView,
     FlatList,
+    TouchableOpacity,
 } from 'react-native';
 import { Header, Loader, HomeAds } from '@components';
 import { Image } from 'react-native-elements';
@@ -110,37 +111,43 @@ class ShowProfile extends Component {
                     />
                 }>
                     <Header icon_left={"arrow-left"} callback_left={this.goBack} title={"See Profile"} />
-                    <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingHorizontal: 20 }}>Basic Infomation</Text>
-                    <View style={{ marginTop: 15, marginLeft: 15, paddingRight: 20, flexDirection: "row" }}>
-                        <View>
-                            {user?.avatar ?
-                                <Image
-                                    source={{ uri: Api.SERVER_HOST + user?.avatar }}
-                                    activeOpacity={0.7}
-                                    placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
-                                    containerStyle={{ marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.greyColor, width: 80, height: 80, borderRadius: 100 }}>
-                                </Image>
-                                :
-                                <View style={{ marginHorizontal: 10, width: 80, height: 80, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
-                                    <Text style={{ color: BaseColor.whiteColor, fontSize: 30 }}>{user?.name?.charAt(0).toUpperCase()}</Text>
-                                </View>
-                            }
+                    <View style={{ marginTop: 10, marginLeft: 15, paddingRight: 20, justifyContent: "center", alignItems: "center" }}>
+                        {user?.avatar ?
+                            <Image
+                                source={{ uri: Api.SERVER_HOST + user?.avatar }}
+                                activeOpacity={0.7}
+                                placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
+                                containerStyle={{ marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.greyColor, width: 90, height: 90, borderRadius: 100 }}>
+                            </Image>
+                            :
+                            <View style={{ marginHorizontal: 10, width: 90, height: 90, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
+                                <Text style={{ color: BaseColor.whiteColor, fontSize: 30 }}>{user?.name?.charAt(0).toUpperCase()}</Text>
+                            </View>
+                        }
+                    </View>
+                    <View style={{ justifyContent: "center", alignItems: "center", paddingHorizontal: 10, marginTop: 10 }}>
+                        <Text style={{ fontSize: 22, color: BaseColor.primaryColor }}>{user?.name}</Text>
+                        <Text style={{ fontSize: 15 }}>Member since {Utils.DATE2STR(user?.created_at, 'MMM YYYY')}</Text>
+                        <TouchableOpacity style={{ marginTop: 10, justifyContent: "center", alignItems: "center", borderColor: BaseColor.dddColor, borderWidth: 1, borderRadius: 5, paddingVertical: 5, paddingHorizontal: 45 }}>
+                            <Text style={{ color: BaseColor.primaryColor }}>Follow</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{ marginHorizontal: 20, flexDirection: "row", marginTop: 20, borderRadius: 10, borderColor: BaseColor.dddColor, borderWidth: 1, justifyContent: "center", alignItems: "center", paddingVertical: 20 }}>
+                        <View style={{ justifyContent: "center", alignItems: "center" }}>
+                            <Text style={{ color: BaseColor.primaryColor, fontSize: 20 }}>21</Text>
+                            <Text>Followers</Text>
                         </View>
-                        <View style={{ justifyContent: "center", alignItems: "center", paddingHorizontal: 10 }}>
-                            <Text style={{ fontSize: 22, color: BaseColor.primaryColor }}>{user?.name}</Text>
+                        <View style={{ backgroundColor: BaseColor.dddColor, marginHorizontal: 10, width: 1, height: "100%" }}></View>
+                        <View style={{ justifyContent: "center", alignItems: "center" }}>
+                            <Text style={{ color: BaseColor.primaryColor, fontSize: 20 }}>21</Text>
+                            <Text>Reviews</Text>
+                        </View>
+                        <View style={{ backgroundColor: BaseColor.dddColor, marginHorizontal: 10, width: 1, height: "100%" }}></View>
+                        <View style={{ justifyContent: "center", alignItems: "center" }}>
+                            <Text style={{ color: BaseColor.primaryColor, fontSize: 20 }}>21</Text>
+                            <Text>Total ads</Text>
                         </View>
                     </View>
-                    <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingHorizontal: 20, paddingTop: 20 }}>Contact Infomation</Text>
-                    <View style={{ flexDirection: "row", paddingHorizontal: 20, paddingVertical: 20 }}>
-                        <Text style={{ fontSize: 17, color: BaseColor.greyColor }}>Email : </Text>
-                        <Text style={{ fontSize: 17, paddingRight: 20 }}>{user?.email}</Text>
-                    </View>
-                    {is_showPhonenumber && user?.phonenumber &&
-                        <View style={{ flexDirection: "row", paddingHorizontal: 20, paddingBottom: 20 }}>
-                            <Text style={{ fontSize: 17, color: BaseColor.greyColor }}>Phone number : </Text>
-                            <Text style={{ fontSize: 17 }}>{user?.phonenumber}</Text>
-                        </View>
-                    }
                     <Text style={{ fontSize: 18, color: BaseColor.primaryColor, paddingHorizontal: 20, marginTop: 20 }}>Inventory</Text>
                     <FlatList
                         style={{ paddingHorizontal: 10, marginTop: 10 }}

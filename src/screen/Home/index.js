@@ -33,7 +33,7 @@ import { Loader, Header, HomeAds } from '@components';
 import { BaseColor } from '@config';
 import * as Utils from '@utils';
 
-const default_icon = "/material/img/normal.png";
+const default_icon = "/material/img/category-all.png";
 
 class Home extends Component {
     constructor(props) {
@@ -277,12 +277,13 @@ class Home extends Component {
 
     renderFilterItem = ({ item, index }) => {
         const icon = item.icon ? item.icon : default_icon;
+
         return (
             <View style={{ alignItems: "center", justifyContent: "center", width: 60, marginRight: 25 }}>
                 <TouchableOpacity activeOpacity={1}
                     onPress={() => this.filterSelected(item.id)}
-                    style={{ width: 60, height: 60, borderWidth: 6, justifyContent: "center", alignItems: "center", borderColor: item.is_selected ? BaseColor.primaryColor : BaseColor.whiteColor, borderRadius: 100, marginBottom: 5 }}>
-                    <Image source={{ uri: Api.SERVER_HOST + icon }} PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />} placeholderStyle={{ backgroundColor: BaseColor.whiteColor }} resizeMode={"cover"} style={{ width: 45, height: 45, borderRadius: 100 }}></Image>
+                    style={{ width: 55, height: 55, borderWidth: 5, justifyContent: "center", alignItems: "center", borderColor: item.is_selected ? BaseColor.primaryColor : BaseColor.whiteColor, borderRadius: 100, marginBottom: 5 }}>
+                    <Image source={{ uri: Api.SERVER_HOST + icon }} PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />} placeholderStyle={{ backgroundColor: BaseColor.whiteColor }} resizeMode={"stretch"} style={{ width: 45, height: 45, borderRadius: 100 }}></Image>
                 </TouchableOpacity>
                 <Text style={{ color: item.is_selected ? BaseColor.primaryColor : BaseColor.greyColor }} numberOfLines={1}>{item.name}</Text>
             </View>
@@ -313,23 +314,7 @@ class Home extends Component {
         return (
             <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}>
                 <Header navigation={navigation} mainHeader={true} />
-                <View style={{ flexDirection: "row", width: "100%", height: 40, paddingHorizontal: 10, alignItems: "center", justifyContent: "center" }}>
-                    <View style={{ borderRadius: 5, height: 40, flex: 1, backgroundColor: BaseColor.primaryColor }}>
-                        <TextInput
-                            onChangeText={(text) => this.setState({ searchText: text })}
-                            onSubmitEditing={this.searchAds}
-                            returnKeyType="search"
-                            style={{ flex: 1, paddingLeft: 45, paddingRight: 20, color: BaseColor.whiteColor }}
-                            placeholder={"Search"} placeholderTextColor={BaseColor.whiteColor}></TextInput>
-                        <TouchableOpacity style={{ position: "absolute", padding: 10 }} onPress={this.searchAds}>
-                            <Icon name={"search"} size={20} color={BaseColor.whiteColor}></Icon>
-                        </TouchableOpacity>
-                    </View>
-                    <TouchableOpacity onPress={() => navigation.navigate("AdvancedFilter")} style={{ backgroundColor: BaseColor.primaryColor, width: 40, height: 40, marginLeft: 10, alignItems: "center", borderRadius: 5, justifyContent: "center", padding: 5 }}>
-                        <Icon name={"sliders-h"} size={20} color={BaseColor.whiteColor}></Icon>
-                    </TouchableOpacity>
-                </View>
-                <View style={{ flexDirection: "row", marginHorizontal: 10, marginTop: 10, justifyContent: "center", alignItems: "center" }}>
+                <View style={{ flexDirection: "row", marginHorizontal: 10, justifyContent: "center", alignItems: "center" }}>
                     <Text style={{ color: BaseColor.primaryColor, fontSize: 20, flex: 1, fontWeight: "600" }}>Category of Pets</Text>
                 </View>
                 <View style={{ width: "100%", paddingHorizontal: 10, flexDirection: "row", marginTop: 10 }}>
@@ -339,6 +324,22 @@ class Home extends Component {
                         horizontal={true}
                         renderItem={this.renderFilterItem}
                     />
+                </View>
+                <View style={{ flexDirection: "row", width: "100%", height: 40, marginTop: 10, paddingHorizontal: 10, alignItems: "center", justifyContent: "center" }}>
+                    <View style={{ borderRadius: 100, height: 40, flex: 1, backgroundColor: BaseColor.placeholderColor }}>
+                        <TextInput
+                            onChangeText={(text) => this.setState({ searchText: text })}
+                            onSubmitEditing={this.searchAds}
+                            returnKeyType="search"
+                            style={{ flex: 1, paddingLeft: 45, paddingRight: 20, color: BaseColor.whiteColor }}
+                            placeholder={"Search"} placeholderTextColor={BaseColor.greyColor}></TextInput>
+                        <TouchableOpacity style={{ position: "absolute", left: 5, padding: 10 }} onPress={this.searchAds}>
+                            <Icon name={"search"} size={18} color={BaseColor.primaryColor}></Icon>
+                        </TouchableOpacity>
+                    </View>
+                    <TouchableOpacity onPress={() => navigation.navigate("AdvancedFilter")} style={{ backgroundColor: BaseColor.placeholderColor, width: 40, height: 40, marginLeft: 10, alignItems: "center", borderRadius: 100, justifyContent: "center", padding: 5 }}>
+                        <Icon name={"sliders-h"} size={20} color={BaseColor.primaryColor}></Icon>
+                    </TouchableOpacity>
                 </View>
                 <Text style={{ color: BaseColor.primaryColor, fontSize: 20, fontWeight: "600", marginLeft: 10 }}>Latest</Text>
                 {showContentLoader ?

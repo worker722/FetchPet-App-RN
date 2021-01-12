@@ -11,7 +11,7 @@ import {
     RefreshControl
 } from 'react-native';
 import { BaseColor } from '@config';
-import { Header, Loader } from '@components';
+import { Loader } from '@components';
 import * as Utils from '@utils';
 
 import Carousel, { Pagination } from 'react-native-snap-carousel';
@@ -38,10 +38,11 @@ class AdDetail extends Component {
             ads: {},
             ad_images: [],
             adsLocation: '',
-            activeSlide: 0,
+            activeSlideIndex: 0,
             showLoader: false,
             showRefresh: false,
-            view: false
+            view: false,
+            show_more_location: false
         }
 
         props.navigation.addListener("willFocus", (event) => {
@@ -54,6 +55,10 @@ class AdDetail extends Component {
     UNSAFE_componentWillMount = () => {
         this.setState({ showLoader: true, view: this.props.navigation.state.params.view ? true : false });
         this.start();
+    }
+
+    componentDidMount = () => {
+        this._carousel?.startAutoplay(true);
     }
 
     start = async () => {
@@ -74,10 +79,10 @@ class AdDetail extends Component {
     }
 
     favouriteAds = async () => {
-        let item = this.state.ads;
-        item.is_fav = !item.is_fav;
-        this.setState({ ads: item });
-        const param = { ad_id: item.id, is_fav: item.is_fav };
+        let { ads } = this.state;
+        ads.is_fav = !ads.is_fav;
+        this.setState({ ads });
+        const param = { ad_id: ads.id, is_fav: ads.is_fav };
         await this.props.api.post('ads/ad_favourite', param);
     }
 
@@ -127,6 +132,7 @@ class AdDetail extends Component {
     }
 
     _renderItem = ({ item, index }) => {
+        const { activeSlideIndex } = this.state;
         return (
             <View key={index} style={{ flex: 1 }}>
                 <Image source={{ uri: Api.SERVER_HOST + item }}
@@ -134,6 +140,11 @@ class AdDetail extends Component {
                     PlaceholderContent={<BallIndicator color={BaseColor.primaryColor} size={30} />}
                     placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                 />
+                {activeSlideIndex == index &&
+                    <TouchableOpacity style={{ position: "absolute", width: 30, height: 30, bottom: 10, left: 10, borderRadius: 100, backgroundColor: BaseColor.whiteColor, padding: 5, justifyContent: "center", alignItems: "center" }} onPress={this.showFullScreen}>
+                        <Icon name="expand" size={18} color={BaseColor.primaryColor}></Icon>
+                    </TouchableOpacity>
+                }
             </View>
         );
     }
@@ -141,7 +152,7 @@ class AdDetail extends Component {
     render = () => {
         const user_id = store.getState().auth.login?.user?.id;
         const is_social = store.getState().auth.login?.user?.is_social;
-        const { ads, ad_images, showLoader, showRefresh, adsLocation, activeSlide } = this.state;
+        const { ads, ad_images, showLoader, showRefresh, adsLocation, activeSlideIndex, show_more_location } = this.state;
         const navigation = this.props.navigation;
 
         const user_meta = ads?.user?.meta;
@@ -156,6 +167,12 @@ class AdDetail extends Component {
 
         return (
             <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor, paddingBottom: Platform.OS == "android" ? 0 : 10, paddingTop: 10 }}>
+                <View style={{ height: 50, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                    <TouchableOpacity style={{ padding: 10 }} onPress={this.goBack}>
+                        <Icon name={"arrow-left"} size={25} color={BaseColor.primaryColor}></Icon>
+                    </TouchableOpacity>
+                    <View style={{ flex: 1 }} />
+                </View>
                 <ScrollView keyboardShouldPersistTaps='always' style={{ flex: 1 }}
                     refreshControl={
                         <RefreshControl
@@ -168,17 +185,16 @@ class AdDetail extends Component {
                             ref={(c) => { this._carousel = c; }}
                             data={ad_images}
                             autoplay={true}
-                            autoplayDelay={1000}
                             autoplayInterval={3000}
                             renderItem={this._renderItem}
                             sliderWidth={Utils.SCREEN.WIDTH}
                             itemWidth={Utils.SCREEN.WIDTH - 80}
-                            onSnapToItem={(index) => this.setState({ activeSlide: index })}
+                            onSnapToItem={(index) => this.setState({ activeSlideIndex: index })}
                         >
                         </Carousel>
                         <Pagination
                             dotsLength={ad_images.length}
-                            activeDotIndex={activeSlide}
+                            activeDotIndex={activeSlideIndex}
                             dotStyle={{
                                 width: 10,
                                 height: 10,
@@ -193,46 +209,65 @@ class AdDetail extends Component {
                             inactiveDotScale={0.6}
                         />
                     </View>
-                    <View style={{ position: "absolute", flexDirection: "row" }}>
-                        <Header icon_left={"arrow-left"} icon_right={"share-alt"} color_icon_left={BaseColor.whiteColor} color_icon_right={BaseColor.whiteColor} callback_left={this.goBack} callback_right={this.shareAds} />
-                    </View>
-                    <TouchableOpacity style={{ position: "absolute", top: (slider_height - 40), left: 10 }} onPress={this.showFullScreen}>
-                        <Icon name="expand-arrows-alt" size={25} color={BaseColor.whiteColor}></Icon>
-                    </TouchableOpacity>
-                    <View style={{ position: "absolute", top: (slider_height - 40), right: 10 }}>
-                        <Text style={{ fontSize: 18, color: BaseColor.whiteColor, fontWeight: "bold" }}>$ {ads?.price}</Text>
-                    </View>
-                    <View style={{ justifyContent: "center", alignItems: "center", paddingTop: 5 }}>
-                        <View style={{ backgroundColor: BaseColor.primaryColor, height: 5, width: "30%", borderRadius: 100 }}></View>
-                    </View>
-                    <View style={{ flex: 1, padding: 20 }}>
-                        <View style={{ flexDirection: "row" }}>
-                            <Text style={{ fontSize: 20, color: BaseColor.primaryColor, fontWeight: "bold" }}>Detail</Text>
-                            {user_id != ads?.user?.id && is_social != -1 &&
-                                <View style={{ flex: 1, alignItems: "flex-end", justifyContent: "flex-end" }}>
-                                    <TouchableOpacity onPress={() => this.favouriteAds()} >
-                                        <Icon name={"heart"} size={20} color={BaseColor.primaryColor} solid={ads?.is_fav}></Icon>
-                                    </TouchableOpacity>
-                                </View>
-                            }
-                        </View>
-                        <View style={{ flexDirection: "row", marginTop: 10 }}>
-                            <View style={{ flex: 1 }}>
-                                <Text style={{ color: BaseColor.greyColor, fontSize: 13 }}>Pet</Text>
-                                <Text style={{ color: BaseColor.primaryColor, fontSize: 17, fontWeight: "bold" }}>{ads?.category?.name}</Text>
-                                <Text style={{ color: BaseColor.greyColor, marginTop: 15, fontSize: 13 }}>Age</Text>
-                                <Text style={{ fontSize: 15, fontWeight: "bold" }}>{ads?.age} {ads?.unit}</Text>
-                                <Text style={{ color: BaseColor.greyColor, marginTop: 15, fontSize: 13 }}>Gender</Text>
-                                <Text style={{ fontSize: 15, fontWeight: "bold" }}>Male</Text>
+                    <View style={{ flex: 1, paddingHorizontal: 20, paddingBottom: 20, paddingTop: ad_images.length > 1 ? 0 : 20 }}>
+                        <View style={{ justifyContent: "center", alignItems: "center" }}>
+                            <View style={{ justifyContent: "center", alignItems: "center" }}>
+                                <Text style={{ fontSize: 28, fontWeight: "bold" }}>$ {ads?.price}</Text>
                             </View>
-                            <View style={{ flex: 0.7 }}>
+                            <View style={{ position: "absolute", alignItems: "center", justifyContent: "center", flexDirection: "row" }}>
+                                <View style={{ flex: 1 }} />
+                                <TouchableOpacity onPress={this.favouriteAds} style={{ backgroundColor: BaseColor.primaryColor, borderRadius: 100, width: 35, height: 35, justifyContent: "center", alignItems: "center" }}>
+                                    <Icon name={"heart"} size={18} color={BaseColor.whiteColor} solid={ads?.is_fav}></Icon>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={this.shareAds} style={{ marginLeft: 20, backgroundColor: BaseColor.primaryColor, borderRadius: 100, width: 35, height: 35, justifyContent: "center", alignItems: "center" }}>
+                                    <Icon name={"share-alt"} size={18} color={BaseColor.whiteColor}></Icon>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+
+                        <View style={{ paddingTop: 20 }}>
+                            <View style={{ flexDirection: "row" }}>
+                                <Text style={{ color: BaseColor.greyColor, fontSize: 13 }}>Category</Text>
+                                <View style={{ flex: 1 }}></View>
+                                <Text style={{ color: BaseColor.primaryColor }}>{ads?.category?.name}</Text>
+                            </View>
+                            <View style={{ marginVertical: 10, height: 1, width: "100%", backgroundColor: BaseColor.dddColor }}></View>
+                            <View style={{ flexDirection: "row" }}>
                                 <Text style={{ color: BaseColor.greyColor, fontSize: 13 }}>Breed</Text>
-                                <Text style={{ fontSize: 15, fontWeight: "bold" }}>{ads?.breed?.name}</Text>
-                                <Text style={{ color: BaseColor.greyColor, marginTop: 15, fontSize: 13 }}>Location</Text>
-                                <Text style={{ fontSize: 15, fontWeight: "bold" }}>{adsLocation}</Text>
+                                <View style={{ flex: 1 }}></View>
+                                <Text style={{ color: BaseColor.primaryColor }}>{ads?.breed?.name}</Text>
                             </View>
+                            <View style={{ marginVertical: 10, height: 1, width: "100%", backgroundColor: BaseColor.dddColor }}></View>
+                            <View style={{ flexDirection: "row" }}>
+                                <Text style={{ color: BaseColor.greyColor, fontSize: 13 }}>Age</Text>
+                                <View style={{ flex: 1 }}></View>
+                                <Text >{ads?.age} {ads?.unit}</Text>
+                            </View>
+                            <View style={{ marginVertical: 10, height: 1, width: "100%", backgroundColor: BaseColor.dddColor }}></View>
+                            <View style={{ flexDirection: "row" }}>
+                                <Text style={{ color: BaseColor.greyColor, fontSize: 13 }}>Gender</Text>
+                                <View style={{ flex: 1 }}></View>
+                                <Text >{ads?.gender == 1 ? "Male" : "Female"}</Text>
+                            </View>
+                            <View style={{ marginVertical: 10, height: 1, width: "100%", backgroundColor: BaseColor.dddColor }}></View>
+                            <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }} onPress={() => this.setState({ show_more_location: !show_more_location })}>
+                                <Text style={{ color: BaseColor.greyColor, fontSize: 13 }}>Location</Text>
+                                <View style={{ flex: 1, justifyContent: "flex-end", alignItems: "flex-end" }}>
+                                    {!show_more_location &&
+                                        <Icon name={"map-marker-alt"} size={15} color={BaseColor.primaryColor}></Icon>
+                                    }
+                                </View>
+                                <Text numberOfLines={show_more_location ? 10 : 1} style={{ textAlign: "right", marginLeft: 10, maxWidth: show_more_location ? "70%" : "50%" }}>{show_more_location ? adsLocation : adsLocation?.split(" ").reverse().join(" ")}</Text>
+                                <Icon name={show_more_location ? "angle-down" : "angle-right"} size={15} color={BaseColor.primaryColor} style={{ marginLeft: 10 }}></Icon>
+                            </TouchableOpacity>
+                            <View style={{ marginVertical: 10, height: 1, width: "100%", backgroundColor: BaseColor.dddColor }}></View>
+                            <View style={{ flexDirection: "row" }}>
+                                <View style={{ flex: 1 }}></View>
+                                <Text>{Utils.relativeTime(ads?.updated_at)} posted</Text>
+                            </View>
+                            <View style={{ marginVertical: 10, height: 1, width: "100%", backgroundColor: BaseColor.dddColor }}></View>
                         </View>
-                        <Text style={{ color: BaseColor.greyColor, marginTop: 15, fontSize: 13 }}>Description</Text>
+                        <Text style={{ color: BaseColor.primaryColor, marginTop: 15, marginBottom: 5, fontSize: 13 }}>Description</Text>
                         <Text style={{ fontSize: 14 }}>{ads?.description}</Text>
                         {user_id != ads?.user?.id &&
                             <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }} onPress={() => navigation.navigate("ShowProfile", { user_id: ads.user.id })}>
