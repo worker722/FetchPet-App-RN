@@ -54,7 +54,10 @@ export default class HomeAds extends Component {
         else
             phoneNumber = `tel://${item.user.phonenumber}`;
 
-        Linking.openURL(phoneNumber);
+        try {
+            Linking.openURL(phoneNumber);
+        } catch (error) {
+        }
     }
 
     onEdit = () => {

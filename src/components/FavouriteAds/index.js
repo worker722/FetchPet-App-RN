@@ -57,7 +57,10 @@ class FavouriteAds extends Component {
         else
             phoneNumber = `tel://${item.user.phonenumber}`;
 
-        Linking.openURL(phoneNumber);
+        try {
+            Linking.openURL(phoneNumber);
+        } catch (error) {
+        }
     }
 
     removeFavAds = async () => {
