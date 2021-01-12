@@ -284,12 +284,13 @@ class Home extends Component {
     }
 
     renderFilterItem = ({ item, index }) => {
+        const icon = item.icon ? item.icon : default_icon;
         return (
             <View style={{ alignItems: "center", justifyContent: "center", width: 60, marginRight: 25 }}>
                 <TouchableOpacity activeOpacity={1}
                     onPress={() => this.filterSelected(item.id)}
                     style={{ width: 60, height: 60, borderWidth: 6, justifyContent: "center", alignItems: "center", borderColor: item.is_selected ? BaseColor.primaryColor : BaseColor.whiteColor, borderRadius: 100, marginBottom: 5 }}>
-                    <Image source={{ uri: Api.SERVER_HOST + item.icon ? item.icon : default_icon }} PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />} placeholderStyle={{ backgroundColor: BaseColor.whiteColor }} resizeMode={"cover"} style={{ width: 45, height: 45, borderRadius: 100 }}></Image>
+                    <Image source={{ uri: Api.SERVER_HOST + icon }} PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />} placeholderStyle={{ backgroundColor: BaseColor.whiteColor }} resizeMode={"cover"} style={{ width: 45, height: 45, borderRadius: 100 }}></Image>
                 </TouchableOpacity>
                 <Text style={{ color: item.is_selected ? BaseColor.primaryColor : BaseColor.greyColor }} numberOfLines={1}>{item.name}</Text>
             </View>

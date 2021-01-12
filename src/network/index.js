@@ -2,9 +2,9 @@ import { Platform } from 'react-native';
 import * as global from "./global";
 import { store } from '@store';
 
-//export const SERVER_HOST = 'http://10.0.2.2';
+export const SERVER_HOST = 'http://10.0.2.2';
 // export const SERVER_HOST = 'http://192.168.109.72';
-export const SERVER_HOST = 'https://fetch.market';
+// export const SERVER_HOST = 'https://fetch.market';
 // export const SERVER_HOST = 'http://18.219.134.49';
 
 const onLogin = data => {

@@ -13,7 +13,9 @@ import {
 import { BaseColor } from '@config';
 import { Header, Loader } from '@components';
 import * as Utils from '@utils';
-import Swiper from 'react-native-swiper';
+
+import Carousel, { Pagination } from 'react-native-snap-carousel';
+
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native-elements';
 import { Rating } from 'react-native-ratings';
@@ -36,6 +38,7 @@ class AdDetail extends Component {
             ads: {},
             ad_images: [],
             adsLocation: '',
+            activeSlide: 0,
             showLoader: false,
             showRefresh: false,
             view: false
@@ -44,6 +47,8 @@ class AdDetail extends Component {
         props.navigation.addListener("willFocus", (event) => {
             this.UNSAFE_componentWillMount();
         });
+
+        this._carousel = null;
     }
 
     UNSAFE_componentWillMount = () => {
@@ -118,10 +123,22 @@ class AdDetail extends Component {
         this.props.navigation.navigate("ImageSlider", { data: ad_images });
     }
 
+    _renderItem = ({ item, index }) => {
+        return (
+            <View key={index} style={{ flex: 1 }}>
+                <Image source={{ uri: Api.SERVER_HOST + item }}
+                    style={{ width: "100%", height: slider_height, borderRadius: 10 }}
+                    PlaceholderContent={<BallIndicator color={BaseColor.primaryColor} size={30} />}
+                    placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
+                />
+            </View>
+        );
+    }
+
     render = () => {
         const user_id = store.getState().auth.login?.user?.id;
         const is_social = store.getState().auth.login?.user?.is_social;
-        const { ads, ad_images, showLoader, showRefresh, adsLocation } = this.state;
+        const { ads, ad_images, showLoader, showRefresh, adsLocation, activeSlide } = this.state;
         const navigation = this.props.navigation;
 
         const user_meta = ads?.user?.meta;
@@ -135,7 +152,7 @@ class AdDetail extends Component {
             return (<Loader />);
 
         return (
-            <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor, paddingBottom: Platform.OS == "android" ? 0 : 10 }}>
+            <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor, paddingBottom: Platform.OS == "android" ? 0 : 10, paddingTop: 10 }}>
                 <ScrollView keyboardShouldPersistTaps='always' style={{ flex: 1 }}
                     refreshControl={
                         <RefreshControl
@@ -143,18 +160,35 @@ class AdDetail extends Component {
                             onRefresh={this._onRefresh}
                         />
                     }>
-                    <View style={{ height: slider_height }}>
-                        <Swiper style={{ height: slider_height }} autoplay={true} dotColor={BaseColor.whiteColor} paginationStyle={{ position: "absolute", bottom: 10 }} activeDotColor={BaseColor.primaryColor} dotStyle={{ width: 8, height: 8, borderRadius: 100 }} activeDotStyle={{ width: 11, height: 11, borderRadius: 100 }}>
-                            {ad_images.map((item, key) => (
-                                <View key={key} style={{ flex: 1 }}>
-                                    <Image source={{ uri: Api.SERVER_HOST + item }}
-                                        style={{ width: "100%", height: slider_height }}
-                                        PlaceholderContent={<BallIndicator color={BaseColor.primaryColor} size={30} />}
-                                        placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
-                                    />
-                                </View>
-                            ))}
-                        </Swiper>
+                    <View>
+                        <Carousel
+                            ref={(c) => { this._carousel = c; }}
+                            data={ad_images}
+                            autoplay={true}
+                            autoplayDelay={1000}
+                            autoplayInterval={3000}
+                            renderItem={this._renderItem}
+                            sliderWidth={Utils.SCREEN.WIDTH}
+                            itemWidth={Utils.SCREEN.WIDTH - 80}
+                            onSnapToItem={(index) => this.setState({ activeSlide: index })}
+                        >
+                        </Carousel>
+                        <Pagination
+                            dotsLength={ad_images.length}
+                            activeDotIndex={activeSlide}
+                            dotStyle={{
+                                width: 10,
+                                height: 10,
+                                borderRadius: 100,
+                                marginHorizontal: 8,
+                                backgroundColor: BaseColor.primaryColor
+                            }}
+                            inactiveDotStyle={{
+                                backgroundColor: BaseColor.greyColor
+                            }}
+                            inactiveDotOpacity={0.4}
+                            inactiveDotScale={0.6}
+                        />
                     </View>
                     <View style={{ position: "absolute", flexDirection: "row" }}>
                         <Header icon_left={"arrow-left"} icon_right={"share-alt"} color_icon_left={BaseColor.whiteColor} color_icon_right={BaseColor.whiteColor} callback_left={this.goBack} callback_right={this.shareAds} />
@@ -252,18 +286,18 @@ class AdDetail extends Component {
                 {is_social != -1 &&
                     <>
                         {user_id != ads?.user?.id ?
-                            <View style={{ padding: 10, flexDirection: "row", height: 60, justifyContent: "center", alignItems: "center" }}>
+                            <View style={{ paddingVertical: 20, flexDirection: "row", height: 80, justifyContent: "center", alignItems: "center" }}>
                                 {is_showPhonenumber && ads.user.phonenumber ?
                                     <>
                                         <TouchableOpacity
                                             onPress={this.onChat}
-                                            style={{ borderWidth: 1, borderColor: BaseColor.greyColor, marginRight: "10%", borderRadius: 5, height: 40, width: "45%", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
+                                            style={{ borderWidth: 1, borderColor: BaseColor.greyColor, marginRight: "10%", borderRadius: 5, height: 45, width: "40%", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
                                             <Icon name={"comment"} color={BaseColor.primaryColor} size={20}></Icon>
                                             <Text style={{ color: BaseColor.primaryColor, fontSize: 18, marginLeft: 10 }}>Chat</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity
                                             onPress={this.onCall}
-                                            style={{ backgroundColor: BaseColor.primaryColor, borderRadius: 5, height: 40, width: "45%", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
+                                            style={{ backgroundColor: BaseColor.primaryColor, borderRadius: 5, height: 45, width: "40%", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
                                             <Icon name={"phone"} color={BaseColor.whiteColor} size={20}></Icon>
                                             <Text style={{ color: BaseColor.whiteColor, fontSize: 18, marginLeft: 10 }}>Call</Text>
                                         </TouchableOpacity>
@@ -271,14 +305,14 @@ class AdDetail extends Component {
                                     :
                                     <TouchableOpacity
                                         onPress={this.onChat}
-                                        style={{ borderWidth: 1, backgroundColor: BaseColor.primaryColor, borderColor: BaseColor.greyColor, borderRadius: 5, height: 40, flex: 1, justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
+                                        style={{ borderWidth: 1, marginHorizontal: 10, backgroundColor: BaseColor.primaryColor, borderColor: BaseColor.greyColor, borderRadius: 5, height: 45, flex: 1, justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
                                         <Icon name={"comment-dots"} color={BaseColor.whiteColor} size={20}></Icon>
                                         <Text style={{ color: BaseColor.whiteColor, fontSize: 18, marginLeft: 10 }}>Chat</Text>
                                     </TouchableOpacity>
                                 }
                             </View>
                             :
-                            <View style={{ padding: 10, flexDirection: "row", height: 60 }}>
+                            <View style={{ padding: 20, flexDirection: "row", height: 80 }}>
                                 <TouchableOpacity
                                     onPress={this.onEdit}
                                     style={{ borderWidth: 1, borderColor: BaseColor.greyColor, backgroundColor: BaseColor.primaryColor, borderRadius: 5, height: 45, width: "100%", justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
