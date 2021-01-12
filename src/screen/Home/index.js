@@ -10,7 +10,8 @@ import {
     ScrollView,
     RefreshControl,
     PermissionsAndroid,
-    ActivityIndicator
+    ActivityIndicator,
+    Image as RNImage
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import geolocation from '@react-native-community/geolocation';
@@ -30,7 +31,7 @@ import messaging from '@react-native-firebase/messaging';
 
 import { Loader, Header, HomeAds } from '@components';
 
-import { BaseColor } from '@config';
+import { BaseColor, Images } from '@config';
 import * as Utils from '@utils';
 
 const default_icon = "/material/img/category-all.png";
@@ -317,7 +318,7 @@ class Home extends Component {
                 <View style={{ flexDirection: "row", marginHorizontal: 10, justifyContent: "center", alignItems: "center" }}>
                     <Text style={{ color: BaseColor.primaryColor, fontSize: 20, flex: 1, fontWeight: "600" }}>Category of Pets</Text>
                 </View>
-                <View style={{ width: "100%", paddingHorizontal: 10, flexDirection: "row", marginTop: 10 }}>
+                <View style={{ width: "100%", paddingHorizontal: 10, marginTop: 10 }}>
                     <FlatList
                         keyExtractor={(item, index) => index.toString()}
                         data={topCategory}
@@ -331,11 +332,14 @@ class Home extends Component {
                             onChangeText={(text) => this.setState({ searchText: text })}
                             onSubmitEditing={this.searchAds}
                             returnKeyType="search"
-                            style={{ flex: 1, paddingLeft: 45, paddingRight: 20, color: BaseColor.whiteColor }}
+                            style={{ flex: 1, paddingLeft: 100, paddingRight: 20, color: BaseColor.whiteColor }}
                             placeholder={"Search"} placeholderTextColor={BaseColor.greyColor}></TextInput>
-                        <TouchableOpacity style={{ position: "absolute", left: 5, padding: 10 }} onPress={this.searchAds}>
-                            <Icon name={"search"} size={18} color={BaseColor.primaryColor}></Icon>
-                        </TouchableOpacity>
+                        <View style={{ position: "absolute", left: 15, justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
+                            <RNImage source={Images.logo} style={{ width: 50, height: 17 }} resizeMode={"stretch"}></RNImage>
+                            <TouchableOpacity style={{ padding: 10 }} onPress={this.searchAds}>
+                                <Icon name={"search"} size={18} color={BaseColor.primaryColor}></Icon>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                     <TouchableOpacity onPress={() => navigation.navigate("AdvancedFilter")} style={{ backgroundColor: BaseColor.placeholderColor, width: 40, height: 40, marginLeft: 10, alignItems: "center", borderRadius: 100, justifyContent: "center", padding: 5 }}>
                         <Icon name={"sliders-h"} size={20} color={BaseColor.primaryColor}></Icon>
