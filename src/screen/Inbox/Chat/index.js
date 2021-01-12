@@ -346,30 +346,28 @@ class Chat extends Component {
                             </View>
                         </View>
                     }
-                    <View style={{ height: 45, paddingHorizontal: 5, width: "100%", justifyContent: "center", alignItems: "center" }}>
+                    <View style={{ height: 45, paddingHorizontal: 5, width: "100%", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                         {!is_blocked ?
                             <>
+                                <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", width: 40, height: 40, borderRadius: 100, backgroundColor: BaseColor.primaryColor }} onPress={this.showPickerModal}>
+                                    <Icon name={"paperclip"} size={18} color={BaseColor.whiteColor}></Icon>
+                                </TouchableOpacity>
                                 <TextInput
-                                    style={{ flex: 1, textAlignVertical: "center", backgroundColor: BaseColor.dddColor, width: "100%", borderRadius: 30, paddingLeft: 20, paddingRight: 90 }}
+                                    style={{ flex: 1, height: 40, marginHorizontal: 5, textAlignVertical: "center", backgroundColor: BaseColor.dddColor, width: "100%", borderRadius: 30, paddingLeft: 20, paddingRight: 90 }}
                                     value={this.state.message}
                                     multiline={true}
                                     onChangeText={(text) => this.setState({ message: text })}
                                 >
                                 </TextInput>
-                                <View style={{ position: "absolute", right: 0, top: 0, bottom: 0, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                                    <TouchableOpacity style={{ paddingHorizontal: 15 }} onPress={this.showPickerModal}>
-                                        <Icon name={"paperclip"} size={20} color={BaseColor.greyColor}></Icon>
+                                {is_sending ?
+                                    <View style={{ width: 40, height: 40, borderRadius: 100, backgroundColor: BaseColor.dddColor, justifyContent: "center", alignItems: "center" }}>
+                                        <ActivityIndicator color={BaseColor.primaryColor} />
+                                    </View>
+                                    :
+                                    <TouchableOpacity onPress={() => this.sendMessage()} style={{ width: 40, height: 40, borderRadius: 100, backgroundColor: BaseColor.dddColor, justifyContent: "center", alignItems: "center" }}>
+                                        <Icon name={"location-arrow"} size={20} color={BaseColor.primaryColor}></Icon>
                                     </TouchableOpacity>
-                                    {is_sending ?
-                                        <View style={{ padding: 8, marginRight: 15, borderRadius: 100, backgroundColor: BaseColor.whiteColor, justifyContent: "center", alignItems: "center" }}>
-                                            <ActivityIndicator color={BaseColor.primaryColor} />
-                                        </View>
-                                        :
-                                        <TouchableOpacity onPress={() => this.sendMessage()} style={{ padding: 8, marginRight: 15, borderRadius: 100, backgroundColor: BaseColor.whiteColor, justifyContent: "center", alignItems: "center" }}>
-                                            <Icon name={"location-arrow"} size={15} color={BaseColor.greyColor}></Icon>
-                                        </TouchableOpacity>
-                                    }
-                                </View>
+                                }
                             </>
                             :
                             <TextInput
