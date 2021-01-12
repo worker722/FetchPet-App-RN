@@ -1,8 +1,8 @@
 
 const BaseColor = {
 	...{
-		primaryColor: "#002365",
-		primaryDarkColor: "#080C40",
+		primaryColor: "#303881",
+		primaryDarkColor: "#222864",
 		greyColor: "#808080",
 		dddColor: '#DDDDDD',
 		placeholderColor: '#F5F5F5',
