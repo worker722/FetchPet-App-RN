@@ -13,4 +13,7 @@ export const Images = {
   ic_profile: require("@assets/images/ic_profile.png"),
   ic_profile_fill: require("@assets/images/ic_profile_fill.png"),
   ic_location: require("@assets/images/ic_location.png"),
+  ic_attach: require("@assets/images/ic_attach.png"),
+  ic_reaction: require("@assets/images/ic_reaction.png"),
+  ic_send: require("@assets/images/ic_send.png"),
 };

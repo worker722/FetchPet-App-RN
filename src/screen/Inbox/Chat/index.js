@@ -13,10 +13,11 @@ import {
     KeyboardAvoidingView,
     BackHandler,
     Modal,
-    Alert
+    Alert,
+    Image as RNImage
 } from 'react-native';
 import { ChatMessage, Loader } from '@components';
-import { BaseColor } from '@config';
+import { BaseColor, Images } from '@config';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native-elements';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -350,7 +351,7 @@ class Chat extends Component {
                         {!is_blocked ?
                             <>
                                 <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", width: 40, height: 40, borderRadius: 100, backgroundColor: BaseColor.primaryColor }} onPress={this.showPickerModal}>
-                                    <Icon name={"paperclip"} size={18} color={BaseColor.whiteColor}></Icon>
+                                    <RNImage source={Images.ic_attach} style={{ width: 40, height: 40 }}></RNImage>
                                 </TouchableOpacity>
                                 <TextInput
                                     style={{ flex: 1, height: 40, marginHorizontal: 5, textAlignVertical: "center", backgroundColor: BaseColor.dddColor, width: "100%", borderRadius: 30, paddingLeft: 20, paddingRight: 90 }}
@@ -365,7 +366,7 @@ class Chat extends Component {
                                     </View>
                                     :
                                     <TouchableOpacity onPress={() => this.sendMessage()} style={{ width: 40, height: 40, borderRadius: 100, backgroundColor: BaseColor.dddColor, justifyContent: "center", alignItems: "center" }}>
-                                        <Icon name={"location-arrow"} size={20} color={BaseColor.primaryColor}></Icon>
+                                        <RNImage source={Images.ic_send} style={{ width: 40, height: 40 }}></RNImage>
                                     </TouchableOpacity>
                                 }
                             </>
