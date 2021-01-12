@@ -33,6 +33,8 @@ import { Loader, Header, HomeAds } from '@components';
 import { BaseColor } from '@config';
 import * as Utils from '@utils';
 
+const default_icon = "/material/img/normal.png";
+
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -216,7 +218,7 @@ class Home extends Component {
             topCategory.filter((item, index) => {
                 item.is_selected = false;
             });
-            topCategory.unshift({ id: -1, name: "All", is_selected: true, icon: "/material/img/normal.png" });
+            topCategory.unshift({ id: -1, name: "All", is_selected: true, icon: default_icon });
 
             this.setState({ pets, topCategory });
         }
@@ -287,7 +289,7 @@ class Home extends Component {
                 <TouchableOpacity activeOpacity={1}
                     onPress={() => this.filterSelected(item.id)}
                     style={{ width: 60, height: 60, borderWidth: 6, justifyContent: "center", alignItems: "center", borderColor: item.is_selected ? BaseColor.primaryColor : BaseColor.whiteColor, borderRadius: 100, marginBottom: 5 }}>
-                    <Image source={{ uri: Api.SERVER_HOST + item.icon }} PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />} placeholderStyle={{ backgroundColor: BaseColor.whiteColor }} resizeMode={"cover"} style={{ width: 45, height: 45, borderRadius: 100 }}></Image>
+                    <Image source={{ uri: Api.SERVER_HOST + item.icon ? item.icon : default_icon }} PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />} placeholderStyle={{ backgroundColor: BaseColor.whiteColor }} resizeMode={"cover"} style={{ width: 45, height: 45, borderRadius: 100 }}></Image>
                 </TouchableOpacity>
                 <Text style={{ color: item.is_selected ? BaseColor.primaryColor : BaseColor.greyColor }} numberOfLines={1}>{item.name}</Text>
             </View>
