@@ -8,7 +8,7 @@ const SCREEN_HEIGHT = Dimensions.get("window").height;
 const EMAIL_REGEX = /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i;
 const NUMBER_REGEX = /^\d+$/;
 
-export const GOOGLE_API_KEY = 'AIzaSyAmn7GDLY18bKttFN71VLWkBtczBVBMjRM';
+export const GOOGLE_API_KEY = 'AIzaSyDjLHfb1SLxXyuDBrzgrlwroA7LMRJ8EKQ';
 export const GOOGLE_AUTH_WEB_CLIENT_ID = '1007858365668-c8e7pmt0htjmd33ua386rmib3fhe9qt4.apps.googleusercontent.com';
 export const GOOGLE_MAP_API_URL = 'https://maps.googleapis.com/maps/api/';
 
