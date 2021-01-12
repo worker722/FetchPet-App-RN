@@ -135,8 +135,8 @@ const routeConfigsSeller = {
 
 
 // DEFINE BOTTOM NAVIGATOR AS A SCREEN IN STACK
-// const { IS_BUYER_MODE } = store.getState().app;
-const routeConfig = routeConfigsSeller;
+const { IS_BUYER_MODE } = store.getState().app;
+const routeConfig = IS_BUYER_MODE ? routeConfigsBuyer : routeConfigsSeller;
 
 // CONFIG FOR BOTTOM NAVIGATOR
 const bottomTabNavigatorConfig = {
@@ -171,9 +171,6 @@ const StackNavigator = createStackNavigator(
 		},
 		SignUp: {
 			screen: SignUp
-		},
-		Home: {
-			screen: Home
 		},
 		AdvancedFilter: {
 			screen: AdvancedFilter

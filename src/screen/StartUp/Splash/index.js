@@ -81,7 +81,7 @@ class Splash extends Component {
 	render() {
 		return (
 			<View style={{ flex: 1, backgroundColor: BaseColor.whiteColor, alignItems: "center", justifyContent: "center" }}>
-				<Image source={Images.logo} style={{ width: 225, height: 80 }} resizeMode={"stretch"}></Image>
+				<Image source={Images.logo} style={{ width: 230, height: 80 }} resizeMode={"stretch"}></Image>
 			</View>
 		);
 	}
