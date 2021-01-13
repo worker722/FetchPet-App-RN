@@ -27,6 +27,7 @@ import CustomMap from "@screen/Sell/CustomMap";
 
 // MY ADS PAGE
 import MyAds from "@screen/MyAds";
+import Favourite from "@screen/Favourite";
 
 // CHAT PAGE
 import Inbox from "@screen/Inbox";
@@ -57,18 +58,18 @@ const routeConfigsBuyer = {
 	Inbox: {
 		screen: Inbox,
 		navigationOptions: ({ navigation }) => ({
-			title: "Inbox",
+			title: "Chat",
 			tabBarIcon: ({ focused, tintColor }) => {
 				return <Image source={focused ? Images.ic_chat_fill : Images.ic_chat} />;
 			}
 		})
 	},
-	MyAds: {
-		screen: MyAds,
+	Favourite: {
+		screen: Favourite,
 		navigationOptions: ({ navigation }) => ({
-			title: "MyAds",
+			title: "Favourite",
 			tabBarIcon: ({ focused, tintColor }) => {
-				return <Image source={focused ? Images.ic_myads_fill : Images.ic_myads} />;
+				return <Image source={focused ? Images.ic_favourite_fill : Images.ic_favourite} />;
 			}
 		})
 	},
@@ -89,14 +90,14 @@ const routeConfigsSeller = {
 		navigationOptions: ({ navigation }) => ({
 			title: "Home",
 			tabBarIcon: ({ focused, tintColor }) => {
-				return <Image source={focused ? Images.ic_home_fill : Images.ic_home} />;
+				return <Image source={focused ? Images.ic_dashboard_fill : Images.ic_dashboard} />;
 			}
 		})
 	},
 	Inbox: {
 		screen: Inbox,
 		navigationOptions: ({ navigation }) => ({
-			title: "Inbox",
+			title: "Chat",
 			tabBarIcon: ({ focused, tintColor }) => {
 				return <Image source={focused ? Images.ic_chat_fill : Images.ic_chat} />;
 			}
@@ -132,7 +133,6 @@ const routeConfigsSeller = {
 		})
 	}
 };
-
 
 // DEFINE BOTTOM NAVIGATOR AS A SCREEN IN STACK
 const { IS_BUYER_MODE } = store.getState().app;

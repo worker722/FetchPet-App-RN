@@ -111,7 +111,6 @@ class Favourite extends Component {
     }
 }
 
-
 const mapDispatchToProps = dispatch => {
     return {
         api: bindActionCreators(Api, dispatch)
