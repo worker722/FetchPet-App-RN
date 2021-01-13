@@ -334,7 +334,7 @@ class Home extends Component {
                             onChangeText={(text) => this.setState({ searchText: text })}
                             onSubmitEditing={this.searchAds}
                             returnKeyType="search"
-                            style={{ flex: 1, paddingLeft: 100, paddingRight: 20, color: BaseColor.whiteColor }}
+                            style={{ flex: 1, paddingLeft: 100, paddingRight: 20, color: BaseColor.blackColor }}
                             placeholder={"Search"} placeholderTextColor={BaseColor.greyColor}></TextInput>
                         <View style={{ position: "absolute", left: 15, justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
                             <RNImage source={Images.logo} style={{ width: 50, height: 17 }} resizeMode={"stretch"}></RNImage>
@@ -343,7 +343,7 @@ class Home extends Component {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <TouchableOpacity onPress={() => navigation.navigate("AdvancedFilter")} style={{ backgroundColor: BaseColor.placeholderColor, width: 40, height: 40, marginLeft: 10, alignItems: "center", borderRadius: 100, justifyContent: "center", padding: 5 }}>
+                    <TouchableOpacity onPress={() => navigation.navigate("AdvancedFilter", { type: -1 })} style={{ backgroundColor: BaseColor.placeholderColor, width: 40, height: 40, marginLeft: 10, alignItems: "center", borderRadius: 100, justifyContent: "center", padding: 5 }}>
                         <Icon name={"sliders-h"} size={20} color={BaseColor.primaryColor}></Icon>
                     </TouchableOpacity>
                 </View>

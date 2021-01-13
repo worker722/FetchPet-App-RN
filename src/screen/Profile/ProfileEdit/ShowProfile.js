@@ -142,8 +142,8 @@ class ShowProfile extends Component {
                     </View>
                     <View style={{ justifyContent: "center", alignItems: "center", paddingHorizontal: 10, marginTop: 10 }}>
                         <Text style={{ fontSize: 22, color: BaseColor.primaryColor }}>{user?.name}</Text>
-                        <Text style={{ fontSize: 15 }}>Member since {Utils.DATE2STR(user?.created_at, 'MMM YYYY')}</Text>
-                        <TouchableOpacity onPress={this.followUser} style={{ marginTop: 10, justifyContent: "center", alignItems: "center", borderColor: BaseColor.dddColor, backgroundColor: is_follow ? BaseColor.primaryColor : BaseColor.whiteColor, borderWidth: 1, borderRadius: 5, paddingVertical: 10, paddingHorizontal: 45 }}>
+                        <Text style={{ fontSize: 13 }}>Member since {Utils.DATE2STR(user?.created_at, 'MMM YYYY')}</Text>
+                        <TouchableOpacity onPress={this.followUser} style={{ marginTop: 10, justifyContent: "center", alignItems: "center", borderColor: BaseColor.dddColor, backgroundColor: is_follow ? BaseColor.primaryColor : BaseColor.whiteColor, borderWidth: 1, borderRadius: 5, paddingVertical: 8, paddingHorizontal: 45 }}>
                             <Text style={{ color: is_follow ? BaseColor.whiteColor : BaseColor.primaryColor }}>{is_follow ? "UnFollow" : "Follow"}</Text>
                         </TouchableOpacity>
                     </View>
