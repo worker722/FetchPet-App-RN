@@ -14,17 +14,14 @@ import {
 import { BaseColor, Images } from '@config';
 import { Header, Loader, CustomModalPicker } from '@components';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
-
 import { Image } from 'react-native-elements';
+
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Api from '@api';
 import * as Utils from '@utils';
 import * as global from '@api/global';
-
-const default_icon = "/material/img/category-all.png";
 
 class AdvancedFilter extends Component {
     constructor(props) {
@@ -52,9 +49,9 @@ class AdvancedFilter extends Component {
             breed: { id: -2, name: "Pet's Breed" },
             price: {
                 min: 0,
-                max: 100
+                max: 1000
             },
-            age: 0,
+            age: -1,
             gender: { id: -1, name: "Gender" },
         }
     }
@@ -99,6 +96,14 @@ class AdvancedFilter extends Component {
         this.setState({ category_data });
     }
 
+    searchPet = () => {
+        const { searchText } = this.state;
+        if (searchText == '') {
+            return;
+        }
+        this.filterPet();
+    }
+
     filterPet = () => {
         const { breed } = this.state;
         if (breed.id == -2) {
@@ -117,14 +122,16 @@ class AdvancedFilter extends Component {
     }
 
     renderFilterItem = ({ item, index }) => {
-        const icon = item.icon ? item.icon : default_icon;
-
         return (
             <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
                 <TouchableOpacity activeOpacity={1}
                     onPress={() => this.filterSelected(item.id)}
                     style={{ width: 55, height: 55, borderWidth: 5, justifyContent: "center", alignItems: "center", borderColor: item.is_select ? BaseColor.primaryColor : BaseColor.whiteColor, borderRadius: 100, marginBottom: 5 }}>
-                    <Image source={{ uri: Api.SERVER_HOST + icon }} PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />} placeholderStyle={{ backgroundColor: BaseColor.whiteColor }} resizeMode={"stretch"} style={{ width: 45, height: 45, borderRadius: 100 }}></Image>
+                    {item.icon ?
+                        <Image source={{ uri: Api.SERVER_HOST + item.icon }} PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />} placeholderStyle={{ backgroundColor: BaseColor.whiteColor }} resizeMode={"stretch"} style={{ width: 45, height: 45, borderRadius: 100 }}></Image>
+                        :
+                        <RNImage source={Images.ic_category_all} placeholderStyle={{ backgroundColor: BaseColor.whiteColor }} resizeMode={"stretch"} style={{ width: 45, height: 45, borderRadius: 100 }}></RNImage>
+                    }
                 </TouchableOpacity>
                 <Text style={{ color: item.is_select ? BaseColor.primaryColor : BaseColor.greyColor }} numberOfLines={1}>{item.name}</Text>
             </View>
@@ -148,9 +155,9 @@ class AdvancedFilter extends Component {
                         placeholder={"Search"} placeholderTextColor={BaseColor.greyColor}></TextInput>
                     <View style={{ position: "absolute", left: 15, justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
                         <RNImage source={Images.logo} style={{ width: 50, height: 17 }} resizeMode={"stretch"}></RNImage>
-                        <View style={{ padding: 10 }}>
+                        <TouchableOpacity style={{ padding: 10 }} onPress={this.filterPet}>
                             <Icon name={"search"} size={18} color={BaseColor.primaryColor}></Icon>
-                        </View>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 <ScrollView keyboardShouldPersistTaps='always' style={{ flex: 1 }}
