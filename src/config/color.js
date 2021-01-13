@@ -12,7 +12,8 @@ const BaseColor = {
 		googleColor: "#E3411F",
 		faceBookColor: "#3C5B9A",
 		modalBackDropColor: '#00000080',
-		pushAlertColor: '#52AB56CF'
+		pushAlertColor: '#52AB56CF',
+		boostColor: '#822E89',
 	}
 };
 

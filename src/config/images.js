@@ -17,4 +17,8 @@ export const Images = {
   ic_reaction: require("@assets/images/ic_reaction.png"),
   ic_send: require("@assets/images/ic_send.png"),
   ic_category_all: require("@assets/images/ic_category_all.png"),
+  ic_dashboard_fill: require("@assets/images/ic_dashboard_fill.png"),
+  ic_dashboard: require("@assets/images/ic_dashboard.png"),
+  ic_favourite_fill: require("@assets/images/ic_favourite_fill.png"),
+  ic_favourite: require("@assets/images/ic_favourite.png"),
 };
