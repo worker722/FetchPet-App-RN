@@ -7,8 +7,6 @@ import { GoogleSignin } from '@react-native-community/google-signin';
 import appleAuth from '@invertase/react-native-apple-authentication';
 // import { LoginManager } from 'react-native-fbsdk';
 
-import messaging from '@react-native-firebase/messaging';
-
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { store, SetPrefrence } from "@store";
@@ -53,12 +51,6 @@ class Setting extends Component {
         const { is_showNotification } = this.state;
         const params = { key: global._SHOW_NOTIFICATION, value: is_showNotification ? 0 : 1 };
         await this.props.api.post("profile/setting", params, true);
-
-        if (is_showNotification && messaging().isDeviceRegisteredForRemoteMessages)
-            await messaging().unregisterDeviceForRemoteMessages();
-        else if (!is_showNotification && !messaging().isDeviceRegisteredForRemoteMessages)
-            await messaging().registerDeviceForRemoteMessages();
-
         this.setState({ is_showNotification: !is_showNotification });
     }
 
