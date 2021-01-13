@@ -181,7 +181,7 @@ class AdvancedFilter extends Component {
                     <View style={{ flex: 1, marginHorizontal: 10, paddingHorizontal: 10, marginTop: 10, borderWidth: 1, borderRadius: 100, height: 50, marginLeft: 10, borderColor: BaseColor.primaryColor }}>
                         <CustomModalPicker title={"Select a Gender"} data={gender_data} selectedValue={gender.name} onValueChange={(gender, key) => this.setState({ gender })} />
                     </View>
-                    <TextInput keyboardType={"number-pad"} value={age} onChangeText={(age) => this.setState({ age })} placeholder={"Age"} placeholderTextColor={BaseColor.greyColor} style={{ marginTop: 10, marginHorizontal: 10, fontSize: 15, textAlign: "center", color: BaseColor.blackColor, flex: 1, borderRadius: 100, borderColor: BaseColor.primaryColor, borderWidth: 1, justifyContent: "center", alignItems: "center" }}>
+                    <TextInput keyboardType={"number-pad"} value={age.toString()} onChangeText={(age) => this.setState({ age })} placeholder={"Age"} placeholderTextColor={BaseColor.greyColor} style={{ marginTop: 10, marginHorizontal: 10, fontSize: 15, textAlign: "center", color: BaseColor.blackColor, flex: 1, borderRadius: 100, borderColor: BaseColor.primaryColor, borderWidth: 1, justifyContent: "center", alignItems: "center" }}>
                     </TextInput>
                     <View style={{ flexDirection: "row", paddingHorizontal: 20, marginTop: 20 }}>
                         <Text style={{ flex: 1 }}>$ {price.min}</Text>
