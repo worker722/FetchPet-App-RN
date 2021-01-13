@@ -34,8 +34,6 @@ import { Loader, Header, HomeAds } from '@components';
 import { BaseColor, Images } from '@config';
 import * as Utils from '@utils';
 
-const default_icon = "/material/img/category-all.png";
-
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -61,7 +59,15 @@ class Home extends Component {
 
     createNotificationListeners = async () => {
         this.notificationListener = messaging().onMessage((remoteMessage) => {
-            this._onMessageReceived(remoteMessage);
+            this._onMessageReceived(remoteMessage, true);
+        });
+        messaging().getInitialNotification((remoteMessage) => {
+            if (remoteMessage) {
+                this._onMessageReceived(remoteMessage, false);
+            }
+        });
+        messaging().onNotificationOpenedApp((remoteMessage) => {
+            this._onMessageReceived(remoteMessage, false);
         });
     }
 
@@ -83,15 +89,20 @@ class Home extends Component {
         this.props.navigation.navigate('Welcome');
     }
 
-    _onMessageReceived = (remoteMessage) => {
+    _onMessageReceived = (remoteMessage, is_show) => {
         try {
             const { notification, data } = remoteMessage;
-            this.showNotification(notification);
+            if (is_show)
+                this.showNotification(notification);
 
             const notificationData = JSON.parse(data.data);
             if (notificationData.notification_type == global.CHAT_MESSAGE_NOTIFICATION) {
-                if (!this.props.IS_IN_CHAT)
-                    this.props.setStore(global.U_MESSAGE_INCREMENT, 1);
+                if (!this.props.IS_IN_CHAT) {
+                    if (is_show)
+                        this.props.setStore(global.U_MESSAGE_INCREMENT, 1);
+                    else
+                        this.props.navigation.navigate("Chat", { ad_id: notificationData.room.id_ads, room_id: notificationData.room.id });
+                }
             }
             else if (notificationData.notification_type == global.ACCOUNT_STATUS_NOTIFICATION) {
                 if (notificationData?.active == 0)
@@ -211,7 +222,7 @@ class Home extends Component {
             topCategory.filter((item, index) => {
                 item.is_selected = false;
             });
-            topCategory.unshift({ id: -1, name: "All", is_selected: true, icon: default_icon });
+            topCategory.unshift({ id: -1, name: "All", is_selected: true });
 
             this.setState({ pets, topCategory });
         }
