@@ -364,7 +364,7 @@ class Chat extends Component {
                                     style={{ flex: 1, height: 40, marginHorizontal: 5, textAlignVertical: "center", backgroundColor: BaseColor.placeholderColor, width: "100%", borderRadius: 30, paddingLeft: 20, paddingRight: 45 }}
                                     value={message}
                                     multiline={true}
-                                    onChangeText={(text) => this.setState({ message: message + text })}
+                                    onChangeText={(message) => this.setState({ message })}
                                 />
                                 <TouchableOpacity onPress={() => this.setState({ is_show_emoji: !is_show_emoji })} style={{ position: "absolute", right: 55, width: 40, height: 40, borderRadius: 100, justifyContent: "center", alignItems: "center" }}>
                                     <RNImage source={Images.ic_reaction} style={{ width: 35, height: 35 }}></RNImage>

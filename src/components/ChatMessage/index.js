@@ -19,7 +19,7 @@ export default class ChatMessage extends Component {
         const user_id = store.getState().auth.login?.user?.id;
         const { data } = this.props;
         const item = data.item;
-        const message_date = Utils.DATE2STR(item.created_at, 'D MMM HH:mm');
+        const message_date = Utils.DATE2STR(item.created_at, 'D MMM, YYYY HH:mm A');
 
         return (
             <View>
@@ -33,11 +33,14 @@ export default class ChatMessage extends Component {
                                 PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}
                             />
                         }
-                        <View style={{ backgroundColor: BaseColor.primaryColor, borderTopLeftRadius: 15, borderTopRightRadius: 15, borderBottomRightRadius: 15, padding: 10, maxWidth: "70%" }}>
+                        <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginBottom: 10 }}>
+                            <Text style={{ color: BaseColor.primaryColor, fontSize: 13, marginTop: 10, marginRight: 10 }}>{item.sender?.name}</Text>
+                            <Text style={{ color: BaseColor.greyColor, fontSize: 11, marginTop: 10 }}>{message_date}</Text>
+                        </View>
+                        <View style={{ backgroundColor: BaseColor.placeholderColor, borderBottomLeftRadius: 15, borderTopRightRadius: 15, borderBottomRightRadius: 15, padding: 10, maxWidth: "70%" }}>
                             {item.message &&
-                                <Text style={{ color: BaseColor.whiteColor }}>{item.message}</Text>
+                                <Text style={{ color: BaseColor.blackColor, fontSize: 15 }}>{item.message}</Text>
                             }
-                            <Text style={{ color: BaseColor.whiteColor, fontSize: 12, marginTop: 10 }}>{message_date}</Text>
                         </View>
                     </View>
                     :
@@ -50,11 +53,14 @@ export default class ChatMessage extends Component {
                                 PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}
                             />
                         }
-                        <View style={{ backgroundColor: BaseColor.greyColor, borderTopLeftRadius: 15, borderTopRightRadius: 15, borderBottomLeftRadius: 15, paddingHorizontal: 10, paddingVertical: 15, justifyContent: "flex-end", alignItems: "flex-end", maxWidth: "70%" }}>
+                        <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginBottom: 10 }}>
+                            <Text style={{ color: BaseColor.greyColor, fontSize: 11, marginTop: 10 }}>{message_date}</Text>
+                            <Text style={{ color: BaseColor.primaryColor, fontSize: 13, marginTop: 10, marginLeft: 10 }}>You</Text>
+                        </View>
+                        <View style={{ backgroundColor: BaseColor.primaryColor, borderTopLeftRadius: 15, borderBottomRightRadius: 15, borderBottomLeftRadius: 15, paddingHorizontal: 10, paddingVertical: 15, justifyContent: "flex-end", alignItems: "flex-end", maxWidth: "70%" }}>
                             {item.message &&
-                                <Text style={{ color: BaseColor.whiteColor, textAlign: "left" }}>{item.message}</Text>
+                                <Text style={{ color: BaseColor.whiteColor, fontSize: 15, textAlign: "left" }}>{item.message}</Text>
                             }
-                            <Text style={{ color: BaseColor.whiteColor, fontSize: 12, marginTop: 10 }}>{message_date}</Text>
                         </View>
                     </View>
                 }
