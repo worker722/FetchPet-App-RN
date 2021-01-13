@@ -16,4 +16,5 @@ export const Images = {
   ic_attach: require("@assets/images/ic_attach.png"),
   ic_reaction: require("@assets/images/ic_reaction.png"),
   ic_send: require("@assets/images/ic_send.png"),
+  ic_category_all: require("@assets/images/ic_category_all.png"),
 };
