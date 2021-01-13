@@ -51,7 +51,7 @@ class AdvancedFilter extends Component {
                 min: 0,
                 max: 1000
             },
-            age: -1,
+            age: "",
             gender: { id: -1, name: "Gender" },
         }
     }
