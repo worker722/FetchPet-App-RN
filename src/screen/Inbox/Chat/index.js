@@ -14,7 +14,8 @@ import {
     BackHandler,
     Modal,
     Alert,
-    Image as RNImage
+    Image as RNImage,
+    Linking
 } from 'react-native';
 import { ChatMessage, Loader } from '@components';
 import { BaseColor, Images } from '@config';
@@ -203,7 +204,7 @@ class Chat extends Component {
 
     setMenuRef = ref => {
         this.menuRef = ref;
-    };
+    }
 
     block = () => {
         Alert.alert(
@@ -230,7 +231,21 @@ class Chat extends Component {
 
     showMenu = () => {
         this.menuRef.show();
-    };
+    }
+
+    onCall = () => {
+        const { other_user } = this.state;
+        let phoneNumber = '';
+        if (Platform.OS === 'android')
+            phoneNumber = `tel:${other_user.phonenumber}`;
+        else
+            phoneNumber = `tel://${other_user.phonenumber}`;
+
+        try {
+            Linking.openURL(phoneNumber);
+        } catch (error) {
+        }
+    }
 
     render = () => {
         const { chat, ads, showLoader, showRefresh, other_user, is_sending, ad_images, visiblePickerModal, attach_file, room, message, is_show_emoji } = this.state;
@@ -247,6 +262,13 @@ class Chat extends Component {
             }
         }
 
+        const user_meta = other_user?.meta;
+        let is_showPhonenumber = false;
+        user_meta?.forEach((item, key) => {
+            if (item.meta_key == global._SHOW_PHONE_ON_ADS)
+                is_showPhonenumber = item.meta_value == 1 ? true : false;
+        });
+
         if (showLoader)
             return (<Loader />);
 
@@ -255,13 +277,13 @@ class Chat extends Component {
                 style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}
                 keyboardVerticalOffset={40}>
                 <View style={{ flex: 1, marginBottom: Platform.OS == "android" ? 10 : 20 }}>
-                    <View style={{ width: "100%", height: 80, backgroundColor: BaseColor.primaryColor, flexDirection: "row", padding: 10 }}>
+                    <View style={{ width: "100%", height: 80, backgroundColor: BaseColor.dddColor, flexDirection: "row", padding: 10 }}>
                         <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", padding: 10 }}
                             onPress={() => {
                                 navigation.navigate("Inbox");
                                 this.props.setStore(global.IS_IN_CHAT_PAGE, false);
                             }} >
-                            <Icon name={"arrow-left"} size={20} color={BaseColor.whiteColor}></Icon>
+                            <Icon name={"arrow-left"} size={20} color={BaseColor.primaryColor}></Icon>
                         </TouchableOpacity>
                         <View style={{ justifyContent: "center", alignItems: "center", marginLeft: 10 }}>
                             <TouchableOpacity
@@ -299,12 +321,19 @@ class Chat extends Component {
                             </TouchableOpacity>
                         </View>
                         <View style={{ justifyContent: "center", paddingLeft: 10, flex: 1 }}>
-                            <Text style={{ color: BaseColor.whiteColor }}>{other_user?.name}</Text>
+                            <Text style={{ color: BaseColor.blackColor, fontSize: 16 }}>{other_user?.name}</Text>
                         </View>
+                        {is_showPhonenumber && other_user?.phonenumber &&
+                            <TouchableOpacity
+                                onPress={this.onCall}
+                                style={{ justifyContent: "center", alignItems: "center", paddingLeft: 30 }}>
+                                <Icon name={"phone"} size={18} color={BaseColor.primaryColor}></Icon>
+                            </TouchableOpacity>
+                        }
                         <TouchableOpacity
                             onPress={this.showMenu}
                             style={{ justifyContent: "center", alignItems: "center", paddingLeft: 30 }}>
-                            <Icon name={"ellipsis-v"} size={18} color={"white"}></Icon>
+                            <Icon name={"ellipsis-v"} size={18} color={BaseColor.primaryColor}></Icon>
                         </TouchableOpacity>
                         <Menu
                             ref={this.setMenuRef}>

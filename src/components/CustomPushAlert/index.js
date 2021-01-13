@@ -29,6 +29,7 @@ class CustomPushAlert extends Component {
                 alertTitle={PUSH_ALERT?.title}
                 alertMessage={PUSH_ALERT?.body}
                 onAlertHide={this.onAlertHide}
+                alertAutoHideDuration={5000}
                 alertBGColor={BaseColor.pushAlertColor}
             />
         )
