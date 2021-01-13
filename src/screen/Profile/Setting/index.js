@@ -113,7 +113,7 @@ class Setting extends Component {
                 <LinkItem title={"Block Contact"} subtitle={"Show block contact list"} icon_right={"angle-right"} action={this.goBlockContact} />
                 <LinkItem title={"Notification"} subtitle={""} icon_right={"angle-right"} action={this.setNotificationStatus} is_switch={true} switch_val={is_showNotification} />
                 <LinkItem title={"Logout"} subtitle={""} icon_right={"angle-right"} action={this.logOut} />
-                <LinkItem title={"Logout from all devices"} subtitle={""} icon_right={"angle-right"} action={this.logOutAll} />
+                {/* <LinkItem title={"Logout from all devices"} subtitle={""} icon_right={"angle-right"} action={this.logOutAll} /> */}
             </View>
         )
     }
