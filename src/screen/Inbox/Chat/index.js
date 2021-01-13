@@ -22,6 +22,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native-elements';
 import ImagePicker from 'react-native-image-crop-picker';
 import Styles from './style';
+import EmojiInput from 'react-native-emoji-input';
 
 import Menu, { MenuItem } from 'react-native-material-menu';
 
@@ -50,6 +51,7 @@ class Chat extends Component {
             showRefresh: false,
             visiblePickerModal: false,
             is_sending: false,
+            is_show_emoji: false,
         }
 
         this.menuRef = null;
@@ -231,14 +233,8 @@ class Chat extends Component {
     };
 
     render = () => {
-        const { chat, ads, showLoader, showRefresh, other_user, is_sending, ad_images, visiblePickerModal, attach_file, room } = this.state;
+        const { chat, ads, showLoader, showRefresh, other_user, is_sending, ad_images, visiblePickerModal, attach_file, room, message, is_show_emoji } = this.state;
         const navigation = this.props.navigation;
-
-        let image_name = '';
-        if (attach_file) {
-            const splite = attach_file.path.split("/");
-            image_name = splite[splite.length - 1];
-        }
 
         let is_blocked = false;
         if (room) {
@@ -256,9 +252,9 @@ class Chat extends Component {
 
         return (
             <KeyboardAvoidingView behavior={Platform.OS == "android" ? "" : "padding"}
-                style={{ flex: 1 }}
+                style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}
                 keyboardVerticalOffset={40}>
-                <View style={{ flex: 1, marginBottom: Platform.OS == "android" ? 10 : 20, backgroundColor: BaseColor.whiteColor }}>
+                <View style={{ flex: 1, marginBottom: Platform.OS == "android" ? 10 : 20 }}>
                     <View style={{ width: "100%", height: 80, backgroundColor: BaseColor.primaryColor, flexDirection: "row", padding: 10 }}>
                         <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", padding: 10 }}
                             onPress={() => {
@@ -337,14 +333,25 @@ class Chat extends Component {
                         </View>
                     </ScrollView>
                     {attach_file &&
-                        <View style={{ height: 80, marginBottom: 1, backgroundColor: BaseColor.dddColor, paddingHorizontal: 15, borderRadius: 15, marginHorizontal: 10, padding: 3, borderWidth: 1, borderColor: BaseColor.dddColor, flexDirection: "row" }}>
+                        <View style={{ height: 85, marginBottom: 1, backgroundColor: BaseColor.placeholderColor, paddingHorizontal: 15, borderRadius: 15, marginHorizontal: 10, padding: 5, borderColor: BaseColor.dddColor, flexDirection: "row" }}>
                             <TouchableOpacity style={{ position: "absolute", top: 0, right: 3, padding: 6 }} onPress={() => this.setState({ attach_file: null })}>
                                 <Icon name={"times"} size={22} color={BaseColor.primaryColor}></Icon>
                             </TouchableOpacity>
-                            <Image source={{ uri: attach_file.path }} style={{ width: 75, height: 75, borderRadius: 5 }}></Image>
-                            <View style={{ justifyContent: "center", alignItems: "center", paddingRight: 10 }}>
-                                <Text style={{ paddingHorizontal: 10, width: 200 }} numberOfLines={1}>{image_name}</Text>
-                            </View>
+                            <Image source={{ uri: attach_file.path }} style={{ width: 75, height: 75, borderRadius: 5 }} resizeMode={"contain"}></Image>
+                        </View>
+                    }
+                    {is_show_emoji &&
+                        <View style={{ height: 250, width: "100%" }}>
+                            <EmojiInput
+                                numColumns={8}
+                                emojiFontSize={20}
+                                enableSearch={false}
+                                categoryLabelTextStyle={{ fontSize: 15, color: BaseColor.greyColor }}
+                                keyboardBackgroundColor={BaseColor.placeholderColor}
+                                onEmojiSelected={(emoji) => {
+                                    this.setState({ message: message + emoji.char });
+                                }}
+                            />
                         </View>
                     }
                     <View style={{ height: 45, paddingHorizontal: 5, width: "100%", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
@@ -354,27 +361,26 @@ class Chat extends Component {
                                     <RNImage source={Images.ic_attach} style={{ width: 40, height: 40 }}></RNImage>
                                 </TouchableOpacity>
                                 <TextInput
-                                    style={{ flex: 1, height: 40, marginHorizontal: 5, textAlignVertical: "center", backgroundColor: BaseColor.dddColor, width: "100%", borderRadius: 30, paddingLeft: 20, paddingRight: 90 }}
-                                    value={this.state.message}
+                                    style={{ flex: 1, height: 40, marginHorizontal: 5, textAlignVertical: "center", backgroundColor: BaseColor.placeholderColor, width: "100%", borderRadius: 30, paddingLeft: 20, paddingRight: 45 }}
+                                    value={message}
                                     multiline={true}
-                                    onChangeText={(text) => this.setState({ message: text })}
-                                >
-                                </TextInput>
+                                    onChangeText={(text) => this.setState({ message: message + text })}
+                                />
+                                <TouchableOpacity onPress={() => this.setState({ is_show_emoji: !is_show_emoji })} style={{ position: "absolute", right: 55, width: 40, height: 40, borderRadius: 100, justifyContent: "center", alignItems: "center" }}>
+                                    <RNImage source={Images.ic_reaction} style={{ width: 35, height: 35 }}></RNImage>
+                                </TouchableOpacity>
                                 {is_sending ?
-                                    <View style={{ width: 40, height: 40, borderRadius: 100, backgroundColor: BaseColor.dddColor, justifyContent: "center", alignItems: "center" }}>
+                                    <View style={{ width: 40, height: 40, borderRadius: 100, backgroundColor: BaseColor.placeholderColor, justifyContent: "center", alignItems: "center" }}>
                                         <ActivityIndicator color={BaseColor.primaryColor} />
                                     </View>
                                     :
-                                    <TouchableOpacity onPress={() => this.sendMessage()} style={{ width: 40, height: 40, borderRadius: 100, backgroundColor: BaseColor.dddColor, justifyContent: "center", alignItems: "center" }}>
-                                        <RNImage source={Images.ic_send} style={{ width: 40, height: 40 }}></RNImage>
+                                    <TouchableOpacity onPress={() => this.sendMessage()} style={{ width: 40, height: 40, borderRadius: 100, backgroundColor: BaseColor.placeholderColor, justifyContent: "center", alignItems: "center" }}>
+                                        <RNImage source={Images.ic_send} style={{ width: 20, height: 20 }}></RNImage>
                                     </TouchableOpacity>
                                 }
                             </>
                             :
-                            <TextInput
-                                style={{ flex: 1, textAlign: "center", backgroundColor: BaseColor.dddColor, color: "red", width: "100%", borderRadius: 30 }}
-                                editable={false}
-                                value={"You can't chat with this user anymore."} />
+                            <TextInput style={{ flex: 1, textAlign: "center", backgroundColor: BaseColor.placeholderColor, color: "red", width: "100%", borderRadius: 30 }} editable={false} value={"You can't chat with this user anymore."} />
                         }
                     </View>
                 </View>
