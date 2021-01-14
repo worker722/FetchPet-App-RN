@@ -56,6 +56,10 @@ class Profile extends Component {
     }
 
     switchUserMode = () => {
+        if (store.getState().app.IS_BUYER_MODE)
+            this.props.setStore(global.PUSH_ALERT, { notification: { title: "You are using fetch as a seller." }, time: new Date() });
+        else
+            this.props.setStore(global.PUSH_ALERT, { notification: { title: "You are using fetch as a buyer." }, time: new Date() });
         this.props.setStore(global.IS_BUYER_MODE, null);
         // setTimeout(() => {
         //     RNRestart.Restart();
@@ -112,17 +116,17 @@ class Profile extends Component {
                     </View>
                     <View style={{ flexDirection: "row", marginTop: 10, marginBottom: 40, borderRadius: 10, borderColor: BaseColor.dddColor, borderWidth: 1, justifyContent: "center", alignItems: "center", paddingVertical: 30 }}>
                         <View style={{ justifyContent: "center", alignItems: "center" }}>
-                            <Text style={{ color: BaseColor.primaryColor, fontSize: 20 }}>{user?.follower.length}</Text>
+                            <Text style={{ color: BaseColor.primaryColor, fontSize: 20 }}>{user?.follower?.length}</Text>
                             <Text>Followers</Text>
                         </View>
                         <View style={{ backgroundColor: BaseColor.dddColor, marginHorizontal: 10, width: 1, height: "100%" }}></View>
                         <View style={{ justifyContent: "center", alignItems: "center" }}>
-                            <Text style={{ color: BaseColor.primaryColor, fontSize: 20 }}>{user?.review.length}</Text>
+                            <Text style={{ color: BaseColor.primaryColor, fontSize: 20 }}>{user?.review?.length}</Text>
                             <Text>Reviews</Text>
                         </View>
                         <View style={{ backgroundColor: BaseColor.dddColor, marginHorizontal: 10, width: 1, height: "100%" }}></View>
                         <View style={{ justifyContent: "center", alignItems: "center" }}>
-                            <Text style={{ color: BaseColor.primaryColor, fontSize: 20 }}>{user?.ads.length}</Text>
+                            <Text style={{ color: BaseColor.primaryColor, fontSize: 20 }}>{user?.ads?.length}</Text>
                             <Text>Total ads</Text>
                         </View>
                         <View style={{ position: "absolute", bottom: -20, justifyContent: "center", alignItems: "center", padding: 2, borderWidth: 1, borderColor: BaseColor.primaryColor, borderRadius: 100 }}>

@@ -27,12 +27,14 @@ class CustomPushAlert extends Component {
 
         const { notification, data } = PUSH_ALERT;
         const { title, body } = notification;
-        const notificationData = JSON.parse(data.data);
         let image = null;
-        if (notificationData.notification_type == global.CHAT_MESSAGE_NOTIFICATION) {
-            image = notificationData.sender?.avatar;
-        }
-        else if (notificationData.notification_type == global.ACCOUNT_STATUS_NOTIFICATION) {
+        if (data?.data) {
+            const notificationData = JSON.parse(data?.data);
+            if (notificationData.notification_type == global.CHAT_MESSAGE_NOTIFICATION) {
+                image = notificationData.sender?.avatar;
+            }
+            else if (notificationData.notification_type == global.ACCOUNT_STATUS_NOTIFICATION) {
+            }
         }
 
         if (notification) {
@@ -50,16 +52,14 @@ class CustomPushAlert extends Component {
                         alertIconResizeMode={"cover"}
                         onAlertHide={this.onAlertHide}
                         onPressAlert={this.onPressAlert}
-                        alertAutoHideDuration={3000}
                         alertBGColor={BaseColor.pushAlertColor}
                     />
                     :
                     <Alert
-                        alertTitle={notification?.title}
-                        alertMessage={notification?.body}
+                        alertTitle={title}
+                        alertMessage={body}
                         onAlertHide={this.onAlertHide}
                         onPressAlert={this.onPressAlert}
-                        alertAutoHideDuration={3000}
                         alertBGColor={BaseColor.pushAlertColor}
                     />
                 }
