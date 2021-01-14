@@ -78,7 +78,7 @@ class Home extends Component {
             await GoogleSignin.signOut();
         }
         else if (is_social == 2) {
-            LoginManager.logOut();
+            // LoginManager.logOut();
         }
         else if (is_social == 3) {
             await appleAuth.performRequest({
