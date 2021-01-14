@@ -82,12 +82,16 @@ class Sell extends Component {
 
         const response = await this.props.api.get('ads/sell');
         if (response?.success) {
-            const { category, breed } = response.data;
+            let { category, breed } = response.data;
             if (category.length > 0) {
-                this.setState({ category: category, selectedCategory: category[0].name });
+                category.forEach((item, index) => {
+                    if (index == 0) item.is_selected = true;
+                    else item.is_selected = false;
+                });
+                this.setState({ category, selectedCategory: category[0].name });
             }
             if (breed.length > 0)
-                this.setState({ breed: breed, selectedBreed: breed[0].name });
+                this.setState({ breed, selectedBreed: breed[0].name });
         }
 
         Utils.getCurrentLocation().then(
@@ -212,6 +216,19 @@ class Sell extends Component {
         }
     }
 
+    filterSelected = async (id) => {
+        let { category } = this.state;
+        category.forEach((item, key) => {
+            if (item.id == id) {
+                item.is_selected = true;
+                this.setState({ selectedCategory: item.name })
+            }
+            else
+                item.is_selected = false;
+        });
+        this.setState({ category });
+    }
+
     deleteImage = (index) => {
         const { uploadedImages } = this.state;
         if (uploadedImages.length > 0) {
@@ -253,8 +270,25 @@ class Sell extends Component {
         )
     }
 
+    renderFilterItem = ({ item, index }) => {
+        return (
+            <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+                <TouchableOpacity activeOpacity={1}
+                    onPress={() => this.filterSelected(item.id)}
+                    style={{ width: 54, height: 54, borderWidth: 5, justifyContent: "center", alignItems: "center", borderColor: item.is_selected ? BaseColor.primaryColor : BaseColor.whiteColor, borderRadius: 100, marginBottom: 5 }}>
+                    {item.icon ?
+                        <Image source={{ uri: Api.SERVER_HOST + item.icon }} PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />} placeholderStyle={{ backgroundColor: BaseColor.whiteColor }} resizeMode={"stretch"} style={{ width: 45, height: 45, borderRadius: 100 }}></Image>
+                        :
+                        <RNImage source={Images.ic_category_all} placeholderStyle={{ backgroundColor: BaseColor.whiteColor }} resizeMode={"stretch"} style={{ width: 45, height: 45, borderRadius: 100 }}></RNImage>
+                    }
+                </TouchableOpacity>
+                <Text style={{ color: item.is_selected ? BaseColor.primaryColor : BaseColor.greyColor }} numberOfLines={1}>{item.name}</Text>
+            </View>
+        )
+    }
+
     render = () => {
-        const { selectedCategory, selectedBreed, selectedGender, selectedUnit, category, breed, gender, unit, visiblePickerModal, showLoader, showRefresh, uploadedImages, region } = this.state;
+        const { selectedBreed, selectedGender, selectedUnit, category, breed, gender, unit, visiblePickerModal, showLoader, showRefresh, uploadedImages, region } = this.state;
         const navigation = this.props.navigation;
 
         if (showLoader)
@@ -262,6 +296,24 @@ class Sell extends Component {
 
         return (
             <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}>
+                <Header navigation={navigation} mainHeader={true} />
+                <Text style={{ color: BaseColor.primaryColor, fontSize: 20, paddingLeft: 10 }}>Create A New Ads</Text>
+                <View style={{ height: image_size + 40, marginHorizontal: 10, borderRadius: 10, backgroundColor: BaseColor.placeholderColor, borderColor: BaseColor.dddColor, borderWidth: 1, marginTop: 10, justifyContent: "center", alignItems: "center", paddingRight: 10 }}>
+                    <FlatList
+                        keyExtractor={(item, index) => index.toString()}
+                        data={uploadedImages}
+                        horizontal={true}
+                        renderItem={this.renderImage}
+                    />
+                </View>
+                <View style={{ marginTop: 10, maxHeight: 160 }}>
+                    <FlatList
+                        keyExtractor={(item, index) => index.toString()}
+                        data={category}
+                        numColumns={5}
+                        renderItem={this.renderFilterItem}
+                    />
+                </View>
                 <ScrollView keyboardShouldPersistTaps='always' style={{ flex: 1 }}
                     refreshControl={
                         <RefreshControl
@@ -269,42 +321,31 @@ class Sell extends Component {
                             onRefresh={this._onRefresh}
                         />
                     }>
-                    <Header navigation={navigation} mainHeader={true} />
-                    <Text style={{ color: BaseColor.primaryColor, fontSize: 20, paddingLeft: 10 }}>Create A New Ads</Text>
-                    <View style={{ height: image_size + 40, marginHorizontal: 10, borderRadius: 10, backgroundColor: BaseColor.placeholderColor, borderColor: BaseColor.dddColor, borderWidth: 1, marginTop: 10, justifyContent: "center", alignItems: "center", paddingRight: 10 }}>
-                        <FlatList
-                            keyExtractor={(item, index) => index.toString()}
-                            data={uploadedImages}
-                            horizontal={true}
-                            renderItem={this.renderImage}
-                        />
-                    </View>
                     <View style={{ width: "100%", marginTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, borderColor: BaseColor.dddColor }}>
-                            <CustomModalPicker title={"Select a Category"} data={category} selectedValue={selectedCategory} onValueChange={(item, key) => this.setState({ selectedCategory: item.name })} />
-                        </View>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, marginLeft: 10, borderColor: BaseColor.dddColor }}>
+                        <View style={{ flex: 1, borderWidth: 1, height: 50, borderRadius: 100, borderColor: BaseColor.dddColor }}>
                             <CustomModalPicker title={"Select a Breed"} data={breed} selectedValue={selectedBreed} onValueChange={(item, key) => this.setState({ selectedBreed: item.name })} />
                         </View>
                     </View>
                     <View style={{ width: "100%", marginTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor }}>
+                        <View style={{ flex: 1, borderWidth: 1, height: 50, borderRadius: 100, borderColor: BaseColor.dddColor }}>
+                            <CustomModalPicker title={"Select a Gender"} data={gender} selectedValue={selectedGender} onValueChange={(item, key) => this.setState({ selectedGender: item.name })} />
+                        </View>
+                    </View>
+                    <View style={{ width: "100%", marginTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
+                        <View style={{ flex: 2, borderWidth: 1, borderRadius: 100, borderColor: BaseColor.dddColor }}>
                             <TextInput
                                 onChangeText={(text) => this.setState({ age: text })}
-                                placeholder={"Age"} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10, textAlign: "center", justifyContent: "center", alignItems: "center" }} />
+                                placeholder={"Type Age"} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 20, textAlignVertical: "center", justifyContent: "center", alignItems: "center" }} />
                         </View>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, paddingVertical: 5, marginLeft: 10, borderColor: BaseColor.dddColor }}>
+                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 100, paddingVertical: 5, marginLeft: 10, borderColor: BaseColor.dddColor }}>
                             <CustomModalPicker title={"Select a Unit"} data={unit} selectedValue={selectedUnit} onValueChange={(item, key) => this.setState({ selectedUnit: item.name })} />
                         </View>
                     </View>
                     <View style={{ width: "100%", marginTop: 10, flexDirection: "row", height: 50, paddingHorizontal: 10 }}>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, paddingVertical: 5, borderColor: BaseColor.dddColor }}>
-                            <CustomModalPicker title={"Select a Gender"} data={gender} selectedValue={selectedGender} onValueChange={(item, key) => this.setState({ selectedGender: item.name })} />
-                        </View>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, marginLeft: 10, borderColor: BaseColor.dddColor }}>
+                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 100, borderColor: BaseColor.dddColor }}>
                             <TextInput
                                 onChangeText={(text) => this.setState({ price: text })}
-                                placeholder={"Price"} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10, textAlign: "center", justifyContent: "center", alignItems: "center" }} />
+                                placeholder={"Price"} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 20, textAlignVertical: "center", justifyContent: "center", alignItems: "center" }} />
                         </View>
                     </View>
                     <View style={{ padding: 10, height: 100, marginTop: 10, borderWidth: 1, borderColor: BaseColor.dddColor, borderRadius: 10, marginHorizontal: 10 }}>
