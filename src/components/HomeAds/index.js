@@ -6,10 +6,11 @@ import {
     ActivityIndicator,
     Platform,
     Linking,
+    Image as RNImage
 } from 'react-native';
 import { Image } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { BaseColor } from '@config';
+import { BaseColor, Images } from '@config';
 import * as Api from '@api';
 import { store } from '@store';
 import * as Utils from '@utils';
@@ -85,6 +86,9 @@ export default class HomeAds extends Component {
                         style={{ width: 80, height: 80, borderRadius: 100, borderWidth: 1, borderColor: BaseColor.dddColor }}
                         placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                         PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}></Image>
+                    <View style={{ position: "absolute", top: 0, right: 0, width: 28, height: 28, backgroundColor: BaseColor.boostColor, borderRadius: 100, borderWidth: 1, borderColor: BaseColor.whiteColor, justifyContent: "center", alignItems: "center" }}>
+                        <RNImage source={Images.ic_boost} style={{ width: 18, height: 18 }}></RNImage>
+                    </View>
                 </View>
                 <View style={{ width: 1, marginLeft: 10, height: "90%", backgroundColor: BaseColor.dddColor }}></View>
                 <View style={{ flexDirection: "column", flex: 1, paddingLeft: 10, justifyContent: "center", alignItems: "flex-start" }}>
@@ -109,7 +113,7 @@ export default class HomeAds extends Component {
                                         </TouchableOpacity>
                                     }
                                     <View style={{ flex: 1 }} />
-                                    <TouchableOpacity onPress={() => onFavourite(data.index, item, !item.is_fav)} style={{ position: "absolute", bottom: 0, right: 0, width: 30, height: 30, borderRadius: 100, borderWidth: 1, borderColor: BaseColor.price, justifyContent: "center", alignItems: "center" }}>
+                                    <TouchableOpacity onPress={() => onFavourite(data.index, item, !item.is_fav)} style={{ position: "absolute", bottom: 0, right: 0, width: 30, height: 30, borderRadius: 100, borderWidth: 1, borderColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
                                         <Icon name={"heart"} size={15} color={BaseColor.primaryColor} solid={item.is_fav}></Icon>
                                     </TouchableOpacity>
                                 </>

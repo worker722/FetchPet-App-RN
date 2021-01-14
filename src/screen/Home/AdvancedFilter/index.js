@@ -126,7 +126,7 @@ class AdvancedFilter extends Component {
             <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
                 <TouchableOpacity activeOpacity={1}
                     onPress={() => this.filterSelected(item.id)}
-                    style={{ width: 55, height: 55, borderWidth: 5, justifyContent: "center", alignItems: "center", borderColor: item.is_select ? BaseColor.primaryColor : BaseColor.whiteColor, borderRadius: 100, marginBottom: 5 }}>
+                    style={{ width: 54, height: 54, borderWidth: 5, justifyContent: "center", alignItems: "center", borderColor: item.is_select ? BaseColor.primaryColor : BaseColor.whiteColor, borderRadius: 100, marginBottom: 5 }}>
                     {item.icon ?
                         <Image source={{ uri: Api.SERVER_HOST + item.icon }} PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />} placeholderStyle={{ backgroundColor: BaseColor.whiteColor }} resizeMode={"stretch"} style={{ width: 45, height: 45, borderRadius: 100 }}></Image>
                         :
@@ -165,7 +165,7 @@ class AdvancedFilter extends Component {
                     keyExtractor={(item, index) => index.toString()}
                     data={category_data}
                     numColumns={4}
-                    style={{ maxHeight: 260 }}
+                    style={{ maxHeight: 260, marginTop: 10 }}
                     renderItem={this.renderFilterItem}
                 />
                 <ScrollView style={{ flex: 1 }}
