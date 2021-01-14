@@ -82,7 +82,7 @@ class Setting extends Component {
                 <Header icon_left={"arrow-left"} title={"Setting"} callback_left={this.goBack} />
                 <LinkItem title={"Privacy"} subtitle={"Passwork, Phone number visiblity"} icon_right={"angle-right"} action={this.goPrivacy} />
                 <LinkItem title={"Block Contact"} subtitle={"Show block contact list"} icon_right={"angle-right"} action={this.goBlockContact} />
-                <LinkItem title={"Notification"} subtitle={"Chat and ads notification setting"} icon_right={"angle-right"} action={this.goNotifiSetting} />
+                <LinkItem title={"Notifications"} subtitle={""} icon_right={"angle-right"} action={this.goNotifiSetting} />
                 <LinkItem title={"Logout"} subtitle={""} icon_right={"angle-right"} action={this.logOut} />
                 {/* <LinkItem title={"Logout from all devices"} subtitle={""} icon_right={"angle-right"} action={this.logOutAll} /> */}
             </View>

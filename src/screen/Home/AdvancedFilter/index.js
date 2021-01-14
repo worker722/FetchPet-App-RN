@@ -160,21 +160,21 @@ class AdvancedFilter extends Component {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <ScrollView keyboardShouldPersistTaps='always' style={{ flex: 1 }}
+
+                <FlatList
+                    keyExtractor={(item, index) => index.toString()}
+                    data={category_data}
+                    numColumns={4}
+                    style={{ maxHeight: 260 }}
+                    renderItem={this.renderFilterItem}
+                />
+                <ScrollView style={{ flex: 1 }}
                     refreshControl={
                         <RefreshControl
                             refreshing={showRefresh}
                             onRefresh={this._onRefresh}
                         />
                     }>
-                    <View style={{ flex: 1, paddingVertical: 10, maxHeight: 260 }}>
-                        <FlatList
-                            keyExtractor={(item, index) => index.toString()}
-                            data={category_data}
-                            numColumns={4}
-                            renderItem={this.renderFilterItem}
-                        />
-                    </View>
                     <View style={{ flex: 1, marginHorizontal: 10, paddingHorizontal: 10, borderWidth: 1, borderRadius: 100, height: 50, borderColor: BaseColor.primaryColor }}>
                         <CustomModalPicker title={"Select a Breed"} data={breed_data} selectedValue={breed.name} onValueChange={(breed, key) => this.setState({ breed })} />
                     </View>

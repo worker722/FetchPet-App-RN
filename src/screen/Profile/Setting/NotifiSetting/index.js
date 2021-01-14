@@ -61,8 +61,8 @@ class NotifiSetting extends Component {
         return (
             <View style={{ flex: 1, paddingHorizontal: 10, backgroundColor: BaseColor.whiteColor }}>
                 <Header icon_left={"arrow-left"} callback_left={this.goBack} title={"Notificatoin"} />
-                <LinkItem title={"Show notification on chat"} subtitle={""} icon_right={"angle-right"} action={() => this.setNotificationStatus(0)} is_switch={true} switch_val={is_showNotificaton} />
-                <LinkItem title={"Show notification on ads"} subtitle={""} icon_right={"angle-right"} action={() => this.setNotificationStatus(1)} is_switch={true} switch_val={is_showAdsNotificaton} />
+                <LinkItem title={"Message"} subtitle={""} icon_right={"angle-right"} action={() => this.setNotificationStatus(0)} is_switch={true} switch_val={is_showNotificaton} />
+                <LinkItem title={"Ads"} subtitle={""} icon_right={"angle-right"} action={() => this.setNotificationStatus(1)} is_switch={true} switch_val={is_showAdsNotificaton} />
             </View>
         )
     }
