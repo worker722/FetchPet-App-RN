@@ -93,6 +93,12 @@ export const getDistance = async (lat1, lng1, lat2, lng2, unit) => {
         dist = Math.acos(dist);
         dist = dist * 180 / Math.PI;
         dist = dist * 60 * 1.1515;
+
+        if (!unit)
+            unit = "N";
+
+        if (unit == "K") { dist = dist * 1.609344 }
+        else if (unit == "N") { dist = dist * 0.8684 }
         return dist;
     }
 }
