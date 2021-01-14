@@ -27,6 +27,7 @@ class Splash extends Component {
 
 	componentDidMount = async () => {
 		const navigation = this.props.navigation;
+		this.props.setStore(global.NAVIGATION, navigation);
 		if (Api._TOKEN()) {
 			const response = await this.props.api.post("accountStatus");
 			if (response?.success) {
@@ -81,7 +82,8 @@ class Splash extends Component {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		api: bindActionCreators(Api, dispatch)
+		api: bindActionCreators(Api, dispatch),
+		setStore: (type, data) => dispatch({ type, data })
 	};
 };
 export default connect(null, mapDispatchToProps)(Splash);

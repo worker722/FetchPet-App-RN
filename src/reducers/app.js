@@ -4,7 +4,8 @@ const initialState = {
 	UNREAD_MESSAGE: 0,
 	IS_IN_CHAT: false,
 	IS_BUYER_MODE: false,
-	PUSH_ALERT: null
+	PUSH_ALERT: null,
+	NAVIGATION: null
 };
 
 export default (state = initialState, action = {}) => {
@@ -38,6 +39,11 @@ export default (state = initialState, action = {}) => {
 			return {
 				...state,
 				PUSH_ALERT: action.data
+			};
+		case global.NAVIGATION:
+			return {
+				...state,
+				NAVIGATION: action.data
 			};
 		default:
 			return state;
