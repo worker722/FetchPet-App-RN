@@ -3,7 +3,7 @@ import * as global from "@api/global";
 const initialState = {
 	UNREAD_MESSAGE: 0,
 	IS_IN_CHAT: false,
-	IS_BUYER_MODE: true,
+	IS_BUYER_MODE: false,
 	PUSH_ALERT: null
 };
 

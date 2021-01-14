@@ -91,9 +91,9 @@ class Home extends Component {
 
     _onMessageReceived = (remoteMessage, is_show) => {
         try {
-            const { notification, data } = remoteMessage;
+            const { data } = remoteMessage;
             if (is_show)
-                this.showNotification(notification);
+                this.showNotification(remoteMessage);
 
             const notificationData = JSON.parse(data.data);
             if (notificationData.notification_type == global.CHAT_MESSAGE_NOTIFICATION) {
@@ -113,9 +113,9 @@ class Home extends Component {
         }
     }
 
-    showNotification(notification) {
+    showNotification(remoteMessage) {
         const user_meta = store.getState().auth.login?.user?.meta;
-        let is_showNotification = false;
+        let is_showNotification = true;
         user_meta?.forEach((item, key) => {
             if (item.meta_key == global._SHOW_NOTIFICATION)
                 is_showNotification = item.meta_value == 1 ? true : false;
@@ -123,7 +123,7 @@ class Home extends Component {
         if (!is_showNotification)
             return;
 
-        this.props.setStore(global.PUSH_ALERT, notification);
+        this.props.setStore(global.PUSH_ALERT, remoteMessage);
     }
 
     handleAppStateChange = (nextAppState) => { }
