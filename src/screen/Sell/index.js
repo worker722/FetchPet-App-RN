@@ -10,9 +10,10 @@ import {
     ActivityIndicator,
     RefreshControl,
     Alert,
+    Image as RNImage
 } from 'react-native';
 import { Image } from 'react-native-elements';
-import { BaseColor } from '@config';
+import { BaseColor, Images } from '@config';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Header, Loader, CustomModalPicker } from '@components';
 import MapView, { Marker } from 'react-native-maps';
@@ -62,7 +63,9 @@ class Sell extends Component {
             visiblePickerModal: false,
             showLoader: false,
             showRefresh: false,
-            uploadedImages: [],
+            uploadedImages: [
+                { path: "default" }
+            ],
         }
     }
 
@@ -112,11 +115,11 @@ class Sell extends Component {
                 includeExif: true,
                 multiple: true,
             }).then(images => {
-                if (images.length > 5) {
+                if (images.concat(this.state.uploadedImages) > 6) {
                     global.showToastMessage("You can select up to 5 pet images.");
                     return;
                 }
-                this.setState({ visiblePickerModal: false, uploadedImages: images });
+                this.setState({ visiblePickerModal: false, uploadedImages: images.concat(this.state.uploadedImages) });
             });
         }
         else if (index == 1) {
@@ -127,11 +130,11 @@ class Sell extends Component {
                 includeExif: true,
                 multiple: true,
             }).then(images => {
-                if (images.length > 5) {
+                if (images.concat(this.state.uploadedImages) > 6) {
                     global.showToastMessage("You can select up to 5 pet images.");
                     return;
                 }
-                this.setState({ visiblePickerModal: false, uploadedImages: images });
+                this.setState({ visiblePickerModal: false, uploadedImages: images.concat(this.state.uploadedImages) });
             });
         }
     }
@@ -162,7 +165,7 @@ class Sell extends Component {
         }
         else {
             const { selectedCategory, selectedBreed, selectedGender, selectedUnit, age, price, description, uploadedImages, region } = this.state;
-            if (uploadedImages.length < 1) {
+            if (uploadedImages.length < 2) {
                 global.showToastMessage("Please choose at least one pet image.");
                 return;
             }
@@ -186,6 +189,7 @@ class Sell extends Component {
                 global.showToastMessage("Please pick location.");
                 return;
             }
+            uploadedImages.pop();
             this.setState({ showLoader: true });
             const params = { category: selectedCategory, breed: selectedBreed, age: age, price: price, gender: selectedGender == 'Male' ? 1 : 0, image_key: 'ad_image', unit: selectedUnit, lat: region.latitude, long: region.longitude, description: description ? description : '' };
             const response = await this.props.api.createAds('ads/create', uploadedImages, params);
@@ -232,13 +236,19 @@ class Sell extends Component {
 
     renderImage = ({ item, index }) => {
         return (
-            <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", width: image_size, marginLeft: 10 }} onPress={() => this.deleteImage(index)}>
-                <Image
-                    source={{ uri: item.path }}
-                    style={{ width: image_size, height: image_size, borderColor: BaseColor.dddColor, borderWidth: 1, borderRadius: 10 }}
-                    resizeMode="cover"
-                    placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
-                    PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}></Image>
+            <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", width: item.path == "default" ? image_size - 40 : image_size - 10, marginLeft: 10 }} onPress={() => this.deleteImage(index)}>
+                {item.path != "default" ?
+                    <Image
+                        source={{ uri: item.path }}
+                        style={{ width: image_size - 10, height: image_size, borderColor: BaseColor.primaryColor, borderWidth: 1, borderRadius: 10 }}
+                        resizeMode="cover"
+                        placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
+                        PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}></Image>
+                    :
+                    <TouchableOpacity onPress={this.showPickerModal} style={{ justifyContent: "center", alignItems: "center", backgroundColor: BaseColor.whiteColor, width: image_size - 40, height: image_size - 20, borderRadius: 8, borderWidth: 1, borderColor: BaseColor.primaryColor }}>
+                        <RNImage source={Images.ic_add} style={{ width: 25, height: 25 }}></RNImage>
+                    </TouchableOpacity>
+                }
             </TouchableOpacity>
         )
     }
@@ -260,35 +270,14 @@ class Sell extends Component {
                         />
                     }>
                     <Header navigation={navigation} mainHeader={true} />
-                    <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                        <Text style={{ color: BaseColor.primaryColor, fontSize: 20, paddingLeft: 10 }}>Create A New Ads</Text>
-                        <View style={{ flex: 1 }}></View>
-                        {uploadedImages.length > 0 &&
-                            <TouchableOpacity style={{ paddingRight: 10 }} onPress={this.showPickerModal}>
-                                <Icon name={"plus-circle"} size={25} color={BaseColor.primaryColor}></Icon>
-                            </TouchableOpacity>
-                        }
-                    </View>
-                    <View style={{ height: image_size + 40, marginHorizontal: 5, borderRadius: 10, borderColor: BaseColor.dddColor, borderWidth: 1, marginTop: 10, justifyContent: "center", alignItems: "center", paddingRight: 10 }}>
-                        <>
-                            {uploadedImages.length == 0 ?
-                                <>
-                                    <Icon name={"image"} size={35} color={BaseColor.primaryColor}></Icon>
-                                    <TouchableOpacity
-                                        onPress={this.showPickerModal}
-                                        style={{ backgroundColor: BaseColor.primaryColor, paddingVertical: 7, borderWidth: 1, borderColor: BaseColor.dddColor, borderRadius: 10, paddingHorizontal: 10, borderRadius: 5, marginTop: 5 }}>
-                                        <Text style={{ color: BaseColor.whiteColor }}>Choose from gallery</Text>
-                                    </TouchableOpacity>
-                                </>
-                                :
-                                <FlatList
-                                    keyExtractor={(item, index) => index.toString()}
-                                    data={uploadedImages}
-                                    horizontal={true}
-                                    renderItem={this.renderImage}
-                                />
-                            }
-                        </>
+                    <Text style={{ color: BaseColor.primaryColor, fontSize: 20, paddingLeft: 10 }}>Create A New Ads</Text>
+                    <View style={{ height: image_size + 40, marginHorizontal: 10, borderRadius: 10, backgroundColor: BaseColor.placeholderColor, borderColor: BaseColor.dddColor, borderWidth: 1, marginTop: 10, justifyContent: "center", alignItems: "center", paddingRight: 10 }}>
+                        <FlatList
+                            keyExtractor={(item, index) => index.toString()}
+                            data={uploadedImages}
+                            horizontal={true}
+                            renderItem={this.renderImage}
+                        />
                     </View>
                     <View style={{ width: "100%", marginTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
                         <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, borderColor: BaseColor.dddColor }}>
