@@ -10,6 +10,7 @@ import { Image } from 'react-native-elements';
 import { styles } from "./style";
 
 import posed from "react-native-pose";
+import * as Animatable from 'react-native-animatable';
 
 import { connect } from "react-redux";
 import * as Api from '@api';
@@ -67,8 +68,8 @@ class CustomPushAlert extends Component {
     }
 
     hideAlert = () => {
-        this.props.setStore(global.PUSH_ALERT, null);
         this._interval = null;
+        this.props.setStore(global.PUSH_ALERT, null);
     }
 
     onPressAlert = () => {
@@ -80,7 +81,7 @@ class CustomPushAlert extends Component {
             return null;
         }
 
-        this._interval = setTimeout(this.hideAlert, 3000);
+        this._interval = setTimeout(this.hideAlert, 5000);
 
         const { notification, data } = PUSH_ALERT;
         const { title, body } = notification;
@@ -97,48 +98,52 @@ class CustomPushAlert extends Component {
         return (
             <TouchableWithoutFeedback>
                 <Modal style={styles.container} >
-                    <TouchableOpacity
-                        style={[styles.alertBGContainer, { backgroundColor: BaseColor.pushAlertColor }]}
-                        activeOpacity={0.8}
-                        onPress={this.onPressAlert}
-                    >
-                        <View style={styles.alertMainContainer}>
-                            <Circle style={[styles.imageStyle, { width: image ? 60 : 25 }]} >
-                                {image ?
-                                    <Image
-                                        style={{ width: 60, height: 60, borderRadius: 100 }}
-                                        resizeMode={"contain"}
-                                        source={{ uri: Api.SERVER_HOST + image }}
-                                    />
-                                    :
-                                    <RNImage
-                                        style={{ width: 25, height: 25 }}
-                                        source={Images.ic_bell}
-                                    />
-                                }
-                            </Circle>
-                            <View style={{ flex: 1 }}>
-                                {title && (
-                                    <Text style={[styles.alertTitleStyle]}>
-                                        {title}
-                                    </Text>
-                                )}
-                                {body && (
-                                    <Text style={[styles.alertMessageStyle]} numberOfLines={1}>
-                                        {body}
-                                    </Text>
-                                )}
-                            </View>
+                    <Animatable.View animation={"slideInDown"} iterationCount={1} duration={1000} direction="normal">
+                        <View style={{ backgroundColor: BaseColor.whiteColor }}>
+                            <TouchableOpacity
+                                style={[styles.alertBGContainer, { backgroundColor: BaseColor.pushAlertColor }]}
+                                activeOpacity={0.8}
+                                onPress={this.onPressAlert}
+                            >
+                                <View style={styles.alertMainContainer}>
+                                    <Circle style={[styles.imageStyle, { width: image ? 60 : 25 }]} >
+                                        {image ?
+                                            <Image
+                                                style={{ width: 60, height: 60, borderRadius: 100 }}
+                                                resizeMode={"contain"}
+                                                source={{ uri: Api.SERVER_HOST + image }}
+                                            />
+                                            :
+                                            <RNImage
+                                                style={{ width: 25, height: 25 }}
+                                                source={Images.ic_bell}
+                                            />
+                                        }
+                                    </Circle>
+                                    <View style={{ flex: 1 }}>
+                                        {title && (
+                                            <Text style={[styles.alertTitleStyle]}>
+                                                {title}
+                                            </Text>
+                                        )}
+                                        {body && (
+                                            <Text style={[styles.alertMessageStyle]} numberOfLines={1}>
+                                                {body}
+                                            </Text>
+                                        )}
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
                         </View>
-                    </TouchableOpacity>
+                    </Animatable.View>
                 </Modal>
             </TouchableWithoutFeedback>
         )
     }
 }
 
-const mapStateToProps = ({ app: { PUSH_ALERT } }) => {
-    return { PUSH_ALERT };
+const mapStateToProps = ({ app: { PUSH_ALERT, PUSH_ALERT_ANIM } }) => {
+    return { PUSH_ALERT, PUSH_ALERT_ANIM };
 }
 
 const mapDispatchToProps = dispatch => {
