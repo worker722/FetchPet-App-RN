@@ -233,12 +233,25 @@ class Home extends Component {
         if (!ads) return [];
 
         const adsWithDistance = await Promise.all(ads.map(async item => await this.getAdsDistance(item)));
-        adsWithDistance.sort((a, b) => {
+        let nearBoostAds = [];
+        let normalAds = [];
+        adsWithDistance.forEach((item, index) => {
+            if (item.distance <= 100 && item.is_boost)
+                nearBoostAds.push(item);
+            else
+                normalAds.push(item);
+        })
+        nearBoostAds.sort((a, b) => {
             if (a.distance > b.distance) return 1;
             else if (a.distance < b.distance) return -1;
             return 0;
         });
-        return adsWithDistance;
+        normalAds.sort((a, b) => {
+            if (a.distance > b.distance) return 1;
+            else if (a.distance < b.distance) return -1;
+            return 0;
+        });
+        return nearBoostAds.concat(normalAds);
     }
 
     getAdsDistance = async (item) => {
