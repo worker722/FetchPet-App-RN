@@ -21,4 +21,5 @@ export const Images = {
   ic_dashboard: require("@assets/images/ic_dashboard.png"),
   ic_favourite_fill: require("@assets/images/ic_favourite_fill.png"),
   ic_favourite: require("@assets/images/ic_favourite.png"),
+  ic_bell: require("@assets/images/ic_bell.png"),
 };
