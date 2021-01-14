@@ -132,7 +132,6 @@ class Profile extends Component {
                         </View>
                     </View>
 
-                    <Text style={{ marginBottom: 10, fontSize: 20 }}>Setting</Text>
                     {is_social == -1 ?
                         <LinkItem title={"Logout"} subtitle={""} icon_left={"sign-out-alt"} icon_right={"angle-right"} action={this.logOut} />
                         :

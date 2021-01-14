@@ -23,6 +23,10 @@ class Active extends Component {
 
             ads: null,
         }
+
+        props.navigation.addListener("willFocus", (event) => {
+            this.UNSAFE_componentWillMount();
+        });
     }
 
     UNSAFE_componentWillMount = () => {

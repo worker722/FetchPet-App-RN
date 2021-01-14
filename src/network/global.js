@@ -22,6 +22,7 @@ export const NOTIFICATION_CHANNEL_DESCRIPTION = "FETCH-APP";
 
 //USER META KEY
 export const _SHOW_NOTIFICATION = '_show_notification';
+export const _SHOW_ADS_NOTIFICATION = '_show_ads_notification';
 export const _SHOW_PHONE_ON_ADS = '_show_phone_on_ads';
 
 //PREF KEYS

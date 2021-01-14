@@ -16,23 +16,12 @@ import * as global from "@api/global";
 class Setting extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            is_showNotification: true
-        }
     }
 
     UNSAFE_componentWillMount = async () => {
         GoogleSignin.configure({
             iosClientId: 'YOUR IOS CLIENT ID',
         });
-
-        const user_meta = store.getState().auth.login?.user?.meta;
-        let is_showNotification = false;
-        user_meta?.forEach((item, key) => {
-            if (item.meta_key == global._SHOW_NOTIFICATION)
-                is_showNotification = item.meta_value == 1 ? true : false;
-        });
-        this.setState({ is_showNotification });
     }
 
     goBack = () => {
@@ -47,11 +36,8 @@ class Setting extends Component {
         this.props.navigation.navigate("BlockContact")
     }
 
-    setNotificationStatus = async () => {
-        const { is_showNotification } = this.state;
-        const params = { key: global._SHOW_NOTIFICATION, value: is_showNotification ? 0 : 1 };
-        await this.props.api.post("profile/setting", params, true);
-        this.setState({ is_showNotification: !is_showNotification });
+    goNotifiSetting = () => {
+        this.props.navigation.navigate("NotifiSetting")
     }
 
     logOut = async () => {
@@ -90,20 +76,13 @@ class Setting extends Component {
         this.props.navigation.navigate('Welcome');
     }
 
-    deactivateAccount = async () => {
-
-    }
-
     render = () => {
-        const { is_showNotification } = this.state;
-
         return (
             <View style={{ flex: 1, paddingHorizontal: 10, backgroundColor: BaseColor.whiteColor }}>
                 <Header icon_left={"arrow-left"} title={"Setting"} callback_left={this.goBack} />
-
                 <LinkItem title={"Privacy"} subtitle={"Passwork, Phone number visiblity"} icon_right={"angle-right"} action={this.goPrivacy} />
                 <LinkItem title={"Block Contact"} subtitle={"Show block contact list"} icon_right={"angle-right"} action={this.goBlockContact} />
-                <LinkItem title={"Notification"} subtitle={""} icon_right={"angle-right"} action={this.setNotificationStatus} is_switch={true} switch_val={is_showNotification} />
+                <LinkItem title={"Notification"} subtitle={"Chat and ads notification setting"} icon_right={"angle-right"} action={this.goNotifiSetting} />
                 <LinkItem title={"Logout"} subtitle={""} icon_right={"angle-right"} action={this.logOut} />
                 {/* <LinkItem title={"Logout from all devices"} subtitle={""} icon_right={"angle-right"} action={this.logOutAll} /> */}
             </View>

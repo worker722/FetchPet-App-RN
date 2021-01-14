@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Alert from '@logisticinfotech/react-native-animated-alert';
 
 import { connect } from "react-redux";
+import * as Api from '@api';
 import * as global from "@api/global";
 import { BaseColor } from '@config';
 
@@ -10,28 +11,59 @@ class CustomPushAlert extends Component {
         super(props);
     }
 
-    onPressHide = () => {
-        Alert.hideAlert();
-    }
-
     onAlertHide = () => {
         this.props.setStore(global.PUSH_ALERT, null);
     }
 
+    onPressAlert = () => {
+        Alert.hideAlert();
+    }
+
     render = () => {
         const { PUSH_ALERT } = this.props;
-        if (PUSH_ALERT) {
+        if (!PUSH_ALERT) {
+            return null;
+        }
+
+        const { notification, data } = PUSH_ALERT;
+        const { title, body } = notification;
+        const notificationData = JSON.parse(data.data);
+        let image = null;
+        if (notificationData.notification_type == global.CHAT_MESSAGE_NOTIFICATION) {
+            image = notificationData.sender?.avatar;
+        }
+        else if (notificationData.notification_type == global.ACCOUNT_STATUS_NOTIFICATION) {
+        }
+
+        if (notification) {
             Alert.showAlert();
         }
 
         return (
-            <Alert
-                alertTitle={PUSH_ALERT?.title}
-                alertMessage={PUSH_ALERT?.body}
-                onAlertHide={this.onAlertHide}
-                alertAutoHideDuration={5000}
-                alertBGColor={BaseColor.pushAlertColor}
-            />
+            <>
+                {image ?
+                    <Alert
+                        alertTitle={title}
+                        alertMessage={body}
+                        alertIconSource={{ uri: Api.SERVER_HOST + image }}
+                        alertIconSize={60}
+                        alertIconResizeMode={"cover"}
+                        onAlertHide={this.onAlertHide}
+                        onPressAlert={this.onPressAlert}
+                        alertAutoHideDuration={3000}
+                        alertBGColor={BaseColor.pushAlertColor}
+                    />
+                    :
+                    <Alert
+                        alertTitle={notification?.title}
+                        alertMessage={notification?.body}
+                        onAlertHide={this.onAlertHide}
+                        onPressAlert={this.onPressAlert}
+                        alertAutoHideDuration={3000}
+                        alertBGColor={BaseColor.pushAlertColor}
+                    />
+                }
+            </>
         )
     }
 }

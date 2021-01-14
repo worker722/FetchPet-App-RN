@@ -43,6 +43,7 @@ import ContactSupport from "@screen/Profile/Help/ContactSupport";
 import Setting from "@screen/Profile/Setting";
 import Privacy from "@screen/Profile/Setting/Privacy";
 import BlockContact from "@screen/Profile/Setting/BlockContact";
+import NotifiSetting from "@screen/Profile/Setting/NotifiSetting";
 
 // TAB BAR NAVIGATION
 const routeConfigsBuyer = {
@@ -219,6 +220,9 @@ const StackNavigator = createStackNavigator(
 		},
 		SellEdit: {
 			screen: SellEdit
+		},
+		NotifiSetting: {
+			screen: NotifiSetting
 		}
 	},
 	{
