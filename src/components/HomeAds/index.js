@@ -86,9 +86,11 @@ export default class HomeAds extends Component {
                         style={{ width: 80, height: 80, borderRadius: 100, borderWidth: 1, borderColor: BaseColor.dddColor }}
                         placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                         PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}></Image>
-                    <View style={{ position: "absolute", top: 0, right: 0, width: 28, height: 28, backgroundColor: BaseColor.boostColor, borderRadius: 100, borderWidth: 1, borderColor: BaseColor.whiteColor, justifyContent: "center", alignItems: "center" }}>
-                        <RNImage source={Images.ic_boost} style={{ width: 18, height: 18 }}></RNImage>
-                    </View>
+                    {item.is_boost &&
+                        <View style={{ position: "absolute", top: 0, right: 0, width: 28, height: 28, backgroundColor: BaseColor.boostColor, borderRadius: 100, borderWidth: 1, borderColor: BaseColor.whiteColor, justifyContent: "center", alignItems: "center" }}>
+                            <RNImage source={Images.ic_boost} style={{ width: 18, height: 18 }}></RNImage>
+                        </View>
+                    }
                 </View>
                 <View style={{ width: 1, marginLeft: 10, height: "90%", backgroundColor: BaseColor.dddColor }}></View>
                 <View style={{ flexDirection: "column", flex: 1, paddingLeft: 10, justifyContent: "center", alignItems: "flex-start" }}>
