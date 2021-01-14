@@ -3,12 +3,13 @@ import {
     View,
     Text,
     TouchableOpacity,
-    ActivityIndicator
+    ActivityIndicator,
+    Image as RNImage
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Image } from 'react-native-elements';
 
-import { BaseColor } from '@config';
+import { BaseColor, Images } from '@config';
 import * as Api from '@api';
 import * as Utils from '@utils';
 
@@ -41,7 +42,7 @@ export default class ActiveAds extends Component {
         const { navigation } = this.props;
 
         return (
-            <TouchableOpacity style={{ flex: 1, flexDirection: "row", marginBottom: 10, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor, padding: 10 }}
+            <TouchableOpacity style={{ flex: 1, flexDirection: "row", marginBottom: 10, borderRadius: 10, backgroundColor: BaseColor.placeholderColor, padding: 10 }}
                 onPress={() => navigation.navigate("AdDetail", { ad_id: item.id })}>
                 <View style={{ justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
                     <Image
@@ -49,29 +50,33 @@ export default class ActiveAds extends Component {
                         activeOpacity={0.7}
                         placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                         PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}
-                        style={{ alignSelf: 'center', marginRight: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 100, height: 100, borderRadius: 100 }}>
+                        style={{ alignSelf: 'center', marginRight: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 80, height: 80, borderRadius: 100 }}>
                     </Image>
-                    <View style={{ width: 1, height: 100, backgroundColor: BaseColor.dddColor }}></View>
+                    <View style={{ width: 1, height: 80, backgroundColor: BaseColor.dddColor }}></View>
+                    {item.is_boost &&
+                        <View style={{ position: "absolute", top: 0, right: 8, width: 28, height: 28, backgroundColor: BaseColor.boostColor, borderRadius: 100, borderWidth: 1, borderColor: BaseColor.whiteColor, justifyContent: "center", alignItems: "center" }}>
+                            <RNImage source={Images.ic_boost} style={{ width: 18, height: 18 }}></RNImage>
+                        </View>
+                    }
                 </View>
                 <View style={{ flex: 1 }}>
                     <View style={{ flexDirection: "row" }}>
                         <View style={{ flexDirection: "column", flex: 1, paddingLeft: 10, justifyContent: "center", alignItems: "flex-start" }}>
-                            <Text style={{ color: BaseColor.greyColor, fontSize: 10 }}>Category</Text>
-                            <Text style={{ color: BaseColor.primaryColor }}>{item.category.name}</Text>
-                            <Text style={{ color: BaseColor.greyColor, fontSize: 10 }}>Age</Text>
-                            <Text>{item.age} {item.unit}</Text>
-                            <Text style={{ color: BaseColor.greyColor, fontSize: 10 }}>Location</Text>
-                            <Text numberOfLines={1}>{adsLocation}</Text>
+                            <Text style={{ color: BaseColor.primaryColor, fontWeight: "bold", fontSize: 17 }}>{item?.category?.name}</Text>
+                            <Text style={{ color: BaseColor.greyColor, fontSize: 13 }}>{item?.breed?.name}</Text>
+                            <Text numberOfLines={1} style={{ fontWeight: "bold", fontSize: 13 }}>{adsLocation}</Text>
                         </View>
-                        <View style={{ flexDirection: "column", paddingLeft: 10, }}>
-                            <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                                <View style={{ width: 10, height: 10, borderRadius: 100, backgroundColor: BaseColor.activeColor, marginRight: 5 }}></View>
-                                <Text style={{ color: BaseColor.activeColor, fontSize: 13, textAlign: "right" }}>Active</Text>
-                            </View>
-                            <Text style={{ textAlign: "right", flex: 1, textAlignVertical: "center", fontWeight: "bold", position: "absolute", bottom: 0, right: 0 }}>$ {item.price}</Text>
+                        <View style={{ paddingLeft: 10 }}>
+                            <Text style={{ textAlign: "right", textAlignVertical: "center", fontWeight: "bold", fontSize: 18 }}>$ {item.price}</Text>
+                            {!item.is_boost &&
+                                <TouchableOpacity style={{ flexDirection: "row", backgroundColor: BaseColor.boostColor, marginTop: 5, borderRadius: 5, padding: 8, justifyContent: "center", alignItems: "center" }}>
+                                    <RNImage source={Images.ic_boost} style={{ width: 15, height: 15 }}></RNImage>
+                                    <Text style={{ color: BaseColor.whiteColor, fontStyle: "italic", fontSize: 12, marginLeft: 5 }}>Boost Now</Text>
+                                </TouchableOpacity>
+                            }
                         </View>
                     </View>
-                    <View style={{ flexDirection: "row", marginTop: 15 }}>
+                    <View style={{ flexDirection: "row", marginTop: 10 }}>
                         <View style={{ flex: 1, paddingLeft: 10 }}>
                             <Text style={{ fontSize: 10, color: BaseColor.greyColor }} numberOfLines={1}>{Utils.relativeTime(item.updated_at)} posted</Text>
                         </View>

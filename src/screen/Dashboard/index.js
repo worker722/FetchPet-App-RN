@@ -29,7 +29,7 @@ import * as global from "@api/global";
 
 import messaging from '@react-native-firebase/messaging';
 
-import { Loader, Header, HomeAds } from '@components';
+import { Loader, Header } from '@components';
 
 import { BaseColor, Images } from '@config';
 import * as Utils from '@utils';
@@ -39,15 +39,10 @@ class Dashboard extends Component {
         super(props);
         this.state = {
 
-            pets: [],
-            topCategory: [],
-
-            searchText: '',
-            currentCategoryID: -1,
+            review: [],
 
             showRefresh: false,
             showLoader: false,
-            showContentLoader: false
         }
 
         this.props.setStore(global.IS_IN_CHAT_PAGE, false);
@@ -196,7 +191,7 @@ class Dashboard extends Component {
             }
         } catch (err) {
         }
-    };
+    }
 
     UNSAFE_componentWillMount = async () => {
         this.setState({ showLoader: true })
@@ -207,132 +202,27 @@ class Dashboard extends Component {
         if (!Api._TOKEN())
             return;
 
-        const response = await this.props.api.get('home');
+        const response = await this.props.api.get('dashboard');
         if (response?.success) {
             this.props.setStore(global.U_MESSAGE_SET, 0);
             if (response.data.unread_message > 0)
                 this.props.setStore(global.U_MESSAGE_SET, response.data.unread_message);
 
-            let pets = await this.sortAdsByDistance(response.data.ads);
-            let topCategory = response.data.category;
+            this.setState({ review: response.data.review });
 
             let is_show_apple_button = response.data.is_show_apple_button;
             await SetPrefrence(global.PREF_SHOW_APPLE_BUTTON, is_show_apple_button);
-
-            topCategory.filter((item, index) => {
-                item.is_selected = false;
-            });
-            topCategory.unshift({ id: -1, name: "All", is_selected: true });
-
-            this.setState({ pets, topCategory });
         }
         this.setState({ showLoader: false, showRefresh: false });
     }
 
-    sortAdsByDistance = async (ads) => {
-        if (!ads) return [];
-
-        const adsWithDistance = await Promise.all(ads.map(async item => await this.getAdsDistance(item)));
-        let nearBoostAds = [];
-        let normalAds = [];
-        adsWithDistance.forEach((item, index) => {
-            if (item.distance <= 100 && item.is_boost)
-                nearBoostAds.push(item);
-            else
-                normalAds.push(item);
-        })
-        nearBoostAds.sort((a, b) => {
-            if (a.distance > b.distance) return 1;
-            else if (a.distance < b.distance) return -1;
-            return 0;
-        });
-        normalAds.sort((a, b) => {
-            if (a.distance > b.distance) return 1;
-            else if (a.distance < b.distance) return -1;
-            return 0;
-        });
-        return nearBoostAds.concat(normalAds);
-    }
-
-    getAdsDistance = async (item) => {
-        try {
-            const currentLocation = await Utils.getCurrentLocation();
-            item.distance = await Utils.getDistance(item.lat, item.long, currentLocation.latitude, currentLocation.longitude);
-            return item;
-        } catch (error) {
-            item.distance = 0;
-            return item;
-        }
-    }
-
-    filterSelected = async (currentCategoryID) => {
-        this.setState({ showContentLoader: true });
-        let topCategory = this.state.topCategory;
-        topCategory.forEach((item, key) => {
-            if (item.id == currentCategoryID) item.is_selected = true;
-            else item.is_selected = false;
-        });
-        this.setState({ topCategory, currentCategoryID }, () => {
-            this.setState({ showContentLoader: true });
-            this.getFilterData();
-        });
-    }
-
-    getFilterData = async () => {
-        const { currentCategoryID, searchText } = this.state;
-
-        this.setState({ pets: [] });
-        const param = { id_category: currentCategoryID, searchText };
-        const response = await this.props.api.post('home/filter', param);
-        this.setState({ showContentLoader: false, showRefresh: false });
-
-        if (response?.success) {
-            const ads = await this.sortAdsByDistance(response.data.ads);
-            this.setState({ pets: ads });
-        }
-    }
-
-    favouriteAds = async (index, item, value) => {
-        let { pets } = this.state;
-        pets[index].is_fav = value;
-        this.setState({ pets });
-        const param = { ad_id: item.id, is_fav: value };
-        await this.props.api.post('ads/ad_favourite', param);
-    }
-
-    renderFilterItem = ({ item, index }) => {
-        return (
-            <View style={{ alignItems: "center", justifyContent: "center", width: 60, marginRight: 25 }}>
-                <TouchableOpacity activeOpacity={1}
-                    onPress={() => this.filterSelected(item.id)}
-                    style={{ width: 54, height: 54, borderWidth: 5, justifyContent: "center", alignItems: "center", borderColor: item.is_selected ? BaseColor.primaryColor : BaseColor.whiteColor, borderRadius: 100, marginBottom: 5 }}>
-                    {item.icon ?
-                        <Image source={{ uri: Api.SERVER_HOST + item.icon }} PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />} placeholderStyle={{ backgroundColor: BaseColor.whiteColor }} resizeMode={"stretch"} style={{ width: 45, height: 45, borderRadius: 100 }}></Image>
-                        :
-                        <RNImage source={Images.ic_category_all} placeholderStyle={{ backgroundColor: BaseColor.whiteColor }} resizeMode={"stretch"} style={{ width: 45, height: 45, borderRadius: 100 }}></RNImage>
-                    }
-                </TouchableOpacity>
-                <Text style={{ color: item.is_selected ? BaseColor.primaryColor : BaseColor.greyColor }} numberOfLines={1}>{item.name}</Text>
-            </View>
-        )
-    }
-
-    searchAds = async () => {
-        if (this.state.searchText == '')
-            return;
-
-        this.setState({ showContentLoader: true });
-        this.getFilterData();
-    }
-
     _onRefresh = async () => {
         this.setState({ showRefresh: true });
-        this.getFilterData();
     }
 
     render = () => {
-
-        const { pets, showLoader, showRefresh, showContentLoader, topCategory, notification } = this.state;
+        const { user } = store.getState().auth.login;
+        const { showLoader, showRefresh, review } = this.state;
         const { navigation } = this.props;
 
         if (showLoader)
@@ -341,57 +231,55 @@ class Dashboard extends Component {
         return (
             <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}>
                 <Header navigation={navigation} mainHeader={true} />
-                <View style={{ flexDirection: "row", marginHorizontal: 10, justifyContent: "center", alignItems: "center" }}>
-                    <Text style={{ color: BaseColor.primaryColor, fontSize: 20, flex: 1, fontWeight: "600" }}>Category of Pets</Text>
-                </View>
-                <View style={{ width: "100%", paddingHorizontal: 10, marginTop: 10 }}>
-                    <FlatList
-                        keyExtractor={(item, index) => index.toString()}
-                        data={topCategory}
-                        horizontal={true}
-                        renderItem={this.renderFilterItem}
-                    />
-                </View>
-                <View style={{ flexDirection: "row", width: "100%", height: 40, marginVertical: 10, paddingHorizontal: 10, alignItems: "center", justifyContent: "center" }}>
-                    <View style={{ borderRadius: 100, height: 40, flex: 1, backgroundColor: BaseColor.placeholderColor }}>
-                        <TextInput
-                            onChangeText={(text) => this.setState({ searchText: text })}
-                            onSubmitEditing={this.searchAds}
-                            returnKeyType="search"
-                            style={{ flex: 1, paddingLeft: 100, paddingRight: 20, color: BaseColor.blackColor }}
-                            placeholder={"Search"} placeholderTextColor={BaseColor.greyColor}></TextInput>
-                        <View style={{ position: "absolute", left: 15, justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
-                            <RNImage source={Images.logo} style={{ width: 50, height: 17 }} resizeMode={"stretch"}></RNImage>
-                            <TouchableOpacity style={{ padding: 10 }} onPress={this.searchAds}>
-                                <Icon name={"search"} size={18} color={BaseColor.primaryColor}></Icon>
-                            </TouchableOpacity>
+                <ScrollView keyboardShouldPersistTaps='always'
+                    style={{ padding: 10 }}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={showRefresh}
+                            onRefresh={this._onRefresh}
+                        />
+                    }>
+                    <View style={{ flexDirection: "row" }}>
+                        <View style={{ borderRadius: 10, borderWidth: 1, height: 180, borderColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center", paddingHorizontal: 20, paddingVertical: 30 }}>
+                            {user?.avatar ?
+                                <Image source={{ uri: Api.SERVER_HOST + user?.avatar }} style={{ width: 100, height: 100, borderRadius: 100 }}></Image>
+                                :
+                                <TouchableOpacity style={{ width: 80, height: 80, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
+                                </TouchableOpacity>
+                            }
+                            <Text style={{ color: BaseColor.primaryColor, fontWeight: "bold", fontSize: 18 }} numberOfLines={1}>{user?.name}</Text>
+                            <View style={{ position: "absolute", top: 23, right: 23, width: 35, height: 35, backgroundColor: BaseColor.pushAlertColor, borderRadius: 100, justifyContent: "center", alignItems: "center" }}>
+                                <Text style={{ color: BaseColor.whiteColor, fontSize: 10 }}>Seller</Text>
+                            </View>
+                        </View>
+                        <View style={{ flex: 1, marginLeft: 10, height: 180 }}>
+                            <View style={{ height: 85, paddingHorizontal: 10, paddingVertical: 15, borderRadius: 10, borderWidth: 1, borderColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
+                                <View style={{ justifyContent: "center", alignItems: "center" }}>
+                                    <Text style={{ color: BaseColor.primaryColor, fontSize: 23 }}>70</Text>
+                                    <Text>Active Ads</Text>
+                                </View>
+                                <View style={{ flex: 1 }}></View>
+                                <TouchableOpacity style={{ backgroundColor: BaseColor.primaryColor, paddingVertical: 8, paddingHorizontal: 10, borderRadius: 5, justifyContent: "center", alignItems: "center" }}>
+                                    <Text style={{ color: BaseColor.whiteColor, fontSize: 10 }}>View Ads</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={{ height: 85, flexDirection: "row", marginTop: 10 }}>
+                                <View style={{ flex: 1, paddingHorizontal: 10, paddingVertical: 15, borderRadius: 10, borderWidth: 1, borderColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
+                                    <Text style={{ color: BaseColor.primaryColor, fontSize: 23 }}>70</Text>
+                                    <Text>Active Ads</Text>
+                                </View>
+                                <View style={{ flex: 1, marginLeft: 10, paddingHorizontal: 10, paddingVertical: 15, borderRadius: 10, borderWidth: 1, borderColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
+                                    <Text style={{ color: BaseColor.primaryColor, fontSize: 23 }}>70</Text>
+                                    <Text>Active Ads</Text>
+                                </View>
+                            </View>
                         </View>
                     </View>
-                    <TouchableOpacity onPress={() => navigation.navigate("AdvancedFilter", { type: -1 })} style={{ backgroundColor: BaseColor.placeholderColor, width: 40, height: 40, marginLeft: 10, alignItems: "center", borderRadius: 100, justifyContent: "center", padding: 5 }}>
-                        <Icon name={"sliders-h"} size={20} color={BaseColor.primaryColor}></Icon>
+                    <TouchableOpacity style={{ marginTop: 15, borderRadius: 5, backgroundColor: BaseColor.boostColor, justifyContent: "center", alignItems: "center", paddingVertical: 10 }}>
+                        <Text style={{ color: BaseColor.whiteColor, fontStyle: "italic" }}>Boost Your Ads</Text>
                     </TouchableOpacity>
-                </View>
-                {showContentLoader ?
-                    <Loader />
-                    :
-                    <ScrollView keyboardShouldPersistTaps='always'
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={showRefresh}
-                                onRefresh={this._onRefresh}
-                            />
-                        }>
-                        <Text style={{ color: BaseColor.primaryColor, fontSize: 20, fontWeight: "600", marginLeft: 10 }}>Latest</Text>
-                        <FlatList
-                            style={{ paddingHorizontal: 10, marginTop: 10 }}
-                            keyExtractor={(item, index) => index.toString()}
-                            data={pets}
-                            renderItem={(item, key) => (
-                                <HomeAds data={item} onFavourite={this.favouriteAds} navigation={navigation} />
-                            )}
-                        />
-                    </ScrollView>
-                }
+
+                </ScrollView>
             </View>
         )
     }
