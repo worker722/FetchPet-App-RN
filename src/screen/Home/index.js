@@ -332,7 +332,7 @@ class Home extends Component {
 
     render = () => {
 
-        const { pets, showLoader, showRefresh, showContentLoader, topCategory, notification } = this.state;
+        const { pets, showLoader, showRefresh, showContentLoader, topCategory } = this.state;
         const { navigation } = this.props;
 
         if (showLoader)
