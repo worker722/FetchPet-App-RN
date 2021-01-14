@@ -68,6 +68,7 @@ class CustomPushAlert extends Component {
     }
 
     hideAlert = () => {
+        clearTimeout(this._interval);
         this._interval = null;
         this.props.setStore(global.PUSH_ALERT, null);
     }
@@ -81,7 +82,7 @@ class CustomPushAlert extends Component {
                 NAVIGATION.navigate("Chat", { ad_id: notificationData.room.id_ads, room_id: notificationData.room.id });
             }
         } catch (error) {
-            console.log(error)
+            console.log('push alert data parse', error)
         }
 
         this.hideAlert();
@@ -93,6 +94,8 @@ class CustomPushAlert extends Component {
             return null;
         }
 
+        clearTimeout(this._interval);
+        this._interval = null;
         this._interval = setTimeout(this.hideAlert, 5000);
 
         const { notification, data } = PUSH_ALERT;
