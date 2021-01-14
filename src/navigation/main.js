@@ -110,7 +110,7 @@ const routeConfigsSeller = {
 			title: "Sell",
 			tabBarIcon: ({ focused, tintColor }) => {
 				return (
-					<Image source={Images.ic_sell} style={{ marginBottom: 30 }} />
+					<Image source={Images.ic_sell} style={{ marginBottom: 30 }} resizeMode={"contain"}/>
 				)
 			}
 		})

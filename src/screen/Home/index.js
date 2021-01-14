@@ -292,7 +292,7 @@ class Home extends Component {
             <View style={{ alignItems: "center", justifyContent: "center", width: 60, marginRight: 25 }}>
                 <TouchableOpacity activeOpacity={1}
                     onPress={() => this.filterSelected(item.id)}
-                    style={{ width: 55, height: 55, borderWidth: 5, justifyContent: "center", alignItems: "center", borderColor: item.is_selected ? BaseColor.primaryColor : BaseColor.whiteColor, borderRadius: 100, marginBottom: 5 }}>
+                    style={{ width: 54, height: 54, borderWidth: 5, justifyContent: "center", alignItems: "center", borderColor: item.is_selected ? BaseColor.primaryColor : BaseColor.whiteColor, borderRadius: 100, marginBottom: 5 }}>
                     {item.icon ?
                         <Image source={{ uri: Api.SERVER_HOST + item.icon }} PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />} placeholderStyle={{ backgroundColor: BaseColor.whiteColor }} resizeMode={"stretch"} style={{ width: 45, height: 45, borderRadius: 100 }}></Image>
                         :
@@ -339,7 +339,7 @@ class Home extends Component {
                         renderItem={this.renderFilterItem}
                     />
                 </View>
-                <View style={{ flexDirection: "row", width: "100%", height: 40, marginTop: 10, paddingHorizontal: 10, alignItems: "center", justifyContent: "center" }}>
+                <View style={{ flexDirection: "row", width: "100%", height: 40, marginVertical: 10, paddingHorizontal: 10, alignItems: "center", justifyContent: "center" }}>
                     <View style={{ borderRadius: 100, height: 40, flex: 1, backgroundColor: BaseColor.placeholderColor }}>
                         <TextInput
                             onChangeText={(text) => this.setState({ searchText: text })}
@@ -358,7 +358,6 @@ class Home extends Component {
                         <Icon name={"sliders-h"} size={20} color={BaseColor.primaryColor}></Icon>
                     </TouchableOpacity>
                 </View>
-                <Text style={{ color: BaseColor.primaryColor, fontSize: 20, fontWeight: "600", marginLeft: 10 }}>Latest</Text>
                 {showContentLoader ?
                     <Loader />
                     :
@@ -369,6 +368,7 @@ class Home extends Component {
                                 onRefresh={this._onRefresh}
                             />
                         }>
+                        <Text style={{ color: BaseColor.primaryColor, fontSize: 20, fontWeight: "600", marginLeft: 10 }}>Latest</Text>
                         <FlatList
                             style={{ paddingHorizontal: 10, marginTop: 10 }}
                             keyExtractor={(item, index) => index.toString()}
