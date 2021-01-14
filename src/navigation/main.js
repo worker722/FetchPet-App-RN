@@ -17,6 +17,9 @@ import AdvancedFilter from "@screen/Home/AdvancedFilter";
 import FilterResult from "@screen/Home/AdvancedFilter/FilterResult";
 import ImageSlider from "@screen/Home/AdDetail/ImageSlider";
 
+// DASHBOARD PAGE
+import Dashboard from "@screen/Dashboard";
+
 // OTHER PAGE
 import Notification from "@screen/Notification";
 
@@ -87,7 +90,7 @@ const routeConfigsBuyer = {
 
 const routeConfigsSeller = {
 	Home: {
-		screen: Home,
+		screen: Dashboard,
 		navigationOptions: ({ navigation }) => ({
 			title: "Home",
 			tabBarIcon: ({ focused, tintColor }) => {
@@ -110,7 +113,7 @@ const routeConfigsSeller = {
 			title: "Sell",
 			tabBarIcon: ({ focused, tintColor }) => {
 				return (
-					<Image source={Images.ic_sell} style={{ marginBottom: 30 }} resizeMode={"contain"}/>
+					<Image source={Images.ic_sell} style={{ marginBottom: 30 }} resizeMode={"contain"} />
 				)
 			}
 		})
