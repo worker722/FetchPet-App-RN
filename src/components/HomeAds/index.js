@@ -78,22 +78,18 @@ export default class HomeAds extends Component {
         });
 
         return (
-            <TouchableOpacity style={{ flex: 1, flexDirection: "row", marginBottom: 20 }} onPress={() => navigation.navigate("AdDetail", { ad_id: item.id, view: true })}>
+            <TouchableOpacity style={{ flex: 1, flexDirection: "row", marginBottom: 5, borderRadius: 10, backgroundColor: BaseColor.placeholderColor, paddingVertical: 8, paddingHorizontal: 10 }} onPress={() => navigation.navigate("AdDetail", { ad_id: item.id, view: true })}>
                 <View>
                     <Image
                         source={{ uri: Api.SERVER_HOST + ad_images[0] }}
-                        style={{ width: 130, height: "100%", borderRadius: 5, borderWidth: 1, borderColor: BaseColor.dddColor }}
+                        style={{ width: 80, height: 80, borderRadius: 100, borderWidth: 1, borderColor: BaseColor.dddColor }}
                         placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                         PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}></Image>
                 </View>
+                <View style={{ width: 1, marginLeft: 10, height: "90%", backgroundColor: BaseColor.dddColor }}></View>
                 <View style={{ flexDirection: "column", flex: 1, paddingLeft: 10, justifyContent: "center", alignItems: "flex-start" }}>
-                    <Text style={{ color: "grey", fontSize: 10 }}>Category</Text>
                     <Text style={{ color: BaseColor.primaryColor }}>{item.category.name}</Text>
-                    <Text style={{ color: "grey", fontSize: 10 }}>Breed</Text>
-                    <Text>{item.breed.name}</Text>
-                    <Text style={{ color: "grey", fontSize: 10 }}>Age</Text>
-                    <Text>{item.age} {item.unit}</Text>
-                    <Text style={{ color: "grey", fontSize: 10 }}>Location</Text>
+                    <Text style={{ marginVertical: 5 }}>{item.breed.name}</Text>
                     <Text numberOfLines={1}>{adsLocation}</Text>
                 </View>
                 <View style={{ flexDirection: "column", flex: 1, paddingLeft: 10, }}>
@@ -101,27 +97,27 @@ export default class HomeAds extends Component {
                     <Text style={{ fontSize: 20, textAlign: "right" }}>$ {item.price}</Text>
                     <View style={{ flex: 1 }}></View>
                     {is_social != -1 &&
-                        <View style={{ flexDirection: "row" }}>
+                        <View style={{ flexDirection: "row", width: 120 }}>
                             {user_id != item.user.id ?
                                 <>
-                                    <TouchableOpacity onPress={this.onChat} style={{ flex: 1 }}>
-                                        <Icon name={"comment-dots"} size={20} color={BaseColor.primaryColor}></Icon>
+                                    <TouchableOpacity onPress={this.onChat} style={{ width: 30, height: 30, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
+                                        <Icon name={"comment"} size={15} color={BaseColor.whiteColor}></Icon>
                                     </TouchableOpacity>
                                     {is_showPhonenumber && item.user.phonenumber &&
-                                        <TouchableOpacity onPress={this.onCall} style={{ flex: 1 }}>
-                                            <Icon name={"phone"} size={20} color={BaseColor.primaryColor} ></Icon>
+                                        <TouchableOpacity onPress={this.onCall} style={{ width: 30, height: 30, marginLeft: 15, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
+                                            <Icon name={"phone"} size={15} color={BaseColor.whiteColor} ></Icon>
                                         </TouchableOpacity>
                                     }
                                     <View style={{ flex: 1 }} />
-                                    <TouchableOpacity onPress={() => onFavourite(data.index, item, !item.is_fav)} style={{ position: "absolute", bottom: 0, right: 0 }}>
-                                        <Icon name={"heart"} size={20} color={BaseColor.primaryColor} solid={item.is_fav}></Icon>
+                                    <TouchableOpacity onPress={() => onFavourite(data.index, item, !item.is_fav)} style={{ position: "absolute", bottom: 0, right: 0, width: 30, height: 30, borderRadius: 100, borderWidth: 1, borderColor: BaseColor.price, justifyContent: "center", alignItems: "center" }}>
+                                        <Icon name={"heart"} size={15} color={BaseColor.primaryColor} solid={item.is_fav}></Icon>
                                     </TouchableOpacity>
                                 </>
                                 :
                                 <>
                                     <View style={{ flex: 1 }}></View>
-                                    <TouchableOpacity onPress={this.onEdit} style={{ position: "absolute", bottom: 0, right: 0 }}>
-                                        <Icon name={"edit"} size={20} color={BaseColor.primaryColor} solid></Icon>
+                                    <TouchableOpacity onPress={this.onEdit} style={{ position: "absolute", bottom: 0, right: 0, width: 30, height: 30, borderRadius: 100, borderWidth: 1, borderColor: BaseColor.price, justifyContent: "center", alignItems: "center" }}>
+                                        <Icon name={"edit"} size={15} color={BaseColor.primaryColor} solid></Icon>
                                     </TouchableOpacity>
                                 </>
                             }
