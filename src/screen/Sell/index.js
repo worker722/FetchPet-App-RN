@@ -111,35 +111,39 @@ class Sell extends Component {
     }
 
     openPhotoPicker = (index) => {
-        if (index == 0) {
-            ImagePicker.openCamera({
-                mediaType: 'photo',
-                width: 500,
-                height: 500,
-                includeExif: true,
-                multiple: true,
-            }).then(images => {
-                if (images.concat(this.state.uploadedImages) > 6) {
-                    global.showToastMessage("You can select up to 5 pet images.");
-                    return;
-                }
-                this.setState({ visiblePickerModal: false, uploadedImages: images.concat(this.state.uploadedImages) });
-            });
-        }
-        else if (index == 1) {
-            ImagePicker.openPicker({
-                mediaType: 'photo',
-                width: 500,
-                height: 500,
-                includeExif: true,
-                multiple: true,
-            }).then(images => {
-                if (images.concat(this.state.uploadedImages) > 6) {
-                    global.showToastMessage("You can select up to 5 pet images.");
-                    return;
-                }
-                this.setState({ visiblePickerModal: false, uploadedImages: images.concat(this.state.uploadedImages) });
-            });
+        try {
+            if (index == 0) {
+                ImagePicker.openCamera({
+                    mediaType: 'photo',
+                    width: 500,
+                    height: 500,
+                    includeExif: true,
+                    multiple: true,
+                }).then(images => {
+                    if (images.concat(this.state.uploadedImages) > 6) {
+                        global.showToastMessage("You can select up to 5 pet images.");
+                        return;
+                    }
+                    this.setState({ visiblePickerModal: false, uploadedImages: images.concat(this.state.uploadedImages) });
+                });
+            }
+            else if (index == 1) {
+                ImagePicker.openPicker({
+                    mediaType: 'photo',
+                    width: 500,
+                    height: 500,
+                    includeExif: true,
+                    multiple: true,
+                }).then(images => {
+                    if (images.concat(this.state.uploadedImages) > 6) {
+                        global.showToastMessage("You can select up to 5 pet images.");
+                        return;
+                    }
+                    this.setState({ visiblePickerModal: false, uploadedImages: images.concat(this.state.uploadedImages) });
+                });
+            }
+        } catch (error) {
+            console.log(error)
         }
     }
 
@@ -253,7 +257,14 @@ class Sell extends Component {
 
     renderImage = ({ item, index }) => {
         return (
-            <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", width: item.path == "default" ? image_size - 40 : image_size - 10, marginLeft: 10 }} onPress={() => this.deleteImage(index)}>
+            <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", width: item.path == "default" ? image_size - 40 : image_size - 10, marginLeft: 10 }} onPress={() => {
+                if (item.path == "default") {
+                    this.showPickerModal();
+                }
+                else {
+                    this.deleteImage(index)
+                }
+            }}>
                 {item.path != "default" ?
                     <Image
                         source={{ uri: item.path }}
@@ -262,9 +273,9 @@ class Sell extends Component {
                         placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                         PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}></Image>
                     :
-                    <TouchableOpacity onPress={this.showPickerModal} style={{ justifyContent: "center", alignItems: "center", backgroundColor: BaseColor.whiteColor, width: image_size - 40, height: image_size - 20, borderRadius: 8, borderWidth: 1, borderColor: BaseColor.primaryColor }}>
+                    <View style={{ justifyContent: "center", alignItems: "center", backgroundColor: BaseColor.whiteColor, width: image_size - 40, height: image_size - 20, borderRadius: 8, borderWidth: 1, borderColor: BaseColor.primaryColor }}>
                         <RNImage source={Images.ic_add} style={{ width: 25, height: 25 }}></RNImage>
-                    </TouchableOpacity>
+                    </View>
                 }
             </TouchableOpacity>
         )
@@ -272,7 +283,7 @@ class Sell extends Component {
 
     renderFilterItem = ({ item, index }) => {
         return (
-            <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+            <View style={{ alignItems: "center", justifyContent: "center", width: 60, marginRight: 20 }}>
                 <TouchableOpacity activeOpacity={1}
                     onPress={() => this.filterSelected(item.id)}
                     style={{ width: 54, height: 54, borderWidth: 5, justifyContent: "center", alignItems: "center", borderColor: item.is_selected ? BaseColor.primaryColor : BaseColor.whiteColor, borderRadius: 100, marginBottom: 5 }}>
@@ -297,23 +308,6 @@ class Sell extends Component {
         return (
             <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}>
                 <Header navigation={navigation} mainHeader={true} />
-                <Text style={{ color: BaseColor.primaryColor, fontSize: 20, paddingLeft: 10 }}>Create A New Ads</Text>
-                <View style={{ height: image_size + 40, marginHorizontal: 10, borderRadius: 10, backgroundColor: BaseColor.placeholderColor, borderColor: BaseColor.dddColor, borderWidth: 1, marginTop: 10, justifyContent: "center", alignItems: "center", paddingRight: 10 }}>
-                    <FlatList
-                        keyExtractor={(item, index) => index.toString()}
-                        data={uploadedImages}
-                        horizontal={true}
-                        renderItem={this.renderImage}
-                    />
-                </View>
-                <View style={{ marginTop: 10, maxHeight: 160 }}>
-                    <FlatList
-                        keyExtractor={(item, index) => index.toString()}
-                        data={category}
-                        numColumns={5}
-                        renderItem={this.renderFilterItem}
-                    />
-                </View>
                 <ScrollView keyboardShouldPersistTaps='always' style={{ flex: 1 }}
                     refreshControl={
                         <RefreshControl
@@ -321,6 +315,24 @@ class Sell extends Component {
                             onRefresh={this._onRefresh}
                         />
                     }>
+                    <Text style={{ color: BaseColor.primaryColor, fontSize: 20, paddingLeft: 10 }}>Create A New Ads</Text>
+                    <View style={{ height: image_size + 40, marginHorizontal: 10, borderRadius: 10, backgroundColor: BaseColor.placeholderColor, borderColor: BaseColor.dddColor, borderWidth: 1, marginTop: 10, justifyContent: "center", alignItems: "center", paddingRight: 10 }}>
+                        <FlatList
+                            keyExtractor={(item, index) => index.toString()}
+                            data={uploadedImages}
+                            horizontal={true}
+                            renderItem={this.renderImage}
+                        />
+                    </View>
+                    <View style={{ marginVertical: 10, paddingHorizontal: 10 }}>
+                        <FlatList
+                            keyExtractor={(item, index) => index.toString()}
+                            data={category}
+                            horizontal={true}
+                            renderItem={this.renderFilterItem}
+                        />
+                    </View>
+
                     <View style={{ width: "100%", marginTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
                         <View style={{ flex: 1, borderWidth: 1, height: 50, borderRadius: 100, borderColor: BaseColor.dddColor }}>
                             <CustomModalPicker title={"Select a Breed"} data={breed} selectedValue={selectedBreed} onValueChange={(item, key) => this.setState({ selectedBreed: item.name })} />
@@ -369,7 +381,13 @@ class Sell extends Component {
                     </View>
                     <TouchableOpacity
                         onPress={this.createAds}
-                        style={{ marginTop: 15, marginBottom: 30, backgroundColor: BaseColor.primaryColor, borderRadius: 5, justifyContent: "center", alignItems: "center", paddingVertical: 10, marginHorizontal: 15 }}>
+                        style={{ marginTop: 15, flexDirection: "row", backgroundColor: BaseColor.boostColor, borderRadius: 5, justifyContent: "center", alignItems: "center", paddingVertical: 10, marginHorizontal: 15 }}>
+                        <RNImage source={Images.ic_boost} style={{ width: 20, height: 20 }}></RNImage>
+                        <Text style={{ color: BaseColor.whiteColor, marginLeft: 10, fontSize: 18, fontStyle: "italic" }}>Boost AD</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={this.createAds}
+                        style={{ marginTop: 5, marginBottom: 30, backgroundColor: BaseColor.primaryColor, borderRadius: 5, justifyContent: "center", alignItems: "center", paddingVertical: 10, marginHorizontal: 15 }}>
                         <Text style={{ color: BaseColor.whiteColor, fontSize: 18 }}>Create AD</Text>
                     </TouchableOpacity>
                 </ScrollView>

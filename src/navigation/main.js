@@ -48,6 +48,9 @@ import Privacy from "@screen/Profile/Setting/Privacy";
 import BlockContact from "@screen/Profile/Setting/BlockContact";
 import NotifiSetting from "@screen/Profile/Setting/NotifiSetting";
 
+// PACKAGE
+import Package from "@screen/Package";
+
 // TAB BAR NAVIGATION
 const routeConfigsBuyer = {
 	Home: {
@@ -226,6 +229,9 @@ const StackNavigator = createStackNavigator(
 		},
 		NotifiSetting: {
 			screen: NotifiSetting
+		},
+		Package: {
+			screen: Package
 		}
 	},
 	{
