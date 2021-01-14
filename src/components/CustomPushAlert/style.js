@@ -10,8 +10,7 @@ export const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: 10000,
-    elevation: 10000,
-    backgroundColor: BaseColor.whiteColor
+    elevation: 10000
   },
   alertBGContainer: {
     paddingHorizontal: Responsive.widthPercentageToDP("8%"),
