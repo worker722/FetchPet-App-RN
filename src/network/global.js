@@ -1,4 +1,3 @@
-
 import { Platform } from 'react-native';
 import Toast from 'react-native-simple-toast';
 
@@ -10,6 +9,7 @@ export const U_MESSAGE_DECREMENT = "U_MESSAGE_DECREMENT";
 export const IS_IN_CHAT_PAGE = "IS_IN_CHAT_PAGE";
 export const IS_BUYER_MODE = "IS_BUYER_MODE";
 export const PUSH_ALERT = "PUSH_ALERT";
+export const NAVIGATION = "NAVIGATION";
 
 //NOTIFICATION TYPE
 export const CHAT_MESSAGE_NOTIFICATION = "chat_message";

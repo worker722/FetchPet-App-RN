@@ -73,6 +73,18 @@ class CustomPushAlert extends Component {
     }
 
     onPressAlert = () => {
+        try {
+            const { PUSH_ALERT, NAVIGATION } = this.props;
+            const { data } = PUSH_ALERT;
+            const notificationData = JSON.parse(data.data);
+            if (notificationData.notification_type == global.CHAT_MESSAGE_NOTIFICATION) {
+                NAVIGATION.navigate("Chat", { ad_id: notificationData.room.id_ads, room_id: notificationData.room.id });
+            }
+        } catch (error) {
+            console.log(error)
+        }
+
+        this.hideAlert();
     }
 
     render = () => {
@@ -142,8 +154,8 @@ class CustomPushAlert extends Component {
     }
 }
 
-const mapStateToProps = ({ app: { PUSH_ALERT, PUSH_ALERT_ANIM } }) => {
-    return { PUSH_ALERT, PUSH_ALERT_ANIM };
+const mapStateToProps = ({ app: { PUSH_ALERT, NAVIGATION } }) => {
+    return { PUSH_ALERT, NAVIGATION };
 }
 
 const mapDispatchToProps = dispatch => {
