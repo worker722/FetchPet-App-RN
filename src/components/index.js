@@ -11,6 +11,7 @@ import CustomModalPicker from './CustomModalPicker';
 import BlockedUser from './BlockedUser';
 import NotificationItem from './NotificationItem';
 import CustomPushAlert from './CustomPushAlert';
+import PaymentFormView from './PaymentFormView';
 
 export {
     Header,
@@ -25,5 +26,6 @@ export {
     FavouriteAds,
     BlockedUser,
     NotificationItem,
-    CustomPushAlert
+    CustomPushAlert,
+    PaymentFormView
 }
