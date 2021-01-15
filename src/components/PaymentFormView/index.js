@@ -1,12 +1,13 @@
 import React from 'react';
 import {
     View,
-    Image
+    Image,
+    Text,
+    TouchableOpacity,
+    ActivityIndicator
 } from 'react-native';
 import { CreditCardInput } from 'react-native-credit-card-input';
 import { Images, BaseColor } from '@config';
-import styles from "./style";
-import * as Utils from "@utils";
 
 export default class PaymentFormView extends React.Component {
     constructor(props) {
@@ -20,7 +21,9 @@ export default class PaymentFormView extends React.Component {
     }
 
     render() {
-        // const { onSubmit, submitted } = this.props;
+        const { callback, is_loading } = this.props;
+        const { cardData } = this.state;
+
         return (
             <View style={{ paddingTop: 10 }}>
                 <View style={{ justifyContent: "center", alignItems: "center" }}>
@@ -28,7 +31,7 @@ export default class PaymentFormView extends React.Component {
                         <Image source={Images.ic_boost_big} style={{ width: 80, height: 80 }}></Image>
                     </View>
                 </View>
-                <View style={{ marginTop: 20 }}>
+                <View style={{ marginVertical: 20 }}>
                     <CreditCardInput
                         requiresName
                         allowScroll={true}
@@ -43,7 +46,16 @@ export default class PaymentFormView extends React.Component {
                         }
                     />
                 </View>
-                
+                {!is_loading ?
+                    <TouchableOpacity onPress={() => callback(cardData)} style={{ marginTop: 20, width: "90%", marginHorizontal: "5%", height: 45, justifyContent: "center", alignItems: "center", backgroundColor: BaseColor.primaryColor, borderRadius: 5 }}>
+                        <Text style={{ color: BaseColor.whiteColor, fontSize: 20 }}>Confirm</Text>
+                    </TouchableOpacity>
+                    :
+                    <TouchableOpacity activeOpacity={1} style={{ marginTop: 20, width: "90%", marginHorizontal: "5%", height: 45, justifyContent: "center", alignItems: "center", backgroundColor: BaseColor.primaryColor, borderRadius: 5 }}>
+                        <ActivityIndicator color={BaseColor.whiteColor}></ActivityIndicator>
+                    </TouchableOpacity>
+                }
+
             </View>
         );
     }

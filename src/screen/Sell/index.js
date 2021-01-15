@@ -166,7 +166,7 @@ class Sell extends Component {
         this.setState({ region: currentRegion });
     }
 
-    createAds = async () => {
+    createAds = async (type) => {
         const is_social = store.getState().auth.login?.user?.is_social;
         if (is_social == -1) {
             global.showGuestMessage();
@@ -203,7 +203,11 @@ class Sell extends Component {
             const response = await this.props.api.createAds('ads/create', uploadedImages, params);
             this.setState({ showLoader: false });
             if (response?.success) {
-                this.props.navigation.navigate("Home");
+                if (type == 0)
+                    this.props.navigation.navigate("Home");
+                else if (type == 1)
+                    this.props.navigation.navigate("Package", { type: global._CHECKOUT_BOOST_ADS, ad_id: response.data.id })
+
                 this.setState({ uploadedImages: [], age: 0, price: 0, description: '' });
             }
         }
@@ -257,7 +261,7 @@ class Sell extends Component {
 
     renderImage = ({ item, index }) => {
         return (
-            <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", width: item.path == "default" ? image_size - 40 : image_size - 10, marginLeft: 10 }} onPress={() => {
+            <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", width: item.path == "default" ? image_size - 39 : image_size - 9, marginLeft: 10 }} onPress={() => {
                 if (item.path == "default") {
                     this.showPickerModal();
                 }
@@ -380,13 +384,13 @@ class Sell extends Component {
                         </MapView>
                     </View>
                     <TouchableOpacity
-                        onPress={this.createAds}
+                        onPress={() => this.createAds(1)}
                         style={{ marginTop: 15, flexDirection: "row", backgroundColor: BaseColor.boostColor, borderRadius: 5, justifyContent: "center", alignItems: "center", paddingVertical: 10, marginHorizontal: 15 }}>
                         <RNImage source={Images.ic_boost} style={{ width: 20, height: 20 }}></RNImage>
                         <Text style={{ color: BaseColor.whiteColor, marginLeft: 10, fontSize: 18, fontStyle: "italic" }}>Boost AD</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onPress={this.createAds}
+                        onPress={() => this.createAds(0)}
                         style={{ marginTop: 5, marginBottom: 30, backgroundColor: BaseColor.primaryColor, borderRadius: 5, justifyContent: "center", alignItems: "center", paddingVertical: 10, marginHorizontal: 15 }}>
                         <Text style={{ color: BaseColor.whiteColor, fontSize: 18 }}>Create AD</Text>
                     </TouchableOpacity>
