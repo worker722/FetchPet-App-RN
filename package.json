@@ -39,6 +39,7 @@
     "react-native-ratings": "^7.3.0",
     "react-native-reanimated": "^1.13.2",
     "react-native-restart": "0.0.20",
+    "react-native-rn-apple-pay-button": "^1.1.0",
     "react-native-safe-area-context": "^3.1.9",
     "react-native-screens": "^2.16.1",
     "react-native-simple-toast": "^1.1.3",

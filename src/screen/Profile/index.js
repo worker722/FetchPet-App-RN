@@ -57,9 +57,9 @@ class Profile extends Component {
 
     switchUserMode = () => {
         if (store.getState().app.IS_BUYER_MODE)
-            this.props.setStore(global.PUSH_ALERT, { notification: { title: "You are using fetch as a seller." }, time: new Date() });
+            this.props.setStore(global.PUSH_ALERT, { notification: { title: "You are using fetch as a seller." } });
         else
-            this.props.setStore(global.PUSH_ALERT, { notification: { title: "You are using fetch as a buyer." }, time: new Date() });
+            this.props.setStore(global.PUSH_ALERT, { notification: { title: "You are using fetch as a buyer." } });
         this.props.setStore(global.IS_BUYER_MODE, null);
         // setTimeout(() => {
         //     RNRestart.Restart();
