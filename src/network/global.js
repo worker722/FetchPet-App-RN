@@ -25,6 +25,10 @@ export const _SHOW_NOTIFICATION = '_show_notification';
 export const _SHOW_ADS_NOTIFICATION = '_show_ads_notification';
 export const _SHOW_PHONE_ON_ADS = '_show_phone_on_ads';
 
+//CHECKOUT TYPE
+export const _CHECKOUT_BOOST_ADS = '_CHECKOUT_BOOST_ADS';
+export const _CHECKOUT_SUBSCRIPTION = '_CHECKOUT_SUBSCRIPTION';
+
 //PREF KEYS
 export const PREF_REMEMBER_ME = 'PREF_REMEMBER_ME';
 export const PREF_APPLE_EMAIL = 'PREF_APPLE_EMAIL';
