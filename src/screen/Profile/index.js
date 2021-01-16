@@ -60,7 +60,7 @@ class Profile extends Component {
             this.props.setStore(global.PUSH_ALERT, { notification: { title: "You are using fetch as a seller." } });
         else
             this.props.setStore(global.PUSH_ALERT, { notification: { title: "You are using fetch as a buyer." } });
-        this.props.setStore(global.IS_BUYER_MODE, null);
+        this.props.setStore(global.IS_BUYER_MODE);
 
         this.setState({ showLoader: true });
         setTimeout(() => {
