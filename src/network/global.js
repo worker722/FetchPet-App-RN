@@ -10,6 +10,8 @@ export const IS_IN_CHAT_PAGE = "IS_IN_CHAT_PAGE";
 export const IS_BUYER_MODE = "IS_BUYER_MODE";
 export const PUSH_ALERT = "PUSH_ALERT";
 export const NAVIGATION = "NAVIGATION";
+export const FREE_SELL_ADS = "FREE_SELL_ADS";
+export const IS_VALID_SUBSCRIPTION = "IS_VALID_SUBSCRIPTION";
 
 //NOTIFICATION TYPE
 export const CHAT_MESSAGE_NOTIFICATION = "chat_message";

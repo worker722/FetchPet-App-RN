@@ -202,6 +202,7 @@ class Sell extends Component {
                     this.props.navigation.navigate("Package", { checkout_type: global._CHECKOUT_BOOST_ADS, ad_id: response.data.id })
 
                 this.setState({ uploadedImages: [], age: 0, price: 0, description: '' });
+                this.props.setStore(global.FREE_SELL_ADS);
             }
         }
     }
@@ -381,17 +382,22 @@ class Sell extends Component {
                             }
                         </MapView>
                     </View>
-                    <TouchableOpacity
-                        onPress={() => this.createAds(1)}
-                        style={{ marginTop: 15, flexDirection: "row", backgroundColor: BaseColor.boostColor, borderRadius: 5, justifyContent: "center", alignItems: "center", paddingVertical: 10, marginHorizontal: 15 }}>
-                        <RNImage source={Images.ic_boost} style={{ width: 20, height: 20 }}></RNImage>
-                        <Text style={{ color: BaseColor.whiteColor, marginLeft: 10, fontSize: 18, fontStyle: "italic" }}>Boost AD</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => this.createAds(0)}
-                        style={{ marginTop: 5, marginBottom: 30, backgroundColor: BaseColor.primaryColor, borderRadius: 5, justifyContent: "center", alignItems: "center", paddingVertical: 10, marginHorizontal: 15 }}>
-                        <Text style={{ color: BaseColor.whiteColor, fontSize: 18 }}>Create AD</Text>
-                    </TouchableOpacity>
+                    {(this.props.FREE_SELL_ADS > 0 || this.props.IS_VALID_SUBSCRIPTION) &&
+                        <>
+                            <TouchableOpacity
+                                onPress={() => this.createAds(1)}
+                                style={{ marginTop: 15, flexDirection: "row", backgroundColor: BaseColor.boostColor, borderRadius: 5, justifyContent: "center", alignItems: "center", paddingVertical: 10, marginHorizontal: 15 }}>
+                                <RNImage source={Images.ic_boost} style={{ width: 20, height: 20 }}></RNImage>
+                                <Text style={{ color: BaseColor.whiteColor, marginLeft: 10, fontSize: 18, fontStyle: "italic" }}>Boost AD</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => this.createAds(0)}
+                                style={{ marginTop: 5, marginBottom: 30, backgroundColor: BaseColor.primaryColor, borderRadius: 5, justifyContent: "center", alignItems: "center", paddingVertical: 10, marginHorizontal: 15 }}>
+                                <Text style={{ color: BaseColor.whiteColor, fontSize: 18 }}>Create AD</Text>
+                            </TouchableOpacity>
+                        </>
+                    }
+
                 </ScrollView>
 
                 <Modal
@@ -429,9 +435,15 @@ class Sell extends Component {
     }
 }
 
+const mapStateToProps = ({ app: { FREE_SELL_ADS, IS_VALID_SUBSCRIPTION } }) => {
+    return { FREE_SELL_ADS, IS_VALID_SUBSCRIPTION };
+}
+
 const mapDispatchToProps = dispatch => {
     return {
-        api: bindActionCreators(Api, dispatch)
+        api: bindActionCreators(Api, dispatch),
+        setStore: (type, data) => dispatch({ type, data })
     };
 };
-export default connect(null, mapDispatchToProps)(Sell);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sell);

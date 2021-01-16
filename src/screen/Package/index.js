@@ -131,6 +131,8 @@ class Package extends Component {
             else if (checkout_type == global._CHECKOUT_SUBSCRIPTION) {
                 title = "Thank you for your subscribe";
                 body = "You can sell more ads from now";
+
+                this.props.setStore(global.IS_VALID_SUBSCRIPTION, true);
             }
             this.props.setStore(global.PUSH_ALERT, { notification: { title, body } });
             this.props.navigation.goBack();
