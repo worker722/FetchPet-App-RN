@@ -245,6 +245,8 @@ class Package extends Component {
         const { showLoader, checkout_type, is_card_pay, boost_cards, subscription_cards, visiblePMethodModal, selectedCard, is_check_card } = this.state;
 
         const cards = checkout_type == global._CHECKOUT_BOOST_ADS ? boost_cards : subscription_cards;
+        const title = checkout_type == global._CHECKOUT_BOOST_ADS ? "Boost Your Ads" : "Subscribe";
+        const pay_title = checkout_type == global._CHECKOUT_BOOST_ADS ? "Boost" : "Subscribe";
 
         if (showLoader)
             return (<Loader />);
@@ -258,7 +260,7 @@ class Package extends Component {
                     </>
                     :
                     <>
-                        <Header navigation={navigation} title={"Boost Your Ads"} icon_left={"arrow-left"} callback_left={this.goBack} />
+                        <Header navigation={navigation} title={title} icon_left={"arrow-left"} callback_left={this.goBack} />
                         <ScrollView>
                             <Text style={{ fontSize: 22, marginLeft: 10 }}>Packages</Text>
                             <Text style={{ marginTop: 10, marginLeft: 10, fontSize: 16 }}>Choose a package that you wish to</Text>
@@ -266,7 +268,7 @@ class Package extends Component {
                                 cards.map((item, index) => (
                                     <PricingCard
                                         key={index}
-                                        color="#4f9deb"
+                                        color={BaseColor.primaryColor}
                                         title={`$ ${item.title}`}
                                         price={item.price}
                                         info={item.info}
@@ -286,11 +288,11 @@ class Package extends Component {
                         <View style={{ paddingVertical: 20, paddingHorizontal: 20 }}>
                             <Text style={{ fontSize: 20 }}>Select a payment method</Text>
                             <TouchableOpacity onPress={() => this.onSelectPAYMENT_METHOD(PAYMENT_METHOD.CARD)} style={{ marginTop: 20, backgroundColor: BaseColor.primaryColor, width: "100%", height: 50, borderRadius: 5, justifyContent: "center", alignItems: "center" }}>
-                                <Text style={{ color: BaseColor.whiteColor, fontSize: 17 }}>Boost with <Icon name={"credit-card"} color={BaseColor.whiteColor} size={15}></Icon> Pay</Text>
+                                <Text style={{ color: BaseColor.whiteColor, fontSize: 17 }}>{pay_title} with <Icon name={"credit-card"} color={BaseColor.whiteColor} size={15}></Icon> Pay</Text>
                             </TouchableOpacity>
                             {Platform.OS == "android" ?
                                 <TouchableOpacity onPress={() => this.onSelectPAYMENT_METHOD(PAYMENT_METHOD.GOOGLE)} style={{ marginTop: 5, backgroundColor: BaseColor.googleColor, flexDirection: "row", width: "100%", height: 50, borderRadius: 5, justifyContent: "center", alignItems: "center" }}>
-                                    <Text style={{ color: BaseColor.whiteColor, fontSize: 17 }}>Boost with <Icon name={"google"} color={BaseColor.whiteColor} size={15}></Icon> Pay</Text>
+                                    <Text style={{ color: BaseColor.whiteColor, fontSize: 17 }}>{pay_title} with <Icon name={"google"} color={BaseColor.whiteColor} size={15}></Icon> Pay</Text>
                                 </TouchableOpacity>
                                 :
                                 <ApplePayButton
