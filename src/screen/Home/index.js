@@ -43,8 +43,6 @@ class Home extends Component {
             searchText: '',
             currentCategoryID: -1,
 
-            is_firstOpenApp: true,
-
             showRefresh: false,
             showLoader: false,
             showContentLoader: false
@@ -199,36 +197,8 @@ class Home extends Component {
     };
 
     UNSAFE_componentWillMount = async () => {
-        const { is_firstOpenApp } = this.state;
-        if (is_firstOpenApp) {
-            this.setState({ is_firstOpenApp: false });
-            
-            const navigation = this.props.navigation;
-            this.props.setStore(global.NAVIGATION, navigation);
-            if (Api._TOKEN()) {
-                const response = await this.props.api.post("accountStatus");
-                if (response?.success) {
-                    const rememberMe = await GetPrefrence(global.PREF_REMEMBER_ME);
-                    if (rememberMe == 1) {
-                        this.setState({ showLoader: true })
-                        await this.start();
-                    }
-                    else {
-                        navigation.navigate("Welcome");
-                    }
-                }
-                else {
-                    navigation.navigate("Welcome");
-                }
-            }
-            else {
-                navigation.navigate("Welcome");
-            }
-        }
-        else {
-            this.setState({ showLoader: true })
-            await this.start();
-        }
+        this.setState({ showLoader: true })
+        await this.start();
     }
 
     start = async () => {
