@@ -31,7 +31,7 @@ class FilterResult extends Component {
     }
 
     start = async () => {
-        const response = await this.props.api.post("filter/get", this.props.navigation.state.params);
+        const response = await this.props.api.post("filter/get", this.props.route.params);
         if (response?.success) {
             const pets = await this.sortAdsByDistance(response.data.pets);
             this.setState({ pets });
@@ -67,7 +67,7 @@ class FilterResult extends Component {
 
     getAdsDistance = async (item) => {
         try {
-            let currentLocation = this.props.navigation.state.params.map.region;
+            let currentLocation = this.props.route.params.map.region;
             if (currentLocation.latitude == 0 && currentLocation.longitude == 0)
                 currentLocation = await Utils.getCurrentLocation();
             item.distance = await Utils.getDistance(item.lat, item.long, currentLocation.latitude, currentLocation.longitude);

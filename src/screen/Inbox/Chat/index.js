@@ -109,7 +109,7 @@ class Chat extends Component {
     }
 
     start = async () => {
-        const { ad_id, room_id } = this.props.navigation.state.params;
+        const { ad_id, room_id } = this.props.route.params;
         const param = { ad_id, room_id };
         const response = await this.props.api.post("chat", param);
         if (response?.success) {

@@ -107,7 +107,7 @@ class Package extends Component {
     }
 
     UNSAFE_componentWillMount = async () => {
-        const { checkout_type, ad_id } = this.props.navigation.state.params;
+        const { checkout_type, ad_id } = this.props.route.params;
         this.setState({ checkout_type, ad_id });
 
         const response = await this.props.api.get("payment/config");

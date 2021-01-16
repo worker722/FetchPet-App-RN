@@ -25,13 +25,12 @@ export default class CustomMap extends Component {
     }
 
     pickLocation = () => {
-        const navigation = this.props.navigation;
-        navigation.state.params.selectLocation(this.state.region);
-        navigation.goBack(null);
+        this.props.route.params.selectLocation(this.state.region);
+        this.props.navigation.goBack(null);
     }
 
     getCurrentLocation = () => {
-        const currentRegion = this.props.navigation.state.params.currentRegion;
+        const currentRegion = this.props.route.params.currentRegion;
         if (currentRegion) {
             this.setState({
                 region: {

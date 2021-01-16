@@ -36,7 +36,7 @@ class ShowProfile extends Component {
     }
 
     start = async () => {
-        const param = { user_id: this.props.navigation.state.params.user_id, inventory: true };
+        const param = { user_id: this.props.route.params.user_id, inventory: true };
         const response = await this.props.api.post('profile', param);
         if (response?.success) {
             const pets = await this.sortAdsByDistance(response.data.ads);

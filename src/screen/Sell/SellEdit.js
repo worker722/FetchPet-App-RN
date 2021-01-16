@@ -75,7 +75,7 @@ class SellEdit extends Component {
     }
 
     start = async () => {
-        const param = { ad_id: this.props.navigation.state.params.ad_id };
+        const param = { ad_id: this.props.route.params.ad_id };
         let response = await this.props.api.get('ads/sell');
         if (response?.success) {
             const { category, breed } = response.data;
