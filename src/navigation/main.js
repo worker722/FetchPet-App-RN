@@ -138,11 +138,8 @@ const Stack = createStackNavigator();
 const RootStack = () => {
 	return (
 		<NavigationContainer>
-			<Stack.Navigator initialRouteName="BottomTabNavigator">
+			<Stack.Navigator headerMode="none" initialRouteName="BottomTabNavigator">
 				<Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} />
-				<Stack.Screen name="Login" component={Login} />
-				<Stack.Screen name="SignUp" component={SignUp} />
-				<Stack.Screen name="Welcome" component={Welcome} />
 				<Stack.Screen name="AdvancedFilter" component={AdvancedFilter} />
 				<Stack.Screen name="FilterResult" component={FilterResult} />
 				<Stack.Screen name="AdDetail" component={AdDetail} />

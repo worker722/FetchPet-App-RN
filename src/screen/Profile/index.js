@@ -61,9 +61,13 @@ class Profile extends Component {
         else
             this.props.setStore(global.PUSH_ALERT, { notification: { title: "You are using fetch as a buyer." } });
         this.props.setStore(global.IS_BUYER_MODE, null);
-        // setTimeout(() => {
-        //     RNRestart.Restart();
-        // }, 1000);
+
+        this.setState({ showLoader: true });
+        setTimeout(() => {
+            // RNRestart.Restart();
+            this.setState({ showLoader: false });
+            this.props.navigation.navigate("Home");
+        }, 1000);
     }
 
     editProfile = () => {
