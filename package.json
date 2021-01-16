@@ -45,6 +45,7 @@
     "react-native-rn-apple-pay-button": "^1.1.0",
     "react-native-safe-area-context": "^3.1.9",
     "react-native-screens": "^2.16.1",
+    "react-native-simple-radio-button": "^2.7.4",
     "react-native-simple-toast": "^1.1.3",
     "react-native-snap-carousel": "^3.9.1",
     "react-native-status-bar-height": "^2.6.0",
