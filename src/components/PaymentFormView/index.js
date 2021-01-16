@@ -20,7 +20,7 @@ export default class PaymentFormView extends React.Component {
         };
     }
 
-    render() {
+    render = () => {
         const { callback, is_loading } = this.props;
         const { cardData } = this.state;
 
