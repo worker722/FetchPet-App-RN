@@ -132,7 +132,7 @@ class Chat extends Component {
             })
         }
         else {
-            this.props.navigation.goBack(null);
+            this.props.navigation.goBack();
         }
         this.setState({ showLoader: false, showRefresh: false });
         this.scrollView?.scrollToEnd({ animated: true });
@@ -216,7 +216,7 @@ class Chat extends Component {
                     onPress: async () => {
                         this.menuRef.hide();
                         await this.props.api.post("inbox/block", { room_id: this.state.room.id });
-                        this.props.navigation.goBack(null);
+                        this.props.navigation.goBack();
                     }
                 },
                 {

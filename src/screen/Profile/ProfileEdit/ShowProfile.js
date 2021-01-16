@@ -88,7 +88,7 @@ class ShowProfile extends Component {
     }
 
     goBack = () => {
-        this.props.navigation.goBack(null);
+        this.props.navigation.goBack();
     }
 
     goAdsDetail = (id) => {

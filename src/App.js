@@ -15,7 +15,13 @@ import { BaseColor } from '@config';
 import { CustomPushAlert } from '@components';
 
 LogBox.ignoreAllLogs(true);
-LogBox.ignoreLogs(["VirtualizedLists should never be nested", "Require cycle", "Warning: Picker has been extracted from react-native core and will be removed in a future release."]);
+LogBox.ignoreLogs(
+    [
+        "VirtualizedLists should never be nested",
+        "Require cycle",
+        "Warning: Picker has been extracted from react-native core and will be removed in a future release.",
+        "If you are using React Native v0.60.0+ you must follow these instructions to enable currentLocation:"
+    ]);
 
 export default class index extends Component {
     constructor(props) {
