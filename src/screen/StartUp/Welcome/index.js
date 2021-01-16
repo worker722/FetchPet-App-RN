@@ -30,7 +30,7 @@ class Welcome extends Component {
         this.setState({ showLoading: false });
 
         if (response?.success) {
-            this.props.navigation.navigate("Home");
+            this.props.navigation.navigate("Main");
         }
     }
 

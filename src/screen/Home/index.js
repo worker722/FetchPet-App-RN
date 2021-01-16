@@ -26,6 +26,8 @@ import appleAuth from '@invertase/react-native-apple-authentication';
 
 import messaging from '@react-native-firebase/messaging';
 
+import RNRestart from 'react-native-restart';
+
 import { store, SetPrefrence, GetPrefrence } from "@store";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -84,7 +86,8 @@ class Home extends Component {
             });
         }
         this.props.setStore(global.LOGIN, null);
-        this.props.navigation.navigate('Welcome');
+
+        RNRestart.Restart();
     }
 
     _onMessageReceived = (remoteMessage, is_show) => {

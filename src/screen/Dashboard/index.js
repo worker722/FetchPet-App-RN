@@ -29,6 +29,8 @@ import * as global from "@api/global";
 
 import messaging from '@react-native-firebase/messaging';
 
+import RNRestart from 'react-native-restart';
+
 import { Loader, Header } from '@components';
 
 import { BaseColor, Images } from '@config';
@@ -81,7 +83,8 @@ class Dashboard extends Component {
             });
         }
         this.props.setStore(global.LOGIN, null);
-        this.props.navigation.navigate('Welcome');
+
+        RNRestart.Restart();
     }
 
     _onMessageReceived = (remoteMessage, is_show) => {

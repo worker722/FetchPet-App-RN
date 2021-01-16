@@ -64,7 +64,6 @@ class Profile extends Component {
 
         this.setState({ showLoader: true });
         setTimeout(() => {
-            // RNRestart.Restart();
             this.setState({ showLoader: false });
             this.props.navigation.navigate("Home");
         }, 1000);
