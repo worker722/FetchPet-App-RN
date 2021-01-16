@@ -79,7 +79,7 @@ class Profile extends Component {
     logOut = async () => {
         await SetPrefrence(global.PREF_REMEMBER_ME, 0);
         this.props.setStore(global.LOGIN, null);
-        this.props.navigation.navigate('Welcome');
+        RNRestart.Restart();
     }
 
     render = () => {
