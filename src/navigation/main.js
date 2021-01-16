@@ -1,6 +1,6 @@
 import React from "react";
 import { Image } from 'react-native';
-import { Images } from '@config';
+import { Images, BaseColor } from '@config';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -53,7 +53,11 @@ const Tab = createBottomTabNavigator();
 const TabNavigator = (props) => {
 	return (
 		<Tab.Navigator
-			initialRouteName={props.IS_BUYER_MODE ? "Home" : "Home"}>
+			initialRouteName={"Home"}
+			tabBarOptions={{
+				activeTintColor: BaseColor.primaryColor,
+				labelStyle: { fontSize: 13 }
+			}}>
 			{props.IS_BUYER_MODE ?
 				<>
 					<Tab.Screen name="Home" component={Home}
@@ -61,7 +65,7 @@ const TabNavigator = (props) => {
 							title: "Home",
 							tabBarIcon: ({ focused, tintColor }) => {
 								return <Image source={focused ? Images.ic_home_fill : Images.ic_home} />;
-							}
+							},
 						})} />
 					<Tab.Screen name="Inbox" component={Inbox}
 						options={({ navigation }) => ({

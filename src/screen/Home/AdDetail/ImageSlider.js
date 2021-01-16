@@ -16,7 +16,7 @@ export default class ImageSlider extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            images: props.navigation.state.params.data,
+            images: props.route.params.data,
             selectedIndex: 0
         };
         this.flatListRef = null;

@@ -53,7 +53,7 @@ class AdDetail extends Component {
     }
 
     UNSAFE_componentWillMount = () => {
-        this.setState({ showLoader: true, view: this.props.navigation.state.params.view ? true : false });
+        this.setState({ showLoader: true, view: this.props.route.params.view ? true : false });
         this.start();
     }
 
@@ -62,7 +62,7 @@ class AdDetail extends Component {
     }
 
     start = async () => {
-        const param = { ad_id: this.props.navigation.state.params.ad_id, view: this.state.view };
+        const param = { ad_id: this.props.route.params.ad_id, view: this.state.view };
         const response = await this.props.api.post('ads', param);
         if (response?.success) {
             await Utils.getAddressByCoords(response.data.ads.lat, response.data.ads.long, false, (adsLocation) => {
