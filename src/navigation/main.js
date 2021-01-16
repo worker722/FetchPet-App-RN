@@ -1,9 +1,12 @@
 import React from "react";
 import { Image } from 'react-native';
-import { createStackNavigator } from "react-navigation-stack";
-import { createBottomTabNavigator } from "react-navigation-tabs";
-import { BaseColor, BaseStyle, Images } from '@config';
-import { store } from '@store';
+import { Images } from '@config';
+
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+
+import { connect } from "react-redux";
 
 // START UP PAGE
 import Welcome from "@screen/StartUp/Welcome";
@@ -51,207 +54,116 @@ import NotifiSetting from "@screen/Profile/Setting/NotifiSetting";
 // PACKAGE
 import Package from "@screen/Package";
 
-// TAB BAR NAVIGATION
-const routeConfigsBuyer = {
-	Home: {
-		screen: Home,
-		navigationOptions: ({ navigation }) => ({
-			title: "Home",
-			tabBarIcon: ({ focused, tintColor }) => {
-				return <Image source={focused ? Images.ic_home_fill : Images.ic_home} />;
+const Tab = createBottomTabNavigator();
+const TabNavigator = (props) => {
+	return (
+		<Tab.Navigator
+			initialRouteName={props.IS_BUYER_MODE ? "Home" : "Home"}>
+			{props.IS_BUYER_MODE ?
+				<>
+					<Tab.Screen name="Home" component={Home}
+						options={({ navigation }) => ({
+							title: "Home",
+							tabBarIcon: ({ focused, tintColor }) => {
+								return <Image source={focused ? Images.ic_home_fill : Images.ic_home} />;
+							}
+						})} />
+					<Tab.Screen name="Inbox" component={Inbox}
+						options={({ navigation }) => ({
+							title: "Chat",
+							tabBarIcon: ({ focused, tintColor }) => {
+								return <Image source={focused ? Images.ic_chat_fill : Images.ic_chat} />;
+							}
+						})} />
+					<Tab.Screen name="Favourite" component={Favourite}
+						options={({ navigation }) => ({
+							title: "Favourite",
+							tabBarIcon: ({ focused, tintColor }) => {
+								return <Image source={focused ? Images.ic_favourite_fill : Images.ic_favourite} />;
+							}
+						})} />
+				</>
+				:
+				<>
+					<Tab.Screen name="Home" component={Dashboard}
+						options={({ navigation }) => ({
+							title: "Home",
+							tabBarIcon: ({ focused, tintColor }) => {
+								return <Image source={focused ? Images.ic_dashboard_fill : Images.ic_dashboard} />;
+							}
+						})} />
+					<Tab.Screen name="Inbox" component={Inbox}
+						options={({ navigation }) => ({
+							title: "Chat",
+							tabBarIcon: ({ focused, tintColor }) => {
+								return <Image source={focused ? Images.ic_chat_fill : Images.ic_chat} />;
+							}
+						})} />
+					<Tab.Screen name="Sell" component={Sell}
+						options={({ navigation }) => ({
+							title: "Sell",
+							tabBarIcon: ({ focused, tintColor }) => {
+								return (
+									<Image source={Images.ic_sell} style={{ marginBottom: 30 }} resizeMode={"contain"} />
+								)
+							}
+						})} />
+					<Tab.Screen name="MyAds" component={MyAds}
+						options={({ navigation }) => ({
+							title: "MyAds",
+							tabBarIcon: ({ focused, tintColor }) => {
+								return <Image source={focused ? Images.ic_myads_fill : Images.ic_myads} />;
+							}
+						})} />
+				</>
 			}
-		})
-	},
-	Inbox: {
-		screen: Inbox,
-		navigationOptions: ({ navigation }) => ({
-			title: "Chat",
-			tabBarIcon: ({ focused, tintColor }) => {
-				return <Image source={focused ? Images.ic_chat_fill : Images.ic_chat} />;
-			}
-		})
-	},
-	Favourite: {
-		screen: Favourite,
-		navigationOptions: ({ navigation }) => ({
-			title: "Favourite",
-			tabBarIcon: ({ focused, tintColor }) => {
-				return <Image source={focused ? Images.ic_favourite_fill : Images.ic_favourite} />;
-			}
-		})
-	},
-	Profile: {
-		screen: Profile,
-		navigationOptions: ({ navigation }) => ({
-			title: "Profile",
-			tabBarIcon: ({ focused, tintColor }) => {
-				return <Image source={focused ? Images.ic_profile_fill : Images.ic_profile} />;
-			}
-		})
-	}
+			<Tab.Screen name="Profile" component={Profile}
+				options={({ navigation }) => ({
+					title: "Profile",
+					tabBarIcon: ({ focused, tintColor }) => {
+						return <Image source={focused ? Images.ic_profile_fill : Images.ic_profile} />;
+					}
+				})} />
+		</Tab.Navigator>
+	);
+}
+
+const mapStateToProps = ({ app: { IS_BUYER_MODE } }) => {
+	return { IS_BUYER_MODE };
 };
 
-const routeConfigsSeller = {
-	Home: {
-		screen: Dashboard,
-		navigationOptions: ({ navigation }) => ({
-			title: "Home",
-			tabBarIcon: ({ focused, tintColor }) => {
-				return <Image source={focused ? Images.ic_dashboard_fill : Images.ic_dashboard} />;
-			}
-		})
-	},
-	Inbox: {
-		screen: Inbox,
-		navigationOptions: ({ navigation }) => ({
-			title: "Chat",
-			tabBarIcon: ({ focused, tintColor }) => {
-				return <Image source={focused ? Images.ic_chat_fill : Images.ic_chat} />;
-			}
-		})
-	},
-	Sell: {
-		screen: Sell,
-		navigationOptions: ({ navigation }) => ({
-			title: "Sell",
-			tabBarIcon: ({ focused, tintColor }) => {
-				return (
-					<Image source={Images.ic_sell} style={{ marginBottom: 30 }} resizeMode={"contain"} />
-				)
-			}
-		})
-	},
-	MyAds: {
-		screen: MyAds,
-		navigationOptions: ({ navigation }) => ({
-			title: "MyAds",
-			tabBarIcon: ({ focused, tintColor }) => {
-				return <Image source={focused ? Images.ic_myads_fill : Images.ic_myads} />;
-			}
-		})
-	},
-	Profile: {
-		screen: Profile,
-		navigationOptions: ({ navigation }) => ({
-			title: "Profile",
-			tabBarIcon: ({ focused, tintColor }) => {
-				return <Image source={focused ? Images.ic_profile_fill : Images.ic_profile} />;
-			}
-		})
-	}
-};
+const BottomTabNavigator = connect(mapStateToProps, null)(TabNavigator);
 
-// DEFINE BOTTOM NAVIGATOR AS A SCREEN IN STACK
-const { IS_BUYER_MODE } = store.getState().app;
-const routeConfig = IS_BUYER_MODE ? routeConfigsBuyer : routeConfigsSeller;
-
-// CONFIG FOR BOTTOM NAVIGATOR
-const bottomTabNavigatorConfig = {
-	initialRouteName: "Home",
-	tabBarOptions: {
-		showIcon: true,
-		showLabel: true,
-		activeTintColor: BaseColor.primaryColor,
-		inactiveTintColor: BaseColor.greyColor,
-		style: BaseStyle.tabBar,
-		labelStyle: {
-			fontSize: 12
-		}
-	}
-};
-const BottomTabNavigator = createBottomTabNavigator(
-	routeConfig,
-	bottomTabNavigatorConfig
-);
-
-// MAIN STACK VIEW APP
-const StackNavigator = createStackNavigator(
-	{
-		BottomTabNavigator: {
-			screen: BottomTabNavigator
-		},
-		Welcome: {
-			screen: Welcome
-		},
-		Login: {
-			screen: Login
-		},
-		SignUp: {
-			screen: SignUp
-		},
-		AdvancedFilter: {
-			screen: AdvancedFilter
-		},
-		FilterResult: {
-			screen: FilterResult
-		},
-		AdDetail: {
-			screen: AdDetail
-		},
-		ImageSlider: {
-			screen: ImageSlider
-		},
-		Notification: {
-			screen: Notification
-		},
-		Chat: {
-			screen: Chat
-		},
-		ProfileEdit: {
-			screen: ProfileEdit
-		},
-		ShowProfile: {
-			screen: ShowProfile
-		},
-		Help: {
-			screen: Help
-		},
-		Version: {
-			screen: Version
-		},
-		ContactSupport: {
-			screen: ContactSupport
-		},
-		Setting: {
-			screen: Setting
-		},
-		Privacy: {
-			screen: Privacy
-		},
-		BlockContact: {
-			screen: BlockContact
-		},
-		CustomMap: {
-			screen: CustomMap
-		},
-		SellEdit: {
-			screen: SellEdit
-		},
-		NotifiSetting: {
-			screen: NotifiSetting
-		},
-		Package: {
-			screen: Package
-		}
-	},
-	{
-		headerMode: "none",
-		initialRouteName: "BottomTabNavigator"
-	}
-);
-
-// DEFINE ROOT STACK SUPPORT MODAL SCREEN
-const RootStack = createStackNavigator(
-	{
-		StackNavigator: {
-			screen: StackNavigator
-		}
-	},
-	{
-		mode: "modal",
-		headerMode: "none",
-		initialRouteName: "StackNavigator",
-	}
-);
+const Stack = createStackNavigator();
+const RootStack = () => {
+	return (
+		<NavigationContainer>
+			<Stack.Navigator initialRouteName="BottomTabNavigator">
+				<Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} />
+				<Stack.Screen name="Login" component={Login} />
+				<Stack.Screen name="SignUp" component={SignUp} />
+				<Stack.Screen name="Welcome" component={Welcome} />
+				<Stack.Screen name="AdvancedFilter" component={AdvancedFilter} />
+				<Stack.Screen name="FilterResult" component={FilterResult} />
+				<Stack.Screen name="AdDetail" component={AdDetail} />
+				<Stack.Screen name="ImageSlider" component={ImageSlider} />
+				<Stack.Screen name="Notification" component={Notification} />
+				<Stack.Screen name="Chat" component={Chat} />
+				<Stack.Screen name="ProfileEdit" component={ProfileEdit} />
+				<Stack.Screen name="ShowProfile" component={ShowProfile} />
+				<Stack.Screen name="Help" component={Help} />
+				<Stack.Screen name="Version" component={Version} />
+				<Stack.Screen name="ContactSupport" component={ContactSupport} />
+				<Stack.Screen name="Setting" component={Setting} />
+				<Stack.Screen name="NotifiSetting" component={NotifiSetting} />
+				<Stack.Screen name="Privacy" component={Privacy} />
+				<Stack.Screen name="BlockContact" component={BlockContact} />
+				<Stack.Screen name="CustomMap" component={CustomMap} />
+				<Stack.Screen name="SellEdit" component={SellEdit} />
+				<Stack.Screen name="Package" component={Package} />
+			</Stack.Navigator>
+		</NavigationContainer>
+	);
+}
 
 export default RootStack;
