@@ -103,7 +103,7 @@ class Login extends Component {
 
         if (response?.success) {
             SetPrefrence(global.PREF_REMEMBER_ME, rememberMe ? 1 : 0);
-            this.props.navigation.navigate("Home");
+            this.props.navigation.navigate("Main");
         }
     }
 
@@ -129,7 +129,7 @@ class Login extends Component {
 
             if (response?.success) {
                 SetPrefrence(global.PREF_REMEMBER_ME, rememberMe ? 1 : 0);
-                this.props.navigation.navigate("Home");
+                this.props.navigation.navigate("Main");
             }
         } catch (error) {
             console.log(error)
@@ -197,7 +197,7 @@ class Login extends Component {
                     SetPrefrence(global.PREF_APPLE_EMAIL, apple_email);
                     SetPrefrence(global.PREF_APPLE_NAME, apple_name);
                 }
-                this.props.navigation.navigate("Home");
+                this.props.navigation.navigate("Main");
             }
         } catch (error) {
             console.log(error);
@@ -256,7 +256,7 @@ class Login extends Component {
 
             if (response?.success) {
                 SetPrefrence(global.PREF_REMEMBER_ME, rememberMe ? 1 : 0);
-                this.props.navigation.navigate("Home");
+                this.props.navigation.navigate("Main");
             }
         }
     }

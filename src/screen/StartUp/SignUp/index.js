@@ -108,7 +108,7 @@ class SignUp extends Component {
 
         if (response?.success) {
             SetPrefrence(global.PREF_REMEMBER_ME, 1);
-            this.props.navigation.navigate("Home");
+            this.props.navigation.navigate("Main");
         }
     }
 
@@ -135,7 +135,7 @@ class SignUp extends Component {
 
             if (response?.success) {
                 SetPrefrence(global.PREF_REMEMBER_ME, 0);
-                this.props.navigation.navigate("Home");
+                this.props.navigation.navigate("Main");
             }
 
         } catch (error) {
@@ -203,7 +203,7 @@ class SignUp extends Component {
                     SetPrefrence(global.PREF_APPLE_EMAIL, apple_email);
                     SetPrefrence(global.PREF_APPLE_NAME, apple_name);
                 }
-                this.props.navigation.navigate("Home");
+                this.props.navigation.navigate("Main");
             }
         } catch (error) {
             global.showToastMessage(error);
@@ -264,7 +264,7 @@ class SignUp extends Component {
 
             if (response?.success) {
                 SetPrefrence(global.PREF_REMEMBER_ME, 0);
-                this.props.navigation.navigate("Home");
+                this.props.navigation.navigate("Main");
             }
         }
     }

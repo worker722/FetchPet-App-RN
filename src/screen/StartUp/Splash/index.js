@@ -9,8 +9,14 @@ import geolocation from '@react-native-community/geolocation';
 
 import { BaseColor, Images } from '@config';
 import * as Utils from '@utils';
+import { GetPrefrence } from '@store';
+import * as global from "@api/global";
 
-export default class Splash extends Component {
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as Api from '@api';
+
+class Splash extends Component {
 	constructor(props) {
 		super(props);
 	}
@@ -19,10 +25,29 @@ export default class Splash extends Component {
 		await this.requestPermission();
 	}
 
-	componentDidMount = () => {
-		setTimeout(() => {
-			this.props.navigation.navigate("Main");
-		}, 2000);
+	componentDidMount = async () => {
+		const navigation = this.props.navigation;
+		this.props.setStore(global.NAVIGATION, navigation);
+		if (Api._TOKEN()) {
+			const response = await this.props.api.post("accountStatus");
+			if (response?.success) {
+				setTimeout(async () => {
+					const rememberMe = await GetPrefrence(global.PREF_REMEMBER_ME);
+					if (rememberMe == 1)
+						navigation.navigate("Main");
+					else
+						navigation.navigate("Welcome");
+				}, 1000);
+			}
+			else {
+				navigation.navigate("Welcome");
+			}
+		}
+		else {
+			setTimeout(() => {
+				navigation.navigate("Welcome");
+			}, 2000);
+		}
 	}
 
 	requestPermission = async () => {
@@ -54,3 +79,12 @@ export default class Splash extends Component {
 		);
 	}
 }
+
+const mapDispatchToProps = dispatch => {
+	return {
+		api: bindActionCreators(Api, dispatch),
+		setStore: (type, data) => dispatch({ type, data })
+	};
+};
+
+export default connect(null, mapDispatchToProps)(Splash);
