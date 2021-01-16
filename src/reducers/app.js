@@ -5,7 +5,9 @@ const initialState = {
 	IS_IN_CHAT: false,
 	IS_BUYER_MODE: true,
 	PUSH_ALERT: null,
-	NAVIGATION: null
+	NAVIGATION: null,
+	FREE_SELL_ADS: 3,
+	IS_VALID_SUBSCRIPTION: false,
 };
 
 export default (state = initialState, action = {}) => {
@@ -44,6 +46,16 @@ export default (state = initialState, action = {}) => {
 			return {
 				...state,
 				NAVIGATION: action.data
+			};
+		case global.FREE_SELL_ADS:
+			return {
+				...state,
+				FREE_SELL_ADS: state.FREE_SELL_ADS - 1
+			};
+		case global.IS_VALID_SUBSCRIPTION:
+			return {
+				...state,
+				IS_VALID_SUBSCRIPTION: action.data
 			};
 		default:
 			return state;
