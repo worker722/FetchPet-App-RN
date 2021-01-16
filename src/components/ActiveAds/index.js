@@ -11,6 +11,7 @@ import { Image } from 'react-native-elements';
 
 import { BaseColor, Images } from '@config';
 import * as Api from '@api';
+import * as global from '@api/global';
 import * as Utils from '@utils';
 
 export default class ActiveAds extends Component {
@@ -69,7 +70,9 @@ export default class ActiveAds extends Component {
                         <View style={{ paddingLeft: 10 }}>
                             <Text style={{ textAlign: "right", textAlignVertical: "center", fontWeight: "bold", fontSize: 18 }}>$ {item.price}</Text>
                             {!item.is_boost &&
-                                <TouchableOpacity style={{ flexDirection: "row", backgroundColor: BaseColor.boostColor, marginTop: 5, borderRadius: 5, padding: 8, justifyContent: "center", alignItems: "center" }}>
+                                <TouchableOpacity
+                                    onPress={() => navigation.navigate("Package", { checkout_type: global._CHECKOUT_BOOST_ADS, ad_id: item.id })}
+                                    style={{ flexDirection: "row", backgroundColor: BaseColor.boostColor, marginTop: 5, borderRadius: 5, padding: 8, justifyContent: "center", alignItems: "center" }}>
                                     <RNImage source={Images.ic_boost} style={{ width: 15, height: 15 }}></RNImage>
                                     <Text style={{ color: BaseColor.whiteColor, fontStyle: "italic", fontSize: 12, marginLeft: 5 }}>Boost Now</Text>
                                 </TouchableOpacity>
