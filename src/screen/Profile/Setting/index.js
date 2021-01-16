@@ -42,6 +42,10 @@ class Setting extends Component {
         this.props.navigation.navigate("NotifiSetting")
     }
 
+    goSubscription = () => {
+        this.props.navigation.navigate("Package", { checkout_type: global._CHECKOUT_SUBSCRIPTION });
+    }
+
     logOut = async () => {
         await SetPrefrence(global.PREF_REMEMBER_ME, 0);
         const is_social = store.getState().auth.login?.user?.is_social;
@@ -68,6 +72,7 @@ class Setting extends Component {
                 <LinkItem title={"Privacy"} subtitle={"Passwork, Phone number visiblity"} icon_right={"angle-right"} action={this.goPrivacy} />
                 <LinkItem title={"Block Contact"} subtitle={"Show block contact list"} icon_right={"angle-right"} action={this.goBlockContact} />
                 <LinkItem title={"Notifications"} subtitle={""} icon_right={"angle-right"} action={this.goNotifiSetting} />
+                <LinkItem title={"Subscription"} subtitle={"Support no limit ads sell"} icon_right={"angle-right"} action={this.goSubscription} />
                 <LinkItem title={"Logout"} subtitle={""} icon_right={"angle-right"} action={this.logOut} />
             </View>
         )
