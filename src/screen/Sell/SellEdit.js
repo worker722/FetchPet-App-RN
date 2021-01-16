@@ -118,33 +118,36 @@ class SellEdit extends Component {
     }
 
     openPhotoPicker = (index) => {
-        if (index == 0) {
-            ImagePicker.openCamera({
-                mediaType: 'photo',
-                width: 500,
-                height: 500,
-                includeExif: true,
-                multiple: true,
-                cropping: true
-            }).then(images => {
-                this.setState({ visiblePickerModal: false, uploadedImages: [images], is_edit_image: true });
-            });
-        }
-        else if (index == 1) {
-            ImagePicker.openPicker({
-                mediaType: 'photo',
-                width: 500,
-                height: 500,
-                includeExif: true,
-                multiple: true,
-                cropping: true
-            }).then(images => {
-                if (images.length > 5) {
-                    global.showToastMessage("You can select up to 5 images.");
-                    return;
-                }
-                this.setState({ visiblePickerModal: false, uploadedImages: images, is_edit_image: true });
-            });
+        try {
+            if (index == 0) {
+                ImagePicker.openCamera({
+                    mediaType: 'photo',
+                    width: 500,
+                    height: 500,
+                    includeExif: true,
+                    multiple: true,
+                    cropping: true
+                }).then(images => {
+                    this.setState({ visiblePickerModal: false, uploadedImages: [images], is_edit_image: true });
+                });
+            }
+            else if (index == 1) {
+                ImagePicker.openPicker({
+                    mediaType: 'photo',
+                    width: 500,
+                    height: 500,
+                    includeExif: true,
+                    multiple: true,
+                    cropping: true
+                }).then(images => {
+                    if (images.length > 5) {
+                        global.showToastMessage("You can select up to 5 images.");
+                        return;
+                    }
+                    this.setState({ visiblePickerModal: false, uploadedImages: images, is_edit_image: true });
+                });
+            }
+        } catch (error) {
         }
     }
 
@@ -345,33 +348,32 @@ class SellEdit extends Component {
                         }
                     </View>
                     <View style={{ width: "100%", marginTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, borderColor: BaseColor.dddColor }}>
-                            <CustomModalPicker title={"Select a Category"} data={category} selectedValue={selectedCategory} onValueChange={(item, key) => this.setState({ selectedCategory: item.name })} />
-                        </View>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, marginLeft: 10, borderColor: BaseColor.dddColor }}>
+                        <View style={{ flex: 1, borderWidth: 1, height: 50, borderRadius: 100, borderColor: BaseColor.dddColor }}>
                             <CustomModalPicker title={"Select a Breed"} data={breed} selectedValue={selectedBreed} onValueChange={(item, key) => this.setState({ selectedBreed: item.name })} />
                         </View>
                     </View>
                     <View style={{ width: "100%", marginTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, borderColor: BaseColor.dddColor }}>
-                            <TextInput
-                                value={`${age}`}
-                                onChangeText={(text) => this.setState({ age: text })}
-                                placeholder={"Age"} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 10, textAlign: "center", justifyContent: "center", alignItems: "center" }} />
-                        </View>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, marginLeft: 10, borderColor: BaseColor.dddColor }}>
-                            <CustomModalPicker title={"Select a Unit"} data={unit} selectedValue={selectedUnit} onValueChange={(item, key) => this.setState({ selectedUnit: item.name })} />
+                        <View style={{ flex: 1, borderWidth: 1, height: 50, borderRadius: 100, borderColor: BaseColor.dddColor }}>
+                            <CustomModalPicker title={"Select a Gender"} data={gender} selectedValue={selectedGender} onValueChange={(item, key) => this.setState({ selectedGender: item.name })} />
                         </View>
                     </View>
                     <View style={{ width: "100%", marginTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, height: 50, borderColor: BaseColor.dddColor }}>
-                            <CustomModalPicker title={"Select a Gender"} data={gender} selectedValue={selectedGender} onValueChange={(item, key) => this.setState({ selectedGender: item.name })} />
+                        <View style={{ flex: 2, borderWidth: 1, borderRadius: 100, borderColor: BaseColor.dddColor }}>
+                            <TextInput
+                                value={`${age}`}
+                                onChangeText={(text) => this.setState({ age: text })}
+                                placeholder={"Type Age"} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 20, textAlignVertical: "center", justifyContent: "center", alignItems: "center" }} />
                         </View>
-                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 10, marginLeft: 10, height: 50, borderColor: BaseColor.dddColor }}>
+                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 100, paddingVertical: 5, marginLeft: 10, borderColor: BaseColor.dddColor }}>
+                            <CustomModalPicker title={"Select a Unit"} data={unit} selectedValue={selectedUnit} onValueChange={(item, key) => this.setState({ selectedUnit: item.name })} />
+                        </View>
+                    </View>
+                    <View style={{ width: "100%", marginTop: 10, flexDirection: "row", height: 50, paddingHorizontal: 10 }}>
+                        <View style={{ flex: 1, borderWidth: 1, borderRadius: 100, borderColor: BaseColor.dddColor }}>
                             <TextInput
                                 value={`${price}`}
                                 onChangeText={(text) => this.setState({ price: text })}
-                                placeholder={"Price"} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, textAlign: "center", paddingHorizontal: 10, justifyContent: "center", alignItems: "center" }} />
+                                placeholder={"Price"} keyboardType={"number-pad"} placeholderTextColor={BaseColor.greyColor} style={{ fontSize: 15, flex: 1, paddingHorizontal: 20, textAlignVertical: "center", justifyContent: "center", alignItems: "center" }} />
                         </View>
                     </View>
                     <View style={{ padding: 10, height: 100, marginTop: 10, borderWidth: 1, borderColor: BaseColor.dddColor, borderRadius: 10, marginHorizontal: 10 }}>
