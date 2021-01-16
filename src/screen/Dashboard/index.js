@@ -215,6 +215,8 @@ class Dashboard extends Component {
 
             let is_show_apple_button = response.data.is_show_apple_button;
             await SetPrefrence(global.PREF_SHOW_APPLE_BUTTON, is_show_apple_button);
+            
+            this.props.setStore(global.IS_VALID_SUBSCRIPTION, response.data.is_valid_subscription);
         }
         this.setState({ showLoader: false, showRefresh: false });
     }
