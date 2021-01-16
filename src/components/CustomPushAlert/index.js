@@ -136,12 +136,12 @@ class CustomPushAlert extends Component {
                                         }
                                     </Circle>
                                     <View style={{ flex: 1 }}>
-                                        {title && (
+                                        {title && title != '' && (
                                             <Text style={[styles.alertTitleStyle]}>
                                                 {title}
                                             </Text>
                                         )}
-                                        {body && (
+                                        {body && body != '' && (
                                             <Text style={[styles.alertMessageStyle]} numberOfLines={1}>
                                                 {body}
                                             </Text>

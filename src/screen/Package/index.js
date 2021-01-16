@@ -3,10 +3,10 @@ import {
     View,
     Text,
     TouchableOpacity,
-    ScrollView,
     Platform,
 } from 'react-native';
-import { PricingCard, Overlay } from 'react-native-elements';
+import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
+
 import { BaseColor } from '@config';
 import { Header, Loader, PaymentFormView } from '@components';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -17,7 +17,6 @@ import stripe from 'tipsi-stripe';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Api from '@api';
-import * as Utils from '@utils';
 import * as global from '@api/global';
 
 const PAYMENT_METHOD = { card: 0, google: 1, apple: 2 };
@@ -29,7 +28,6 @@ class Package extends Component {
         this.state = {
             showLoader: false,
 
-            visiblePMethodModal: false,
             is_card_pay: false,
             is_check_card: false,
 
@@ -38,32 +36,23 @@ class Package extends Component {
 
             boost_cards: [
                 {
-                    title: 1.97,
+                    index: 0,
+                    label: "1 Day in 1.97$",
                     amount: 1.97,
-                    currency: "usd",
-                    price: "One Day",
-                    info: ['Your ads will be on the top of list'],
-                    button: "BOOST NOW",
                     type: 0,
                     checkout_type: 1
                 },
                 {
-                    title: 9.97,
+                    index: 1,
+                    label: "7 Days in 9.97$",
                     amount: 9.97,
-                    currency: "usd",
-                    price: "One Week",
-                    info: ['Your ads will be on the top of list'],
-                    button: "BOOST NOW",
                     type: 1,
                     checkout_type: 1
                 },
                 {
-                    title: 26.88,
+                    index: 2,
+                    label: "30 Days in 26.88$",
                     amount: 26.88,
-                    currency: "usd",
-                    price: "One Month",
-                    info: ['Your ads will be on the top of list'],
-                    button: "BOOST NOW",
                     type: 2,
                     checkout_type: 1
                 }
@@ -71,44 +60,37 @@ class Package extends Component {
 
             subscription_cards: [
                 {
-                    title: 5,
+                    index: 0,
+                    label: "7 Days in 5$",
                     amount: 5,
-                    currency: "usd",
-                    price: "One WeeK",
-                    info: ['You can sell no limit ads'],
-                    button: "Buy Now",
                     type: 0,
                     checkout_type: 0
                 },
                 {
-                    title: 10,
+                    index: 1,
+                    label: "1 Month in 10$",
                     amount: 10,
-                    currency: "usd",
-                    price: "One Month",
-                    info: ['You can sell no limit ads'],
-                    button: "Buy Now",
                     type: 1,
                     checkout_type: 0
                 },
                 {
-                    title: 50,
+                    index: 2,
+                    label: "6 Months in 50$",
                     amount: 50,
-                    currency: "usd",
-                    price: "One Year",
-                    info: ['You can sell no limit ads'],
-                    button: "Buy Now",
                     type: 2,
                     checkout_type: 0
                 }
             ],
 
-            selectedCard: null
+            selectedCard: null,
         }
     }
 
     UNSAFE_componentWillMount = async () => {
         const { checkout_type, ad_id } = this.props.route.params;
         this.setState({ checkout_type, ad_id });
+        const { boost_cards, subscription_cards } = this.state;
+        this.setState({ selectedCard: checkout_type == global._CHECKOUT_BOOST_ADS ? boost_cards[0] : subscription_cards[0] });
 
         const response = await this.props.api.get("payment/config");
         if (response?.success) {
@@ -124,12 +106,7 @@ class Package extends Component {
         }
     }
 
-    onPressCard = (item) => {
-        this.setState({ selectedCard: item, visiblePMethodModal: true });
-    }
-
     onSelectPAYMENT_METHOD = (type) => {
-        this.setState({ visiblePMethodModal: false });
         if (type == PAYMENT_METHOD.CARD) {
             this.setState({ is_card_pay: true });
         }
@@ -151,11 +128,12 @@ class Package extends Component {
                 title = "Thank you for your boosting ads";
                 body = "Your ads will on the top of list from now";
             }
-            else if (checkout_type == global._CHECKOUT_BOOST_ADS) {
+            else if (checkout_type == global._CHECKOUT_SUBSCRIPTION) {
                 title = "Thank you for your subscribe";
                 body = "You can sell more ads from now";
             }
             this.props.setStore(global.PUSH_ALERT, { notification: { title, body } });
+            this.props.navigation.goBack();
         }
         this.setState({ showLoader: false });
     }
@@ -242,7 +220,7 @@ class Package extends Component {
 
     render = () => {
         const navigation = this.props.navigation;
-        const { showLoader, checkout_type, is_card_pay, boost_cards, subscription_cards, visiblePMethodModal, selectedCard, is_check_card } = this.state;
+        const { showLoader, checkout_type, is_card_pay, boost_cards, subscription_cards, selectedCard, is_check_card } = this.state;
 
         const cards = checkout_type == global._CHECKOUT_BOOST_ADS ? boost_cards : subscription_cards;
         const title = checkout_type == global._CHECKOUT_BOOST_ADS ? "Boost Your Ads" : "Subscribe";
@@ -261,38 +239,47 @@ class Package extends Component {
                     :
                     <>
                         <Header navigation={navigation} title={title} icon_left={"arrow-left"} callback_left={this.goBack} />
-                        <ScrollView>
-                            <Text style={{ fontSize: 22, marginLeft: 10 }}>Packages</Text>
-                            <Text style={{ marginTop: 10, marginLeft: 10, fontSize: 16 }}>Choose a package that you wish to</Text>
+                        <Text style={{ fontSize: 22, marginLeft: 10 }}>Packages</Text>
+                        <Text style={{ marginTop: 20, marginLeft: 10, fontSize: 16 }}>Choose a package that you wish to</Text>
+                        <RadioForm
+                            formHorizontal={false}
+                            animation={true}
+                            style={{ marginTop: 10 }}>
                             {
                                 cards.map((item, index) => (
-                                    <PricingCard
-                                        key={index}
-                                        color={BaseColor.primaryColor}
-                                        title={`$ ${item.title}`}
-                                        price={item.price}
-                                        info={item.info}
-                                        button={{ title: item.button }}
-                                        onButtonPress={() => this.onPressCard(item)}
-                                        pricingStyle={{ height: 0 }}
-                                        containerStyle={{ borderRadius: 15, paddingVertical: 10, paddingHorizontal: 10 }}
-                                    />
+                                    <RadioButton labelHorizontal={true} key={index} style={{ marginBottom: 15 }}>
+                                        <RadioButtonInput
+                                            obj={item}
+                                            index={index}
+                                            isSelected={selectedCard.index == index}
+                                            borderWidth={1}
+                                            buttonInnerColor={BaseColor.primaryColor}
+                                            buttonOuterColor={selectedCard.index == index ? BaseColor.primaryColor : BaseColor.greyColor}
+                                            buttonSize={20}
+                                            buttonOuterSize={30}
+                                            buttonStyle={{}}
+                                            onPress={() => this.setState({ selectedCard: item })}
+                                            buttonWrapStyle={{ marginLeft: 10 }}
+                                        />
+                                        <RadioButtonLabel
+                                            obj={item}
+                                            index={index}
+                                            labelHorizontal={true}
+                                            onPress={() => this.setState({ selectedCard: item })}
+                                            labelStyle={{ paddingVertical: 5, fontSize: 18, color: selectedCard.index == index ? BaseColor.primaryColor : BaseColor.greyColor }}
+                                        />
+                                    </RadioButton>
                                 ))
                             }
-                        </ScrollView>
-                    </>
-                }
-
-                <Overlay isVisible={visiblePMethodModal} overlayStyle={{ borderRadius: 10, width: "90%" }} onBackdropPress={() => this.setState({ visiblePMethodModal: false })}>
-                    {selectedCard &&
-                        <View style={{ paddingVertical: 20, paddingHorizontal: 20 }}>
-                            <Text style={{ fontSize: 20 }}>Select a payment method</Text>
+                        </RadioForm>
+                        <View style={{ flex: 1 }}></View>
+                        <View style={{ marginTop: 20, marginBottom: 50, paddingHorizontal: 10 }}>
                             <TouchableOpacity onPress={() => this.onSelectPAYMENT_METHOD(PAYMENT_METHOD.CARD)} style={{ marginTop: 20, backgroundColor: BaseColor.primaryColor, width: "100%", height: 50, borderRadius: 5, justifyContent: "center", alignItems: "center" }}>
-                                <Text style={{ color: BaseColor.whiteColor, fontSize: 17 }}>{pay_title} with <Icon name={"credit-card"} color={BaseColor.whiteColor} size={15}></Icon> Pay</Text>
+                                <Text style={{ color: BaseColor.whiteColor, fontSize: 17 }}>{`${pay_title} with`} <Icon name={"credit-card"} color={BaseColor.whiteColor} size={15}></Icon> Pay</Text>
                             </TouchableOpacity>
                             {Platform.OS == "android" ?
                                 <TouchableOpacity onPress={() => this.onSelectPAYMENT_METHOD(PAYMENT_METHOD.GOOGLE)} style={{ marginTop: 5, backgroundColor: BaseColor.googleColor, flexDirection: "row", width: "100%", height: 50, borderRadius: 5, justifyContent: "center", alignItems: "center" }}>
-                                    <Text style={{ color: BaseColor.whiteColor, fontSize: 17 }}>{pay_title} with <Icon name={"google"} color={BaseColor.whiteColor} size={15}></Icon> Pay</Text>
+                                    <Text style={{ color: BaseColor.whiteColor, fontSize: 17 }}>{`${pay_title} with`} <Icon name={"google"} color={BaseColor.whiteColor} size={15}></Icon> Pay</Text>
                                 </TouchableOpacity>
                                 :
                                 <ApplePayButton
@@ -305,8 +292,8 @@ class Package extends Component {
                                 />
                             }
                         </View>
-                    }
-                </Overlay>
+                    </>
+                }
 
             </View>
         )
