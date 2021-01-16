@@ -435,8 +435,8 @@ class Sell extends Component {
     }
 }
 
-const mapStateToProps = ({ app: { FREE_SELL_ADS, IS_VALID_SUBSCRIPTION } }) => {
-    return { FREE_SELL_ADS, IS_VALID_SUBSCRIPTION };
+const mapStateToProps = ({ app: { IS_VALID_SUBSCRIPTION, FREE_SELL_ADS } }) => {
+    return { IS_VALID_SUBSCRIPTION, FREE_SELL_ADS };
 }
 
 const mapDispatchToProps = dispatch => {
