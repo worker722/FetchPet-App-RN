@@ -109,7 +109,6 @@ class Sell extends Component {
     }
 
     openPhotoPicker = (index) => {
-        const { uploadedImages } = this.state;
         try {
             if (index == 0) {
                 ImagePicker.openCamera({
