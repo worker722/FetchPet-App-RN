@@ -8,11 +8,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import { connect } from "react-redux";
 
-// START UP PAGE
-import Welcome from "@screen/StartUp/Welcome";
-import Login from "@screen/StartUp/Login";
-import SignUp from "@screen/StartUp/SignUp";
-
 // HOME PAGE
 import Home from "@screen/Home";
 import AdDetail from "@screen/Home/AdDetail";
