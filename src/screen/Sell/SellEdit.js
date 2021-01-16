@@ -9,10 +9,11 @@ import {
     FlatList,
     ActivityIndicator,
     RefreshControl,
-    Alert
+    Alert,
+    Image as RNImage
 } from 'react-native';
 import { Image } from 'react-native-elements';
-import { BaseColor } from '@config';
+import { BaseColor, Images } from '@config';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Header, Loader, CustomModalPicker } from '@components';
 import MapView, { Marker } from 'react-native-maps';
@@ -126,11 +127,7 @@ class SellEdit extends Component {
                 multiple: true,
                 cropping: true
             }).then(images => {
-                if (images.length > 5) {
-                    global.showToastMessage("You can select up to 5 pet images.");
-                    return;
-                }
-                this.setState({ visiblePickerModal: false, uploadedImages: images, is_edit_image: true });
+                this.setState({ visiblePickerModal: false, uploadedImages: [images], is_edit_image: true });
             });
         }
         else if (index == 1) {
@@ -143,7 +140,7 @@ class SellEdit extends Component {
                 cropping: true
             }).then(images => {
                 if (images.length > 5) {
-                    global.showToastMessage("You can select up to 5 pet images.");
+                    global.showToastMessage("You can select up to 5 images.");
                     return;
                 }
                 this.setState({ visiblePickerModal: false, uploadedImages: images, is_edit_image: true });
@@ -154,7 +151,7 @@ class SellEdit extends Component {
     showPickerModal = () => {
         const { uploadedImages } = this.state;
         if (uploadedImages.length == 5) {
-            global.showToastMessage("You can select up to 5 pet images.");
+            global.showToastMessage("You can select up to 5 images.");
             return;
         }
         this.setState({ visiblePickerModal: true });
@@ -172,8 +169,8 @@ class SellEdit extends Component {
 
     editAds = async () => {
         const { ads, selectedCategory, selectedBreed, selectedGender, selectedUnit, age, price, description, uploadedImages, region, is_edit_image } = this.state;
-        if (uploadedImages.length == 0) {
-            global.showToastMessage("Please choose at least pet image.");
+        if (uploadedImages.length < 1) {
+            global.showToastMessage("Please choose at least one image.");
             return;
         }
         if (selectedCategory == '') {
@@ -196,6 +193,7 @@ class SellEdit extends Component {
             global.showToastMessage("Please pick location.");
             return;
         }
+
         this.setState({ showLoader: true });
         const params = { is_edit_image: is_edit_image, ad_id: ads.id, category: selectedCategory, breed: selectedBreed, age: age, unit: selectedUnit, price: price, gender: selectedGender == 'Male' ? 1 : 0, image_key: 'ad_image', lat: region.latitude, long: region.longitude, description: description ? description : '' };
         let response;
@@ -247,7 +245,7 @@ class SellEdit extends Component {
 
     deleteImage = (index, item) => {
         const { uploadedImages } = this.state;
-        if (uploadedImages.length > 0) {
+        try {
             Alert.alert(
                 'Delete Image',
                 'Are you sure you want to delete this image?',
@@ -283,25 +281,42 @@ class SellEdit extends Component {
                 ],
                 { cancelable: false }
             );
+        } catch (error) {
         }
     }
 
     renderImage = ({ item, index }) => {
+        const { uploadedImages } = this.state;
         return (
-            <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", width: image_size, marginLeft: 10 }} onPress={() => this.deleteImage(index, item)}>
-                <Image
-                    source={{ uri: item.path }}
-                    style={{ width: image_size, height: image_size, borderColor: BaseColor.dddColor, borderWidth: 1, borderRadius: 10 }}
-                    resizeMode="cover"
-                    placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
-                    PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}></Image>
-            </TouchableOpacity>
+            <>
+                {item?.path &&
+                    <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", width: image_size - 9, marginLeft: 10 }} onPress={() => this.deleteImage(index)}>
+                        <Image
+                            source={{ uri: item.path }}
+                            style={{ width: image_size - 10, height: image_size, borderColor: BaseColor.primaryColor, borderWidth: 1, borderRadius: 10 }}
+                            resizeMode="cover"
+                            placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
+                            PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}></Image>
+                    </TouchableOpacity>
+                }
+                {index == uploadedImages.length - 1 &&
+                    <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", width: image_size - 39, marginLeft: 10 }} onPress={this.showPickerModal}>
+                        <View style={{ justifyContent: "center", alignItems: "center", backgroundColor: BaseColor.whiteColor, width: image_size - 40, height: image_size - 20, borderRadius: 8, borderWidth: 1, borderColor: BaseColor.primaryColor }}>
+                            <RNImage source={Images.ic_add} style={{ width: 25, height: 25 }}></RNImage>
+                        </View>
+                    </TouchableOpacity>
+                }
+            </>
         )
     }
 
     render = () => {
         const { selectedCategory, selectedBreed, selectedGender, selectedUnit, category, breed, gender, age, unit, description, price, visiblePickerModal, showImagePanLoader, showLoader, showRefresh, uploadedImages, region } = this.state;
         const navigation = this.props.navigation;
+
+        if (uploadedImages.length == 0) {
+            uploadedImages.push({})
+        }
 
         if (showLoader)
             return (<Loader />);
@@ -316,38 +331,17 @@ class SellEdit extends Component {
                         />
                     }>
                     <Header navigation={navigation} mainHeader={true} />
-                    <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                        <Text style={{ color: BaseColor.primaryColor, fontSize: 20, paddingLeft: 10 }}>Edit Ads</Text>
-                        <View style={{ flex: 1 }}></View>
-                        {uploadedImages.length > 0 &&
-                            <TouchableOpacity style={{ paddingRight: 10 }} onPress={this.showPickerModal}>
-                                <Icon name={"plus-circle"} size={25} color={BaseColor.primaryColor}></Icon>
-                            </TouchableOpacity>
-                        }
-                    </View>
+                    <Text style={{ color: BaseColor.primaryColor, fontSize: 20, paddingLeft: 10 }}>Edit Ads</Text>
                     <View style={{ height: image_size + 40, borderRadius: 10, marginHorizontal: 5, borderColor: BaseColor.dddColor, borderWidth: 1, marginTop: 10, justifyContent: "center", alignItems: "center", paddingRight: 10 }}>
                         {showImagePanLoader ?
                             <Loader size={30} />
                             :
-                            <>
-                                {uploadedImages.length == 0 ?
-                                    <>
-                                        <Icon name={"image"} size={35} color={BaseColor.primaryColor}></Icon>
-                                        <TouchableOpacity
-                                            onPress={this.showPickerModal}
-                                            style={{ backgroundColor: BaseColor.primaryColor, paddingVertical: 7, borderWidth: 1, borderColor: BaseColor.dddColor, borderRadius: 10, paddingHorizontal: 10, borderRadius: 5, marginTop: 5 }}>
-                                            <Text style={{ color: BaseColor.whiteColor }}>Choose from gallery</Text>
-                                        </TouchableOpacity>
-                                    </>
-                                    :
-                                    <FlatList
-                                        keyExtractor={(item, index) => index.toString()}
-                                        data={uploadedImages}
-                                        horizontal={true}
-                                        renderItem={this.renderImage}
-                                    />
-                                }
-                            </>
+                            <FlatList
+                                keyExtractor={(item, index) => index.toString()}
+                                data={uploadedImages}
+                                horizontal={true}
+                                renderItem={this.renderImage}
+                            />
                         }
                     </View>
                     <View style={{ width: "100%", marginTop: 10, flexDirection: "row", paddingHorizontal: 10 }}>

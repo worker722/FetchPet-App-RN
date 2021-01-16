@@ -3,13 +3,11 @@ import {
     View,
     Text,
     TouchableOpacity,
-    ActivityIndicator,
     ScrollView,
     Platform,
-    Image
 } from 'react-native';
 import { PricingCard, Overlay } from 'react-native-elements';
-import { BaseColor, Images } from '@config';
+import { BaseColor } from '@config';
 import { Header, Loader, PaymentFormView } from '@components';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
@@ -22,7 +20,7 @@ import * as Api from '@api';
 import * as Utils from '@utils';
 import * as global from '@api/global';
 
-const PaymentMethod = { card: 0, google: 1, apple: 2 };
+const PAYMENT_METHOD = { card: 0, google: 1, apple: 2 };
 
 class Package extends Component {
     constructor(props) {
@@ -35,7 +33,7 @@ class Package extends Component {
             is_card_pay: false,
             is_check_card: false,
 
-            type: '',
+            checkout_type: '',
             ad_id: -1,
 
             boost_cards: [
@@ -109,8 +107,8 @@ class Package extends Component {
     }
 
     UNSAFE_componentWillMount = async () => {
-        const { type, ad_id } = this.props.navigation.state.params;
-        this.setState({ type, ad_id });
+        const { checkout_type, ad_id } = this.props.navigation.state.params;
+        this.setState({ checkout_type, ad_id });
 
         const response = await this.props.api.get("payment/config");
         if (response?.success) {
@@ -130,9 +128,9 @@ class Package extends Component {
         this.setState({ selectedCard: item, visiblePMethodModal: true });
     }
 
-    onSelectPaymentMethod = (type) => {
+    onSelectPAYMENT_METHOD = (type) => {
         this.setState({ visiblePMethodModal: false });
-        if (type == PaymentMethod.card) {
+        if (type == PAYMENT_METHOD.CARD) {
             this.setState({ is_card_pay: true });
         }
     }
@@ -143,11 +141,21 @@ class Package extends Component {
 
         this.setState({ is_check_card: false, showLoader: true });
 
-        const { selectedCard, ad_id } = this.state;
+        const { selectedCard, ad_id, checkout_type } = this.state;
         const params = { card: selectedCard, stripeToken, ad_id };
         const response = await this.props.api.post("payment/checkout", params);
         if (response?.success) {
-            this.props.setStore(global.PUSH_ALERT, { notification: { title: "Your ads boosted successfully.", body: "Your ad will be viewed from the top to anyone nearby." } });
+            let title = '';
+            let body = '';
+            if (checkout_type == global._CHECKOUT_BOOST_ADS) {
+                title = "Thank you for your boosting ads";
+                body = "Your ads will on the top of list from now";
+            }
+            else if (checkout_type == global._CHECKOUT_BOOST_ADS) {
+                title = "Thank you for your subscribe";
+                body = "You can sell more ads from now";
+            }
+            this.props.setStore(global.PUSH_ALERT, { notification: { title, body } });
         }
         this.setState({ showLoader: false });
     }
@@ -178,41 +186,36 @@ class Package extends Component {
     }
 
     googlePay = async (amount, description) => {
-
         const support_pay = await stripe.deviceSupportsAndroidPay()
         if (!support_pay) {
-            this.refs.toast.show(Utils.translate('stripe.no-support-google-pay'));
-            this.loadingFalse;
             return;
         }
+        const { selectedCard } = this.state;
+
         stripe.paymentRequestWithNativePay({
-            total_price: amount,
-            currency_code: "EUR",
-            shipping_countries: ['FR'],
+            total_price: selectedCard.amount,
+            currency_code: "USD",
+            shipping_countries: ['USA'],
             line_items: [{
-                currency_code: 'EUR',
+                currency_code: 'USD',
                 description,
-                total_price: amount,
-                unit_price: amount,
+                total_price: selectedCard.amount,
+                unit_price: selectedCard.amount,
                 quantity: '1',
             }],
         }).then(res => {
             this.processPayment(res.tokenId);
-        }).catch(err => this.loadingFalse);
+        }).catch(err => console.log(err));
     }
 
     applePay = async (amount, label) => {
         stripe.openApplePaySetup();
         const support_apple_pay = await stripe.deviceSupportsApplePay()
         if (!support_apple_pay) {
-            this.refs.toast.show(Utils.translate('stripe.no-support-apple-pay'));
-            this.loadingFalse;
             return;
         }
         const canmake = await stripe.canMakeApplePayPayments()
         if (!canmake) {
-            this.loadingFalse;
-            this.refs.toast.show(Utils.translate('stripe.no-available-apple-pay'));
             return;
         }
         stripe.paymentRequestWithNativePay({},
@@ -224,9 +227,7 @@ class Package extends Component {
                 console.log(res);
                 this.processPayment(res.tokenId);
             })
-            .catch(err => {
-                this.loadingFalse
-            });
+            .catch(err => console.log(err));
     }
 
     goBack = () => {
@@ -235,14 +236,15 @@ class Package extends Component {
             this.setState({ is_card_pay: false });
         }
         else {
+            this.props.navigation.goBack();
         }
     }
 
     render = () => {
         const navigation = this.props.navigation;
-        const { showLoader, type, is_card_pay, boost_cards, subscription_cards, visiblePMethodModal, selectedCard, is_check_card } = this.state;
+        const { showLoader, checkout_type, is_card_pay, boost_cards, subscription_cards, visiblePMethodModal, selectedCard, is_check_card } = this.state;
 
-        const cards = type == global._CHECKOUT_BOOST_ADS ? boost_cards : subscription_cards;
+        const cards = checkout_type == global._CHECKOUT_BOOST_ADS ? boost_cards : subscription_cards;
 
         if (showLoader)
             return (<Loader />);
@@ -283,11 +285,11 @@ class Package extends Component {
                     {selectedCard &&
                         <View style={{ paddingVertical: 20, paddingHorizontal: 20 }}>
                             <Text style={{ fontSize: 20 }}>Select a payment method</Text>
-                            <TouchableOpacity onPress={() => this.onSelectPaymentMethod(PaymentMethod.card)} style={{ marginTop: 20, backgroundColor: BaseColor.primaryColor, width: "100%", height: 50, borderRadius: 5, justifyContent: "center", alignItems: "center" }}>
+                            <TouchableOpacity onPress={() => this.onSelectPAYMENT_METHOD(PAYMENT_METHOD.CARD)} style={{ marginTop: 20, backgroundColor: BaseColor.primaryColor, width: "100%", height: 50, borderRadius: 5, justifyContent: "center", alignItems: "center" }}>
                                 <Text style={{ color: BaseColor.whiteColor, fontSize: 17 }}>Boost with <Icon name={"credit-card"} color={BaseColor.whiteColor} size={15}></Icon> Pay</Text>
                             </TouchableOpacity>
                             {Platform.OS == "android" ?
-                                <TouchableOpacity onPress={() => this.onSelectPaymentMethod(PaymentMethod.google)} style={{ marginTop: 5, backgroundColor: BaseColor.googleColor, flexDirection: "row", width: "100%", height: 50, borderRadius: 5, justifyContent: "center", alignItems: "center" }}>
+                                <TouchableOpacity onPress={() => this.onSelectPAYMENT_METHOD(PAYMENT_METHOD.GOOGLE)} style={{ marginTop: 5, backgroundColor: BaseColor.googleColor, flexDirection: "row", width: "100%", height: 50, borderRadius: 5, justifyContent: "center", alignItems: "center" }}>
                                     <Text style={{ color: BaseColor.whiteColor, fontSize: 17 }}>Boost with <Icon name={"google"} color={BaseColor.whiteColor} size={15}></Icon> Pay</Text>
                                 </TouchableOpacity>
                                 :
@@ -296,7 +298,7 @@ class Package extends Component {
                                     buttonStyle="black"
                                     type="subscription"
                                     style={{ flex: 1, marginTop: 5 }}
-                                    onPress={() => this.onSelectPaymentMethod(PaymentMethod.apple)}
+                                    onPress={() => this.onSelectPAYMENT_METHOD(PAYMENT_METHOD.APPLE)}
                                     height={50}
                                 />
                             }

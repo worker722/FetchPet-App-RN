@@ -132,7 +132,6 @@ class AdDetail extends Component {
     }
 
     _renderItem = ({ item, index }) => {
-        const { activeSlideIndex } = this.state;
         return (
             <View key={index} style={{ flex: 1 }}>
                 <Image source={{ uri: Api.SERVER_HOST + item }}
@@ -140,11 +139,6 @@ class AdDetail extends Component {
                     PlaceholderContent={<BallIndicator color={BaseColor.primaryColor} size={30} />}
                     placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                 />
-                {activeSlideIndex == index &&
-                    <TouchableOpacity style={{ position: "absolute", width: 30, height: 30, bottom: 10, left: 10, borderRadius: 100, backgroundColor: BaseColor.whiteColor, padding: 5, justifyContent: "center", alignItems: "center" }} onPress={this.showFullScreen}>
-                        <Icon name="expand" size={18} color={BaseColor.primaryColor}></Icon>
-                    </TouchableOpacity>
-                }
             </View>
         );
     }
@@ -211,13 +205,16 @@ class AdDetail extends Component {
                     </View>
                     <View style={{ flex: 1, paddingHorizontal: 20, paddingBottom: 20, paddingTop: ad_images.length > 1 ? 0 : 20 }}>
                         <View style={{ justifyContent: "center", alignItems: "center" }}>
+                            <TouchableOpacity style={{ position: "absolute", left: 0, width: 35, height: 35, borderRadius: 100, borderColor: BaseColor.primaryColor, borderWidth: 1, justifyContent: "center", alignItems: "center" }} onPress={this.showFullScreen}>
+                                <Icon name="expand-arrows-alt" size={18} color={BaseColor.primaryColor}></Icon>
+                            </TouchableOpacity>
                             <View style={{ justifyContent: "center", alignItems: "center" }}>
                                 <Text style={{ fontSize: 28, fontWeight: "bold" }}>$ {ads?.price}</Text>
                             </View>
                             <View style={{ position: "absolute", alignItems: "center", justifyContent: "center", flexDirection: "row" }}>
                                 <View style={{ flex: 1 }} />
-                                <TouchableOpacity onPress={this.favouriteAds} style={{ backgroundColor: BaseColor.primaryColor, borderRadius: 100, width: 35, height: 35, justifyContent: "center", alignItems: "center" }}>
-                                    <Icon name={"heart"} size={18} color={BaseColor.whiteColor} solid={ads?.is_fav}></Icon>
+                                <TouchableOpacity onPress={this.favouriteAds} style={{ borderColor: BaseColor.primaryColor, borderWidth: 1, borderRadius: 100, width: 35, height: 35, justifyContent: "center", alignItems: "center" }}>
+                                    <Icon name={"heart"} size={18} color={BaseColor.primaryColor} solid={ads?.is_fav}></Icon>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={this.shareAds} style={{ marginLeft: 20, backgroundColor: BaseColor.primaryColor, borderRadius: 100, width: 35, height: 35, justifyContent: "center", alignItems: "center" }}>
                                     <Icon name={"share-alt"} size={18} color={BaseColor.whiteColor}></Icon>

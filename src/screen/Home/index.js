@@ -346,6 +346,7 @@ class Home extends Component {
                 </View>
                 <View style={{ width: "100%", paddingHorizontal: 10, marginTop: 10 }}>
                     <FlatList
+                        style={{ paddingBottom: 5 }}
                         keyExtractor={(item, index) => index.toString()}
                         data={topCategory}
                         horizontal={true}

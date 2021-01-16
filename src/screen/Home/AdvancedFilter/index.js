@@ -165,7 +165,7 @@ class AdvancedFilter extends Component {
                     keyExtractor={(item, index) => index.toString()}
                     data={category_data}
                     numColumns={4}
-                    style={{ maxHeight: 260, marginTop: 10 }}
+                    style={{ maxHeight: 260, marginTop: 10, paddingBottom: 5 }}
                     renderItem={this.renderFilterItem}
                 />
                 <ScrollView style={{ flex: 1 }}

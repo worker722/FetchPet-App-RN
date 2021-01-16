@@ -63,9 +63,7 @@ class Sell extends Component {
             visiblePickerModal: false,
             showLoader: false,
             showRefresh: false,
-            uploadedImages: [
-                { path: "default" }
-            ],
+            uploadedImages: [],
         }
     }
 
@@ -111,6 +109,7 @@ class Sell extends Component {
     }
 
     openPhotoPicker = (index) => {
+        const { uploadedImages } = this.state;
         try {
             if (index == 0) {
                 ImagePicker.openCamera({
@@ -120,11 +119,7 @@ class Sell extends Component {
                     includeExif: true,
                     multiple: true,
                 }).then(images => {
-                    if (images.concat(this.state.uploadedImages) > 6) {
-                        global.showToastMessage("You can select up to 5 pet images.");
-                        return;
-                    }
-                    this.setState({ visiblePickerModal: false, uploadedImages: images.concat(this.state.uploadedImages) });
+                    this.setState({ visiblePickerModal: false, uploadedImages: [images] });
                 });
             }
             else if (index == 1) {
@@ -135,11 +130,11 @@ class Sell extends Component {
                     includeExif: true,
                     multiple: true,
                 }).then(images => {
-                    if (images.concat(this.state.uploadedImages) > 6) {
+                    if (images.length > 5) {
                         global.showToastMessage("You can select up to 5 pet images.");
                         return;
                     }
-                    this.setState({ visiblePickerModal: false, uploadedImages: images.concat(this.state.uploadedImages) });
+                    this.setState({ visiblePickerModal: false, uploadedImages: images });
                 });
             }
         } catch (error) {
@@ -173,7 +168,7 @@ class Sell extends Component {
         }
         else {
             const { selectedCategory, selectedBreed, selectedGender, selectedUnit, age, price, description, uploadedImages, region } = this.state;
-            if (uploadedImages.length < 2) {
+            if (uploadedImages.length < 1) {
                 global.showToastMessage("Please choose at least one pet image.");
                 return;
             }
@@ -197,7 +192,6 @@ class Sell extends Component {
                 global.showToastMessage("Please pick location.");
                 return;
             }
-            uploadedImages.pop();
             this.setState({ showLoader: true });
             const params = { category: selectedCategory, breed: selectedBreed, age: age, price: price, gender: selectedGender == 'Male' ? 1 : 0, image_key: 'ad_image', unit: selectedUnit, lat: region.latitude, long: region.longitude, description: description ? description : '' };
             const response = await this.props.api.createAds('ads/create', uploadedImages, params);
@@ -206,7 +200,7 @@ class Sell extends Component {
                 if (type == 0)
                     this.props.navigation.navigate("Home");
                 else if (type == 1)
-                    this.props.navigation.navigate("Package", { type: global._CHECKOUT_BOOST_ADS, ad_id: response.data.id })
+                    this.props.navigation.navigate("Package", { checkout_type: global._CHECKOUT_BOOST_ADS, ad_id: response.data.id })
 
                 this.setState({ uploadedImages: [], age: 0, price: 0, description: '' });
             }
@@ -239,7 +233,7 @@ class Sell extends Component {
 
     deleteImage = (index) => {
         const { uploadedImages } = this.state;
-        if (uploadedImages.length > 0) {
+        try {
             Alert.alert(
                 'Delete Image',
                 'Are you sure you want to delete this image?',
@@ -256,32 +250,32 @@ class Sell extends Component {
                 ],
                 { cancelable: false }
             );
+        } catch (error) {
         }
     }
 
     renderImage = ({ item, index }) => {
+        const { uploadedImages } = this.state;
         return (
-            <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", width: item.path == "default" ? image_size - 39 : image_size - 9, marginLeft: 10 }} onPress={() => {
-                if (item.path == "default") {
-                    this.showPickerModal();
+            <>
+                {item?.path &&
+                    <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", width: image_size - 9, marginLeft: 10 }} onPress={() => this.deleteImage(index)}>
+                        <Image
+                            source={{ uri: item.path }}
+                            style={{ width: image_size - 10, height: image_size, borderColor: BaseColor.primaryColor, borderWidth: 1, borderRadius: 10 }}
+                            resizeMode="cover"
+                            placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
+                            PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}></Image>
+                    </TouchableOpacity>
                 }
-                else {
-                    this.deleteImage(index)
+                {index == uploadedImages.length - 1 &&
+                    <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", width: image_size - 39, marginLeft: 10 }} onPress={this.showPickerModal}>
+                        <View style={{ justifyContent: "center", alignItems: "center", backgroundColor: BaseColor.whiteColor, width: image_size - 40, height: image_size - 20, borderRadius: 8, borderWidth: 1, borderColor: BaseColor.primaryColor }}>
+                            <RNImage source={Images.ic_add} style={{ width: 25, height: 25 }}></RNImage>
+                        </View>
+                    </TouchableOpacity>
                 }
-            }}>
-                {item.path != "default" ?
-                    <Image
-                        source={{ uri: item.path }}
-                        style={{ width: image_size - 10, height: image_size, borderColor: BaseColor.primaryColor, borderWidth: 1, borderRadius: 10 }}
-                        resizeMode="cover"
-                        placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
-                        PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}></Image>
-                    :
-                    <View style={{ justifyContent: "center", alignItems: "center", backgroundColor: BaseColor.whiteColor, width: image_size - 40, height: image_size - 20, borderRadius: 8, borderWidth: 1, borderColor: BaseColor.primaryColor }}>
-                        <RNImage source={Images.ic_add} style={{ width: 25, height: 25 }}></RNImage>
-                    </View>
-                }
-            </TouchableOpacity>
+            </>
         )
     }
 
@@ -306,6 +300,10 @@ class Sell extends Component {
         const { selectedBreed, selectedGender, selectedUnit, category, breed, gender, unit, visiblePickerModal, showLoader, showRefresh, uploadedImages, region } = this.state;
         const navigation = this.props.navigation;
 
+        if (uploadedImages.length == 0) {
+            uploadedImages.push({})
+        }
+
         if (showLoader)
             return (<Loader />);
 
@@ -319,7 +317,7 @@ class Sell extends Component {
                             onRefresh={this._onRefresh}
                         />
                     }>
-                    <Text style={{ color: BaseColor.primaryColor, fontSize: 20, paddingLeft: 10 }}>Create A New Ads</Text>
+                    <Text style={{ color: BaseColor.primaryColor, fontSize: 20, paddingLeft: 10 }}>Create Ads</Text>
                     <View style={{ height: image_size + 40, marginHorizontal: 10, borderRadius: 10, backgroundColor: BaseColor.placeholderColor, borderColor: BaseColor.dddColor, borderWidth: 1, marginTop: 10, justifyContent: "center", alignItems: "center", paddingRight: 10 }}>
                         <FlatList
                             keyExtractor={(item, index) => index.toString()}
@@ -330,6 +328,7 @@ class Sell extends Component {
                     </View>
                     <View style={{ marginVertical: 10, paddingHorizontal: 10 }}>
                         <FlatList
+                            style={{ paddingBottom: 5 }}
                             keyExtractor={(item, index) => index.toString()}
                             data={category}
                             horizontal={true}
