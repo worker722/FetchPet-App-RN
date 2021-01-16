@@ -92,7 +92,7 @@ class FilterResult extends Component {
     }
 
     goBack = () => {
-        this.props.navigation.goBack(null);
+        this.props.navigation.goBack();
     }
 
     render = () => {

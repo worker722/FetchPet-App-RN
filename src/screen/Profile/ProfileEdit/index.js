@@ -55,7 +55,7 @@ class ProfileEdit extends Component {
     }
 
     goBack = () => {
-        this.props.navigation.goBack(null);
+        this.props.navigation.goBack();
     }
 
     openPhotoPicker = (index) => {
