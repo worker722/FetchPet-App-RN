@@ -215,8 +215,12 @@ class Dashboard extends Component {
 
             let is_show_apple_button = response.data.is_show_apple_button;
             await SetPrefrence(global.PREF_SHOW_APPLE_BUTTON, is_show_apple_button);
-            
+
             this.props.setStore(global.IS_VALID_SUBSCRIPTION, response.data.is_valid_subscription);
+
+            if (this.props.FREE_SELL_ADS < 1 && !response.data.is_valid_subscription) {
+                this.props.setStore(global.PUSH_ALERT, { notification: { title: "Subscription Expired", body: "Please subscribe to sell more ads." } });
+            }
         }
         this.setState({ showLoader: false, showRefresh: false });
     }
@@ -290,8 +294,8 @@ class Dashboard extends Component {
     }
 }
 
-const mapStateToProps = ({ app: { IS_IN_CHAT } }) => {
-    return { IS_IN_CHAT };
+const mapStateToProps = ({ app: { IS_IN_CHAT, FREE_SELL_ADS } }) => {
+    return { IS_IN_CHAT, FREE_SELL_ADS };
 }
 
 const mapDispatchToProps = dispatch => {
