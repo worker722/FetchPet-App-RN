@@ -16,23 +16,21 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import geolocation from '@react-native-community/geolocation';
 import { Image } from 'react-native-elements';
+import { BaseColor, Images } from '@config';
+import { Loader, Header, HomeAds } from '@components';
+import * as Utils from '@utils';
 
 import { GoogleSignin } from '@react-native-community/google-signin';
 import appleAuth from '@invertase/react-native-apple-authentication';
 // import { LoginManager } from 'react-native-fbsdk';
 
-import { store, SetPrefrence } from "@store";
+import messaging from '@react-native-firebase/messaging';
+
+import { store, SetPrefrence, GetPrefrence } from "@store";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Api from '@api';
 import * as global from "@api/global";
-
-import messaging from '@react-native-firebase/messaging';
-
-import { Loader, Header, HomeAds } from '@components';
-
-import { BaseColor, Images } from '@config';
-import * as Utils from '@utils';
 
 class Home extends Component {
     constructor(props) {
@@ -44,6 +42,8 @@ class Home extends Component {
 
             searchText: '',
             currentCategoryID: -1,
+
+            is_firstOpenApp: true,
 
             showRefresh: false,
             showLoader: false,
@@ -199,14 +199,39 @@ class Home extends Component {
     };
 
     UNSAFE_componentWillMount = async () => {
-        this.setState({ showLoader: true })
-        await this.start();
+        const { is_firstOpenApp } = this.state;
+        if (is_firstOpenApp) {
+            this.setState({ is_firstOpenApp: false });
+            
+            const navigation = this.props.navigation;
+            this.props.setStore(global.NAVIGATION, navigation);
+            if (Api._TOKEN()) {
+                const response = await this.props.api.post("accountStatus");
+                if (response?.success) {
+                    const rememberMe = await GetPrefrence(global.PREF_REMEMBER_ME);
+                    if (rememberMe == 1) {
+                        this.setState({ showLoader: true })
+                        await this.start();
+                    }
+                    else {
+                        navigation.navigate("Welcome");
+                    }
+                }
+                else {
+                    navigation.navigate("Welcome");
+                }
+            }
+            else {
+                navigation.navigate("Welcome");
+            }
+        }
+        else {
+            this.setState({ showLoader: true })
+            await this.start();
+        }
     }
 
     start = async () => {
-        if (!Api._TOKEN())
-            return;
-
         const response = await this.props.api.get('home');
         if (response?.success) {
             this.props.setStore(global.U_MESSAGE_SET, 0);

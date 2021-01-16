@@ -43,6 +43,8 @@ class Dashboard extends Component {
 
             showRefresh: false,
             showLoader: false,
+
+            is_firstOpenApp: true
         }
 
         this.props.setStore(global.IS_IN_CHAT_PAGE, false);
@@ -194,8 +196,36 @@ class Dashboard extends Component {
     }
 
     UNSAFE_componentWillMount = async () => {
-        this.setState({ showLoader: true })
-        await this.start();
+        const { is_firstOpenApp } = this.state;
+        if (is_firstOpenApp) {
+            this.setState({ is_firstOpenApp: false });
+
+            const navigation = this.props.navigation;
+            this.props.setStore(global.NAVIGATION, navigation);
+            if (Api._TOKEN()) {
+                const response = await this.props.api.post("accountStatus");
+                if (response?.success) {
+                    const rememberMe = await GetPrefrence(global.PREF_REMEMBER_ME);
+                    if (rememberMe == 1) {
+                        this.setState({ showLoader: true })
+                        await this.start();
+                    }
+                    else {
+                        navigation.navigate("Welcome");
+                    }
+                }
+                else {
+                    navigation.navigate("Welcome");
+                }
+            }
+            else {
+                navigation.navigate("Welcome");
+            }
+        }
+        else {
+            this.setState({ showLoader: true })
+            await this.start();
+        }
     }
 
     start = async () => {
