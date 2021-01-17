@@ -111,6 +111,9 @@ class Home extends Component {
                     type = 'danger';
                     this.logout();
                 }
+                else {
+                    type = 'success';
+                }
             }
 
             if (is_show)
