@@ -5,6 +5,7 @@ const initialState = {
 	IS_IN_CHAT: false,
 	IS_BUYER_MODE: true,
 	PUSH_ALERT: null,
+	PUSH_ALERT_TYPE: 'success',
 	NAVIGATION: null,
 	FREE_SELL_ADS: 3,
 	IS_VALID_SUBSCRIPTION: false,
@@ -56,6 +57,11 @@ export default (state = initialState, action = {}) => {
 			return {
 				...state,
 				IS_VALID_SUBSCRIPTION: action.data
+			};
+		case global.PUSH_ALERT_TYPE:
+			return {
+				...state,
+				PUSH_ALERT_TYPE: action.data
 			};
 		default:
 			return state;

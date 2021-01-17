@@ -87,15 +87,16 @@ class Home extends Component {
         }
         this.props.setStore(global.LOGIN, null);
 
-        RNRestart.Restart();
+        setTimeout(() => {
+            RNRestart.Restart();
+        }, 5200);
     }
 
     _onMessageReceived = (remoteMessage, is_show) => {
         try {
             const { data } = remoteMessage;
-            if (is_show)
-                this.showNotification(remoteMessage);
 
+            let type = 'info';
             const notificationData = JSON.parse(data.data);
             if (notificationData.notification_type == global.CHAT_MESSAGE_NOTIFICATION) {
                 if (!this.props.IS_IN_CHAT) {
@@ -106,15 +107,21 @@ class Home extends Component {
                 }
             }
             else if (notificationData.notification_type == global.ACCOUNT_STATUS_NOTIFICATION) {
-                if (notificationData?.active == 0)
+                if (notificationData?.active == 0) {
+                    type = 'danger';
                     this.logout();
+                }
             }
+
+            if (is_show)
+                this.showNotification(remoteMessage, type);
+
         } catch (error) {
             console.log('home notification received error', error);
         }
     }
 
-    showNotification(remoteMessage) {
+    showNotification(remoteMessage, type) {
         const user_meta = store.getState().auth.login?.user?.meta;
         let is_showNotification = true;
         user_meta?.forEach((item, key) => {
@@ -125,6 +132,7 @@ class Home extends Component {
             return;
 
         this.props.setStore(global.PUSH_ALERT, remoteMessage);
+        this.props.setStore(global.PUSH_ALERT_TYPE, type);
     }
 
     handleAppStateChange = (nextAppState) => { }

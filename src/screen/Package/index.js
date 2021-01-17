@@ -135,6 +135,7 @@ class Package extends Component {
                 this.props.setStore(global.IS_VALID_SUBSCRIPTION, true);
             }
             this.props.setStore(global.PUSH_ALERT, { notification: { title, body } });
+            this.props.setStore(global.PUSH_ALERT_TYPE, 'success');
             this.props.navigation.goBack();
         }
         this.setState({ showLoader: false });

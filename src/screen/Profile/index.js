@@ -60,6 +60,9 @@ class Profile extends Component {
             this.props.setStore(global.PUSH_ALERT, { notification: { title: "You are using fetch as a seller." } });
         else
             this.props.setStore(global.PUSH_ALERT, { notification: { title: "You are using fetch as a buyer." } });
+
+        this.props.setStore(global.PUSH_ALERT_TYPE, 'info');
+
         this.props.setStore(global.IS_BUYER_MODE);
 
         this.setState({ showLoader: true });
@@ -79,7 +82,9 @@ class Profile extends Component {
     logOut = async () => {
         await SetPrefrence(global.PREF_REMEMBER_ME, 0);
         this.props.setStore(global.LOGIN, null);
-        RNRestart.Restart();
+        setTimeout(() => {
+            RNRestart.Restart();
+        }, 5200);
     }
 
     render = () => {

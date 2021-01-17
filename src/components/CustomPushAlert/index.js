@@ -71,6 +71,7 @@ class CustomPushAlert extends Component {
         clearTimeout(this._interval);
         this._interval = null;
         this.props.setStore(global.PUSH_ALERT, null);
+        this.props.setStore(global.PUSH_ALERT_TYPE, 'info');
     }
 
     onPressAlert = () => {
@@ -89,7 +90,7 @@ class CustomPushAlert extends Component {
     }
 
     render = () => {
-        const { PUSH_ALERT } = this.props;
+        const { PUSH_ALERT, PUSH_ALERT_TYPE } = this.props;
         if (!PUSH_ALERT) {
             return null;
         }
@@ -110,13 +111,18 @@ class CustomPushAlert extends Component {
             console.log(error)
         }
 
+        let bgColor = BaseColor.alertInfoColor;
+        if (PUSH_ALERT_TYPE == 'success') bgColor = BaseColor.alertSuccessColor;
+        else if (PUSH_ALERT_TYPE == 'danger') bgColor = BaseColor.alertDangerColor;
+        else if (PUSH_ALERT_TYPE == 'warning') bgColor = BaseColor.alertWarningColor;
+
         return (
             <TouchableWithoutFeedback>
                 <Modal style={styles.container} >
                     <Animatable.View animation={"slideInDown"} iterationCount={1} duration={1000} direction="normal">
                         <View style={{ backgroundColor: BaseColor.whiteColor }}>
                             <TouchableOpacity
-                                style={[styles.alertBGContainer, { backgroundColor: BaseColor.pushAlertColor }]}
+                                style={[styles.alertBGContainer, { backgroundColor: bgColor }]}
                                 activeOpacity={0.8}
                                 onPress={this.onPressAlert}
                             >
@@ -157,8 +163,8 @@ class CustomPushAlert extends Component {
     }
 }
 
-const mapStateToProps = ({ app: { PUSH_ALERT, NAVIGATION } }) => {
-    return { PUSH_ALERT, NAVIGATION };
+const mapStateToProps = ({ app: { PUSH_ALERT, PUSH_ALERT_TYPE, NAVIGATION } }) => {
+    return { PUSH_ALERT, PUSH_ALERT_TYPE, NAVIGATION };
 }
 
 const mapDispatchToProps = dispatch => {
