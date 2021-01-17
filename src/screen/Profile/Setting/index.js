@@ -62,7 +62,9 @@ class Setting extends Component {
         }
         this.props.setStore(global.LOGIN, null);
 
-        RNRestart.Restart();
+        setTimeout(() => {
+            RNRestart.Restart();
+        }, 5200);
     }
 
     render = () => {
