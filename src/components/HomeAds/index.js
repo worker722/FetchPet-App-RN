@@ -79,7 +79,7 @@ export default class HomeAds extends Component {
         });
 
         return (
-            <TouchableOpacity style={{ flex: 1, flexDirection: "row", marginBottom: 5, borderRadius: 10, backgroundColor: BaseColor.placeholderColor, paddingVertical: 8, paddingHorizontal: 10 }} onPress={() => navigation.navigate("AdDetail", { ad_id: item.id, view: true })}>
+            <TouchableOpacity style={{ flex: 1, height: 100, flexDirection: "row", marginBottom: 5, borderRadius: 10, backgroundColor: BaseColor.placeholderColor, paddingVertical: 8, paddingHorizontal: 10 }} onPress={() => navigation.navigate("AdDetail", { ad_id: item.id, view: true })}>
                 <View>
                     <Image
                         source={{ uri: Api.SERVER_HOST + ad_images[0] }}
