@@ -45,7 +45,7 @@ class AdDetail extends Component {
             show_more_location: false
         }
 
-        props.navigation.addListener("willFocus", (event) => {
+        props.navigation.addListener("focus", (event) => {
             this.UNSAFE_componentWillMount();
         });
 

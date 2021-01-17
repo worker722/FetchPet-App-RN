@@ -57,7 +57,7 @@ class Chat extends Component {
 
         this.menuRef = null;
 
-        props.navigation.addListener("willFocus", (event) => {
+        props.navigation.addListener("focus", (event) => {
             this.props.setStore(global.IS_IN_CHAT_PAGE, true);
         });
     }

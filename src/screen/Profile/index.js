@@ -28,7 +28,7 @@ class Profile extends Component {
             showLoader: false
         }
 
-        props.navigation.addListener("willFocus", (event) => {
+        props.navigation.addListener("focus", (event) => {
             this.UNSAFE_componentWillMount();
         });
     }

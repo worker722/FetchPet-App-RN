@@ -32,7 +32,7 @@ class Favourite extends Component {
             ads: null,
         }
 
-        props.navigation.addListener("willFocus", (event) => {
+        props.navigation.addListener("focus", (event) => {
             this.UNSAFE_componentWillMount();
         });
     }

@@ -23,7 +23,7 @@ class Notification extends Component {
             showRefresh: false
         }
 
-        props.navigation.addListener("willFocus", (event) => {
+        props.navigation.addListener("focus", (event) => {
             this.UNSAFE_componentWillMount();
         });
     }
