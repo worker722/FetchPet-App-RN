@@ -72,6 +72,12 @@ class Sell extends Component {
         this.start();
     }
 
+    componentDidMount = () => {
+        if (store.getState().app.FREE_SELL_ADS < 1 && !store.getState().app.is_valid_subscription) {
+            this.props.setStore(global.PUSH_ALERT, { notification: { title: "Subscription Expired", body: "Please subscribe to sell more ads." } });
+        }
+    }
+
     start = async () => {
         const is_social = store.getState().auth.login?.user?.is_social;
         if (is_social == -1) {
