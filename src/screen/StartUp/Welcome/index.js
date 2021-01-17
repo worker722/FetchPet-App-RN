@@ -11,6 +11,7 @@ import { Loader } from '@components';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Api from '@api';
+import * as global from '@api/global';
 
 class Welcome extends Component {
     constructor(props) {
@@ -30,6 +31,10 @@ class Welcome extends Component {
         this.setState({ showLoading: false });
 
         if (response?.success) {
+            this.props.setStore(global.PUSH_ALERT, { notification: { title: "Welcome Guest!" } });
+            this.props.setStore(global.PUSH_ALERT_TYPE, 'info');
+            this.props.setStore(global.IS_BUYER_MODE);
+
             this.props.navigation.navigate("Main");
         }
     }
@@ -72,7 +77,8 @@ class Welcome extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        api: bindActionCreators(Api, dispatch)
+        api: bindActionCreators(Api, dispatch),
+        setStore: (type, data) => dispatch({ type, data })
     };
 };
 export default connect(null, mapDispatchToProps)(Welcome);
