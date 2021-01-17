@@ -281,11 +281,11 @@ class Dashboard extends Component {
                             <View style={{ height: 85, flexDirection: "row", marginTop: 10 }}>
                                 <View style={{ flex: 1, paddingHorizontal: 10, paddingVertical: 15, borderRadius: 10, borderWidth: 1, borderColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
                                     <Text style={{ color: BaseColor.primaryColor, fontSize: 23 }}>70</Text>
-                                    <Text>Active Ads</Text>
+                                    <Text>Impressions</Text>
                                 </View>
                                 <View style={{ flex: 1, marginLeft: 10, paddingHorizontal: 10, paddingVertical: 15, borderRadius: 10, borderWidth: 1, borderColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
                                     <Text style={{ color: BaseColor.primaryColor, fontSize: 23 }}>70</Text>
-                                    <Text>Active Ads</Text>
+                                    <Text>Views</Text>
                                 </View>
                             </View>
                         </View>
