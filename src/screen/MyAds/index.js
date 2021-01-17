@@ -16,7 +16,7 @@ export default class MyAds extends Component {
             currentTabIndex: 0
         }
 
-        props.navigation.addListener("willFocus", (event) => {
+        props.navigation.addListener("focus", (event) => {
             this.UNSAFE_componentWillMount();
         });
     }

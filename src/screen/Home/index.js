@@ -52,7 +52,7 @@ class Home extends Component {
 
         this.props.setStore(global.IS_IN_CHAT_PAGE, false);
 
-        props.navigation.addListener("willFocus", (event) => {
+        props.navigation.addListener("focus", (event) => {
             this.UNSAFE_componentWillMount();
         });
     }
