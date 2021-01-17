@@ -341,6 +341,16 @@ class Home extends Component {
         this.getFilterData();
     }
 
+    onScrollEnd(e) {
+        let contentOffset = e.nativeEvent.contentOffset;
+        let viewSize = e.nativeEvent.layoutMeasurement;
+        console.log(e.nativeEvent)
+
+        // Divide the horizontal offset by the width of the view to see which page is visible
+        let pageNum = Math.floor(contentOffset.y / viewSize.height);
+        console.log('scrolled to page ', pageNum);
+    }
+
     render = () => {
 
         const { pets, showLoader, showRefresh, showContentLoader, topCategory } = this.state;
@@ -387,6 +397,7 @@ class Home extends Component {
                     <Loader />
                     :
                     <ScrollView keyboardShouldPersistTaps='always'
+                        onMomentumScrollEnd={this.onScrollEnd}
                         refreshControl={
                             <RefreshControl
                                 refreshing={showRefresh}
@@ -398,6 +409,7 @@ class Home extends Component {
                             style={{ paddingHorizontal: 10, marginTop: 10 }}
                             keyExtractor={(item, index) => index.toString()}
                             data={pets}
+                            pagingEnabled
                             renderItem={(item, key) => (
                                 <HomeAds data={item} onFavourite={this.favouriteAds} navigation={navigation} />
                             )}
