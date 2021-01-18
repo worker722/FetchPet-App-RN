@@ -5,10 +5,10 @@ import {
     Text,
 } from 'react-native';
 import { BaseColor } from '@config';
-import * as Api from '@api';
 import * as Utils from '@utils';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
+import * as Api from '@api';
 import { store } from '@store';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
