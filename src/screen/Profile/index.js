@@ -91,7 +91,7 @@ class Profile extends Component {
         const navigation = this.props.navigation;
         const { user, showLoader } = this.state;
         const is_social = store.getState().auth.login?.user?.is_social;
-        const IS_BUYER_MODE = store.getState().app;
+        const { IS_BUYER_MODE } = store.getState().app;
 
         if (showLoader)
             return (<Loader />);
