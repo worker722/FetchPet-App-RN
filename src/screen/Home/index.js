@@ -28,7 +28,7 @@ import messaging from '@react-native-firebase/messaging';
 
 import RNRestart from 'react-native-restart';
 
-import { store, SetPrefrence, GetPrefrence } from "@store";
+import { store, SetPrefrence } from "@store";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Api from '@api';
