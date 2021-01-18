@@ -59,10 +59,6 @@ export const relativeTime = (date) => {
 };
 
 export const getCurrentLocation = async () => {
-    const { CURRENT_LOCATION } = store.getState().app;
-    if (CURRENT_LOCATION)
-        return CURRENT_LOCATION;
-
     return new Promise(
         async (resolve, reject) => {
             geolocation.getCurrentPosition(

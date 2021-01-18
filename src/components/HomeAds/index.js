@@ -37,7 +37,7 @@ class HomeAds extends Component {
             if (item.meta_key == '_ad_image')
                 ad_images.push(item.meta_value);
         });
-        if (item.short_location) {
+        if (!item.short_location) {
             let short_location = null;
             await Utils.getAddressByCoords(region.latitude, region.longitude, true, (adsLocation) => {
                 short_location = adsLocation;
