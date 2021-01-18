@@ -19,24 +19,8 @@ const heightPercentageToDP = heightPercent => {
     return PixelRatio.roundToNearestPixel((Utils.SCREEN.HEIGHT * elemHeight) / 100);
 };
 
-const listenOrientationChange = that => {
-    Dimensions.addEventListener('change', newDimensions => {
-        Utils.SCREEN.WIDTH = newDimensions.window.width;
-        Utils.SCREEN.HEIGHT = newDimensions.window.height;
-        that.setState({
-            orientation: Utils.SCREEN.WIDTH < Utils.SCREEN.HEIGHT ? 'portrait' : 'landscape',
-        });
-    });
-};
-
-const removeOrientationListener = () => {
-    Dimensions.removeEventListener('change', () => { });
-};
-
 export default {
     widthPercentageToDP,
     heightPercentageToDP,
-    listenOrientationChange,
-    removeOrientationListener,
     convertFontScale,
 };
