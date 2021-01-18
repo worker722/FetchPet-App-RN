@@ -22,6 +22,7 @@ class Splash extends Component {
 	}
 
 	UNSAFE_componentWillMount = async () => {
+		this.props.setStore(global.CURRENT_LOCATION, null);
 		await this.requestPermission();
 	}
 
