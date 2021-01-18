@@ -193,10 +193,9 @@ class Dashboard extends Component {
                     ],
                 );
             }
-            else if (!store.getState().app.CURRENT_LOCATION) {
+            else {
                 geolocation.requestAuthorization();
-                const location = await Utils.getCurrentLocation();
-                this.props.setStore(global.CURRENT_LOCATION, location);
+                await Utils.getCurrentLocation();
             }
         } catch (err) {
         }

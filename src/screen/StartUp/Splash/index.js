@@ -22,7 +22,6 @@ class Splash extends Component {
 	}
 
 	UNSAFE_componentWillMount = async () => {
-		this.props.setStore(global.CURRENT_LOCATION, null);
 		await this.requestPermission();
 	}
 
@@ -67,8 +66,7 @@ class Splash extends Component {
 			}
 			else {
 				geolocation.requestAuthorization();
-				const location = await Utils.getCurrentLocation();
-				this.props.setStore(global.CURRENT_LOCATION, location);
+				await Utils.getCurrentLocation();
 			}
 		} catch (err) {
 		}
