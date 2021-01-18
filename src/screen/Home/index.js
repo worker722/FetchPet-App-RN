@@ -52,9 +52,9 @@ class Home extends Component {
 
         this.props.setStore(global.IS_IN_CHAT_PAGE, false);
 
-        props.navigation.addListener("focus", (event) => {
-            this.UNSAFE_componentWillMount();
-        });
+        // props.navigation.addListener("focus", (event) => {
+        //     this.UNSAFE_componentWillMount();
+        // });
     }
 
     createNotificationListeners = async () => {
