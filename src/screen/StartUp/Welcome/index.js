@@ -47,7 +47,7 @@ class Welcome extends Component {
 
         return (
             <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor, justifyContent: "center", alignItems: "center" }}>
-                <Image placeholderStyle={{ backgroundColor: BaseColor.whiteColor }} source={Images.logo} style={{ width: 210, height: 70 }} resizeMode={"stretch"}></Image>
+                <Image placeholderStyle={{ backgroundColor: BaseColor.whiteColor }} source={Images.logo} style={{ width: 168, height: 70 }} resizeMode={"stretch"}></Image>
                 <View style={{ width: "100%", justifyContent: "center", alignItems: "center", marginTop: 80 }}>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate("Login")} style={{ width: "80%", height: 50 }}>
                         <View style={{ flex: 1, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center", borderWidth: 1, borderColor: BaseColor.dddColor }}>
