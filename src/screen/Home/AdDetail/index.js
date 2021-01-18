@@ -37,7 +37,6 @@ class AdDetail extends Component {
         this.state = {
             ads: {},
             ad_images: [],
-            adsLocation: '',
             activeSlideIndex: 0,
             showLoader: false,
             showRefresh: false,
@@ -65,9 +64,6 @@ class AdDetail extends Component {
         const param = { ad_id: this.props.route.params.ad_id, view: this.state.view };
         const response = await this.props.api.post('ads', param);
         if (response?.success) {
-            await Utils.getAddressByCoords(response.data.ads.lat, response.data.ads.long, false, (adsLocation) => {
-                this.setState({ adsLocation });
-            });
             const ad_images = [];
             response.data.ads.meta.forEach((item, key) => {
                 if (item.meta_key == '_ad_image')
@@ -146,7 +142,7 @@ class AdDetail extends Component {
     render = () => {
         const user_id = store.getState().auth.login?.user?.id;
         const is_social = store.getState().auth.login?.user?.is_social;
-        const { ads, ad_images, showLoader, showRefresh, adsLocation, activeSlideIndex, show_more_location } = this.state;
+        const { ads, ad_images, showLoader, showRefresh, activeSlideIndex, show_more_location } = this.state;
         const navigation = this.props.navigation;
 
         const user_meta = ads?.user?.meta;
@@ -254,7 +250,7 @@ class AdDetail extends Component {
                                         <Icon name={"map-marker-alt"} size={15} color={BaseColor.primaryColor}></Icon>
                                     }
                                 </View>
-                                <Text numberOfLines={show_more_location ? 10 : 1} style={{ textAlign: "right", marginLeft: 10, maxWidth: show_more_location ? "70%" : "50%" }}>{show_more_location ? adsLocation : adsLocation?.split(" ").reverse().join(" ")}</Text>
+                                <Text numberOfLines={show_more_location ? 10 : 1} style={{ textAlign: "right", marginLeft: 10, maxWidth: show_more_location ? "70%" : "50%" }}>{show_more_location ? ads?.long_location : ads?.long_location?.split(" ").reverse().join(" ")}</Text>
                                 <Icon name={show_more_location ? "angle-down" : "angle-right"} size={15} color={BaseColor.primaryColor} style={{ marginLeft: 10 }}></Icon>
                             </TouchableOpacity>
                             <View style={{ marginVertical: 10, height: 1, width: "100%", backgroundColor: BaseColor.dddColor }}></View>

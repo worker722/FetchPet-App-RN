@@ -33,13 +33,10 @@ export default class ActiveAds extends Component {
                 ad_images.push(item.meta_value);
         });
         this.setState({ item, ad_images });
-        Utils.getAddressByCoords(item.lat, item.long, true, (adsLocation) => {
-            this.setState({ adsLocation });
-        });
     }
 
     render = () => {
-        const { adsLocation, item, ad_images } = this.state;
+        const { item, ad_images } = this.state;
         const { navigation } = this.props;
 
         return (
@@ -65,7 +62,7 @@ export default class ActiveAds extends Component {
                         <View style={{ flexDirection: "column", flex: 1, paddingLeft: 10, justifyContent: "center", alignItems: "flex-start" }}>
                             <Text style={{ color: BaseColor.primaryColor, fontWeight: "bold", fontSize: 17 }}>{item?.category?.name}</Text>
                             <Text style={{ color: BaseColor.greyColor, fontSize: 13 }}>{item?.breed?.name}</Text>
-                            <Text numberOfLines={1} style={{ fontWeight: "bold", fontSize: 13 }}>{adsLocation}</Text>
+                            <Text numberOfLines={1} style={{ fontWeight: "bold", fontSize: 13 }}>{item?.short_location}</Text>
                         </View>
                         <View style={{ paddingLeft: 10 }}>
                             <Text style={{ textAlign: "right", textAlignVertical: "center", fontWeight: "bold", fontSize: 18 }}>$ {item.price}</Text>

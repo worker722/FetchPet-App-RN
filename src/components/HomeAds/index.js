@@ -20,7 +20,6 @@ export default class HomeAds extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            adsLocation: '',
             item: {},
             ad_images: {}
         }
@@ -35,10 +34,6 @@ export default class HomeAds extends Component {
                 ad_images.push(item.meta_value);
         });
         this.setState({ ad_images, item });
-
-        Utils.getAddressByCoords(item.lat, item.long, true, (adsLocation) => {
-            this.setState({ adsLocation });
-        });
     }
 
     onChat = () => {
@@ -68,7 +63,7 @@ export default class HomeAds extends Component {
     render = () => {
         const user_id = store.getState().auth.login?.user?.id;
         const is_social = store.getState().auth.login?.user?.is_social;
-        const { adsLocation, item, ad_images } = this.state;
+        const { item, ad_images } = this.state;
         const { navigation, onFavourite, data } = this.props;
 
         const user_meta = item.user.meta;
@@ -98,7 +93,7 @@ export default class HomeAds extends Component {
                     <Text style={{ marginVertical: 5 }}>{item.breed.name}</Text>
                     <View style={{ flexDirection: "row" }}>
                         <Icon name={"map-marker-alt"} size={15} color={BaseColor.primaryColor}></Icon>
-                        <Text numberOfLines={1} style={{ marginLeft: 5 }}>{adsLocation}</Text>
+                        <Text numberOfLines={1} style={{ marginLeft: 5 }}>{item.short_location}</Text>
                     </View>
                 </View>
                 <View style={{ flexDirection: "column", flex: 1, paddingLeft: 10, }}>
