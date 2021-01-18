@@ -341,12 +341,12 @@ class Login extends Component {
                                     }
                                 </>
                             }
-                            <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 10, }} onPress={this.loginWithFacebook}>
+                            {/* <TouchableOpacity style={{ width: "70%", height: 40, marginTop: 10, }} onPress={this.loginWithFacebook}>
                                 <View style={{ flex: 1, borderRadius: 100, backgroundColor: BaseColor.faceBookColor, flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                                     <Icon name={"facebook-f"} size={15} color={BaseColor.whiteColor}></Icon>
                                     <Text style={{ color: BaseColor.whiteColor, fontSize: 13, marginLeft: 20 }}>Login with</Text>
                                 </View>
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                         </View>
                     </ScrollView>
                 </View>
