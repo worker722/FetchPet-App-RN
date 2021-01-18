@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { BaseColor, Images } from '@config';
 
 import * as Api from '@api';
+import { store } from '@store';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Utils from '@utils';
