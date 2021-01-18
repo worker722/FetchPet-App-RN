@@ -2,18 +2,13 @@ import React, { Component } from 'react';
 import {
     View,
     Text,
-    FlatList,
     TouchableOpacity,
-    TextInput,
     AppState,
     Platform,
     ScrollView,
     RefreshControl,
     PermissionsAndroid,
-    ActivityIndicator,
-    Image as RNImage
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import geolocation from '@react-native-community/geolocation';
 import { Image } from 'react-native-elements';
 
@@ -33,7 +28,7 @@ import RNRestart from 'react-native-restart';
 
 import { Loader, Header } from '@components';
 
-import { BaseColor, Images } from '@config';
+import { BaseColor } from '@config';
 import * as Utils from '@utils';
 
 class Dashboard extends Component {

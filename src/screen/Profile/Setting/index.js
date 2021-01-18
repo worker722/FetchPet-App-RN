@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import {
+    View
+} from 'react-native';
 import { Header, LinkItem } from '@components';
 import { BaseColor } from '@config';
 
