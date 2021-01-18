@@ -66,7 +66,8 @@ class Splash extends Component {
 			}
 			else {
 				geolocation.requestAuthorization();
-				await Utils.getCurrentLocation();
+				const location = await Utils.getCurrentLocation();
+				this.props.setStore(global.CURRENT_LOCATION, location);
 			}
 		} catch (err) {
 		}

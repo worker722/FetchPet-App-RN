@@ -202,9 +202,10 @@ class Home extends Component {
                     ],
                 );
             }
-            else {
+            else if (!store.getState().app.CURRENT_LOCATION) {
                 geolocation.requestAuthorization();
-                await Utils.getCurrentLocation();
+                const location = await Utils.getCurrentLocation();
+                this.props.setStore(global.CURRENT_LOCATION, location);
             }
         } catch (err) {
         }
