@@ -47,8 +47,10 @@ class HomeAds extends Component {
             await Utils.getAddressByCoords(region.latitude, region.longitude, false, (adsLocation) => {
                 long_location = adsLocation;
             });
-            const params = { ad_id: item.id, short_location, long_location };
-            this.props.api.post("ads/location/update", params);
+            if (short_location && long_location) {
+                const params = { ad_id: item.id, short_location, long_location };
+                this.props.api.post("ads/location/update", params);
+            }
         }
         else {
             this.setState({ adsLocation: item.short_location });

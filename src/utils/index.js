@@ -82,7 +82,7 @@ export const getAddressByCoords = async (latitude, longitude, shortAddress, call
                 callback(responseJson.results[responseJson.results.length - 2].formatted_address);
             else
                 callback(responseJson.results[0].formatted_address);
-        }).catch((error) => console.log(error));
+        }).catch((error) => callback(null));
 };
 
 export const getDistance = async (lat1, lng1, lat2, lng2, unit) => {
