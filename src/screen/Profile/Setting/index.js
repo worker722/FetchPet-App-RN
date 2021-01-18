@@ -64,7 +64,7 @@ class Setting extends Component {
 
         setTimeout(() => {
             RNRestart.Restart();
-        }, 5200);
+        }, 500);
     }
 
     render = () => {
