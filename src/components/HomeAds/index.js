@@ -38,19 +38,13 @@ class HomeAds extends Component {
                 ad_images.push(item.meta_value);
         });
         if (!item.short_location) {
-            let short_location = null;
-            await Utils.getAddressByCoords(region.latitude, region.longitude, true, (adsLocation) => {
-                short_location = adsLocation;
-                this.setState({ adsLocation: short_location });
+            await Utils.getAddressByCoords(region.latitude, region.longitude, (adsLocation) => {
+                if (adsLocation) {
+                    this.setState({ adsLocation: adsLocation.short });
+                    const params = { ad_id: item.id, short_location: adsLocation.short, long_location: adsLocation.long };
+                    this.props.api.post("ads/location/update", params);
+                }
             });
-            let long_location = null;
-            await Utils.getAddressByCoords(region.latitude, region.longitude, false, (adsLocation) => {
-                long_location = adsLocation;
-            });
-            if (short_location && long_location) {
-                const params = { ad_id: item.id, short_location, long_location };
-                this.props.api.post("ads/location/update", params);
-            }
         }
         else {
             this.setState({ adsLocation: item.short_location });
