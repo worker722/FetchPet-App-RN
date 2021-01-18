@@ -5,6 +5,7 @@ import {
     TouchableOpacity,
     TextInput,
     Modal,
+    ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Header, Loader } from '@components';
@@ -147,6 +148,7 @@ class ProfileEdit extends Component {
                             <Image
                                 source={{ uri: avatar?.path }}
                                 activeOpacity={0.7}
+                                PlaceholderContent={<ActivityIndicator color={BaseColor.primaryColor} />}
                                 placeholderStyle={{ backgroundColor: BaseColor.whiteColor }}
                                 style={{ marginHorizontal: 10, borderWidth: 1, borderColor: BaseColor.dddColor, width: 80, height: 80, borderRadius: 100 }}>
                             </Image>
