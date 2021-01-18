@@ -9,6 +9,7 @@ const initialState = {
 	NAVIGATION: null,
 	FREE_SELL_ADS: 3,
 	IS_VALID_SUBSCRIPTION: false,
+	CURRENT_LOCATION: null,
 };
 
 export default (state = initialState, action = {}) => {
@@ -62,6 +63,11 @@ export default (state = initialState, action = {}) => {
 			return {
 				...state,
 				PUSH_ALERT_TYPE: action.data
+			};
+		case global.CURRENT_LOCATION:
+			return {
+				...state,
+				CURRENT_LOCATION: action.data
 			};
 		default:
 			return state;

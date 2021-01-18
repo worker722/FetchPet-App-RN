@@ -1,6 +1,7 @@
 import { Dimensions } from 'react-native';
 import Moment from 'moment';
 import geolocation from '@react-native-community/geolocation';
+import { store } from "@store";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const SCREEN_HEIGHT = Dimensions.get("window").height;
@@ -56,6 +57,10 @@ export const relativeTime = (date) => {
 };
 
 export const getCurrentLocation = async () => {
+    const { CURRENT_LOCATION } = store.getState().app;
+    if (CURRENT_LOCATION)
+        return CURRENT_LOCATION;
+
     return new Promise(
         async (resolve, reject) => {
             geolocation.getCurrentPosition(
