@@ -33,7 +33,7 @@ class Welcome extends Component {
         if (response?.success) {
             this.props.setStore(global.PUSH_ALERT, { notification: { title: "Welcome Guest!" } });
             this.props.setStore(global.PUSH_ALERT_TYPE, 'info');
-            this.props.setStore(global.IS_BUYER_MODE);
+            this.props.setStore(global.IS_BUYER_MODE, true);
 
             this.props.navigation.navigate("Main");
         }
