@@ -28,8 +28,6 @@ import * as Api from '@api';
 import * as global from "@api/global";
 import * as Utils from '@utils';
 
-const image_height = Utils.SCREEN.HEIGHT / 4;
-
 class SignUp extends Component {
     constructor(props) {
         super(props);

@@ -6,7 +6,6 @@ import {
     Modal,
     ScrollView
 } from 'react-native';
-
 import { BaseColor } from '@config';
 import Styles from './style';
 import * as Utils from '@utils';
