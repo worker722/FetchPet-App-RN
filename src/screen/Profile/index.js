@@ -84,7 +84,7 @@ class Profile extends Component {
         this.props.setStore(global.LOGIN, null);
         setTimeout(() => {
             RNRestart.Restart();
-        }, 5200);
+        }, 500);
     }
 
     render = () => {

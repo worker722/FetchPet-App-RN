@@ -117,18 +117,21 @@ class FavouriteAds extends Component {
                 <View style={{ flexDirection: "column", flex: 1, paddingLeft: 10, justifyContent: "center", alignItems: "flex-start" }}>
                     <Text style={{ color: BaseColor.primaryColor }}>{item.category.name}</Text>
                     <Text style={{ marginVertical: 5 }}>{item.breed.name}</Text>
-                    <Text numberOfLines={1}>{item?.short_location}</Text>
+                    <View style={{ flexDirection: "row" }}>
+                        <Icon name={"map-marker-alt"} size={15} color={BaseColor.primaryColor}></Icon>
+                        <Text numberOfLines={1}>{item?.short_location}</Text>
+                    </View>
                 </View>
                 <View style={{ flexDirection: "column", flex: 1, paddingLeft: 10, }}>
                     <Text style={{ color: "grey", fontSize: 12, textAlign: "right" }}>{Utils.relativeTime(item.updated_at)} posted</Text>
                     <Text style={{ fontSize: 20, textAlign: "right" }}>$ {item.price}</Text>
                     <View style={{ flex: 1 }}></View>
-                    <View style={{ flexDirection: "row", width: 120 }}>
+                    <View style={{ flexDirection: "row", width: 110 }}>
                         <TouchableOpacity onPress={this.onChat} style={{ width: 30, height: 30, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
                             <Icon name={"comment"} size={15} color={BaseColor.whiteColor}></Icon>
                         </TouchableOpacity>
                         {is_showPhonenumber && item.user.phonenumber &&
-                            <TouchableOpacity onPress={this.onCall} style={{ width: 30, height: 30, marginLeft: 15, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
+                            <TouchableOpacity onPress={this.onCall} style={{ width: 30, height: 30, marginLeft: 10, borderRadius: 100, backgroundColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center" }}>
                                 <Icon name={"phone"} size={15} color={BaseColor.whiteColor} ></Icon>
                             </TouchableOpacity>
                         }
