@@ -154,7 +154,7 @@ class AdvancedFilter extends Component {
                         style={{ flex: 1, paddingLeft: 100, paddingRight: 20, color: BaseColor.whiteColor }}
                         placeholder={"Search"} placeholderTextColor={BaseColor.greyColor}></TextInput>
                     <View style={{ position: "absolute", left: 15, justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
-                        <RNImage source={Images.logo} style={{ width: 50, height: 17 }} resizeMode={"stretch"}></RNImage>
+                        <RNImage source={Images.logo} style={{ width: 48, height: 20 }} resizeMode={"stretch"}></RNImage>
                         <TouchableOpacity style={{ padding: 10 }} onPress={this.filterPet}>
                             <Icon name={"search"} size={18} color={BaseColor.primaryColor}></Icon>
                         </TouchableOpacity>

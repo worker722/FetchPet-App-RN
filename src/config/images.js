@@ -1,7 +1,6 @@
 
 export const Images = {
   google_plus: require("@assets/images/google_plus.png"),
-  splash: require("@assets/images/splash.png"),
   logo: require("@assets/images/logo.png"),
   ic_home: require("@assets/images/ic_home.png"),
   ic_home_fill: require("@assets/images/ic_home_fill.png"),

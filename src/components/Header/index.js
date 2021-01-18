@@ -27,7 +27,7 @@ class Header extends Component {
                 {mainHeader &&
                     <>
                         <TouchableOpacity onPress={() => navigation.navigate("Home")} style={{ backgroundColor: "transparent" }}>
-                            <Image source={Images.logo} style={{ width: 100, height: 35 }} resizeMode={"stretch"}></Image>
+                            <Image source={Images.logo} style={{ width: 84, height: 35 }} resizeMode={"stretch"}></Image>
                         </TouchableOpacity>
                         <View style={{ flex: 1 }}></View>
                         {is_social != -1 &&

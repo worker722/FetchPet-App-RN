@@ -141,7 +141,7 @@ class Favourite extends Component {
                             style={{ flex: 1, paddingLeft: 100, paddingRight: 20, color: BaseColor.blackColor }}
                             placeholder={"Search"} placeholderTextColor={BaseColor.greyColor}></TextInput>
                         <View style={{ position: "absolute", left: 15, justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
-                            <Image source={Images.logo} style={{ width: 50, height: 17 }} resizeMode={"stretch"}></Image>
+                            <Image source={Images.logo} style={{ width: 48, height: 20 }} resizeMode={"stretch"}></Image>
                             <TouchableOpacity style={{ padding: 10 }} onPress={this.searchAds}>
                                 <Icon name={"search"} size={18} color={BaseColor.primaryColor}></Icon>
                             </TouchableOpacity>
