@@ -66,7 +66,7 @@ class Notification extends Component {
                             onRefresh={this._onRefresh} />}
                 >
                     <FlatList
-                        style={{ paddingHorizontal: 10, marginTop: 10 }}
+                        style={{ paddingHorizontal: 10, marginTop: 10, paddingTop: 5 }}
                         keyExtractor={(item, index) => index.toString()}
                         data={notification}
                         renderItem={(item, key) => (
