@@ -28,6 +28,7 @@ class Splash extends Component {
 	componentDidMount = async () => {
 		const navigation = this.props.navigation;
 		this.props.setStore(global.NAVIGATION, navigation);
+		this.props.setStore(global.PUSH_ALERT, null);
 		if (Api._TOKEN()) {
 			const response = await this.props.api.post("accountStatus");
 			if (response?.success) {
