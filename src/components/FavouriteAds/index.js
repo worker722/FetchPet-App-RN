@@ -39,9 +39,6 @@ class FavouriteAds extends Component {
                 ad_images.push(item.meta_value);
         });
         this.setState({ item, ad_images });
-        Utils.getAddressByCoords(item.lat, item.long, true, (adsLocation) => {
-            this.setState({ adsLocation });
-        });
     }
 
     onChat = () => {
@@ -89,7 +86,7 @@ class FavouriteAds extends Component {
     }
 
     render = () => {
-        const { adsLocation, item, ad_images, is_removed } = this.state;
+        const { item, ad_images, is_removed } = this.state;
 
         if (is_removed)
             return null;
@@ -120,7 +117,7 @@ class FavouriteAds extends Component {
                 <View style={{ flexDirection: "column", flex: 1, paddingLeft: 10, justifyContent: "center", alignItems: "flex-start" }}>
                     <Text style={{ color: BaseColor.primaryColor }}>{item.category.name}</Text>
                     <Text style={{ marginVertical: 5 }}>{item.breed.name}</Text>
-                    <Text numberOfLines={1}>{adsLocation}</Text>
+                    <Text numberOfLines={1}>{item?.short_location}</Text>
                 </View>
                 <View style={{ flexDirection: "column", flex: 1, paddingLeft: 10, }}>
                     <Text style={{ color: "grey", fontSize: 12, textAlign: "right" }}>{Utils.relativeTime(item.updated_at)} posted</Text>
