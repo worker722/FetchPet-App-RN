@@ -11,21 +11,24 @@ import {
 import { Image } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { BaseColor, Images } from '@config';
+
 import * as Api from '@api';
-import { store } from '@store';
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import * as Utils from '@utils';
 import * as global from "@api/global";
 
-export default class HomeAds extends Component {
+class HomeAds extends Component {
     constructor(props) {
         super(props);
         this.state = {
             item: {},
-            ad_images: {}
+            ad_images: {},
+            adsLocation: ''
         }
     }
 
-    UNSAFE_componentWillMount = () => {
+    UNSAFE_componentWillMount = async () => {
         const { data } = this.props;
         const item = data.item;
         const ad_images = [];
@@ -33,6 +36,22 @@ export default class HomeAds extends Component {
             if (item.meta_key == '_ad_image')
                 ad_images.push(item.meta_value);
         });
+        if (item.short_location) {
+            let short_location = null;
+            await Utils.getAddressByCoords(region.latitude, region.longitude, true, (adsLocation) => {
+                short_location = adsLocation;
+                this.setState({ adsLocation: short_location });
+            });
+            let long_location = null;
+            await Utils.getAddressByCoords(region.latitude, region.longitude, false, (adsLocation) => {
+                long_location = adsLocation;
+            });
+            const params = { ad_id: item.id, short_location, long_location };
+            this.props.api.post("ads/location/update", params);
+        }
+        else {
+            this.setState({ adsLocation: item.short_location });
+        }
         this.setState({ ad_images, item });
     }
 
@@ -63,7 +82,7 @@ export default class HomeAds extends Component {
     render = () => {
         const user_id = store.getState().auth.login?.user?.id;
         const is_social = store.getState().auth.login?.user?.is_social;
-        const { item, ad_images } = this.state;
+        const { item, ad_images, adsLocation } = this.state;
         const { navigation, onFavourite, data } = this.props;
 
         const user_meta = item.user.meta;
@@ -93,7 +112,7 @@ export default class HomeAds extends Component {
                     <Text style={{ marginVertical: 5 }}>{item.breed.name}</Text>
                     <View style={{ flexDirection: "row" }}>
                         <Icon name={"map-marker-alt"} size={15} color={BaseColor.primaryColor}></Icon>
-                        <Text numberOfLines={1} style={{ marginLeft: 5 }}>{item.short_location}</Text>
+                        <Text numberOfLines={1} style={{ marginLeft: 5 }}>{adsLocation}</Text>
                     </View>
                 </View>
                 <View style={{ flexDirection: "column", flex: 1, paddingLeft: 10, }}>
@@ -132,3 +151,11 @@ export default class HomeAds extends Component {
         )
     }
 }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        api: bindActionCreators(Api, dispatch)
+    }
+}
+
+export default connect(null, mapDispatchToProps)(HomeAds);
