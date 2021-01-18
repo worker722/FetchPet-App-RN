@@ -200,18 +200,17 @@ class SellEdit extends Component {
         this.setState({ showLoader: true });
 
         let short_location = null;
-        await Utils.getAddressByCoords(region.latitude, region.longitude, true, (adsLocation) => {
-            short_location = adsLocation;
-        });
         let long_location = null;
-        await Utils.getAddressByCoords(region.latitude, region.longitude, false, (adsLocation) => {
-            long_location = adsLocation;
+        await Utils.getAddressByCoords(region.latitude, region.longitude, (adsLocation) => {
+            if (!adsLocation) {
+                this.setState({ showLoader: false });
+                return;
+            }
+            else {
+                short_location = adsLocation.short;
+                long_location = adsLocation.long;
+            }
         });
-        
-        if (!short_location || !long_location) {
-            this.setState({ showLoader: false });
-            return;
-        }
 
         const params = { is_edit_image: is_edit_image, ad_id: ads.id, category: selectedCategory, breed: selectedBreed, age: age, unit: selectedUnit, price: price, gender: selectedGender == 'Male' ? 1 : 0, image_key: 'ad_image', lat: region.latitude, long: region.longitude, description: description ? description : '' };
         let response;

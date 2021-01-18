@@ -1,7 +1,6 @@
 import { Dimensions } from 'react-native';
 import Moment from 'moment';
 import geolocation from '@react-native-community/geolocation';
-import { store } from "@store";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const SCREEN_HEIGHT = Dimensions.get("window").height;
@@ -69,15 +68,16 @@ export const getCurrentLocation = async () => {
     );
 };
 
-export const getAddressByCoords = async (latitude, longitude, shortAddress, callback) => {
+export const getAddressByCoords = async (latitude, longitude, callback) => {
     const params = `address=${latitude},${longitude}&key=${GOOGLE_API_KEY}`;
     fetch(`${GOOGLE_MAP_API_URL}geocode/json?${encodeURI(params)}`)
         .then((response) => response.json())
         .then((responseJson) => {
-            if (shortAddress)
-                callback(responseJson.results[responseJson.results.length - 2].formatted_address);
-            else
-                callback(responseJson.results[0].formatted_address);
+            const address = {
+                short: responseJson.results[responseJson.results.length - 2].formatted_address,
+                long: responseJson.results[0].formatted_address
+            };
+            callback(address);
         }).catch((error) => callback(null));
 };
 

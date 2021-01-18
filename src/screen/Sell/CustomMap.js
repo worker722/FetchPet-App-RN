@@ -77,8 +77,8 @@ export default class CustomMap extends Component {
     }
 
     getUserLocation = (latitude, longitude) => {
-        Utils.getAddressByCoords(latitude, longitude, false, (userLocation) => {
-            this.setState({ userLocation, animType: 'fadeInUp' });
+        Utils.getAddressByCoords(latitude, longitude, (userLocation) => {
+            this.setState({ userLocation: userLocation.long, animType: 'fadeInUp' });
         })
     }
 
