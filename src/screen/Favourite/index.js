@@ -66,7 +66,7 @@ class Favourite extends Component {
         let nearBoostAds = [];
         let normalAds = [];
         adsWithDistance.forEach((item, index) => {
-            if (item.distance <= 100 && item.is_boost)
+            if (item.distance <= Utils.BOOST_ADS_DISTANCE && item.is_boost)
                 nearBoostAds.push(item);
             else
                 normalAds.push(item);
