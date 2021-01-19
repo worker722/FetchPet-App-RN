@@ -1,4 +1,3 @@
-
 const BaseColor = {
 	...{
 		primaryColor: "#303881",
@@ -7,7 +6,6 @@ const BaseColor = {
 		dddColor: '#DDDDDD',
 		placeholderColor: '#F5F5F5',
 		whiteColor: "#FFFFFF",
-		activeColor: "#0CFA07",
 		blackColor: "#000000",
 		googleColor: "#E3411F",
 		faceBookColor: "#3C5B9A",
