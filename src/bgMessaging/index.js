@@ -1,5 +1,4 @@
 import * as global from "@api/global";
-import { SetPrefrence } from "@store";
 
 export default async (notification) => {
 	try {
