@@ -1,5 +1,5 @@
-import { Platform } from 'react-native';
 import Toast from 'react-native-simple-toast';
+import VersionCheck from 'react-native-version-check';
 
 //STORE VARIABLE TYPES
 export const LOGIN = "LOGIN";
@@ -54,15 +54,15 @@ export const showGuestMessage = () => {
 }
 
 export const getAppShareLink = () => {
-    return Platform.select(({
-        android: `https://play.google.com/store/apps/details?id=${ANDROID_PACKAGE}`,
-        ios: `https://apps.apple.com/us/app/id${APPLE_APP_ID}`
-    }));
+    try {
+        return VersionCheck.getStoreUrl();
+    } catch (error) {
+    }
 }
 
 export const getAppVersion = () => {
-    return Platform.select(({
-        android: "1.0.5",
-        ios: "2.0.5"
-    }));
+    try {
+        return VersionCheck.getCurrentVersion();
+    } catch (error) {
+    }
 }

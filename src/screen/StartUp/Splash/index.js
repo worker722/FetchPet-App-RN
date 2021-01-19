@@ -3,9 +3,14 @@ import {
 	View,
 	PermissionsAndroid,
 	Platform,
-	Image
+	Image,
+	BackHandler,
+	Linking,
+	Alert
 } from "react-native";
 import geolocation from '@react-native-community/geolocation';
+
+import VersionCheck from 'react-native-version-check';
 
 import { BaseColor, Images } from '@config';
 import * as Utils from '@utils';
@@ -22,6 +27,7 @@ class Splash extends Component {
 	}
 
 	UNSAFE_componentWillMount = async () => {
+		await this.checkVersionUpdateNeeded();
 		await this.requestPermission();
 	}
 
@@ -48,6 +54,24 @@ class Splash extends Component {
 			setTimeout(() => {
 				navigation.navigate("Welcome");
 			}, 2000);
+		}
+	}
+
+	checkVersionUpdateNeeded = async () => {
+		let updateNeeded = await VersionCheck.needUpdate();
+		if (updateNeeded.isNeeded) {
+			Alert.alert(
+				'Please Update', 'You will have to update your app to the latest version to continue using.',
+				[
+					{
+						text: 'OK', onPress: () => {
+							BackHandler.exitApp();
+							Linking.openURL(updateNeeded.storeUrl)
+						}
+					},
+				],
+				{ cancelable: false },
+			);
 		}
 	}
 
