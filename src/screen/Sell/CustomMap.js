@@ -111,7 +111,7 @@ export default class CustomMap extends Component {
                         nearbyPlacesAPI='GooglePlacesSearch'
                         debounce={300}
                         query={{
-                            key: Utils.GOOGLE_API_KEY,
+                            key: Utils.GOOGLE_GEO_API_KEY,
                             language: 'en',
                         }}
                         styles={{

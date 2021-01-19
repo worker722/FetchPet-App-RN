@@ -46,7 +46,7 @@ class SignUp extends Component {
 
     UNSAFE_componentWillMount = async () => {
         GoogleSignin.configure({
-            webClientId: Utils.GOOGLE_AUTH_WEB_CLIENT_ID,
+            webClientId: Utils.GOOGLE_OAUTH_WEB_CLIENT_ID,
             offlineAccess: true
         });
 
