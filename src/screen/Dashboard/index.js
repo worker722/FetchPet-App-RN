@@ -37,6 +37,7 @@ class Dashboard extends Component {
         this.state = {
 
             review: [],
+            active_ads: 0,
 
             showRefresh: false,
             showLoader: false,
@@ -213,15 +214,13 @@ class Dashboard extends Component {
         const response = await this.props.api.get('dashboard');
         if (response?.success) {
             this.props.setStore(global.U_MESSAGE_SET, 0);
-            if (response.data.unread_message > 0)
-                this.props.setStore(global.U_MESSAGE_SET, response.data.unread_message);
+            const { unread_message, review, is_show_apple_button, is_valid_subscription, active_ads } = response.data;
+            if (unread_message > 0)
+                this.props.setStore(global.U_MESSAGE_SET, unread_message);
 
-            this.setState({ review: response.data.review });
-
-            let is_show_apple_button = response.data.is_show_apple_button;
+            this.setState({ review, active_ads });
             await SetPrefrence(global.PREF_SHOW_APPLE_BUTTON, is_show_apple_button);
-
-            this.props.setStore(global.IS_VALID_SUBSCRIPTION, response.data.is_valid_subscription);
+            this.props.setStore(global.IS_VALID_SUBSCRIPTION, is_valid_subscription);
         }
         this.setState({ showLoader: false, showRefresh: false });
     }
@@ -232,7 +231,7 @@ class Dashboard extends Component {
 
     render = () => {
         const { user } = store.getState().auth.login;
-        const { showLoader, showRefresh, review } = this.state;
+        const { showLoader, showRefresh, review, active_ads } = this.state;
         const { navigation } = this.props;
 
         if (showLoader)
@@ -265,7 +264,7 @@ class Dashboard extends Component {
                         <View style={{ flex: 1, marginLeft: 10, height: 180 }}>
                             <View style={{ height: 85, paddingHorizontal: 10, paddingVertical: 15, borderRadius: 10, borderWidth: 1, borderColor: BaseColor.primaryColor, justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
                                 <View style={{ justifyContent: "center", alignItems: "center" }}>
-                                    <Text style={{ color: BaseColor.primaryColor, fontSize: 23 }}>70</Text>
+                                    <Text style={{ color: BaseColor.primaryColor, fontSize: 23 }}>{active_ads}</Text>
                                     <Text>Active Ads</Text>
                                 </View>
                                 <View style={{ flex: 1 }}></View>
@@ -285,7 +284,7 @@ class Dashboard extends Component {
                             </View>
                         </View>
                     </View>
-                    <TouchableOpacity style={{ marginTop: 15, borderRadius: 5, backgroundColor: BaseColor.boostColor, justifyContent: "center", alignItems: "center", paddingVertical: 10 }}>
+                    <TouchableOpacity onPress={() => navigation.navigate("MyAds")} style={{ marginTop: 15, borderRadius: 5, backgroundColor: BaseColor.boostColor, justifyContent: "center", alignItems: "center", paddingVertical: 10 }}>
                         <Text style={{ color: BaseColor.whiteColor, fontStyle: "italic" }}>Boost Your Ads</Text>
                     </TouchableOpacity>
 
