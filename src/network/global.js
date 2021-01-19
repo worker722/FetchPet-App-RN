@@ -53,16 +53,10 @@ export const showGuestMessage = () => {
     showToastMessage("Please login to use this feature.");
 }
 
-export const getAppShareLink = () => {
-    try {
-        return VersionCheck.getStoreUrl();
-    } catch (error) {
-    }
+export const getAppShareLink = async () => {
+    return await VersionCheck.getStoreUrl();
 }
 
 export const getAppVersion = () => {
-    try {
-        return VersionCheck.getCurrentVersion();
-    } catch (error) {
-    }
+    return VersionCheck.getCurrentVersion();
 }

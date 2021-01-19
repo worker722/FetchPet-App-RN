@@ -58,7 +58,7 @@ class Splash extends Component {
 	}
 
 	checkVersionUpdateNeeded = async () => {
-		let updateNeeded = await VersionCheck.needUpdate();
+		const updateNeeded = await VersionCheck.needUpdate();
 		if (updateNeeded.isNeeded) {
 			Alert.alert(
 				'Please Update', 'You will have to update your app to the latest version to continue using.',

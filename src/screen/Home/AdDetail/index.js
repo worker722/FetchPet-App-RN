@@ -87,10 +87,14 @@ class AdDetail extends Component {
     }
 
     shareAds = async () => {
-        Share.share({
-            message:
-                "Fetch - Your Local Pet Marketplace App!" + "\n" + "Online Location Based Pet MarketPlace App." + "\n" + global.getAppShareLink()
-        });
+        const share_link = await global.getAppShareLink();
+        try {
+            Share.share({
+                message:
+                    "Fetch - Your Local Pet Marketplace App!" + "\n" + "Online Location Based Pet MarketPlace App." + "\n" + share_link
+            });
+        } catch (error) {
+        }
     }
 
     onChat = () => {
