@@ -20,8 +20,8 @@
     pod 'Firebase/Messaging', '~> 7.4.0'
   ##
 8. after react-native 0.61.0 + packages auto linking
-9. scrpit starting command upgrade as following
-  # on package.json
+9. scrpit starting command upgrade as following on package.json
+  #
       "android": "react-native run-android",
       "ios": "react-native run-ios",
       "start": "react-native start",
