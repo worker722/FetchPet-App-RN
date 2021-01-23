@@ -1,6 +1,6 @@
 # 0.59.8 to 0.63.4
 
-1. AsyncStorage was moved on react-native. So use from @react-native-async-storage/async-storage
+$1. AsyncStorage was moved on react-native. So use from @react-native-async-storage/async-storage
 2. Add @react-native-community/datetimepicker
 3. @react-native-community/masked-view, react-native-screens, react-native-safe-area-context, react-native-reanimated for react-navigation
 4. Add jetifier to convert Native Java Code to AndroidX from react native dependencies
